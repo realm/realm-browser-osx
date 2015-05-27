@@ -22,6 +22,8 @@
 #import "RLMTestDataGenerator.h"
 #import "TestClasses.h"
 
+#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
+
 const NSUInteger kTopTipDelay = 250;
 const NSUInteger kMaxFilesPerCategory = 7;
 const CGFloat kMenuImageSize = 16;

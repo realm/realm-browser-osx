@@ -24,8 +24,11 @@
 #import "RLMRealmOutlineNode.h"
 #import "RLMRealmBrowserWindowController.h"
 
+#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
+
 @interface RLMDocument ()
 
+@property (nonatomic, strong) NSURL *securityScopedURL;
 @property (nonatomic) RLMNotificationToken *changeNotificationToken;
 
 @end
@@ -50,26 +53,39 @@
             return self;
         }
         
+        AppSandboxFileAccess *sandBoxAccess = [AppSandboxFileAccess fileAccess];
+        [sandBoxAccess requestAccessPermissionsForFileURL:absoluteURL persistPermission:YES withBlock:^(NSURL *securityScopedFileURL, NSData *bookmarkData){
+            self.securityScopedURL = securityScopedFileURL;
+        }];
+        
+        if (self.securityScopedURL == nil)
+            return self;
+        
+        [self.securityScopedURL startAccessingSecurityScopedResource];
+        
+        NSError *error = nil;
+        NSLog(@"%@", [NSData dataWithContentsOfURL:self.securityScopedURL]);
+        
         NSArray *fileNameComponents = [lastComponent componentsSeparatedByString:@"."];
         NSString *realmName = [fileNameComponents firstObject];
         
-        RLMRealmNode *realmNode = [[RLMRealmNode alloc] initWithName:realmName url:absoluteURL.path];
+        RLMRealmNode *realmNode = [[RLMRealmNode alloc] initWithName:realmName url:self.securityScopedURL.path];
         RLMDocument *ws = self;
-
+        
         dispatch_sync(dispatch_get_main_queue(), ^{
             NSError *error;
             if ([realmNode connect:&error]) {
                 ws.presentedRealm  = realmNode;
-
+                
                 ws.changeNotificationToken = [realmNode.realm addNotificationBlock:^(NSString *notification, RLMRealm *realm) {
                     for (RLMRealmBrowserWindowController *windowController in ws.windowControllers) {
                         [windowController reloadAfterEdit];
                     }
                 }];
-
+                
                 NSDocumentController *documentController = [NSDocumentController sharedDocumentController];
                 [documentController noteNewRecentDocumentURL:absoluteURL];
-            
+                
                 for (RLMRealmBrowserWindowController *windowController in ws.windowControllers) {
                     [windowController realmDidLoad];
                 }
@@ -86,6 +102,11 @@
 - (id)initForURL:(NSURL *)urlOrNil withContentsOfURL:(NSURL *)contentsURL ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError
 {
     return nil;
+}
+
+- (void)dealloc
+{
+    [self.securityScopedURL stopAccessingSecurityScopedResource];
 }
 
 #pragma mark - Public methods - NSDocument overrides - Creating and Managing Window Controllers
