@@ -63,9 +63,6 @@
         
         [self.securityScopedURL startAccessingSecurityScopedResource];
         
-        NSError *error = nil;
-        NSLog(@"%@", [NSData dataWithContentsOfURL:self.securityScopedURL]);
-        
         NSArray *fileNameComponents = [lastComponent componentsSeparatedByString:@"."];
         NSString *realmName = [fileNameComponents firstObject];
         
