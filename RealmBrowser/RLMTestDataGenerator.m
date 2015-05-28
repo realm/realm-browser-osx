@@ -18,6 +18,7 @@
 
 #import "RLMTestDataGenerator.h"
 #import <Realm/Realm.h>
+#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
 
 const NSUInteger kMaxItemsInTestArray = 12;
 
@@ -34,18 +35,25 @@ const NSUInteger kMaxItemsInTestArray = 12;
 // Creates a test realm at [url], filled with [objectCount] random objects of classes in [classNames]
 +(BOOL)createRealmAtUrl:(NSURL *)url withClassesNamed:(NSArray *)classNames objectCount:(NSUInteger)objectCount
 {
-    NSError *error;
-    RLMRealm *realm = [RLMRealm realmWithPath:url.path readOnly:NO error:&error];
+    AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
     
-    if (error) {
-        [[NSApplication sharedApplication] presentError:error];
-        return NO;
-    }
+    __block NSError *error;
+    NSURL *directoryURL = [url URLByDeletingLastPathComponent];
+    [fileAccess accessFileURL:directoryURL persistPermission:YES withBlock:^{
+        RLMRealm *realm = [RLMRealm realmWithPath:url.path readOnly:NO error:&error];
+        
+        if (error) {
+            [[NSApplication sharedApplication] presentError:error];
+        }
+        else {
+            RLMTestDataGenerator *generator = [[RLMTestDataGenerator alloc] initWithClassesNamed:classNames];
+            [generator populateRealm:realm withObjectCount:objectCount];
+        }
+        
+        realm = nil;
+    }];
     
-    RLMTestDataGenerator *generator = [[RLMTestDataGenerator alloc] initWithClassesNamed:classNames];
-    [generator populateRealm:realm withObjectCount:objectCount];
-    
-    return YES;
+    return (!error);
 }
 
 // Initializes the testDataGenerator and saves the desired [classNames]
