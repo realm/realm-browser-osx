@@ -39,7 +39,7 @@
 #import "objc/objc-class.h"
 
 #import "RLMDescriptions.h"
-@import Realm.Private;
+#import "RLMRealm+Private.h"
 
 NSString * const kRLMObjectType = @"RLMObjectType";
 static const NSInteger NOT_A_COLUMN = -1;

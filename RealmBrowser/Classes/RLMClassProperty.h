@@ -17,7 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 @import Foundation;
-@import Realm;
+#import <Realm/Realm.h>
 
 @interface RLMClassProperty : NSObject
 

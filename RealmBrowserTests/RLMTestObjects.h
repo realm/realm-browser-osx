@@ -16,7 +16,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-@import Realm;
+#import <Realm/Realm.h>
 
 @interface RealmObject1 : RLMObject
 @property NSInteger intProp;

@@ -19,7 +19,8 @@
 #import "RLMRealmBrowserWindowController.h"
 #import "RLMNavigationStack.h"
 #import "RLMModelExporter.h"
-@import Realm.Private;
+#import <Realm/Realm.h>
+#import "RLMRealm+Private.h"
 
 NSString * const kRealmLockedImage = @"RealmLocked";
 NSString * const kRealmUnlockedImage = @"RealmUnlocked";
