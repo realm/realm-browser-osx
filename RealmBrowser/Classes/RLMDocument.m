@@ -53,23 +53,29 @@
             return self;
         }
         
+        NSURL *folderURL = absoluteURL;
+        BOOL isDir = NO;
+        if (([[NSFileManager defaultManager] fileExistsAtPath:folderURL.path isDirectory:&isDir] && isDir == NO)) {
+            folderURL = [folderURL URLByDeletingLastPathComponent];
+        }
+        
         AppSandboxFileAccess *sandBoxAccess = [AppSandboxFileAccess fileAccess];
-        [sandBoxAccess requestAccessPermissionsForFileURL:absoluteURL persistPermission:YES withBlock:^(NSURL *securityScopedFileURL, NSData *bookmarkData){
+        [sandBoxAccess requestAccessPermissionsForFileURL:folderURL persistPermission:YES withBlock:^(NSURL *securityScopedFileURL, NSData *bookmarkData){
             self.securityScopedURL = securityScopedFileURL;
         }];
         
         if (self.securityScopedURL == nil)
             return self;
         
-        [self.securityScopedURL startAccessingSecurityScopedResource];
-        
         NSArray *fileNameComponents = [lastComponent componentsSeparatedByString:@"."];
         NSString *realmName = [fileNameComponents firstObject];
         
-        RLMRealmNode *realmNode = [[RLMRealmNode alloc] initWithName:realmName url:self.securityScopedURL.path];
+        RLMRealmNode *realmNode = [[RLMRealmNode alloc] initWithName:realmName url:absoluteURL.path];
         RLMDocument *ws = self;
         
         dispatch_sync(dispatch_get_main_queue(), ^{
+            [self.securityScopedURL startAccessingSecurityScopedResource];
+            
             NSError *error;
             if ([realmNode connect:&error]) {
                 ws.presentedRealm  = realmNode;
