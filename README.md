@@ -1,7 +1,7 @@
 # Realm Browser
 Realm Browser is a small utility for Mac OS X that lets you open .realm files to view and modify their contents.
 
-<img src="https://raw.github.com/realm/realm-browser/master/screenshot.jpg" alt="Realm Browser" style="max-width:730px;" />
+<img src="https://raw.githubusercontent.com/realm/realm-browser/master/screenshot.jpg" alt="Realm Browser" style="max-width:730px;" />
 
 ## Installing
 Download the project and build it using Xcode. Realm Browser uses [CocoaPods](https://cocoapods.org) to manage its external dependicies, so having CocoaPods installed on your system as well, while not necessary is preferred.
