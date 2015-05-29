@@ -866,7 +866,7 @@
 		234103F6FC7D26539B99221D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0630;
 			};
 			buildConfigurationList = 906B808EB2974A4580F44540 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -956,6 +956,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DBEB2D91A6C9E231682D45FB /* Pods.debug.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
@@ -973,6 +974,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D66B03B76A51334729225A90 /* Pods-Realm-Private.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREFIX_HEADER = "Target Support Files/Pods-Realm/Pods-Realm-prefix.pch";
@@ -989,6 +991,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D66B03B76A51334729225A90 /* Pods-Realm-Private.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
@@ -1040,6 +1043,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = ECCAD275D51810DCAAB0C432 /* Pods.release.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
@@ -1097,6 +1101,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B4AE63C8EB578A77BB68EF50 /* Pods-AppSandboxFileAccess-Private.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
@@ -1114,6 +1119,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B4AE63C8EB578A77BB68EF50 /* Pods-AppSandboxFileAccess-Private.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREFIX_HEADER = "Target Support Files/Pods-AppSandboxFileAccess/Pods-AppSandboxFileAccess-prefix.pch";

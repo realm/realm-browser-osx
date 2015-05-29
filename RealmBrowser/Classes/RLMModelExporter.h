@@ -18,11 +18,13 @@
 
 @import Foundation;
 
-extern NSString * const kLanguageJava;
-extern NSString * const kLanguageObjC;
+typedef NS_ENUM(NSInteger, RLMModelExporterLanguage) {
+    RLMModelExporterLanguageObjectiveC,
+    RLMModelExporterLanguageJava
+};
 
 @interface RLMModelExporter : NSObject
 
-+(void)saveModelsForSchemas:(NSArray *)objectSchemas inLanguage:(NSString *)language;
++ (void)saveModelsForSchemas:(NSArray *)objectSchemas inLanguage:(RLMModelExporterLanguage)language;
 
 @end

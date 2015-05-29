@@ -92,13 +92,13 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 - (IBAction)saveJavaModels:(id)sender
 {
     NSArray *objectSchemas = self.modelDocument.presentedRealm.realm.schema.objectSchema;
-    [RLMModelExporter saveModelsForSchemas:objectSchemas inLanguage:kLanguageJava];
+    [RLMModelExporter saveModelsForSchemas:objectSchemas inLanguage:RLMModelExporterLanguageJava];
 }
 
 - (IBAction)saveObjcModels:(id)sender
 {
     NSArray *objectSchemas = self.modelDocument.presentedRealm.realm.schema.objectSchema;
-    [RLMModelExporter saveModelsForSchemas:objectSchemas inLanguage:kLanguageObjC];
+    [RLMModelExporter saveModelsForSchemas:objectSchemas inLanguage:RLMModelExporterLanguageObjectiveC];
 }
 
 #pragma mark - Public methods - User Actions

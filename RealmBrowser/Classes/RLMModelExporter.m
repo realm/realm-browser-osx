@@ -18,19 +18,23 @@
 
 #import "RLMModelExporter.h"
 #import <Realm/Realm.h>
+#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
 
-NSString * const kLanguageJava = @"Java";
-NSString * const kLanguageObjC = @"Objective-C";
+@interface RLMModelExporter ()
+
++ (NSString *)stringForLanguage:(RLMModelExporterLanguage)language;
+
+@end
 
 @implementation RLMModelExporter
 
 #pragma mark - Public methods
 
-+(void)saveModelsForSchemas:(NSArray *)objectSchemas inLanguage:(NSString *)language
++ (void)saveModelsForSchemas:(NSArray *)objectSchemas inLanguage:(RLMModelExporterLanguage)language
 {
-    NSString *dialogTitle = [NSString stringWithFormat:@"Save %@ model definitions", language];
+    NSString *dialogTitle = [NSString stringWithFormat:@"Save %@ model definitions", [RLMModelExporter stringForLanguage:language]];
     
-    if ([language isEqualToString:kLanguageJava]) {
+    if (language == RLMModelExporterLanguageJava) {
         NSOpenPanel *fileDialog = [NSOpenPanel openPanel];
         
         fileDialog.prompt = @"Select folder";
@@ -46,7 +50,7 @@ NSString * const kLanguageObjC = @"Objective-C";
             }
         }];
     }
-    else if ([language isEqualToString:kLanguageObjC]) {
+    else if (language == RLMModelExporterLanguageObjectiveC) {
         NSSavePanel *fileDialog = [NSSavePanel savePanel];
         fileDialog.prompt = @"Save as filename";
         fileDialog.nameFieldStringValue = @"RealmModels";
@@ -67,19 +71,26 @@ NSString * const kLanguageObjC = @"Objective-C";
 
 +(void)saveModels:(NSArray *)models toFolder:(NSURL *)url
 {
-    // A 'model' is an array with two strings, a filename plus the contents of that file
-    for (NSArray *model in models) {
-        NSURL *fileURL = [url URLByAppendingPathComponent:model[0]];
-        NSString *fileContents = model[1];
+    AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
+    [fileAccess requestAccessPermissionsForFileURL:url persistPermission:YES withBlock:^(NSURL *securityScopedURL, NSData *bookmarkData) {
+        [securityScopedURL startAccessingSecurityScopedResource];
         
-        NSError *error;
-        BOOL success = [fileContents writeToURL:fileURL atomically:YES encoding:NSUTF8StringEncoding error:&error];
-        
-        if (!success) {
-            NSLog(@"Error writing file at %@\n%@", url, [error localizedFailureReason]);
-            [[NSApplication sharedApplication] presentError:error];
+        // A 'model' is an array with two strings, a filename plus the contents of that file
+        for (NSArray *model in models) {
+            NSURL *fileURL = [url URLByAppendingPathComponent:model[0]];
+            NSString *fileContents = model[1];
+            
+            NSError *error;
+            BOOL success = [fileContents writeToURL:fileURL atomically:YES encoding:NSUTF8StringEncoding error:&error];
+            
+            if (!success) {
+                NSLog(@"Error writing file at %@\n%@", url, [error localizedFailureReason]);
+                [[NSApplication sharedApplication] presentError:error];
+            }
         }
-    }
+        
+        [securityScopedURL stopAccessingSecurityScopedResource];
+    }];
 }
 
 #pragma mark - Private methods - Java helpers
@@ -202,6 +213,16 @@ NSString * const kLanguageObjC = @"Objective-C";
         case RLMPropertyTypeObject:
             return [NSString stringWithFormat:@"%@ *", property.objectClassName];
     }
+}
+
++ (NSString *)stringForLanguage:(RLMModelExporterLanguage)language
+{
+    switch (language) {
+        case RLMModelExporterLanguageJava: return @"Java";
+        default: return @"Objective-C";
+    }
+    
+    return nil;
 }
 
 @end
