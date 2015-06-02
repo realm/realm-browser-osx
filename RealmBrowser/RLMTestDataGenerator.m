@@ -99,7 +99,6 @@ const NSUInteger kMaxItemsInTestArray = 12;
     // If reuse is desired and there is something to reuse, return existing object
     if (reuse && existingCount > 0) {
         NSUInteger index = arc4random_uniform((u_int32_t)existingCount);
-        
         return existingObjectsOfRequiredClass[index];
     }
     

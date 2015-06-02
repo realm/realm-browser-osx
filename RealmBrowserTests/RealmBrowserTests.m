@@ -18,9 +18,9 @@
 
 @import XCTest;
 #import <Realm/Realm.h>
+#import "RLMTestObjects.h"
 #import "RLMRealm+Private.h"
 #import "RLMTestDataGenerator.h"
-#import "RLMTestObjects.h"
 #import "RLMRealmNode.h"
 
 @interface RealmBrowserTests : XCTestCase
