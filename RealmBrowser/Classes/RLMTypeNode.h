@@ -17,7 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 @import Foundation;
-#import <Realm/Realm.h>
+@import Realm;
 
 #import "RLMRealmOutlineNode.h"
 #import "RLMClassProperty.h"

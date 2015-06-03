@@ -18,12 +18,13 @@
 
 #import "RLMClassNode.h"
 
+@import Realm.Private;
+
 #import "RLMObjectNode.h"
 #import "RLMArrayNode.h"
 #import "RLMResultsNode.h"
 
 #import "RLMSidebarTableCellView.h"
-#import "RLMRealm+Private.h"
 
 @interface RLMClassNode ()
 
