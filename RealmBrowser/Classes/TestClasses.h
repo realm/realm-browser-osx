@@ -17,7 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 @import Foundation;
-#import <Realm/Realm.h>
+@import Realm;
 
 @interface RealmTestClass0 : RLMObject
 

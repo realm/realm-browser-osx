@@ -25,7 +25,7 @@
 		22E4737219924CF700EEF7C9 /* RLMBasicTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E4737119924CF700EEF7C9 /* RLMBasicTableCellView.m */; };
 		22E473791992562400EEF7C9 /* RLMBoolTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E473781992562400EEF7C9 /* RLMBoolTableCellView.m */; };
 		3615BDB6196FA8BF00E1AE3F /* RLMQueryNavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = 3615BDB5196FA8BF00E1AE3F /* RLMQueryNavigationState.m */; };
-		77966F0A75F8A1E67C639C3E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4448C3DAA66CB554534B48BA /* libPods.a */; };
+		36C3D1FFA6C372B1485F381A /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4DD42CE427D384E8A7351A0 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		840F97C0192B7DCE006B591E /* RLMDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 840F97BF192B7DCE006B591E /* RLMDocument.m */; };
 		84446534195891AA00CEEA5B /* RLMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84446533195891AA00CEEA5B /* RLMViewController.m */; };
 		844C34E3194859080027E902 /* TestClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 844C34E2194859080027E902 /* TestClasses.m */; };
@@ -55,7 +55,8 @@
 		84E35A42196A9F3B007F0344 /* RLMNavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E35A41196A9F3B007F0344 /* RLMNavigationState.m */; };
 		84E35A49196AD991007F0344 /* RLMNavigationStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E35A48196AD991007F0344 /* RLMNavigationStack.m */; };
 		84E35A4D196B021B007F0344 /* RLMArrayNavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E35A4C196B021B007F0344 /* RLMArrayNavigationState.m */; };
-		ADBD77D758972C8C68C6F371 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4448C3DAA66CB554534B48BA /* libPods.a */; };
+		97A7B4BEE251DA782A9A95BE /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4DD42CE427D384E8A7351A0 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		ADBD77D758972C8C68C6F371 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		E84EB8201A2FB7F500EB780E /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 844C34DE19473D9D0027E902 /* libc++.dylib */; };
 		E84EB8291A2FC38C00EB780E /* RLMTestObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = E84EB8281A2FC38C00EB780E /* RLMTestObjects.m */; };
 /* End PBXBuildFile section */
@@ -111,14 +112,12 @@
 		22D3AC8819CC5D710042C1B2 /* RLMModelExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMModelExporter.h; path = Classes/RLMModelExporter.h; sourceTree = "<group>"; };
 		22D3AC8919CC5D710042C1B2 /* RLMModelExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMModelExporter.m; path = Classes/RLMModelExporter.m; sourceTree = "<group>"; };
 		22D5FF911B0DBCC30090CFE6 /* Realm Browser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Realm Browser.entitlements"; sourceTree = "<group>"; };
-		22E098711B16FE5700F72AF1 /* RLMRealm+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RLMRealm+Private.h"; path = "Classes/RLMRealm+Private.h"; sourceTree = "<group>"; };
 		22E4737019924CF700EEF7C9 /* RLMBasicTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMBasicTableCellView.h; path = Classes/RLMBasicTableCellView.h; sourceTree = "<group>"; };
 		22E4737119924CF700EEF7C9 /* RLMBasicTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMBasicTableCellView.m; path = Classes/RLMBasicTableCellView.m; sourceTree = "<group>"; };
 		22E473771992562400EEF7C9 /* RLMBoolTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMBoolTableCellView.h; path = Classes/RLMBoolTableCellView.h; sourceTree = "<group>"; };
 		22E473781992562400EEF7C9 /* RLMBoolTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMBoolTableCellView.m; path = Classes/RLMBoolTableCellView.m; sourceTree = "<group>"; };
 		3615BDB5196FA8BF00E1AE3F /* RLMQueryNavigationState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMQueryNavigationState.m; path = Classes/RLMQueryNavigationState.m; sourceTree = "<group>"; };
 		3615BDB7196FA8E500E1AE3F /* RLMQueryNavigationState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMQueryNavigationState.h; path = Classes/RLMQueryNavigationState.h; sourceTree = "<group>"; };
-		4448C3DAA66CB554534B48BA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		840F97BE192B7DCE006B591E /* RLMDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMDocument.h; path = Classes/RLMDocument.h; sourceTree = "<group>"; };
 		840F97BF192B7DCE006B591E /* RLMDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMDocument.m; path = Classes/RLMDocument.m; sourceTree = "<group>"; };
 		84446532195891AA00CEEA5B /* RLMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMViewController.h; path = Classes/RLMViewController.h; sourceTree = "<group>"; };
@@ -174,6 +173,7 @@
 		84E35A48196AD991007F0344 /* RLMNavigationStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMNavigationStack.m; path = Classes/RLMNavigationStack.m; sourceTree = "<group>"; };
 		84E35A4B196B021B007F0344 /* RLMArrayNavigationState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMArrayNavigationState.h; path = Classes/RLMArrayNavigationState.h; sourceTree = "<group>"; };
 		84E35A4C196B021B007F0344 /* RLMArrayNavigationState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMArrayNavigationState.m; path = Classes/RLMArrayNavigationState.m; sourceTree = "<group>"; };
+		B4DD42CE427D384E8A7351A0 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B51A4BD145D0D9F754D79180 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E84EB8271A2FC38C00EB780E /* RLMTestObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTestObjects.h; sourceTree = "<group>"; };
 		E84EB8281A2FC38C00EB780E /* RLMTestObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTestObjects.m; sourceTree = "<group>"; };
@@ -187,7 +187,7 @@
 			files = (
 				84E0F9501921F3B900D6CA14 /* Cocoa.framework in Frameworks */,
 				22E098741B17005700F72AF1 /* libc++.dylib in Frameworks */,
-				77966F0A75F8A1E67C639C3E /* libPods.a in Frameworks */,
+				97A7B4BEE251DA782A9A95BE /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -198,7 +198,8 @@
 				E84EB8201A2FB7F500EB780E /* libc++.dylib in Frameworks */,
 				84E0F9731921F3B900D6CA14 /* Cocoa.framework in Frameworks */,
 				84E0F9721921F3B900D6CA14 /* XCTest.framework in Frameworks */,
-				ADBD77D758972C8C68C6F371 /* libPods.a in Frameworks */,
+				ADBD77D758972C8C68C6F371 /* (null) in Frameworks */,
+				36C3D1FFA6C372B1485F381A /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,7 +300,6 @@
 		84925C62195AE8C900EE27B1 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				22E098711B16FE5700F72AF1 /* RLMRealm+Private.h */,
 				84925C5F195AD5B000EE27B1 /* NSColor+ByteSizeFactory.h */,
 				84925C60195AD5B000EE27B1 /* NSColor+ByteSizeFactory.m */,
 			);
@@ -395,7 +395,7 @@
 				84E0F9521921F3B900D6CA14 /* AppKit.framework */,
 				84E0F9541921F3B900D6CA14 /* Foundation.framework */,
 				84E0F9711921F3B900D6CA14 /* XCTest.framework */,
-				4448C3DAA66CB554534B48BA /* libPods.a */,
+				B4DD42CE427D384E8A7351A0 /* Pods.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -470,6 +470,7 @@
 				84E0F94A1921F3B900D6CA14 /* Resources */,
 				E80E767F19E0737800DCFACC /* Copy Frameworks */,
 				FA654DCC5D49B403CE3C4B67 /* Copy Pods Resources */,
+				C0135F94A90B24CE5E74E20E /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -489,6 +490,7 @@
 				84E0F96D1921F3B900D6CA14 /* Frameworks */,
 				84E0F96E1921F3B900D6CA14 /* Resources */,
 				7234279BF303AA42F7370A91 /* Copy Pods Resources */,
+				F7AD625B0808F1F1A27D2D87 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -609,6 +611,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C0135F94A90B24CE5E74E20E /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F7AD625B0808F1F1A27D2D87 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FA654DCC5D49B403CE3C4B67 /* Copy Pods Resources */ = {
@@ -768,7 +800,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -803,7 +834,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				SDKROOT = macosx;
 			};
@@ -829,7 +859,6 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = "RealmBrowser/RealmBrowser-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "Realm Browser";
@@ -858,7 +887,6 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = "RealmBrowser/RealmBrowser-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "Realm Browser";
@@ -880,7 +908,6 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
-				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				INFOPLIST_FILE = "RealmBrowserTests/RealmBrowserTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = RealmBrowserTests;
@@ -902,7 +929,6 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
-				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "RealmBrowserTests/RealmBrowserTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = RealmBrowserTests;

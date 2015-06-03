@@ -18,8 +18,8 @@
 
 #import "RLMRealmNode.h"
 
-#import <Realm/Realm.h>
-#import "RLMRealm+Private.h"
+@import Realm;
+@import Realm.Private;
 
 #import "RLMSidebarTableCellView.h"
 #import "NSColor+ByteSizeFactory.h"

@@ -17,7 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #import "RLMModelExporter.h"
-#import <Realm/Realm.h>
+@import Realm;
 #import <AppSandboxFileAccess/AppSandboxFileAccess.h>
 
 @interface RLMModelExporter ()
