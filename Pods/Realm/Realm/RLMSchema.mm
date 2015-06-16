@@ -39,8 +39,7 @@ const size_t c_primaryKeyObjectClassColumnIndex =  0;
 const char * const c_primaryKeyPropertyNameColumnName = "pk_property";
 const size_t c_primaryKeyPropertyNameColumnIndex =  1;
 
-const NSUInteger RLMNotVersioned = (NSUInteger)-1;
-
+const uint64_t RLMNotVersioned = std::numeric_limits<uint64_t>::max();
 
 // RLMSchema private properties
 @interface RLMSchema ()
@@ -56,7 +55,7 @@ static NSMutableDictionary *s_localNameToClass;
     return _objectSchemaByName[className];
 }
 
-- (RLMObjectSchema *)objectForKeyedSubscript:(id <NSCopying>)className {
+- (RLMObjectSchema *)objectForKeyedSubscript:(__unsafe_unretained id<NSCopying> const)className {
     RLMObjectSchema *schema = _objectSchemaByName[className];
     if (!schema) {
         NSString *message = [NSString stringWithFormat:@"Object type '%@' not persisted in Realm", className];
@@ -163,15 +162,15 @@ static NSMutableDictionary *s_localNameToClass;
     return schema;
 }
 
-NSUInteger RLMRealmSchemaVersion(RLMRealm *realm) {
+uint64_t RLMRealmSchemaVersion(RLMRealm *realm) {
     realm::TableRef table = realm.group->get_table(c_metadataTableName);
     if (!table || table->get_column_count() == 0) {
         return RLMNotVersioned;
     }
-    return NSUInteger(table->get_int(c_versionColumnIndex, 0));
+    return table->get_int(c_versionColumnIndex, 0);
 }
 
-void RLMRealmSetSchemaVersion(RLMRealm *realm, NSUInteger version) {
+void RLMRealmSetSchemaVersion(RLMRealm *realm, uint64_t version) {
     realm::TableRef table = realm.group->get_or_add_table(c_metadataTableName);
     table->set_int(c_versionColumnIndex, 0, version);
 }
