@@ -45,8 +45,6 @@ const NSUInteger kMaxItemsInTestArray = 12;
     RLMTestDataGenerator *generator = [[RLMTestDataGenerator alloc] initWithClassesNamed:classNames];
     [generator populateRealm:realm withObjectCount:objectCount];
     
-    [realm invalidate];
-    
     return YES;
 }
 
