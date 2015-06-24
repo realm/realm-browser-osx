@@ -1,2 +1,2 @@
 language: objective-c
-script: xctool -workspace RealmBrowser.xcworkspace -scheme RealmBrowserTests build  CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO test
+script: xctool -workspace RealmBrowser.xcworkspace -scheme RealmBrowser test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
