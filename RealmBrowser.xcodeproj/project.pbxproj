@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		22096B2719911F7300233D77 /* RLMBadgeTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */; };
-		220A9EF41B1D934400466A53 /* RLMTestObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = E84EB8281A2FC38C00EB780E /* RLMTestObjects.m */; };
 		220D382819B639D700F79496 /* RLMTestDataGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 220D382719B639D700F79496 /* RLMTestDataGenerator.m */; };
 		221322FA19954AB100D25737 /* RLMImageTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221322F919954AB100D25737 /* RLMImageTableCellView.m */; };
 		221322FD19954B0A00D25737 /* RLMTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221322FC19954B0A00D25737 /* RLMTableCellView.m */; };
@@ -16,12 +15,12 @@
 		225443F519E3E6360045996B /* RLMTableHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 225443F419E3E6360045996B /* RLMTableHeaderCell.m */; };
 		22565D6719C1BCF400C8C8EC /* RLMLinkTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22565D6619C1BCF400C8C8EC /* RLMLinkTableCellView.m */; };
 		225AAFEC19C09E520023B595 /* RLMTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 225AAFEB19C09E520023B595 /* RLMTextField.m */; };
+		227C7E6B1B4670C200BE2DB1 /* Pods.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = B4DD42CE427D384E8A7351A0 /* Pods.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		228D1F871A1CAD660028562A /* RLMResultsNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 228D1F861A1CAD660028562A /* RLMResultsNode.m */; };
 		22A55FEB19D18BA8009178BC /* RLMObjectNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A55FEA19D18BA8009178BC /* RLMObjectNode.m */; };
 		22A55FF119D19842009178BC /* RLMDescriptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A55FF019D19842009178BC /* RLMDescriptions.m */; };
 		22D28EA71993AAAB00497FD3 /* RLMNumberTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D28EA61993AAAB00497FD3 /* RLMNumberTableCellView.m */; };
 		22D3AC8A19CC5D710042C1B2 /* RLMModelExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D3AC8919CC5D710042C1B2 /* RLMModelExporter.m */; };
-		22D421DE1B464FDB00046E92 /* Pods.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B4DD42CE427D384E8A7351A0 /* Pods.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22E098741B17005700F72AF1 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 844C34DE19473D9D0027E902 /* libc++.dylib */; };
 		22E4737219924CF700EEF7C9 /* RLMBasicTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E4737119924CF700EEF7C9 /* RLMBasicTableCellView.m */; };
 		22E473791992562400EEF7C9 /* RLMBoolTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E473781992562400EEF7C9 /* RLMBoolTableCellView.m */; };
@@ -73,22 +72,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		22D421DD1B464FCD00046E92 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				22D421DE1B464FDB00046E92 /* Pods.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E80E767F19E0737800DCFACC /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				227C7E6B1B4670C200BE2DB1 /* Pods.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -482,7 +472,6 @@
 				E80E767F19E0737800DCFACC /* Copy Frameworks */,
 				FA654DCC5D49B403CE3C4B67 /* Copy Pods Resources */,
 				C0135F94A90B24CE5E74E20E /* Embed Pods Frameworks */,
-				22D421DD1B464FCD00046E92 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -677,7 +666,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				220A9EF41B1D934400466A53 /* RLMTestObjects.m in Sources */,
 				22A55FEB19D18BA8009178BC /* RLMObjectNode.m in Sources */,
 				840F97C0192B7DCE006B591E /* RLMDocument.m in Sources */,
 				84AA41B01949CD7700A50F03 /* RLMArrayNode.m in Sources */,
