@@ -35,6 +35,8 @@ NSString *const kDesktopFolder = @"/Desktop";
 NSString *const kDownloadFolder = @"/Download";
 NSString *const kDocumentsFolder = @"/Documents";
 
+NSInteger const kMaxNumberOfFilesAtOnce = 20;
+
 @interface RLMApplicationDelegate ()
 
 @property (nonatomic, weak) IBOutlet NSMenu *fileMenu;
@@ -92,6 +94,27 @@ NSString *const kDocumentsFolder = @"/Documents";
     self.didLoadFile = YES;
 
     return YES;
+}
+
+- (void)application:(NSApplication *)sender openFiles:(NSArray *)filenames
+{
+    if (filenames.count > kMaxNumberOfFilesAtOnce) {
+        NSString *message = [NSString stringWithFormat:@"Are you sure you wish to open all %lu Realm files?", (unsigned long)filenames.count];
+        
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setMessageText:message];
+        [alert setInformativeText:@"Opening too many files at once may result in system instability."];
+        [alert addButtonWithTitle:@"Yes"];
+        [alert addButtonWithTitle:@"Cancel"];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        
+        if ([alert runModal] != NSAlertFirstButtonReturn)
+            return;
+    }
+    
+    self.didLoadFile = YES;
+    for (NSString *filename in filenames)
+        [self openFileAtURL:[NSURL fileURLWithPath:filename]];
 }
 
 - (BOOL)applicationShouldOpenUntitledFile:(NSApplication *)application
