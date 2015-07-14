@@ -103,12 +103,35 @@
         NSString *fileName = [schema.className stringByAppendingPathExtension:@"java"];
         
         NSMutableString *model = [NSMutableString string];
-        [model appendFormat:@"import io.realm.RealmObject\n\npublic class %@ extends RealmObject {\n", schema.className];
+        [model appendFormat:@"package your.package.name.here;\n\nimport io.realm.RealmObject;\n"];
+        for (RLMProperty *property in schema.properties) {
+            if (property.type == RLMPropertyTypeArray) {
+                [model appendFormat:@"import io.realm.RealmList;\n"];
+                break; // one import is enough
+            }
+        }
+        [model appendFormat:@"\n"];
+
+        [model appendFormat:@"public class %@ extends RealmObject {\n", schema.className];
+
+        // fields
         for (RLMProperty *property in schema.properties) {
             [model appendFormat:@"    private %@ %@;\n", [self javaNameForProperty:property], property.name];
         }
+        [model appendFormat:@"\n"];
+
+        // setters and getters
+        for (RLMProperty *property in schema.properties) {
+            [model appendFormat:@"    public %@ get%@() { return %@; }\n\n",
+             [self javaNameForProperty:property], [property.name capitalizedString], property.name];
+            [model appendFormat:@"    public void set%@(%@ %@) { this.%@ = %@; } \n\n",
+               [property.name capitalizedString], [self javaNameForProperty:property], property.name, property.name,
+               property.name
+             ];
+        }
+
         [model appendFormat:@"}\n"];
-        
+
         [models addObject:@[fileName, model]];
     }
     
