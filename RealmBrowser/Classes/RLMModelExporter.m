@@ -104,10 +104,25 @@
         
         NSMutableString *model = [NSMutableString string];
         [model appendFormat:@"package your.package.name.here;\n\nimport io.realm.RealmObject;\n"];
+
+        bool importedRealmList = false;
+        NSMutableArray *importedRealmObjects = [[NSMutableArray alloc] init];
         for (RLMProperty *property in schema.properties) {
             if (property.type == RLMPropertyTypeArray) {
-                [model appendFormat:@"import io.realm.RealmList;\n"];
-                break; // one import is enough
+                if (!importedRealmList) {
+                    [model appendFormat:@"import io.realm.RealmList;\n"];
+                    importedRealmList = true;
+                }
+                if (![importedRealmObjects containsObject:property.objectClassName]) {
+                    [model appendFormat:@"import %@;\n", property.objectClassName];
+                    [importedRealmObjects addObject:property.objectClassName];
+                }
+            }
+            if (property.type == RLMPropertyTypeObject) {
+                if (![importedRealmObjects containsObject:property.objectClassName]) {
+                    [model appendFormat:@"import %@;\n", property.objectClassName];
+                    [importedRealmObjects addObject:property.objectClassName];
+                }
             }
         }
         [model appendFormat:@"\n"];
@@ -122,8 +137,10 @@
 
         // setters and getters
         for (RLMProperty *property in schema.properties) {
-            [model appendFormat:@"    public %@ get%@() { return %@; }\n\n",
-             [self javaNameForProperty:property], [property.name capitalizedString], property.name];
+            [model appendFormat:@"    public %@ %@%@() { return %@; }\n\n",
+             [self javaNameForProperty:property],
+             (property.type == RLMPropertyTypeBool)? @"is" : @"get",
+             [property.name capitalizedString], property.name];
             [model appendFormat:@"    public void set%@(%@ %@) { this.%@ = %@; } \n\n",
                [property.name capitalizedString], [self javaNameForProperty:property], property.name, property.name,
                property.name
