@@ -103,7 +103,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
         
         NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText:message];
-        [alert setInformativeText:@"Opening too many files at once may result in system instability."];
+        [alert setInformativeText:@"Opening too many files at once may result in Realm Browser becoming unstable."];
         [alert addButtonWithTitle:@"Yes"];
         [alert addButtonWithTitle:@"Cancel"];
         [alert setAlertStyle:NSWarningAlertStyle];
