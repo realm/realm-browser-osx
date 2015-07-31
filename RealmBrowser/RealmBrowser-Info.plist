@@ -12,7 +12,7 @@
 				<string>realm</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
-			<string>realm.icns</string>
+			<string>FormatIcon.icns</string>
 			<key>CFBundleTypeName</key>
 			<string>DocumentType</string>
 			<key>CFBundleTypeOSTypes</key>
