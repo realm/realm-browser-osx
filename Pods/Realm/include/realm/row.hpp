@@ -26,6 +26,7 @@
 #include <realm/mixed.hpp>
 #include <realm/table_ref.hpp>
 #include <realm/link_view_fwd.hpp>
+#include <realm/handover_defs.hpp>
 
 namespace realm {
 
@@ -81,6 +82,7 @@ public:
     std::size_t get_subtable_size(std::size_t col_ndx) const REALM_NOEXCEPT;
     std::size_t get_link(std::size_t col_ndx) const REALM_NOEXCEPT;
     bool is_null_link(std::size_t col_ndx) const REALM_NOEXCEPT;
+    bool is_null(std::size_t col_ndx) const REALM_NOEXCEPT;
     ConstLinkViewRef get_linklist(std::size_t col_ndx) const;
     LinkViewRef get_linklist(std::size_t col_ndx);
     bool linklist_is_empty(std::size_t col_ndx) const REALM_NOEXCEPT;
@@ -100,6 +102,7 @@ public:
     void nullify_link(std::size_t col_ndx);
     void set_mixed(std::size_t col_ndx, Mixed value);
     void set_mixed_subtable(std::size_t col_ndx, const Table* value);
+    void set_null(std::size_t col_ndx);
 
     //@{
     /// Note that these operations will cause the row accessor to be detached.
@@ -181,7 +184,7 @@ public:
     template<class U> BasicRowExpr(const BasicRowExpr<U>&) REALM_NOEXCEPT;
 
 private:
-    T* m_table; // Null if detached.
+    T* m_table; // nullptr if detached.
     std::size_t m_row_ndx; // Undefined if detached.
 
     BasicRowExpr(T*, std::size_t row_ndx) REALM_NOEXCEPT;
@@ -206,22 +209,29 @@ private:
     friend class Table;
 };
 
+// fwd decl
+class Group;
 
 class RowBase {
 protected:
-    TableRef m_table; // Null if detached.
+    TableRef m_table; // nullptr if detached.
     std::size_t m_row_ndx; // Undefined if detached.
 
     void attach(Table*, std::size_t row_ndx) REALM_NOEXCEPT;
     void reattach(Table*, std::size_t row_ndx) REALM_NOEXCEPT;
     void impl_detach() REALM_NOEXCEPT;
+    RowBase() { };
 
+    typedef RowBase_Handover_patch Handover_patch;
+    RowBase(const RowBase& source, Handover_patch& patch);
+    void apply_patch(Handover_patch& patch, Group& group);
 private:
-    RowBase* m_prev; // Null if first, undefined if detached.
-    RowBase* m_next; // Null if last, undefined if detached.
+    RowBase* m_prev = nullptr; // nullptr if first, undefined if detached.
+    RowBase* m_next = nullptr; // nullptr if last, undefined if detached.
 
     // Table needs to be able to modify m_table and m_row_ndx.
     friend class Table;
+
 };
 
 
@@ -279,6 +289,30 @@ private:
     // Make m_table and m_col_ndx accessible from BasicRow(const BasicRow<U>&)
     // for any U.
     template<class> friend class BasicRow;
+
+    std::unique_ptr<BasicRow<T>> clone_for_handover(std::unique_ptr<Handover_patch>& patch) const
+    {
+        patch.reset(new Handover_patch);
+        std::unique_ptr<BasicRow<T>> retval(new BasicRow<T>(*this, *patch));
+        return retval;
+    }
+
+    void apply_and_consume_patch(std::unique_ptr<Handover_patch>& patch, Group& group)
+    {
+        apply_patch(*patch, group);
+        patch.reset();
+    }
+
+    void apply_patch(Handover_patch& patch, Group& group)
+    {
+        RowBase::apply_patch(patch, group);
+    }
+
+    BasicRow(const BasicRow<T>& source, Handover_patch& patch)
+        : RowBase(source, patch)
+    {
+    }
+    friend class SharedGroup;
 };
 
 typedef BasicRow<Table> Row;
@@ -359,6 +393,12 @@ template<class T, class R>
 inline bool RowFuncs<T,R>::is_null_link(std::size_t col_ndx) const REALM_NOEXCEPT
 {
     return table()->is_null_link(col_ndx, row_ndx());
+}
+
+template<class T, class R>
+inline bool RowFuncs<T,R>::is_null(std::size_t col_ndx) const REALM_NOEXCEPT
+{
+    return table()->is_null(col_ndx, row_ndx());
 }
 
 template<class T, class R> inline typename RowFuncs<T,R>::ConstLinkViewRef
@@ -467,6 +507,12 @@ template<class T, class R>
 inline void RowFuncs<T,R>::set_mixed_subtable(std::size_t col_ndx, const Table* value)
 {
     table()->set_mixed_subtable(col_ndx, row_ndx(), value); // Throws
+}
+
+template<class T, class R>
+inline void RowFuncs<T,R>::set_null(std::size_t col_ndx)
+{
+    table()->set_null(col_ndx, row_ndx()); // Throws
 }
 
 template<class T, class R> inline void RowFuncs<T,R>::remove()
@@ -601,7 +647,7 @@ template<class T> inline std::size_t BasicRowExpr<T>::impl_get_row_ndx() const R
 
 template<class T> inline void BasicRowExpr<T>::impl_detach() REALM_NOEXCEPT
 {
-    m_table = 0;
+    m_table = nullptr;
 }
 
 

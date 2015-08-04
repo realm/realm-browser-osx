@@ -111,12 +111,12 @@
  @param name            The property name.
  @param type            The property type.
  @param objectClassName The object type used for Object and Array types.
- @param attributes      A bitmask of attributes for this property.
 
  @return    An initialized instance of RLMProperty.
  */
 - (instancetype)initWithName:(NSString *)name
                         type:(RLMPropertyType)type
              objectClassName:(NSString *)objectClassName
-                     indexed:(BOOL)indexed;
+                     indexed:(BOOL)indexed
+                    optional:(BOOL)optional;
 @end

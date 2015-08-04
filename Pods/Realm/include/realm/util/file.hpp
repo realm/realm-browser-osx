@@ -59,6 +59,8 @@ void remove_dir(const std::string& path);
 /// path to the new directory is returned without a trailing slash.
 std::string make_temp_dir();
 
+size_t page_size();
+
 
 /// This class provides a RAII abstraction over the concept of a file
 /// descriptor (or file handle).
@@ -240,8 +242,10 @@ public:
     // Return file position (like ftell())
     SizeType get_file_position();
 
-    /// Flush in-kernel buffers to disk. This blocks the caller until
-    /// the synchronization operation is complete.
+    /// Flush in-kernel buffers to disk. This blocks the caller until the
+    /// synchronization operation is complete. On POSIX systems this function
+    /// calls `fsync()`. On Apple platforms if calls `fcntl()` with command
+    /// `F_FULLFSYNC`.
     void sync();
 
     /// Place an exclusive lock on this file. This blocks the caller
@@ -383,6 +387,7 @@ public:
     /// provides the information to unambiguously distinguish that
     /// particular reason).
     static void move(const std::string& old_path, const std::string& new_path);
+    static bool copy(std::string source, std::string destination);
 
     /// Check whether two open file descriptors refer to the same
     /// underlying file, that is, if writing via one of them, will
@@ -660,7 +665,7 @@ inline void File::open(const std::string& path, Mode m)
 
 inline void File::open(const std::string& path, AccessMode am, CreateMode cm, int flags)
 {
-    open_internal(path, am, cm, flags, NULL);
+    open_internal(path, am, cm, flags, nullptr);
 }
 
 
@@ -684,7 +689,7 @@ inline void File::open(const std::string& path, bool& was_created)
 inline bool File::is_attached() const REALM_NOEXCEPT
 {
 #ifdef _WIN32
-    return (m_handle != NULL);
+    return (m_handle != nullptr);
 #else
     return 0 <= m_fd;
 #endif
@@ -712,7 +717,7 @@ inline bool File::try_lock_shared()
 
 inline File::MapBase::MapBase() REALM_NOEXCEPT
 {
-    m_addr = 0;
+    m_addr = nullptr;
 }
 
 inline File::MapBase::~MapBase() REALM_NOEXCEPT
@@ -732,7 +737,7 @@ inline void File::MapBase::unmap() REALM_NOEXCEPT
 {
     if (!m_addr) return;
     File::unmap(m_addr, m_size);
-    m_addr = 0;
+    m_addr = nullptr;
 }
 
 inline void File::MapBase::remap(const File& f, AccessMode a, std::size_t size, int map_flags)
@@ -786,7 +791,7 @@ template<class T> inline void File::Map<T>::sync()
 
 template<class T> inline bool File::Map<T>::is_attached() const REALM_NOEXCEPT
 {
-    return (m_addr != NULL);
+    return (m_addr != nullptr);
 }
 
 template<class T> inline T* File::Map<T>::get_addr() const REALM_NOEXCEPT
@@ -802,7 +807,7 @@ template<class T> inline std::size_t File::Map<T>::get_size() const REALM_NOEXCE
 template<class T> inline T* File::Map<T>::release() REALM_NOEXCEPT
 {
     T* addr = static_cast<T*>(m_addr);
-    m_addr = 0;
+    m_addr = nullptr;
     return addr;
 }
 

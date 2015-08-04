@@ -34,7 +34,7 @@ namespace realm {
 /// table is specified by the table descriptor.
 class ColumnLink: public ColumnLinkBase {
 public:
-    ColumnLink(Allocator&, ref_type ref); // Throws
+    using ColumnLinkBase::ColumnLinkBase;
     ~ColumnLink() REALM_NOEXCEPT override;
 
     static ref_type create(Allocator&, std::size_t size = 0);
@@ -56,7 +56,9 @@ public:
 
     //@}
 
-    void move_last_over(std::size_t, std::size_t, bool) override;
+    void insert_rows(size_t, size_t, size_t) override;
+    void erase_rows(size_t, size_t, size_t, bool) override;
+    void move_last_row_over(size_t, size_t, bool) override;
     void clear(std::size_t, bool) override;
     void cascade_break_backlinks_to(std::size_t, CascadeState&) override;
     void cascade_break_backlinks_to_all_rows(std::size_t, CascadeState&) override;
@@ -77,11 +79,6 @@ private:
 
 
 // Implementation
-
-inline ColumnLink::ColumnLink(Allocator& alloc, ref_type ref):
-    ColumnLinkBase(alloc, ref) // Throws
-{
-}
 
 inline ColumnLink::~ColumnLink() REALM_NOEXCEPT
 {
@@ -137,11 +134,6 @@ inline void ColumnLink::insert_link(std::size_t row_ndx, std::size_t target_row_
 inline void ColumnLink::insert_null_link(size_t row_ndx)
 {
     insert_link(row_ndx, realm::npos); // Throws
-}
-
-inline void ColumnLink::do_nullify_link(std::size_t row_ndx, std::size_t)
-{
-    ColumnLinkBase::set(row_ndx, 0);
 }
 
 inline void ColumnLink::do_update_link(std::size_t row_ndx, std::size_t,

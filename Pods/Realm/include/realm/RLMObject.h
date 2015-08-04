@@ -20,6 +20,8 @@
 
 #import <Realm/RLMObjectBase.h>
 
+RLM_ASSUME_NONNULL_BEGIN
+
 @class RLMRealm;
 @class RLMResults;
 @class RLMObjectSchema;
@@ -100,10 +102,10 @@
 + (NSString *)className;
 
 /**
- Create an RLMObject in the default Realm with a given object.
+ Create an RLMObject in the default Realm with a given value.
 
  Creates an instance of this object and adds it to the default Realm populating
- the object with the given object.
+ the object with the given value.
  
  If nested objects are included in the argument, `createInDefaultRealmWithValue:` will be called
  on them.
@@ -198,7 +200,7 @@
 /**
  The Realm in which this object is persisted. Returns nil for standalone objects.
  */
-@property (nonatomic, readonly) RLMRealm *realm;
+@property (nonatomic, readonly, nullable) RLMRealm *realm;
 
 /**
  The ObjectSchema which lists the persisted properties for this object.
@@ -230,7 +232,7 @@
  
  @return    NSDictionary mapping property names to their default values.
  */
-+ (NSDictionary *)defaultPropertyValues;
++ (nullable NSDictionary *)defaultPropertyValues;
 
 /**
  Implement to designate a property as the primary key for an RLMObject subclass. Only properties of
@@ -240,7 +242,7 @@
 
  @return    Name of the property designated as the primary key.
  */
-+ (NSString *)primaryKey;
++ (nullable NSString *)primaryKey;
 
 /**
  Implement to return an array of property names to ignore. These properties will not be persisted
@@ -248,7 +250,20 @@
  
  @return    NSArray of property names to ignore.
  */
-+ (NSArray *)ignoredProperties;
++ (nullable NSArray *)ignoredProperties;
+
+/**
+ Implement to return an array of property names that should not allow storing nil.
+
+ By default, all properties of a type that support storing nil are considered optional properties.
+ To require that an object in a Realm always have a non-nil value for a property, add the name of the property to the array returned from this method.
+
+ Currently only String, Data, and Object properties support storing nil, and all other properties are implicitly treated as if they were required properties.
+ Support for additional types will come in the future.
+ 
+ @return    NSArray of property names that are required.
+ */
++ (NSArray *)requiredProperties;
 
 
 /**---------------------------------------------------------------------------------------
@@ -280,7 +295,7 @@
 
  @return    An RLMResults of objects of the subclass type in the default Realm that match the given predicate
  */
-+ (RLMResults *)objectsWithPredicate:(NSPredicate *)predicate;
++ (RLMResults *)objectsWithPredicate:(nullable NSPredicate *)predicate;
 
 /**
  Get the single object with the given primary key from the default Realm.
@@ -294,7 +309,7 @@
  @return    An object of the subclass type or nil if an object with the given primary key does not exist.
  @see       -primaryKey
  */
-+ (instancetype)objectForPrimaryKey:(id)primaryKey;
++ (nullable instancetype)objectForPrimaryKey:(nullable id)primaryKey;
 
 
 /**---------------------------------------------------------------------------------------
@@ -329,7 +344,7 @@
 
  @return    An RLMResults of objects of the subclass type in the specified Realm that match the given predicate
  */
-+ (RLMResults *)objectsInRealm:(RLMRealm *)realm withPredicate:(NSPredicate *)predicate;
++ (RLMResults *)objectsInRealm:(RLMRealm *)realm withPredicate:(nullable NSPredicate *)predicate;
 
 /**
  Get the single object with the given primary key from the specified Realm.
@@ -343,7 +358,7 @@
  @return    An object of the subclass type or nil if an object with the given primary key does not exist.
  @see       -primaryKey
  */
-+ (instancetype)objectInRealm:(RLMRealm *)realm forPrimaryKey:(id)primaryKey;
++ (nullable instancetype)objectInRealm:(RLMRealm *)realm forPrimaryKey:(nullable id)primaryKey;
 
 /**
  Get an `NSArray` of objects of type `className` which have this object as the given property value. This can
@@ -396,8 +411,10 @@
  
      RLM_ARRAY_TYPE(ObjectType)
      ...
-     @property RLMArray<ObjectType> *arrayOfObjectTypes;
+     @property RLMArray<ObjectType *><ObjectType> *arrayOfObjectTypes;
   */
 #define RLM_ARRAY_TYPE(RLM_OBJECT_SUBCLASS)\
 @protocol RLM_OBJECT_SUBCLASS <NSObject>   \
 @end
+
+RLM_ASSUME_NONNULL_END

@@ -143,6 +143,7 @@ typedef realm::DateTime   DateTime;
 typedef float               Float;
 typedef double              Double;
 typedef realm::StringData String;
+typedef realm::BinaryData Binary;
 
 
 // Return StringData if either T or U is StringData, else return T. See description of usage in export2().
@@ -193,6 +194,9 @@ template<class T> char* in_place_deep_clone(T* in)
 
 char* in_place_deep_clone(StringData* in)
 {
+    if (in->is_null())
+        return nullptr;
+
     char* payload = new char[in->size()];
     memcpy(payload, in->data(), in->size());
     *in = StringData(payload, in->size());
@@ -326,39 +330,41 @@ template <class L, class Cond, class R> Query create(L left, const Subexpr2<R>& 
 
     if (column &&
         ((std::numeric_limits<L>::is_integer && std::numeric_limits<L>::is_integer) ||
-        (util::SameType<L, double>::value && util::SameType<R, double>::value) ||
-        (util::SameType<L, float>::value && util::SameType<R, float>::value) ||
-        (util::SameType<L, StringData>::value && util::SameType<R, StringData>::value))
+        (std::is_same<L, double>::value && std::is_same<R, double>::value) ||
+        (std::is_same<L, float>::value && std::is_same<R, float>::value) ||
+        (std::is_same<L, StringData>::value && std::is_same<R, StringData>::value))
         &&
         column->m_link_map.m_tables.size() == 0) {
         const Table* t = (const_cast<Columns<R>*>(column))->get_table();
         Query q = Query(*t);
 
-        if (util::SameType<Cond, Less>::value)
+        if (std::is_same<Cond, Less>::value)
             q.greater(column->m_column, only_numeric<R>(left));
-        else if (util::SameType<Cond, Greater>::value)
+        else if (std::is_same<Cond, Greater>::value)
             q.less(column->m_column, only_numeric<R>(left));
-        else if (util::SameType<Cond, Equal>::value)
+        else if (std::is_same<Cond, Equal>::value)
             q.equal(column->m_column, left);
-        else if (util::SameType<Cond, NotEqual>::value)
+        else if (std::is_same<Cond, NotEqual>::value)
             q.not_equal(column->m_column, left);
-        else if (util::SameType<Cond, LessEqual>::value)
+        else if (std::is_same<Cond, LessEqual>::value)
             q.greater_equal(column->m_column, only_numeric<R>(left));
-        else if (util::SameType<Cond, GreaterEqual>::value)
+        else if (std::is_same<Cond, GreaterEqual>::value)
             q.less_equal(column->m_column, only_numeric<R>(left));
-        else if (util::SameType<Cond, EqualIns>::value)
+        else if (std::is_same<Cond, EqualIns>::value)
             q.equal(column->m_column, only_string(left), false);
-        else if (util::SameType<Cond, BeginsWith>::value)
+        else if (std::is_same<Cond, NotEqualIns>::value)
+            q.not_equal(column->m_column, only_string(left), false);
+        else if (std::is_same<Cond, BeginsWith>::value)
             q.begins_with(column->m_column, only_string(left));
-        else if (util::SameType<Cond, BeginsWithIns>::value)
+        else if (std::is_same<Cond, BeginsWithIns>::value)
             q.begins_with(column->m_column, only_string(left), false);
-        else if (util::SameType<Cond, EndsWith>::value)
+        else if (std::is_same<Cond, EndsWith>::value)
             q.ends_with(column->m_column, only_string(left));
-        else if (util::SameType<Cond, EndsWithIns>::value)
+        else if (std::is_same<Cond, EndsWithIns>::value)
             q.ends_with(column->m_column, only_string(left), false);
-        else if (util::SameType<Cond, Contains>::value)
+        else if (std::is_same<Cond, Contains>::value)
             q.contains(column->m_column, only_string(left));
-        else if (util::SameType<Cond, ContainsIns>::value)
+        else if (std::is_same<Cond, ContainsIns>::value)
             q.contains(column->m_column, only_string(left), false);
         else {
             // query_engine.hpp does not support this Cond. Please either add support for it in query_engine.hpp or
@@ -468,56 +474,56 @@ public:
         const Columns<R>* right_col = dynamic_cast<const Columns<R>*>(&right);
 
         // query_engine supports 'T-column <op> <T-column>' for T = {int64_t, float, double}, op = {<, >, ==, !=, <=, >=}
-        if (left_col && right_col && util::SameType<L, R>::value) {
+        if (left_col && right_col && std::is_same<L, R>::value) {
             const Table* t = (const_cast<Columns<R>*>(left_col))->get_table();
             Query q = Query(*t);
 
-            if (std::numeric_limits<L>::is_integer || util::SameType<L, DateTime>::value) {
-                if (util::SameType<Cond, Less>::value)
+            if (std::numeric_limits<L>::is_integer || std::is_same<L, DateTime>::value) {
+                if (std::is_same<Cond, Less>::value)
                     q.less_int(left_col->m_column, right_col->m_column);
-                else if (util::SameType<Cond, Greater>::value)
+                else if (std::is_same<Cond, Greater>::value)
                     q.greater_int(left_col->m_column, right_col->m_column);
-                else if (util::SameType<Cond, Equal>::value)
+                else if (std::is_same<Cond, Equal>::value)
                     q.equal_int(left_col->m_column, right_col->m_column);
-                else if (util::SameType<Cond, NotEqual>::value)
+                else if (std::is_same<Cond, NotEqual>::value)
                     q.not_equal_int(left_col->m_column, right_col->m_column);
-                else if (util::SameType<Cond, LessEqual>::value)
+                else if (std::is_same<Cond, LessEqual>::value)
                     q.less_equal_int(left_col->m_column, right_col->m_column);
-                else if (util::SameType<Cond, GreaterEqual>::value)
+                else if (std::is_same<Cond, GreaterEqual>::value)
                     q.greater_equal_int(left_col->m_column, right_col->m_column);
                 else {
                     REALM_ASSERT(false);
                 }
             }
-            else if (util::SameType<L, float>::value) {
-                if (util::SameType<Cond, Less>::value)
+            else if (std::is_same<L, float>::value) {
+                if (std::is_same<Cond, Less>::value)
                     q.less_float(left_col->m_column, right_col->m_column);
-                else if (util::SameType<Cond, Greater>::value)
+                else if (std::is_same<Cond, Greater>::value)
                     q.greater_float(left_col->m_column, right_col->m_column);
-                else if (util::SameType<Cond, Equal>::value)
+                else if (std::is_same<Cond, Equal>::value)
                     q.equal_float(left_col->m_column, right_col->m_column);
-                else if (util::SameType<Cond, NotEqual>::value)
+                else if (std::is_same<Cond, NotEqual>::value)
                     q.not_equal_float(left_col->m_column, right_col->m_column);
-                else if (util::SameType<Cond, LessEqual>::value)
+                else if (std::is_same<Cond, LessEqual>::value)
                     q.less_equal_float(left_col->m_column, right_col->m_column);
-                else if (util::SameType<Cond, GreaterEqual>::value)
+                else if (std::is_same<Cond, GreaterEqual>::value)
                     q.greater_equal_float(left_col->m_column, right_col->m_column);
                 else {
                     REALM_ASSERT(false);
                 }
             }
-            else if (util::SameType<L, double>::value) {
-                if (util::SameType<Cond, Less>::value)
+            else if (std::is_same<L, double>::value) {
+                if (std::is_same<Cond, Less>::value)
                     q.less_double(left_col->m_column, right_col->m_column);
-                else if (util::SameType<Cond, Greater>::value)
+                else if (std::is_same<Cond, Greater>::value)
                     q.greater_double(left_col->m_column, right_col->m_column);
-                else if (util::SameType<Cond, Equal>::value)
+                else if (std::is_same<Cond, Equal>::value)
                     q.equal_double(left_col->m_column, right_col->m_column);
-                else if (util::SameType<Cond, NotEqual>::value)
+                else if (std::is_same<Cond, NotEqual>::value)
                     q.not_equal_double(left_col->m_column, right_col->m_column);
-                else if (util::SameType<Cond, LessEqual>::value)
+                else if (std::is_same<Cond, LessEqual>::value)
                     q.less_equal_double(left_col->m_column, right_col->m_column);
-                else if (util::SameType<Cond, GreaterEqual>::value)
+                else if (std::is_same<Cond, GreaterEqual>::value)
                     q.greater_equal_double(left_col->m_column, right_col->m_column);
                 else {
                     REALM_ASSERT(false);
@@ -700,17 +706,17 @@ public:
 
     REALM_FORCEINLINE void import(const ValueBase& source)
     {
-        if (util::SameType<T, int>::value)
+        if (std::is_same<T, int>::value)
             source.export_int(*this);
-        else if (util::SameType<T, bool>::value)
+        else if (std::is_same<T, bool>::value)
             source.export_bool(*this);
-        else if (util::SameType<T, float>::value)
+        else if (std::is_same<T, float>::value)
             source.export_float(*this);
-        else if (util::SameType<T, double>::value)
+        else if (std::is_same<T, double>::value)
             source.export_double(*this);
-        else if (util::SameType<T, int64_t>::value)
+        else if (std::is_same<T, int64_t>::value || std::is_same<T, DateTime>::value)
             source.export_int64_t(*this);
-        else if (util::SameType<T, StringData>::value)
+        else if (std::is_same<T, StringData>::value)
             source.export_StringData(*this);
         else
             REALM_ASSERT_DEBUG(false);
@@ -961,7 +967,7 @@ If all link columns are type_Link, then LinkMapFunction is only invoked for a si
 columns are type_LinkList, then it may result in multiple row indexes.
 
 The reason we use this map pattern is that we can exit the link-tree-traversal as early as possible, e.g. when we've
-found the first link that points to row '5'. Other solutions could be a vector<size_t> harvest_all_links(), or an
+found the first link that points to row '5'. Other solutions could be a std::vector<size_t> harvest_all_links(), or an
 iterator pattern. First solution can't exit, second solution requires internal state.
 */
 class LinkMap
@@ -1065,7 +1071,7 @@ public:
     {
         m_link_map.init(const_cast<Table*>(table), links);
         m_table = table;
-        REALM_ASSERT(m_link_map.m_table->get_column_type(column) == type_String);
+        REALM_ASSERT_3(m_link_map.m_table->get_column_type(column), ==, type_String);
     }
 
     Columns(size_t column, const Table* table) : m_table_linked_from(nullptr), m_table(nullptr), m_column(column)
@@ -1332,6 +1338,7 @@ private:
 template <class T> class Columns : public Subexpr2<T>, public ColumnsBase
 {
 public:
+    using ColType = typename ColumnTypeTraits<T>::column_type;
 
     Columns(size_t column, const Table* table, std::vector<size_t> links) : m_table_linked_from(nullptr), 
                                                                             m_table(nullptr), sg(nullptr),
@@ -1362,7 +1369,7 @@ public:
     {
         Columns<T>& n = *new Columns<T>();
         n = *this;
-        SequentialGetter<T> *s = new SequentialGetter<T>();
+        SequentialGetter<ColType> *s = new SequentialGetter<ColType>();
         n.sg = s;
         return n;
     }
@@ -1370,7 +1377,6 @@ public:
     // Recursively set table pointers for all Columns object in the expression tree. Used for late binding of table
     virtual void set_table()
     {
-        typedef typename ColumnTypeTraits<T>::column_type ColType;
         const ColType* c;
         if (m_link_map.m_link_columns.size() == 0)
             c = static_cast<const ColType*>(&m_table->get_column_base(m_column));
@@ -1378,7 +1384,7 @@ public:
             c = static_cast<const ColType*>(&m_link_map.m_table->get_column_base(m_column));
 
         if (sg == nullptr)
-            sg = new SequentialGetter<T>();
+            sg = new SequentialGetter<ColType>();
         sg->init(c);
     }
 
@@ -1409,11 +1415,11 @@ public:
             sg->cache_next(index);
             size_t colsize = sg->m_column->size();
 
-            if (util::SameType<T, int64_t>::value && index + ValueBase::default_size < sg->m_leaf_end) {
+            if (std::is_same<T, int64_t>::value && index + ValueBase::default_size < sg->m_leaf_end) {
                 Value<T> v;
-                REALM_ASSERT(ValueBase::default_size == 8); // If you want to modify 'default_size' then update Array::get_chunk()
+                REALM_ASSERT_3(ValueBase::default_size, ==, 8); // If you want to modify 'default_size' then update Array::get_chunk()
                 // int64_t leaves have a get_chunk optimization that returns 8 int64_t values at once
-                sg->m_array_ptr->get_chunk(index - sg->m_leaf_start, static_cast<Value<int64_t>*>(static_cast<ValueBase*>(&v))->m_v);
+                sg->m_leaf_ptr->get_chunk(index - sg->m_leaf_start, static_cast<Value<int64_t>*>(static_cast<ValueBase*>(&v))->m_v);
                 destination.import(v);
             }
             else {
@@ -1438,7 +1444,7 @@ public:
     const Table* m_table;
 
     // Fast (leaf caching) value getter for payload column (column in table on which query condition is executed)
-    SequentialGetter<T>* sg;
+    SequentialGetter<ColType>* sg;
 
     // Column index of payload column of m_table
     size_t m_column;

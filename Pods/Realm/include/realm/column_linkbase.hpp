@@ -25,10 +25,13 @@
 namespace realm {
 
 class ColumnBackLink;
+class Table;
 
 // Abstract base class for columns containing links
 class ColumnLinkBase: public Column {
 public:
+    // Create unattached root array aaccessor.
+    ColumnLinkBase(Allocator& alloc, ref_type ref, Table* table, std::size_t column_ndx);
     ~ColumnLinkBase() REALM_NOEXCEPT override;
 
     bool get_weak_links() const REALM_NOEXCEPT;
@@ -43,7 +46,6 @@ public:
     virtual void do_update_link(std::size_t row_ndx, std::size_t old_target_row_ndx,
                                 std::size_t new_target_row_ndx) = 0;
 
-    void erase(std::size_t, bool) override;
     void adj_acc_insert_rows(std::size_t, std::size_t) REALM_NOEXCEPT override;
     void adj_acc_erase_row(std::size_t) REALM_NOEXCEPT override;
     void adj_acc_move_over(std::size_t, std::size_t) REALM_NOEXCEPT override;
@@ -57,12 +59,15 @@ public:
 #endif
 
 protected:
-    TableRef m_target_table;
-    ColumnBackLink* m_backlink_column;
-    bool m_weak_links; // True if these links are weak (not strong)
+    // A pointer to the table that this column is part of.
+    Table* const m_table;
 
-    // Create unattached root array aaccessor.
-    ColumnLinkBase(Allocator&, ref_type);
+    // The index of this column within m_table.m_cols.
+    std::size_t m_column_ndx;
+
+    TableRef m_target_table;
+    ColumnBackLink* m_backlink_column = nullptr;
+    bool m_weak_links = false; // True if these links are weak (not strong)
 
     /// Call Table::cascade_break_backlinks_to() for the specified target row if
     /// it is not already in \a state.rows, and the number of strong links to it
@@ -76,10 +81,10 @@ protected:
 
 // Implementation
 
-inline ColumnLinkBase::ColumnLinkBase(Allocator& alloc, ref_type ref):
-    Column(alloc, ref),
-    m_backlink_column(0),
-    m_weak_links(false)
+inline ColumnLinkBase::ColumnLinkBase(Allocator& alloc, ref_type ref, Table* table, std::size_t column_ndx):
+    Column(alloc, ref), // Throws
+    m_table(table),
+    m_column_ndx(column_ndx)
 {
 }
 
@@ -123,17 +128,16 @@ inline void ColumnLinkBase::adj_acc_insert_rows(std::size_t row_ndx,
 {
     Column::adj_acc_insert_rows(row_ndx, num_rows);
 
-    // For tables with link-type columns, the insertion point must be after all
-    // existsing rows, but since the inserted link can be non-null, the target
-    // table must still be marked dirty.
     typedef _impl::TableFriend tf;
     tf::mark(*m_target_table);
 }
 
-inline void ColumnLinkBase::adj_acc_erase_row(std::size_t) REALM_NOEXCEPT
+inline void ColumnLinkBase::adj_acc_erase_row(size_t row_ndx) REALM_NOEXCEPT
 {
-    // Rows cannot be erased this way in tables with link-type columns
-    REALM_ASSERT(false);
+    Column::adj_acc_erase_row(row_ndx);
+
+    typedef _impl::TableFriend tf;
+    tf::mark(*m_target_table);
 }
 
 inline void ColumnLinkBase::adj_acc_move_over(std::size_t from_row_ndx,

@@ -1,0 +1,6 @@
+framework module AppSandboxFileAccess {
+  umbrella header "AppSandboxFileAccess-umbrella.h"
+
+  export *
+  module * { export * }
+}
