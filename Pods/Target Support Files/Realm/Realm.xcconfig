@@ -1,0 +1,4 @@
+REALM_CLANG_CXX_LANGUAGE_STANDARD = compiler-default
+REALM_LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/Realm/core"
+REALM_OTHER_CPLUSPLUSFLAGS = -std=c++1y $(inherited) -std=c++1y $(inherited)
+REALM_OTHER_LDFLAGS = -l"c++" -l"realm"

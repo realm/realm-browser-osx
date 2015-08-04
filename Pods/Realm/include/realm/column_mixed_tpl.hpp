@@ -137,7 +137,7 @@ inline DateTime ColumnMixed::get_datetime(std::size_t ndx) const REALM_NOEXCEPT
 {
     REALM_ASSERT_3(m_types->get(ndx), ==, mixcol_Date);
 
-    return DateTime(std::time_t(get_value(ndx)));
+    return DateTime(get_value(ndx));
 }
 
 inline float ColumnMixed::get_float(std::size_t ndx) const REALM_NOEXCEPT
@@ -253,10 +253,10 @@ inline void ColumnMixed::set_subtable(std::size_t ndx, const Table* t)
     typedef _impl::TableFriend tf;
     ref_type ref;
     if (t) {
-        ref = tf::clone(*t, m_array->get_alloc()); // Throws
+        ref = tf::clone(*t, get_alloc()); // Throws
     }
     else {
-        ref = tf::create_empty_table(m_array->get_alloc()); // Throws
+        ref = tf::create_empty_table(get_alloc()); // Throws
     }
     // Remove any previous refs or binary data
     clear_value_and_discard_subtab_acc(ndx, mixcol_Table); // Throws
@@ -274,7 +274,7 @@ inline void ColumnMixed::insert_value(std::size_t row_ndx, int_fast64_t types_va
     bool is_append = row_ndx == size;
     std::size_t row_ndx_2 = is_append ? realm::npos : row_ndx;
     std::size_t num_rows = 1;
-    m_types->do_insert(row_ndx_2, types_value, num_rows); // Throws
+    m_types->insert_without_updating_index(row_ndx_2, types_value, num_rows); // Throws
     m_data->do_insert(row_ndx_2, data_value, num_rows); // Throws
 }
 
@@ -354,10 +354,10 @@ inline void ColumnMixed::insert_subtable(std::size_t ndx, const Table* t)
     typedef _impl::TableFriend tf;
     ref_type ref;
     if (t) {
-        ref = tf::clone(*t, m_array->get_alloc()); // Throws
+        ref = tf::clone(*t, get_alloc()); // Throws
     }
     else {
-        ref = tf::create_empty_table(m_array->get_alloc()); // Throws
+        ref = tf::create_empty_table(get_alloc()); // Throws
     }
     int_fast64_t types_value = mixcol_Table;
     int_fast64_t data_value = int_fast64_t(ref);
@@ -366,15 +366,15 @@ inline void ColumnMixed::insert_subtable(std::size_t ndx, const Table* t)
 
 inline void ColumnMixed::erase(std::size_t row_ndx)
 {
-    std::size_t last_row_ndx = size() - 1; // Note that size() is slow
-    bool is_last = row_ndx == last_row_ndx;
-    do_erase(row_ndx, is_last); // Throws
+    size_t num_rows_to_erase = 1;
+    size_t prior_num_rows = size(); // Note that size() is slow
+    do_erase(row_ndx, num_rows_to_erase, prior_num_rows); // Throws
 }
 
 inline void ColumnMixed::move_last_over(std::size_t row_ndx)
 {
-    std::size_t last_row_ndx = size() - 1; // Note that size() is slow
-    do_move_last_over(row_ndx, last_row_ndx); // Throws
+    size_t prior_num_rows = size(); // Note that size() is slow
+    do_move_last_over(row_ndx, prior_num_rows); // Throws
 }
 
 inline void ColumnMixed::clear()
@@ -391,7 +391,8 @@ inline std::size_t ColumnMixed::get_size_from_ref(ref_type root_ref,
     return Column::get_size_from_ref(types_ref, alloc);
 }
 
-inline void ColumnMixed::clear_value_and_discard_subtab_acc(std::size_t row_ndx, MixedColType new_type)
+inline void ColumnMixed::clear_value_and_discard_subtab_acc(std::size_t row_ndx,
+                                                            MixedColType new_type)
 {
     MixedColType old_type = clear_value(row_ndx, new_type);
     if (old_type == mixcol_Table)
@@ -399,29 +400,34 @@ inline void ColumnMixed::clear_value_and_discard_subtab_acc(std::size_t row_ndx,
 }
 
 // Implementing pure virtual method of ColumnBase.
-inline void ColumnMixed::insert(std::size_t row_ndx, std::size_t num_rows, bool is_append)
+inline void ColumnMixed::insert_rows(size_t row_ndx, size_t num_rows_to_insert,
+                                     size_t prior_num_rows)
 {
-    std::size_t row_ndx_2 = is_append ? realm::npos : row_ndx;
+    REALM_ASSERT_DEBUG(prior_num_rows == size());
+    REALM_ASSERT(row_ndx <= prior_num_rows);
+
+    size_t row_ndx_2 = (row_ndx == prior_num_rows ? realm::npos : row_ndx);
 
     int_fast64_t type_value = mixcol_Int;
-    m_types->do_insert(row_ndx_2, type_value, num_rows); // Throws
+    m_types->insert_without_updating_index(row_ndx_2, type_value, num_rows_to_insert); // Throws
 
     // The least significant bit indicates that the rest of the bits form an
     // integer value, so 1 is actually zero.
     int_fast64_t data_value = 1;
-    m_data->do_insert(row_ndx_2, data_value, num_rows); // Throws
+    m_data->do_insert(row_ndx_2, data_value, num_rows_to_insert); // Throws
 }
 
 // Implementing pure virtual method of ColumnBase.
-inline void ColumnMixed::erase(std::size_t row_ndx, bool is_last)
+inline void ColumnMixed::erase_rows(size_t row_ndx, size_t num_rows_to_erase,
+                                    size_t prior_num_rows, bool)
 {
-    do_erase(row_ndx, is_last); // Throws
+    do_erase(row_ndx, num_rows_to_erase, prior_num_rows); // Throws
 }
 
 // Implementing pure virtual method of ColumnBase.
-inline void ColumnMixed::move_last_over(std::size_t row_ndx, std::size_t last_row_ndx, bool)
+inline void ColumnMixed::move_last_row_over(size_t row_ndx, size_t prior_num_rows, bool)
 {
-    do_move_last_over(row_ndx, last_row_ndx); // Throws
+    do_move_last_over(row_ndx, prior_num_rows); // Throws
 }
 
 // Implementing pure virtual method of ColumnBase.
@@ -437,19 +443,19 @@ inline void ColumnMixed::mark(int type) REALM_NOEXCEPT
 
 inline void ColumnMixed::refresh_accessor_tree(std::size_t col_ndx, const Spec& spec)
 {
-    m_array->init_from_parent();
+    get_root_array()->init_from_parent();
     m_types->refresh_accessor_tree(col_ndx, spec); // Throws
     m_data->refresh_accessor_tree(col_ndx, spec); // Throws
     if (m_binary_data) {
-        REALM_ASSERT_3(m_array->size(), ==, 3);
+        REALM_ASSERT_3(get_root_array()->size(), ==, 3);
         m_binary_data->refresh_accessor_tree(col_ndx, spec); // Throws
         return;
     }
     // See if m_binary_data needs to be created.
-    if (m_array->size() == 3) {
-        ref_type ref = m_array->get_as_ref(2);
-        m_binary_data.reset(new ColumnBinary(m_array->get_alloc(), ref)); // Throws
-        m_binary_data->set_parent(m_array.get(), 2);
+    if (get_root_array()->size() == 3) {
+        ref_type ref = get_root_array()->get_as_ref(2);
+        m_binary_data.reset(new ColumnBinary(get_alloc(), ref)); // Throws
+        m_binary_data->set_parent(get_root_array(), 2);
     }
 }
 

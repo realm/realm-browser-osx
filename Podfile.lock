@@ -1,8 +1,8 @@
 PODS:
   - AppSandboxFileAccess (1.0.14)
-  - Realm (0.93.2):
-    - Realm/Headers (= 0.93.2)
-  - Realm/Headers (0.93.2)
+  - Realm (0.94.0):
+    - Realm/Headers (= 0.94.0)
+  - Realm/Headers (0.94.0)
 
 DEPENDENCIES:
   - AppSandboxFileAccess
@@ -10,6 +10,6 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AppSandboxFileAccess: f3e10b0ba10bbaa6dc6996639ff47836050329c5
-  Realm: 2fdd0ae74f730e190384e0338d8a0d3654df8220
+  Realm: a046149653e0ca220b65b5783da907aa5b74d86c
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.2

@@ -20,6 +20,7 @@
 #import <Realm/RLMResults.h>
 
 #import <memory>
+#import <realm/views.hpp>
 
 namespace realm {
     class LinkView;
@@ -44,10 +45,6 @@ namespace realm {
 
 // initializer
 - (instancetype)initWithObjectClassName:(NSString *)objectClassName standalone:(BOOL)standalone;
-
-// deletes all objects in the RLMArray from their containing realms
-- (void)deleteObjectsFromRealm;
-
 @end
 
 
@@ -58,6 +55,9 @@ namespace realm {
 + (instancetype)arrayWithObjectClassName:(NSString *)objectClassName
                                     view:(realm::LinkViewRef)view
                                    realm:(RLMRealm *)realm;
+
+// deletes all objects in the RLMArray from their containing realms
+- (void)deleteObjectsFromRealm;
 @end
 
 
@@ -73,6 +73,12 @@ namespace realm {
                                      query:(std::unique_ptr<realm::Query>)query
                                       view:(realm::TableView &&)view
                                      realm:(RLMRealm *)realm;
+
++ (instancetype)resultsWithObjectClassName:(NSString *)objectClassName
+                                     query:(std::unique_ptr<realm::Query>)query
+                                      sort:(realm::RowIndexes::Sorter const&)sorter
+                                     realm:(RLMRealm *)realm;
+
 - (void)deleteObjectsFromRealm;
 @end
 

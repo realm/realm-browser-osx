@@ -38,9 +38,12 @@ namespace util {
 /// size.
 template<class T> class Buffer {
 public:
-    Buffer() REALM_NOEXCEPT: m_data(nullptr), m_size(0) {}
-    Buffer(std::size_t size);
+    Buffer() REALM_NOEXCEPT: m_size(0) {}
+    explicit Buffer(std::size_t size);
+    Buffer(Buffer<T>&&) REALM_NOEXCEPT = default;
     ~Buffer() REALM_NOEXCEPT {}
+
+    Buffer<T>& operator=(Buffer<T>&&) REALM_NOEXCEPT = default;
 
     T& operator[](std::size_t i) REALM_NOEXCEPT { return m_data[i]; }
     const T& operator[](std::size_t i) const REALM_NOEXCEPT { return m_data[i]; }
@@ -48,6 +51,9 @@ public:
     T* data() REALM_NOEXCEPT { return m_data.get(); }
     const T* data() const REALM_NOEXCEPT { return m_data.get(); }
     std::size_t size() const REALM_NOEXCEPT { return m_size; }
+
+    /// False iff the data() returns null.
+    explicit operator bool() const REALM_NOEXCEPT { return bool(m_data); }
 
     /// Discards the original contents.
     void set_size(std::size_t new_size);

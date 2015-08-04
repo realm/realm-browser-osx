@@ -26,7 +26,7 @@
 
 void RLMCheckForUpdates() {
 #if TARGET_IPHONE_SIMULATOR
-    if (getenv("REALM_DISABLE_UPDATE_CHECKER") || ![NSUserDefaults instancesRespondToSelector:@selector(initWithSuiteName:)]) {
+    if (getenv("REALM_DISABLE_UPDATE_CHECKER")) {
         return;
     }
 
@@ -41,7 +41,7 @@ void RLMCheckForUpdates() {
         }
     };
 
-    NSString *url = [NSString stringWithFormat:@"http://static.realm.io/update/cocoa?%@", REALM_COCOA_VERSION];
+    NSString *url = [NSString stringWithFormat:@"https://static.realm.io/update/cocoa?%@", REALM_COCOA_VERSION];
     [[NSURLSession.sharedSession dataTaskWithURL:[NSURL URLWithString:url] completionHandler:handler] resume];
 #endif
 }

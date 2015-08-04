@@ -28,6 +28,10 @@
 #include <realm/group.hpp>
 #include <realm/group_shared.hpp>
 
+#ifdef REALM_ENABLE_REPLICATION
+#  include <realm/replication.hpp>
+#endif
+
 namespace realm {
 
 
@@ -95,18 +99,9 @@ public:
     static const Table* get_subtable_ptr(const ConstTableView*, std::size_t column_ndx,
                                          std::size_t row_ndx);
 
-    /// Calls parent.insert_subtable(col_ndx, row_ndx, &source). Note
+    /// Calls parent.set_mixed_subtable(col_ndx, row_ndx, &source). Note
     /// that the source table must have a descriptor that is
     /// compatible with the target subtable column.
-    static void insert_subtable(Table& parent, std::size_t col_ndx, std::size_t row_ndx,
-                                const Table& source);
-
-
-    /// Calls parent.insert_mixed_subtable(col_ndx, row_ndx, &source).
-    static void insert_mixed_subtable(Table& parent, std::size_t col_ndx, std::size_t row_ndx,
-                                      const Table& source);
-
-    /// Calls parent.set_mixed_subtable(col_ndx, row_ndx, &source).
     static void set_mixed_subtable(Table& parent, std::size_t col_ndx, std::size_t row_ndx,
                                    const Table& source);
 
@@ -115,11 +110,87 @@ public:
 
 #ifdef REALM_ENABLE_REPLICATION
 
-    /// Wrappers - forward calls to shared group. A bit like NSA. Circumventing privacy :-)
-    static void advance_read(SharedGroup&, SharedGroup::VersionID version = SharedGroup::VersionID());
-    static void promote_to_write(SharedGroup&);
+    //@{
+
+    /// Continuous transactions.
+    ///
+    /// advance_read() is equivalent to terminating the current read transaction
+    /// (SharedGroup::end_read()), and initiating a new one
+    /// (SharedGroup::begin_read()), except that all subordinate accessors
+    /// (Table, Row, Descriptor) will remain attached to the underlying objects,
+    /// unless those objects were removed in the target snapshot. By default,
+    /// the read transaction is advanced to the latest available snapshot, but
+    /// see SharedGroup::begin_read() for information about \a version.
+    ///
+    /// promote_to_write() is equivalent to terminating the current read
+    /// transaction (SharedGroup::end_read()), and initiating a new write
+    /// transaction (SharedGroup::begin_write()), except that all subordinate
+    /// accessors (Table, Row, Descriptor) will remain attached to the
+    /// underlying objects, unless those objects were removed in the target
+    /// snapshot.
+    ///
+    /// commit_and_continue_as_read() is equivalent to committing the current
+    /// write transaction (SharedGroup::commit()) and initiating a new read
+    /// transaction, which is bound to the snapshot produced by the write
+    /// transaction (SharedGroup::begin_read()), except that all subordinate
+    /// accessors (Table, Row, Descriptor) will remain attached to the
+    /// underlying objects.
+    ///
+    /// rollback_and_continue_as_read() is equivalent to rolling back the
+    /// current write transaction (SharedGroup::rollback()) and initiating a new
+    /// read transaction, which is bound to the snapshot, that the write
+    /// transaction was based on (SharedGroup::begin_read()), except that all
+    /// subordinate accessors (Table, Row, Descriptor) will remain attached to
+    /// the underlying objects, unless they were attached to object that were
+    /// added during the rolled back transaction.
+    ///
+    /// If advance_read(), promote_to_write(), commit_and_continue_as_read(), or
+    /// rollback_and_continue_as_read() throws, the associated group accessor
+    /// and all of its subordinate accessors are left in a state that may not be
+    /// fully consistent. Only minimal consistency is guaranteed (see
+    /// AccessorConsistencyLevels). In this case, the application is required to
+    /// either destroy the SharedGroup object, forcing all associated accessors
+    /// to become detached, or take some other equivalent action that involves a
+    /// complete accessor detachment, such as terminating the transaction in
+    /// progress. Until then it is an error, and unsafe if the application
+    /// attempts to access any of those accessors.
+    ///
+    /// The application must use SharedGroup::end_read() if it wants to
+    /// terminate the transaction after advance_read() or promote_to_write() has
+    /// thrown an exception. Likewise, it must use SharedGroup::rollback() if it
+    /// wants to terminate the transaction after commit_and_continue_as_read()
+    /// or rollback_and_continue_as_read() has thrown an exception.
+    ///
+    /// \param history The modification history accessor associated with the
+    /// specified SharedGroup object.
+    ///
+    /// \param observer An optional custom replication instruction handler. The
+    /// application may pass such a handler to observe the sequence of
+    /// modifications that advances (or rolls back) the state of the Realm.
+    ///
+    /// \throw SharedGroup::BadVersion Thrown by advance_read() if the specified
+    /// version does not correspond to a bound (or tethered) snapshot.
+
+    static void advance_read(SharedGroup&, History&,
+                             SharedGroup::VersionID version = SharedGroup::VersionID());
+    template<class O>
+    static void advance_read(SharedGroup&, History&, O&& observer,
+                             SharedGroup::VersionID version = SharedGroup::VersionID());
+    static void promote_to_write(SharedGroup&, History&);
+    template<class O>
+    static void promote_to_write(SharedGroup&, History&, O&& observer);
     static void commit_and_continue_as_read(SharedGroup&);
-    static void rollback_and_continue_as_read(SharedGroup&);
+    static void rollback_and_continue_as_read(SharedGroup&, History&);
+    template<class O>
+    static void rollback_and_continue_as_read(SharedGroup&, History&, O&& observer);
+
+    //@}
+
+    static Replication::version_type get_current_version(SharedGroup& sg)
+    {
+        return Replication::version_type(sg.get_current_version());
+    }
+
 #endif
 
     /// Returns the name of the specified data type as follows:
@@ -150,7 +221,7 @@ inline Table* LangBindHelper::new_table()
     typedef _impl::TableFriend tf;
     Allocator& alloc = Allocator::get_default();
     std::size_t ref = tf::create_empty_table(alloc); // Throws
-    Table::Parent* parent = 0;
+    Table::Parent* parent = nullptr;
     std::size_t ndx_in_parent = 0;
     Table* table = tf::create_accessor(alloc, ref, parent, ndx_in_parent); // Throws
     tf::bind_ref(*table);
@@ -162,7 +233,7 @@ inline Table* LangBindHelper::copy_table(const Table& table)
     typedef _impl::TableFriend tf;
     Allocator& alloc = Allocator::get_default();
     std::size_t ref = tf::clone(table, alloc); // Throws
-    Table::Parent* parent = 0;
+    Table::Parent* parent = nullptr;
     std::size_t ndx_in_parent = 0;
     Table* copy_of_table = tf::create_accessor(alloc, ref, parent, ndx_in_parent); // Throws
     tf::bind_ref(*copy_of_table);
@@ -263,19 +334,6 @@ inline void LangBindHelper::bind_table_ptr(const Table* t) REALM_NOEXCEPT
    t->bind_ref();
 }
 
-inline void LangBindHelper::insert_subtable(Table& parent, std::size_t col_ndx,
-                                            std::size_t row_ndx, const Table& source)
-{
-    parent.insert_subtable(col_ndx, row_ndx, &source);
-}
-
-
-inline void LangBindHelper::insert_mixed_subtable(Table& parent, std::size_t col_ndx,
-                                                  std::size_t row_ndx, const Table& source)
-{
-    parent.insert_mixed_subtable(col_ndx, row_ndx, &source);
-}
-
 inline void LangBindHelper::set_mixed_subtable(Table& parent, std::size_t col_ndx,
                                                std::size_t row_ndx, const Table& source)
 {
@@ -294,30 +352,56 @@ inline void LangBindHelper::unbind_linklist_ptr(LinkView* link_view)
    link_view->unbind_ref();
 }
 
-#ifdef REALM_ENABLE_REPLICATION
-
-inline void LangBindHelper::advance_read(SharedGroup& sg, SharedGroup::VersionID version_id)
+inline void LangBindHelper::advance_read(SharedGroup& sg, History& history,
+                                         SharedGroup::VersionID version)
 {
-    sg.advance_read(version_id);
+    using sgf = _impl::SharedGroupFriend;
+    _impl::NullInstructionObserver* observer = 0;
+    sgf::advance_read(sg, history, observer, version);
 }
 
-inline void LangBindHelper::promote_to_write(SharedGroup& sg)
+template<class O>
+inline void LangBindHelper::advance_read(SharedGroup& sg, History& history, O&& observer,
+                                         SharedGroup::VersionID version)
 {
-    sg.promote_to_write();
+    using sgf = _impl::SharedGroupFriend;
+    sgf::advance_read(sg, history, &observer, version);
+}
+
+inline void LangBindHelper::promote_to_write(SharedGroup& sg, History& history)
+{
+    using sgf = _impl::SharedGroupFriend;
+    _impl::NullInstructionObserver* observer = 0;
+    sgf::promote_to_write(sg, history, observer);
+}
+
+template<class O>
+inline void LangBindHelper::promote_to_write(SharedGroup& sg, History& history, O&& observer)
+{
+    using sgf = _impl::SharedGroupFriend;
+    sgf::promote_to_write(sg, history, &observer);
 }
 
 inline void LangBindHelper::commit_and_continue_as_read(SharedGroup& sg)
 {
-    sg.commit_and_continue_as_read();
+    using sgf = _impl::SharedGroupFriend;
+    sgf::commit_and_continue_as_read(sg);
 }
 
-inline void LangBindHelper::rollback_and_continue_as_read(SharedGroup& sg)
+inline void LangBindHelper::rollback_and_continue_as_read(SharedGroup& sg, History& history)
 {
-    sg.rollback_and_continue_as_read();
+    using sgf = _impl::SharedGroupFriend;
+    _impl::NullInstructionObserver* observer = 0;
+    sgf::rollback_and_continue_as_read(sg, history, observer);
 }
 
-
-#endif
+template<class O>
+inline void LangBindHelper::rollback_and_continue_as_read(SharedGroup& sg, History& history,
+                                                          O&& observer)
+{
+    using sgf = _impl::SharedGroupFriend;
+    sgf::rollback_and_continue_as_read(sg, history, &observer);
+}
 
 } // namespace realm
 

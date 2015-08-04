@@ -64,11 +64,7 @@ namespace realm {
 /// externally provided guarantee.
 ///
 /// This class makes it possible to distinguish between a 'null' reference and a
-/// reference to the empty string (see is_null()). However, most functions of
-/// the Realm API do not care about this distinction. In particular, the
-/// comparison operators of this class make no distinction between a null
-/// reference and a reference to the empty string. This is possible because in
-/// both cases, size() returns zero.
+/// reference to the empty string (see is_null()).
 ///
 /// \sa BinaryData
 /// \sa Mixed
@@ -86,8 +82,6 @@ public:
     /// Initialize from a zero terminated C style string. Pass null to construct
     /// a null reference.
     StringData(const char* c_str) REALM_NOEXCEPT;
-
-    ~StringData() REALM_NOEXCEPT;
 
     char operator[](std::size_t i) const REALM_NOEXCEPT;
 
@@ -110,12 +104,6 @@ public:
     /// of the result of calling this function. In other words, a StringData
     /// object is converted to true if it is not the null reference, otherwise
     /// it is converted to false.
-    ///
-    /// It is important to understand that all of the functions and operators in
-    /// this class, and most of the functions in the Realm API in general
-    /// makes no distinction between a null reference and a reference to the
-    /// empty string. These functions and operators never look at the stored
-    /// pointer if the stored size is zero.
     bool is_null() const REALM_NOEXCEPT;
 
     friend bool operator==(const StringData&, const StringData&) REALM_NOEXCEPT;
@@ -193,10 +181,6 @@ inline StringData::StringData(const char* c_str) REALM_NOEXCEPT:
         m_size = std::char_traits<char>::length(c_str);
 }
 
-inline StringData::~StringData() REALM_NOEXCEPT
-{
-}
-
 inline char StringData::operator[](std::size_t i) const REALM_NOEXCEPT
 {
     return m_data[i];
@@ -219,7 +203,7 @@ inline bool StringData::is_null() const REALM_NOEXCEPT
 
 inline bool operator==(const StringData& a, const StringData& b) REALM_NOEXCEPT
 {
-    return a.m_size == b.m_size && safe_equal(a.m_data, a.m_data + a.m_size, b.m_data);
+    return a.m_size == b.m_size && a.is_null() == b.is_null() && safe_equal(a.m_data, a.m_data + a.m_size, b.m_data);
 }
 
 inline bool operator!=(const StringData& a, const StringData& b) REALM_NOEXCEPT
@@ -229,6 +213,11 @@ inline bool operator!=(const StringData& a, const StringData& b) REALM_NOEXCEPT
 
 inline bool operator<(const StringData& a, const StringData& b) REALM_NOEXCEPT
 {
+    if (a.is_null() && !b.is_null()) {
+        // Null strings are smaller than all other strings, and not
+        // equal to empty strings.
+        return true;
+    }
     return std::lexicographical_compare(a.m_data, a.m_data + a.m_size,
                                         b.m_data, b.m_data + b.m_size);
 }
@@ -250,16 +239,23 @@ inline bool operator>=(const StringData& a, const StringData& b) REALM_NOEXCEPT
 
 inline bool StringData::begins_with(StringData d) const REALM_NOEXCEPT
 {
+    if (is_null() && !d.is_null())
+        return false;
     return d.m_size <= m_size && safe_equal(m_data, m_data + d.m_size, d.m_data);
 }
 
 inline bool StringData::ends_with(StringData d) const REALM_NOEXCEPT
 {
+    if (is_null() && !d.is_null())
+        return false;
     return d.m_size <= m_size && safe_equal(m_data + m_size - d.m_size, m_data + m_size, d.m_data);
 }
 
 inline bool StringData::contains(StringData d) const REALM_NOEXCEPT
 {
+    if (is_null() && !d.is_null())
+        return false;
+
     return d.m_size == 0 ||
         std::search(m_data, m_data + m_size, d.m_data, d.m_data + d.m_size) != m_data + m_size;
 }
@@ -303,6 +299,11 @@ inline StringData::operator unspecified_bool_type() const REALM_NOEXCEPT
     return is_null() ? 0 : &StringData::m_data;
 }
 #endif
+
+// Represents null in Query, find(), get(), set(), etc.
+struct null {
+    operator StringData() { return StringData(0, 0); }
+};
 
 } // namespace realm
 
