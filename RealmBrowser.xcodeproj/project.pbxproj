@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		220883731B735CAD007BF046 /* EncryptionKeyWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220883711B735CAD007BF046 /* EncryptionKeyWindow.xib */; };
 		22096B2719911F7300233D77 /* RLMBadgeTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */; };
 		220D382819B639D700F79496 /* RLMTestDataGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 220D382719B639D700F79496 /* RLMTestDataGenerator.m */; };
 		221322FA19954AB100D25737 /* RLMImageTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221322F919954AB100D25737 /* RLMImageTableCellView.m */; };
@@ -87,6 +88,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		220883721B735CAD007BF046 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EncryptionKeyWindow.xib; sourceTree = "<group>"; };
 		22096B2519911F7300233D77 /* RLMBadgeTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMBadgeTableCellView.h; path = Classes/RLMBadgeTableCellView.h; sourceTree = "<group>"; };
 		22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMBadgeTableCellView.m; path = Classes/RLMBadgeTableCellView.m; sourceTree = "<group>"; };
 		220D382619B639D700F79496 /* RLMTestDataGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTestDataGenerator.h; sourceTree = "<group>"; };
@@ -410,6 +412,7 @@
 				840F97C1192B7DD4006B591E /* Classes */,
 				84E0F9641921F3B900D6CA14 /* RLMDocument.xib */,
 				84E0F9671921F3B900D6CA14 /* MainMenu.xib */,
+				220883711B735CAD007BF046 /* EncryptionKeyWindow.xib */,
 				84E0F96A1921F3B900D6CA14 /* Images.xcassets */,
 				22D5FF911B0DBCC30090CFE6 /* Realm Browser.entitlements */,
 				84BCA5FE1951BC99008FC850 /* Resources */,
@@ -559,6 +562,7 @@
 				84E0F9601921F3B900D6CA14 /* Credits.rtf in Resources */,
 				84E0F9661921F3B900D6CA14 /* RLMDocument.xib in Resources */,
 				84E0F9691921F3B900D6CA14 /* MainMenu.xib in Resources */,
+				220883731B735CAD007BF046 /* EncryptionKeyWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -728,6 +732,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		220883711B735CAD007BF046 /* EncryptionKeyWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				220883721B735CAD007BF046 /* Base */,
+			);
+			name = EncryptionKeyWindow.xib;
+			sourceTree = "<group>";
+		};
 		84E0F9581921F3B900D6CA14 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

@@ -41,6 +41,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
 
 @property (nonatomic, weak) IBOutlet NSMenu *fileMenu;
 @property (nonatomic, weak) IBOutlet NSMenuItem *openMenuItem;
+@property (nonatomic, weak) IBOutlet NSMenuItem *openEncryptedMenuItem;
 @property (nonatomic, weak) IBOutlet NSMenu *openAnyRealmMenu;
 
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
@@ -381,6 +382,26 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     [self openFileAtURL:menuItem.representedObject];
 }
 
+- (IBAction)openEncryptedFileWithMenuItem:(NSMenuItem *)menuItem
+{
+    NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+    openPanel.allowsMultipleSelection = NO;
+    openPanel.canChooseDirectories = NO;
+    openPanel.allowedFileTypes = @[kRealmFileExension];
+    
+    id completionBlock = ^(NSInteger result) {
+        if (result != NSFileHandlingPanelOKButton) {
+            return;
+        }
+        
+        NSURL *url = [openPanel.URLs firstObject];
+        if (url) {
+            [self openEncryptedFileAtURL:url];
+        }
+    };
+    [openPanel beginWithCompletionHandler:completionBlock];
+}
+
 -(void)openFileAtURL:(NSURL *)url
 {
     NSDocumentController *documentController = [[NSDocumentController alloc] init];
@@ -388,6 +409,12 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
                                               display:YES
                                     completionHandler:^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error){
                                     }];
+}
+
+- (void)openEncryptedFileAtURL:(NSURL *)url
+{
+    NSWindowController *controller = [[NSWindowController alloc] initWithWindowNibName:@"EncryptionKeyWindow"];
+    [NSApp runModalForWindow:controller.window];
 }
 
 - (void)showSavePanelStringFromDirectory:(NSURL *)directoryUrl completionHandler:(void(^)(BOOL userSelectesFile, NSURL *selectedFile))completion
