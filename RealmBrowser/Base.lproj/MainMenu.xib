@@ -16,7 +16,6 @@
             <connections>
                 <outlet property="fileMenu" destination="bib-Uj-vzu" id="xMk-IQ-flg"/>
                 <outlet property="openAnyRealmMenu" destination="ZOZ-6y-KFJ" id="vHm-DP-i8r"/>
-                <outlet property="openEncryptedMenuItem" destination="8Sf-K9-24D" id="9hA-e7-7aV"/>
                 <outlet property="openMenuItem" destination="IAo-SY-fd9" id="U7H-mk-W2m"/>
             </connections>
         </customObject>
@@ -74,11 +73,6 @@
                             <menuItem title="Open…" keyEquivalent="o" id="IAo-SY-fd9">
                                 <connections>
                                     <action selector="openDocument:" target="-1" id="bVn-NM-KNZ"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Open Encrypted..." keyEquivalent="O" id="8Sf-K9-24D">
-                                <connections>
-                                    <action selector="openEncryptedFileWithMenuItem:" target="PLw-ns-0qo" id="ccq-7C-rv8"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Open Recent" id="tXI-mr-wws">

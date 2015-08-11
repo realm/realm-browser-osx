@@ -28,6 +28,7 @@
 
 @interface RLMDocument ()
 
+@property (nonatomic, assign, readwrite) BOOL potentiallyEncrypted;
 @property (nonatomic, strong) NSURL *securityScopedURL;
 @property (nonatomic) RLMNotificationToken *changeNotificationToken;
 
@@ -77,7 +78,11 @@
             [self.securityScopedURL startAccessingSecurityScopedResource];
             
             NSError *error;
-            if ([realmNode connect:&error]) {
+            if ([realmNode connect:&error] || error.code == 2) {
+                if (error) {
+                    ws.potentiallyEncrypted = YES;
+                }
+                    
                 ws.presentedRealm  = realmNode;
                 
                 ws.changeNotificationToken = [realmNode.realm addNotificationBlock:^(NSString *notification, RLMRealm *realm) {
@@ -118,7 +123,6 @@
 {
     RLMRealmBrowserWindowController *windowController = [[RLMRealmBrowserWindowController alloc] initWithWindowNibName:self.windowNibName];
     windowController.modelDocument = self;
-    
     [self addWindowController:windowController];
 }
 
@@ -129,7 +133,7 @@
 
 #pragma mark - Public methods - NSDocument overrides - Loading Document Data
 
-+(BOOL)canConcurrentlyReadDocumentsOfType:(NSString *)typeName
++ (BOOL)canConcurrentlyReadDocumentsOfType:(NSString *)typeName
 {
     return YES;
 }

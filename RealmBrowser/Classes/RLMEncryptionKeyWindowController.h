@@ -16,13 +16,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-@import Cocoa;
+#import <Cocoa/Cocoa.h>
 
-#import "RLMRealmNode.h"
+@interface RLMEncryptionKeyWindowController : NSWindowController
 
-@interface RLMDocument : NSDocument
+@property (nonatomic, weak) IBOutlet NSTextField *keyTextField;
+@property (nonatomic, weak) IBOutlet NSButton *cancelButton;
+@property (nonatomic, weak) IBOutlet NSButton *okayButton;
+@property (nonatomic, weak) IBOutlet NSTextField *errorTextField;
 
-@property (nonatomic, readonly) BOOL potentiallyEncrypted;
-@property (nonatomic, strong) IBOutlet RLMRealmNode *presentedRealm;
+- (instancetype)initWithRealmFilePath:(NSURL *)realmFilePath;
 
 @end

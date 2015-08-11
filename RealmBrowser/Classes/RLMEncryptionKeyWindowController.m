@@ -16,13 +16,27 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-@import Cocoa;
+#import "RLMEncryptionKeyWindowController.h"
 
-#import "RLMRealmNode.h"
+@interface RLMEncryptionKeyWindowController ()
 
-@interface RLMDocument : NSDocument
+@property (nonatomic, strong) NSURL *realmFilePath;
 
-@property (nonatomic, readonly) BOOL potentiallyEncrypted;
-@property (nonatomic, strong) IBOutlet RLMRealmNode *presentedRealm;
+@end
+
+@implementation RLMEncryptionKeyWindowController
+
+- (instancetype)initWithRealmFilePath:(NSURL *)realmFilePath
+{
+    if (self = [super initWithWindowNibName:@"EncryptionKeyWindow"]) {
+        _realmFilePath = realmFilePath;
+    }
+    
+    return self;
+}
+
+- (void)windowDidLoad {
+    [super windowDidLoad];
+}
 
 @end

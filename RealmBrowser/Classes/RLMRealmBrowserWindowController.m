@@ -17,6 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #import "RLMRealmBrowserWindowController.h"
+#import "RLMEncryptionKeyWindowController.h"
 #import "RLMNavigationStack.h"
 #import "RLMModelExporter.h"
 @import Realm;
@@ -38,6 +39,8 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 @property (atomic, weak) IBOutlet NSToolbarItem *lockRealmButton;
 @property (nonatomic, strong) IBOutlet NSSearchField *searchField;
 
+@property (nonatomic, strong) RLMEncryptionKeyWindowController *encryptionController;
+
 @end
 
 @implementation RLMRealmBrowserWindowController {
@@ -51,6 +54,11 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     navigationStack = [[RLMNavigationStack alloc] init];
     self.window.alphaValue = 0.0;
 
+    if (self.modelDocument.potentiallyEncrypted) {
+        self.encryptionController = [[RLMEncryptionKeyWindowController alloc] initWithRealmFilePath:self.modelDocument.fileURL];
+        [self.window beginSheet:self.encryptionController.window completionHandler:nil];
+    }
+    
     if (self.modelDocument.presentedRealm) {
         // if already loaded
         [self realmDidLoad];
