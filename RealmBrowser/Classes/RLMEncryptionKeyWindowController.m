@@ -37,6 +37,17 @@
 
 - (void)windowDidLoad {
     [super windowDidLoad];
+    
+}
+
+- (IBAction)okayButtonClicked:(id)sender
+{
+    [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
+}
+
+- (IBAction)cancelButtonClicked:(id)sender
+{
+    [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
 }
 
 @end

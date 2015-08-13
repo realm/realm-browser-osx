@@ -53,15 +53,20 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 {
     navigationStack = [[RLMNavigationStack alloc] init];
     self.window.alphaValue = 0.0;
-
-    if (self.modelDocument.potentiallyEncrypted) {
-        self.encryptionController = [[RLMEncryptionKeyWindowController alloc] initWithRealmFilePath:self.modelDocument.fileURL];
-        [self.window beginSheet:self.encryptionController.window completionHandler:nil];
-    }
     
     if (self.modelDocument.presentedRealm) {
         // if already loaded
         [self realmDidLoad];
+    }
+}
+
+- (IBAction)showWindow:(id)sender
+{
+    [super showWindow:sender];
+ 
+    if (self.modelDocument.potentiallyEncrypted) {
+        self.encryptionController = [[RLMEncryptionKeyWindowController alloc] initWithRealmFilePath:self.modelDocument.fileURL];
+        [self.window beginSheet:self.encryptionController.window completionHandler:^(NSModalResponse returnCode){ }];
     }
 }
 
