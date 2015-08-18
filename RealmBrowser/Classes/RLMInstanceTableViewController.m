@@ -259,7 +259,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 
 -(CGFloat)tableView:(NSTableView *)tableView sizeToFitWidthOfColumn:(NSInteger)column
 {
-    RLMTableColumn *tableColumn = self.realmTableView.tableColumns[column];
+    RLMTableColumn *tableColumn = (RLMTableColumn *)self.realmTableView.tableColumns[column];
     
     return [tableColumn sizeThatFitsWithLimit:NO];
 }
