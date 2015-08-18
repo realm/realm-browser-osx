@@ -513,7 +513,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = RLM;
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Realm inc.";
 				TargetAttributes = {
 					84E0F94B1921F3B900D6CA14 = {
@@ -790,6 +790,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -870,6 +871,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
+				PRODUCT_BUNDLE_IDENTIFIER = io.realm.realmbrowser;
 				PRODUCT_NAME = "Realm Browser";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -899,6 +901,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
+				PRODUCT_BUNDLE_IDENTIFIER = io.realm.realmbrowser;
 				PRODUCT_NAME = "Realm Browser";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -919,6 +922,7 @@
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "RealmBrowserTests/RealmBrowserTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.realm.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = RealmBrowserTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -939,6 +943,7 @@
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "RealmBrowserTests/RealmBrowserTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.realm.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = RealmBrowserTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
