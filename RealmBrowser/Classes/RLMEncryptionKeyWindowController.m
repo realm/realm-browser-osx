@@ -72,7 +72,9 @@
 - (BOOL)testRealmFileWithEncryptionKey:(NSData *)keyData
 {
     NSError *error = nil;
-    [RLMRealm realmWithPath:self.realmFilePath.path encryptionKey:keyData readOnly:YES error:&error];
+    @autoreleasepool {
+        [RLMRealm realmWithPath:self.realmFilePath.path encryptionKey:keyData readOnly:NO error:&error];
+    }
     if (error)
         return NO;
     

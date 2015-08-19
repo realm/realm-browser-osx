@@ -40,6 +40,9 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 @property (nonatomic, strong) IBOutlet NSSearchField *searchField;
 
 @property (nonatomic, strong) RLMEncryptionKeyWindowController *encryptionController;
+@property (nonatomic, strong) NSData *encryptionKey;
+
+- (void)handleEncryptionKeyPrompt;
 
 @end
 
@@ -65,8 +68,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     [super showWindow:sender];
  
     if (self.modelDocument.potentiallyEncrypted) {
-        self.encryptionController = [[RLMEncryptionKeyWindowController alloc] initWithRealmFilePath:self.modelDocument.fileURL];
-        [self.window beginSheet:self.encryptionController.window completionHandler:^(NSModalResponse returnCode){ }];
+        [self handleEncryptionKeyPrompt];
     }
 }
 
@@ -377,5 +379,19 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     [self.navigationButtons setEnabled:[navigationStack canNavigateForward] forSegment:1];
 }
 
+- (void)handleEncryptionKeyPrompt
+{
+    self.encryptionController = [[RLMEncryptionKeyWindowController alloc] initWithRealmFilePath:self.modelDocument.fileURL];
+    [self.window beginSheet:self.encryptionController.window completionHandler:^(NSModalResponse returnCode){
+        if (returnCode != NSModalResponseOK) {
+            [self.document close];
+            return;
+        }
+        
+        self.encryptionKey = self.encryptionController.encryptionKey;
+        self.modelDocument.presentedRealm.encryptionKey = self.encryptionKey;
+        [self realmDidLoad];
+    }];
+}
 
 @end
