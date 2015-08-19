@@ -25,6 +25,8 @@
 @property (nonatomic, weak) IBOutlet NSButton *okayButton;
 @property (nonatomic, weak) IBOutlet NSTextField *errorTextField;
 
+@property (readonly) NSData *encryptionKey;
+
 - (instancetype)initWithRealmFilePath:(NSURL *)realmFilePath;
 
 @end

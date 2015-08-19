@@ -23,8 +23,9 @@
 @interface RLMEncryptionKeyWindowController () <NSTextFieldDelegate>
 
 @property (nonatomic, strong) NSURL *realmFilePath;
+@property (nonatomic, strong, readwrite) NSData *encryptionKey;
 
-- (BOOL)testRealmFileWithEncryptionKey:(NSString *)key;
+- (BOOL)testRealmFileWithEncryptionKey:(NSData *)keyData;
 - (NSData *)dataFromHexadecimalString:(NSString *)string;
 
 @end
@@ -51,10 +52,13 @@
 
 - (IBAction)okayButtonClicked:(id)sender
 {
-    if ([self testRealmFileWithEncryptionKey:self.keyTextField.stringValue] == NO) {
+    NSData *encryptionKey = [self dataFromHexadecimalString:self.keyTextField.stringValue];
+    if ([self testRealmFileWithEncryptionKey:encryptionKey] == NO) {
         self.errorTextField.hidden = NO;
         return;
     }
+    
+    self.encryptionKey = encryptionKey;
     
     [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
 }
@@ -65,12 +69,10 @@
 }
 
 #pragma mark - Encryption Testing -
-- (BOOL)testRealmFileWithEncryptionKey:(NSString *)key
+- (BOOL)testRealmFileWithEncryptionKey:(NSData *)keyData
 {
-    NSData *encryptionKeyData = [self dataFromHexadecimalString:key];
-    
     NSError *error = nil;
-    [RLMRealm realmWithPath:self.realmFilePath.path encryptionKey:encryptionKeyData readOnly:YES error:&error];
+    [RLMRealm realmWithPath:self.realmFilePath.path encryptionKey:keyData readOnly:YES error:&error];
     if (error)
         return NO;
     
