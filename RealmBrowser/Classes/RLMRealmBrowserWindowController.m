@@ -101,6 +101,20 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     [RLMModelExporter saveModelsForSchemas:objectSchemas inLanguage:RLMModelExporterLanguageObjectiveC];
 }
 
+- (IBAction)saveCopy:(id)sender
+{
+    NSString *fileName = [self.modelDocument.presentedRealm.realm.path lastPathComponent];
+    NSSavePanel *panel = [NSSavePanel savePanel];
+    [panel setNameFieldStringValue:fileName];
+    [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
+        if (result == NSFileHandlingPanelOKButton)
+        {
+            NSURL *fileURL = [panel URL];
+            [self.modelDocument.presentedRealm.realm writeCopyToPath:fileURL.path error:nil];
+        }
+    }];
+}
+
 #pragma mark - Public methods - User Actions
 
 - (void)reloadAllWindows
