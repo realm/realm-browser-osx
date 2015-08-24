@@ -383,6 +383,12 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     return ([self.displayedType isMemberOfClass:[RLMArrayNode class]]);
 }
 
+- (BOOL)isColumnObjectType:(NSInteger)column;
+{
+    NSAssert(column != NOT_A_COLUMN, @"This method can only be used with an actual column index");
+    return [self propertyTypeForColumn:column] == RLMPropertyTypeObject;
+}
+
 // Asking the delegate about the contents
 - (BOOL)containsObjectInRows:(NSIndexSet *)rowIndexes column:(NSInteger)column;
 {
@@ -459,6 +465,15 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 }
 
 // Operations on links in cells
+
+- (void)setObjectLinkAtRows:(NSIndexSet *)rowIndexes column:(NSInteger)columnIndex {
+    NSPopover *popover = [[NSPopover alloc] init];
+    popover.contentViewController = [[NSViewController alloc] init];//todo 
+    
+    NSRect cellRect = [self.tableView frameOfCellAtColumn:columnIndex row:rowIndexes.firstIndex];
+    [popover showRelativeToRect:cellRect ofView:self.tableView preferredEdge:NSMaxYEdge];
+}
+
 - (void)removeObjectLinksAtRows:(NSIndexSet *)rowIndexes column:(NSInteger)columnIndex
 {
     [self removeContentsAtRows:rowIndexes column:columnIndex];

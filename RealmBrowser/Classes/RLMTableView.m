@@ -41,6 +41,7 @@ const NSInteger NOT_A_COLUMN = -1;
     NSMenuItem *deleteRowItem;
     NSMenuItem *insertIntoArrayItem;
     
+    NSMenuItem *setLinkToObjectItem;
     NSMenuItem *removeLinkToObjectItem;
     NSMenuItem *removeLinkToArrayItem;
     
@@ -119,6 +120,11 @@ const NSInteger NOT_A_COLUMN = -1;
     insertIntoArrayItem.tag = 212;
     
     // Operations on links in cells
+    setLinkToObjectItem = [[NSMenuItem alloc] initWithTitle:@"Add link to object"
+                                                     action:@selector(setObjectLinkAction:)
+                                              keyEquivalent:@""];
+    setLinkToObjectItem.tag = 217;
+    
     removeLinkToObjectItem= [[NSMenuItem alloc] initWithTitle:@"Remove link to object"
                                                        action:@selector(removeObjectLinksAction:)
                                                 keyEquivalent:@""];
@@ -160,6 +166,10 @@ const NSInteger NOT_A_COLUMN = -1;
     
     if (self.realmDelegate.displaysArray) {
         [self.menu addItem:insertIntoArrayItem];
+    }
+    
+    if (actualColumn && [self.realmDelegate isColumnObjectType:self.clickedColumn]) {
+        [self.menu addItem:setLinkToObjectItem];
     }
     
     if (self.selectedRowIndexes.count == 0) {
@@ -351,6 +361,14 @@ const NSInteger NOT_A_COLUMN = -1;
 {
     if (self.realmDelegate.displaysArray && !self.realmDelegate.realmIsLocked) {
         [self.realmDelegate addNewRows:self.selectedRowIndexes];
+    }
+}
+
+// Set object links in the clicked column to [NSNull null] at the selected rows
+- (IBAction)setObjectLinkAction:(id)sender
+{
+    if (!self.realmDelegate.realmIsLocked) {
+        [self.realmDelegate setObjectLinkAtRows:self.selectedRowIndexes column:self.clickedColumn];
     }
 }
 

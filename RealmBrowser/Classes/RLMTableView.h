@@ -48,6 +48,8 @@ typedef struct {
 
 - (BOOL)displaysArray;
 
+- (BOOL)isColumnObjectType:(NSInteger)column;
+
 // Asking the delegate about the contents
 - (BOOL)containsObjectInRows:(NSIndexSet *)rowIndexes column:(NSInteger)column;
 
@@ -66,6 +68,8 @@ typedef struct {
 - (void)addNewRows:(NSIndexSet *)rowIndexes;
 
 // Operations on links in cells
+- (void)setObjectLinkAtRows:(NSIndexSet *)rowIndexes column:(NSInteger)columnIndex;
+
 - (void)removeObjectLinksAtRows:(NSIndexSet *)rowIndexes column:(NSInteger)columnIndex;
 
 - (void)removeArrayLinksAtRows:(NSIndexSet *)rowIndexes column:(NSInteger)columnIndex;
