@@ -25,6 +25,9 @@
     if (self.displayedType != nil) {
         self.displayedType = self.displayedType;
     }
+    if (self.didSelectedBlock != nil) {
+        self.didSelectedBlock = self.didSelectedBlock;
+    }
 }
 
 - (void)setDisplayedType:(RLMTypeNode *)newNode {
@@ -32,6 +35,13 @@
     if (self.isViewLoaded) {
         RLMNavigationState *state = [[RLMNavigationState alloc] initWithSelectedType:_displayedType index:0];
         [self.tableController performUpdateUsingState:state oldState:nil];
+    }
+}
+
+- (void)setDidSelectedBlock:(void (^)(RLMObject *))didSelectedBlock {
+    _didSelectedBlock = didSelectedBlock;
+    if (self.isViewLoaded) {
+        self.tableController.didSelectedBlock = didSelectedBlock;
     }
 }
 

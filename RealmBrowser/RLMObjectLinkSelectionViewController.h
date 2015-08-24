@@ -9,9 +9,11 @@
 #import <Cocoa/Cocoa.h>
 
 @class RLMTypeNode;
+@class RLMObject;
 
 @interface RLMObjectLinkSelectionViewController : NSViewController
 
+@property (nonatomic, copy) void(^didSelectedBlock)(RLMObject *rowObject);
 @property (nonatomic, strong) RLMTypeNode *displayedType;
 
 + (instancetype)loadInstance;

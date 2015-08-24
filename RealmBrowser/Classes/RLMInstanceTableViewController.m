@@ -478,6 +478,34 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     popover.contentViewController = popoverContent;
     popover.behavior = NSPopoverBehaviorTransient;
     
+    NSArray *topLevelClasses = self.parentWindowController.modelDocument.presentedRealm.topLevelClasses;
+    
+    RLMObject *selectedInstance = [self.displayedType instanceAtIndex:rowIndexes.firstIndex];
+    NSInteger propertyIndex = [self propertyIndexForColumn:columnIndex];
+    
+    RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
+    RLMObjectSchema *objectSchema = [realm.schema schemaForClassName:self.displayedType.name];
+    RLMProperty *property = objectSchema.properties[propertyIndex];
+    
+    for (RLMClassNode *classNode in topLevelClasses) {
+        if ([classNode.name isEqualToString:property.objectClassName]) {
+            [popoverContent setDisplayedType:classNode];
+        }
+    }
+    
+    __weak typeof(self) weakSelf = self;
+    __weak typeof(popover) weakPopover = popover;
+    
+    popoverContent.didSelectedBlock = ^(RLMObject *object) {
+        RLMRealm *realm = weakSelf.parentWindowController.modelDocument.presentedRealm.realm;
+        [realm beginWriteTransaction];
+        
+        selectedInstance[property.name] = object;
+        
+        [realm commitWriteTransaction];
+        [weakPopover close];
+    };
+    
     NSRect cellRect = [self.tableView frameOfCellAtColumn:columnIndex row:rowIndexes.firstIndex];
     [popover showRelativeToRect:cellRect ofView:self.tableView preferredEdge:NSMaxYEdge];
 }
