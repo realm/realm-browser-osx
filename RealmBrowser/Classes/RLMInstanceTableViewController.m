@@ -269,6 +269,11 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     if (self.tableView == notification.object) {
         NSInteger selectedIndex = self.tableView.selectedRow;
         [self.parentWindowController.currentState updateSelectionToIndex:selectedIndex];
+        
+        if (self.didSelectedBlock != nil) {
+            RLMObject *selectedInstance = [self.displayedType instanceAtIndex:selectedIndex];
+            self.didSelectedBlock(selectedInstance);
+        }
     }
 }
 
