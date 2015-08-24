@@ -21,6 +21,7 @@
 @import Realm.Private;
 
 #import "RLMRealmBrowserWindowController.h"
+#import "RLMObjectLinkSelectionViewController.h"
 #import "RLMArrayNavigationState.h"
 #import "RLMQueryNavigationState.h"
 #import "RLMArrayNode.h"
@@ -472,8 +473,10 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 // Operations on links in cells
 
 - (void)setObjectLinkAtRows:(NSIndexSet *)rowIndexes column:(NSInteger)columnIndex {
+    RLMObjectLinkSelectionViewController *popoverContent = [RLMObjectLinkSelectionViewController loadInstance];
     NSPopover *popover = [[NSPopover alloc] init];
-    popover.contentViewController = [[NSViewController alloc] init];//todo 
+    popover.contentViewController = popoverContent;
+    popover.behavior = NSPopoverBehaviorTransient;
     
     NSRect cellRect = [self.tableView frameOfCellAtColumn:columnIndex row:rowIndexes.firstIndex];
     [popover showRelativeToRect:cellRect ofView:self.tableView preferredEdge:NSMaxYEdge];
