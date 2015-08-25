@@ -31,6 +31,10 @@ NSString * const kRealmKeyIsLockedForRealm = @"LockedRealm:%@";
 NSString * const kRealmKeyWindowFrameForRealm = @"WindowFrameForRealm:%@";
 NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
+@interface RLMRealm ()
+- (BOOL)compact;
+@end
+
 @interface RLMRealmBrowserWindowController()<NSWindowDelegate>
 
 @property (atomic, weak) IBOutlet NSSplitView *splitView;
@@ -110,7 +114,32 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
         if (result == NSFileHandlingPanelOKButton)
         {
             NSURL *fileURL = [panel URL];
-            [self.modelDocument.presentedRealm.realm writeCopyToPath:fileURL.path error:nil];
+            
+            //Ensure a file with the same name doesn't already exist
+            BOOL directory = NO;
+            NSError *error = nil;
+            if ([[NSFileManager defaultManager] fileExistsAtPath:fileURL.path isDirectory:&directory] && !directory) {
+                [[NSFileManager defaultManager] removeItemAtPath:fileURL.path error:&error];
+                if (error) {
+                    [NSApp presentError:error];
+                    return;
+                }
+            }
+            
+            [self.modelDocument.presentedRealm.realm writeCopyToPath:fileURL.path error:&error];
+            if (error) {
+                [NSApp presentError:error];
+                return;
+            }
+            
+            @autoreleasepool {
+                RLMRealm *newRealm = [RLMRealm realmWithPath:fileURL.path key:nil readOnly:NO inMemory:NO dynamic:YES schema:nil error:&error];
+                if (error) {
+                    [NSApp presentError:error];
+                    return;
+                }
+               [newRealm compact];
+            }
         }
     }];
 }
