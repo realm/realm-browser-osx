@@ -33,7 +33,7 @@
 - (void)setDisplayedType:(RLMTypeNode *)newNode {
     _displayedType = newNode;
     if (self.isViewLoaded) {
-        RLMNavigationState *state = [[RLMNavigationState alloc] initWithSelectedType:_displayedType index:0];
+        RLMNavigationState *state = [[RLMNavigationState alloc] initWithSelectedType:_displayedType index:NSNotFound];
         [self.tableController performUpdateUsingState:state oldState:nil];
     }
 }

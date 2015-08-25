@@ -114,7 +114,10 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     if ([newState isMemberOfClass:[RLMNavigationState class]]) {
         self.displayedType = newState.selectedType;
         [self.realmTableView setupColumnsWithType:newState.selectedType];
-        [self setSelectionIndex:newState.selectedInstanceIndex];
+        
+        if (newState.selectedInstanceIndex != NSNotFound) {
+            [self setSelectionIndex:newState.selectedInstanceIndex];
+        }
     }
     else if ([newState isMemberOfClass:[RLMArrayNavigationState class]]) {
         RLMArrayNavigationState *arrayState = (RLMArrayNavigationState *)newState;
