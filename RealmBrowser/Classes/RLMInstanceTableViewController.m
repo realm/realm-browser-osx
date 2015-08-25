@@ -21,6 +21,7 @@
 @import Realm.Private;
 
 #import "RLMRealmBrowserWindowController.h"
+#import "RLMObjectLinkSelectionViewController.h"
 #import "RLMArrayNavigationState.h"
 #import "RLMQueryNavigationState.h"
 #import "RLMArrayNode.h"
@@ -113,7 +114,10 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     if ([newState isMemberOfClass:[RLMNavigationState class]]) {
         self.displayedType = newState.selectedType;
         [self.realmTableView setupColumnsWithType:newState.selectedType];
-        [self setSelectionIndex:newState.selectedInstanceIndex];
+        
+        if (newState.selectedInstanceIndex != NSNotFound) {
+            [self setSelectionIndex:newState.selectedInstanceIndex];
+        }
     }
     else if ([newState isMemberOfClass:[RLMArrayNavigationState class]]) {
         RLMArrayNavigationState *arrayState = (RLMArrayNavigationState *)newState;
@@ -269,6 +273,11 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     if (self.tableView == notification.object) {
         NSInteger selectedIndex = self.tableView.selectedRow;
         [self.parentWindowController.currentState updateSelectionToIndex:selectedIndex];
+        
+        if (self.didSelectedBlock != nil) {
+            RLMObject *selectedInstance = [self.displayedType instanceAtIndex:selectedIndex];
+            self.didSelectedBlock(selectedInstance);
+        }
     }
 }
 
@@ -383,6 +392,12 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     return ([self.displayedType isMemberOfClass:[RLMArrayNode class]]);
 }
 
+- (BOOL)isColumnObjectType:(NSInteger)column;
+{
+    NSAssert(column != NOT_A_COLUMN, @"This method can only be used with an actual column index");
+    return [self propertyTypeForColumn:column] == RLMPropertyTypeObject;
+}
+
 // Asking the delegate about the contents
 - (BOOL)containsObjectInRows:(NSIndexSet *)rowIndexes column:(NSInteger)column;
 {
@@ -459,6 +474,45 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 }
 
 // Operations on links in cells
+
+- (void)setObjectLinkAtRows:(NSIndexSet *)rowIndexes column:(NSInteger)columnIndex {
+    RLMObjectLinkSelectionViewController *popoverContent = [RLMObjectLinkSelectionViewController loadInstance];
+    NSPopover *popover = [[NSPopover alloc] init];
+    popover.contentViewController = popoverContent;
+    popover.behavior = NSPopoverBehaviorTransient;
+    
+    NSArray *topLevelClasses = self.parentWindowController.modelDocument.presentedRealm.topLevelClasses;
+    
+    RLMObject *selectedInstance = [self.displayedType instanceAtIndex:rowIndexes.firstIndex];
+    NSInteger propertyIndex = [self propertyIndexForColumn:columnIndex];
+    
+    RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
+    RLMObjectSchema *objectSchema = [realm.schema schemaForClassName:self.displayedType.name];
+    RLMProperty *property = objectSchema.properties[propertyIndex];
+    
+    for (RLMClassNode *classNode in topLevelClasses) {
+        if ([classNode.name isEqualToString:property.objectClassName]) {
+            [popoverContent setDisplayedType:classNode];
+        }
+    }
+    
+    __weak typeof(self) weakSelf = self;
+    __weak typeof(popover) weakPopover = popover;
+    
+    popoverContent.didSelectedBlock = ^(RLMObject *object) {
+        RLMRealm *realm = weakSelf.parentWindowController.modelDocument.presentedRealm.realm;
+        [realm beginWriteTransaction];
+        
+        selectedInstance[property.name] = object;
+        
+        [realm commitWriteTransaction];
+        [weakPopover close];
+    };
+    
+    NSRect cellRect = [self.tableView frameOfCellAtColumn:columnIndex row:rowIndexes.firstIndex];
+    [popover showRelativeToRect:cellRect ofView:self.tableView preferredEdge:NSMaxYEdge];
+}
+
 - (void)removeObjectLinksAtRows:(NSIndexSet *)rowIndexes column:(NSInteger)columnIndex
 {
     [self removeContentsAtRows:rowIndexes column:columnIndex];
