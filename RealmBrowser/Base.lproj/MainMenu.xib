@@ -143,10 +143,6 @@ CA
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="Qmi-Y4-sb2"/>
-                            <menuItem title="Cut" keyEquivalent="x" id="om2-rn-d7T"/>
-                            <menuItem title="Copy" keyEquivalent="c" id="pD6-aG-gTP"/>
-                            <menuItem title="Paste" keyEquivalent="v" id="3bq-iy-Sad"/>
-                            <menuItem isSeparatorItem="YES" id="rE6-ne-fLw"/>
                             <menuItem title="Remove Object From Array" tag="110" id="XeB-wT-76a">
                                 <string key="keyEquivalent" base64-UTF8="YES">
 CA
