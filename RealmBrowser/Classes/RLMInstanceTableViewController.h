@@ -32,6 +32,8 @@
 @property (nonatomic) BOOL realmIsLocked;
 @property (nonatomic) BOOL displaysArray;
 
+@property (nonatomic, copy) void(^didSelectedBlock)(RLMObject *rowObject);
+
 - (void)removeRowsInTableViewAt:(NSIndexSet *)rowIndexes;
 - (void)deleteRowsInTableViewAt:(NSIndexSet *)rowIndexes;
 - (void)insertNewRowsInTableViewAt:(NSIndexSet *)rowIndexes;
