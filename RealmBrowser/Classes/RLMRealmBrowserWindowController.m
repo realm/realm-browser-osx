@@ -19,6 +19,7 @@
 #import "RLMRealmBrowserWindowController.h"
 #import "RLMNavigationStack.h"
 #import "RLMModelExporter.h"
+#import "RLMExportIndicatorWindowController.h"
 @import Realm;
 @import Realm.Private;
 
@@ -41,6 +42,8 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 @property (nonatomic, strong) IBOutlet NSSegmentedControl *navigationButtons;
 @property (atomic, weak) IBOutlet NSToolbarItem *lockRealmButton;
 @property (nonatomic, strong) IBOutlet NSSearchField *searchField;
+
+@property (nonatomic, strong) RLMExportIndicatorWindowController *exportWindowController;
 
 @end
 
@@ -111,37 +114,72 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     NSSavePanel *panel = [NSSavePanel savePanel];
     [panel setNameFieldStringValue:fileName];
     [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
-        if (result == NSFileHandlingPanelOKButton)
-        {
+        if (result != NSFileHandlingPanelOKButton)
+            return;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
             NSURL *fileURL = [panel URL];
-            
-            //Ensure a file with the same name doesn't already exist
-            BOOL directory = NO;
-            NSError *error = nil;
-            if ([[NSFileManager defaultManager] fileExistsAtPath:fileURL.path isDirectory:&directory] && !directory) {
-                [[NSFileManager defaultManager] removeItemAtPath:fileURL.path error:&error];
-                if (error) {
-                    [NSApp presentError:error];
-                    return;
-                }
-            }
-            
-            [self.modelDocument.presentedRealm.realm writeCopyToPath:fileURL.path error:&error];
-            if (error) {
+            [self exportAndCompactCopyOfRealmFileAtURL:fileURL];
+        });
+    }];
+}
+
+- (void)exportAndCompactCopyOfRealmFileAtURL:(NSURL *)realmFileURL
+{
+    NSError *error = nil;
+    
+    //Check that this won't end up overwriting the original file
+    if ([realmFileURL.path.lowercaseString isEqualToString:self.modelDocument.presentedRealm.realm.path.lowercaseString]) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        alert.messageText = @"You cannot overwrite the original Realm file.";
+        alert.informativeText = @"Please choose a different location in which to save this Realm file.";
+        [alert runModal];
+        return;
+    }
+    
+    //Ensure a file with the same name doesn't already exist
+    BOOL directory = NO;
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:realmFileURL.path isDirectory:&directory] && !directory) {
+        [[NSFileManager defaultManager] removeItemAtPath:realmFileURL.path error:&error];
+        if (error) {
+            [NSApp presentError:error];
+            return;
+        }
+    }
+    
+    //Display an 'exporting' progress indicator
+    self.exportWindowController = [[RLMExportIndicatorWindowController alloc] init];
+    [self.window beginSheet:self.exportWindowController.window completionHandler:nil];
+    
+    //Perform the export/compact operations on a background thread as they can potentially be time-consuming
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSError *error = nil;
+        [self.modelDocument.presentedRealm.realm writeCopyToPath:realmFileURL.path error:&error];
+        if (error) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self.window endSheet:self.exportWindowController.window];
                 [NSApp presentError:error];
+            });
+            return;
+        }
+        
+        @autoreleasepool {
+            RLMRealm *newRealm = [RLMRealm realmWithPath:realmFileURL.path key:nil readOnly:NO inMemory:NO dynamic:YES schema:nil error:&error];
+            if (error) {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    [self.window endSheet:self.exportWindowController.window];
+                    [NSApp presentError:error];
+                });
                 return;
             }
-            
-            @autoreleasepool {
-                RLMRealm *newRealm = [RLMRealm realmWithPath:fileURL.path key:nil readOnly:NO inMemory:NO dynamic:YES schema:nil error:&error];
-                if (error) {
-                    [NSApp presentError:error];
-                    return;
-                }
-               [newRealm compact];
-            }
+            [newRealm compact];
         }
-    }];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.window endSheet:self.exportWindowController.window];
+        });
+    });
 }
 
 #pragma mark - Public methods - User Actions
