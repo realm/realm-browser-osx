@@ -112,7 +112,8 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 {
     NSString *fileName = [self.modelDocument.presentedRealm.realm.path lastPathComponent];
     NSSavePanel *panel = [NSSavePanel savePanel];
-    [panel setNameFieldStringValue:fileName];
+    panel.canCreateDirectories = YES;
+    panel.nameFieldStringValue = fileName;
     [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
         if (result != NSFileHandlingPanelOKButton)
             return;
