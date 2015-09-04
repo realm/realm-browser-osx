@@ -26,8 +26,8 @@
 }
 
 // The standard rowSizeStyle does some specific layout for us. To customize layout for our button, we first call super and then modify things
-- (void)viewWillDraw {
-    [super viewWillDraw];
+- (void)layout {
+    [super layout];
     
     if (![self.button isHidden]) {
         [self.button sizeToFit];
