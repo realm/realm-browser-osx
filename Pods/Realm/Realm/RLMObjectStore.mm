@@ -21,6 +21,7 @@
 #import "RLMAccessor.h"
 #import "RLMArray_Private.hpp"
 #import "RLMListBase.h"
+#import "RLMObservation.hpp"
 #import "RLMObject_Private.hpp"
 #import "RLMObjectSchema_Private.hpp"
 #import "RLMProperty_Private.h"
@@ -134,7 +135,7 @@ static bool RLMRealmHasAllTables(RLMRealm *realm, RLMSchema *targetSchema) {
     return true;
 }
 
-void RLMUpdateRealmToSchemaVersion(RLMRealm *realm, NSUInteger newVersion, RLMSchema *targetSchema, NSError *(^migrationBlock)()) {
+void RLMUpdateRealmToSchemaVersion(RLMRealm *realm, uint64_t newVersion, RLMSchema *targetSchema, NSError *(^migrationBlock)()) {
     ObjectStore::Schema schema;
     for (RLMObjectSchema *objectSchema in targetSchema.objectSchema) {
         schema.push_back(objectSchema.objectStoreCopy);
@@ -209,7 +210,9 @@ void RLMInitializeSwiftListAccessor(__unsafe_unretained RLMObjectBase *const obj
         if (prop.type == RLMPropertyTypeArray) {
             RLMArray *array = [RLMArrayLinkView arrayWithObjectClassName:prop.objectClassName
                                                                     view:object->_row.get_linklist(prop.column)
-                                                                   realm:object->_realm];
+                                                                   realm:object->_realm
+                                                                     key:prop.name
+                                                            parentSchema:object->_objectSchema];
             [RLMObjectUtilClass(YES) initializeListProperty:object property:prop array:array];
         }
     }
@@ -265,10 +268,20 @@ void RLMAddObjectToRealm(__unsafe_unretained RLMObjectBase *const object,
         // for differing realms users must explicitly create the object in the second realm
         @throw RLMException(@"Object is already persisted in a Realm");
     }
+    if (object->_observationInfo && object->_observationInfo->hasObservers()) {
+        @throw RLMException(@"Cannot add an object with observers to a Realm");
+    }
 
     // set the realm and schema
     NSString *objectClassName = object->_objectSchema.className;
-    RLMObjectSchema *schema = realm.schema[objectClassName];
+    RLMObjectSchema *schema = [realm.schema schemaForClassName:objectClassName];
+    if (!schema) {
+        NSString *message = [NSString stringWithFormat:@"Object type '%@' is not persisted in the Realm. "
+                                  @"If using a custom `objectClasses` / `obejctTypes` array in your configuration, "
+                                  @"add `%@` to the list of `objectClasses` / `objectTypes`.",
+                                  objectClassName, objectClassName];
+        @throw RLMException(message);
+    }
     object->_objectSchema = schema;
     object->_realm = realm;
 
@@ -445,7 +458,14 @@ RLMObjectBase *RLMCreateObjectInRealmWithValue(RLMRealm *realm, NSString *classN
 
     // create the object
     RLMSchema *schema = realm.schema;
-    RLMObjectSchema *objectSchema = schema[className];
+    RLMObjectSchema *objectSchema = [realm.schema schemaForClassName:className];
+    if (!objectSchema) {
+        NSString *message = [NSString stringWithFormat:@"Object type '%@' is not persisted in the Realm. "
+                             @"If using a custom `objectClasses` / `obejctTypes` array in your configuration, "
+                             @"add `%@` to the list of `objectClasses` / `objectTypes`.",
+                             className, className];
+        @throw RLMException(message);
+    }
     RLMObjectBase *object = [[objectSchema.accessorClass alloc] initWithRealm:realm schema:objectSchema];
 
     RLMCreationOptions creationOptions = createOrUpdate ? RLMCreationOptionsCreateOrUpdate : RLMCreationOptionsNone;
@@ -519,7 +539,9 @@ void RLMDeleteObjectFromRealm(__unsafe_unretained RLMObjectBase *const object,
 
     // move last row to row we are deleting
     if (object->_row.is_attached()) {
-        object->_row.get_table()->move_last_over(object->_row.get_index());
+        RLMTrackDeletions(realm, ^{
+            object->_row.get_table()->move_last_over(object->_row.get_index());
+        });
     }
 
     // set realm to nil
@@ -531,7 +553,7 @@ void RLMDeleteAllObjectsFromRealm(RLMRealm *realm) {
 
     // clear table for each object schema
     for (RLMObjectSchema *objectSchema in realm.schema.objectSchema) {
-        objectSchema.table->clear();
+        RLMClearTable(objectSchema);
     }
 }
 

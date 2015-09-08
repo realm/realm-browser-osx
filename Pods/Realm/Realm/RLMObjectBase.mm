@@ -19,13 +19,14 @@
 #import "RLMObject_Private.hpp"
 
 #import "RLMAccessor.h"
+#import "RLMArray_Private.hpp"
+#import "RLMListBase.h"
 #import "RLMObjectSchema_Private.hpp"
+#import "RLMObjectStore.h"
+#import "RLMObservation.hpp"
 #import "RLMProperty_Private.h"
 #import "RLMRealm_Private.hpp"
 #import "RLMSchema_Private.h"
-#import "RLMArray_Private.hpp"
-
-#import "RLMObjectStore.h"
 #import "RLMSwiftSupport.h"
 #import "RLMUtil.hpp"
 
@@ -34,13 +35,10 @@ using namespace realm;
 const NSUInteger RLMDescriptionMaxDepth = 5;
 
 @implementation RLMObjectBase
-
 // standalone init
 - (instancetype)init {
     self = [super init];
-    if (self && RLMSchema.sharedSchema) {
-        _objectSchema = [self.class sharedSchema];
-
+    if (self && (_objectSchema = [self.class sharedSchema])) {
         // set default values
         if (!_objectSchema.isSwiftClass) {
             NSDictionary *dict = RLMDefaultValuesForObjectSchema(_objectSchema);
@@ -70,7 +68,7 @@ static id RLMValidatedObjectForProperty(id obj, RLMProperty *prop, RLMSchema *sc
     else if (prop.type == RLMPropertyTypeArray && [obj conformsToProtocol:@protocol(NSFastEnumeration)]) {
         // for arrays, create objects for each element and return new array
         RLMObjectSchema *objSchema = schema[prop.objectClassName];
-        RLMArray *objects = [[RLMArray alloc] initWithObjectClassName: objSchema.className standalone:YES];
+        RLMArray *objects = [[RLMArray alloc] initWithObjectClassName:objSchema.className];
         for (id el in obj) {
             [objects addObject:[[objSchema.objectClass alloc] initWithValue:el schema:schema]];
         }
@@ -123,6 +121,33 @@ static id RLMValidatedObjectForProperty(id obj, RLMProperty *prop, RLMSchema *sc
         _objectSchema = schema;
     }
     return self;
+}
+
+- (id)valueForKey:(NSString *)key {
+    if (_observationInfo) {
+        return _observationInfo->valueForKey(key);
+    }
+    return [super valueForKey:key];
+}
+
+// List<> properties can't be dynamic, so KVO doesn't work for them by default
+- (id)valueForUndefinedKey:(NSString *)key {
+    if (Ivar ivar = _objectSchema[key].swiftListIvar) {
+        return object_getIvar(self, ivar);
+    }
+    return [super valueForUndefinedKey:key];
+}
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key {
+    if (Ivar ivar = _objectSchema[key].swiftListIvar) {
+        if ([value conformsToProtocol:@protocol(NSFastEnumeration)]) {
+            RLMArray *array = [object_getIvar(self, ivar) _rlmArray];
+            [array removeAllObjects];
+            [array addObjects:value];
+        }
+        return;
+    }
+    [super setValue:value forUndefinedKey:key];
 }
 
 // overridden at runtime per-class for performance
@@ -182,6 +207,14 @@ static id RLMValidatedObjectForProperty(id obj, RLMProperty *prop, RLMSchema *sc
     return [NSString stringWithString:mString];
 }
 
+- (RLMRealm *)realm {
+    return _realm;
+}
+
+- (RLMObjectSchema *)objectSchema {
+    return _objectSchema;
+}
+
 - (BOOL)isInvalidated {
     // if not standalone and our accessor has been detached, we have been deleted
     return self.class == _objectSchema.accessorClass && !_row.is_attached();
@@ -212,13 +245,44 @@ static id RLMValidatedObjectForProperty(id obj, RLMProperty *prop, RLMSchema *sc
     }
 }
 
-+ (BOOL)shouldPersistToRealm {
++ (BOOL)shouldIncludeInDefaultSchema {
     return RLMIsObjectSubclass(self);
 }
 
+- (id)mutableArrayValueForKey:(NSString *)key {
+    id obj = [self valueForKey:key];
+    if ([obj isKindOfClass:[RLMArray class]]) {
+        return obj;
+    }
+    return [super mutableArrayValueForKey:key];
+}
+
+- (void)addObserver:(id)observer
+         forKeyPath:(NSString *)keyPath
+            options:(NSKeyValueObservingOptions)options
+            context:(void *)context {
+    if (!_observationInfo) {
+        _observationInfo = std::make_unique<RLMObservationInfo>(self);
+    }
+    _observationInfo->recordObserver(_row, _objectSchema, keyPath);
+
+    [super addObserver:observer forKeyPath:keyPath options:options context:context];
+}
+
+- (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath {
+    [super removeObserver:observer forKeyPath:keyPath];
+    _observationInfo->removeObserver();
+}
+
+- (void *)observationInfo {
+    return _observationInfo ? _observationInfo->kvoInfo : nullptr;
+}
+
+- (void)setObservationInfo:(void *)observationInfo {
+    _observationInfo->kvoInfo = observationInfo;
+}
+
 @end
-
-
 
 void RLMObjectBaseSetRealm(__unsafe_unretained RLMObjectBase *object, __unsafe_unretained RLMRealm *realm) {
     if (object) {
@@ -284,7 +348,7 @@ id RLMObjectBaseObjectForKeyedSubscript(RLMObjectBase *object, NSString *key) {
     }
 
     if (object->_realm) {
-        return RLMDynamicGet(object, key);
+        return RLMDynamicGet(object, RLMValidatedGetProperty(object, key));
     }
     else {
         return [object valueForKey:key];
@@ -327,8 +391,8 @@ BOOL RLMObjectBaseAreEqual(RLMObjectBase *o1, RLMObjectBase *o2) {
         return NO;
     }
     // if table and index are the same
-    return o1->_row.get_table() == o2->_row.get_table() &&
-    o1->_row.get_index() == o2->_row.get_index();
+    return o1->_row.get_table() == o2->_row.get_table()
+        && o1->_row.get_index() == o2->_row.get_index();
 }
 
 id RLMValidatedValueForProperty(id object, NSString *key, NSString *className) {

@@ -18,11 +18,11 @@
 
 #import "RLMResults_Private.h"
 
-
 #import "RLMArray_Private.hpp"
-#import "RLMObject_Private.hpp"
+#import "RLMObservation.hpp"
 #import "RLMObjectSchema_Private.hpp"
 #import "RLMObjectStore.h"
+#import "RLMObject_Private.hpp"
 #import "RLMQueryUtil.hpp"
 #import "RLMRealm_Private.hpp"
 #import "RLMSchema_Private.h"
@@ -30,9 +30,105 @@
 
 #import <objc/runtime.h>
 #import <realm/table_view.hpp>
-#import <realm/views.hpp>
 
 using namespace realm;
+
+static const int RLMEnumerationBufferSize = 16;
+
+@implementation RLMFastEnumerator {
+    // The buffer supplied by fast enumeration does not retain the objects given
+    // to it, but because we create objects on-demand and don't want them
+    // autoreleased (a table can have more rows than the device has memory for
+    // accessor objects) we need a thing to retain them.
+    id _strongBuffer[RLMEnumerationBufferSize];
+
+    RLMRealm *_realm;
+    RLMObjectSchema *_objectSchema;
+
+    // Collection being enumerated. Only one of these two will be valid: when
+    // possible we enumerate the collection directly, but when in a write
+    // transaction we instead create a frozen TableView and enumerate that
+    // instead so that mutating the collection during enumeration works.
+    id<RLMFastEnumerable> _collection;
+    realm::TableView _tableView;
+}
+
+- (instancetype)initWithCollection:(id<RLMFastEnumerable>)collection objectSchema:(RLMObjectSchema *)objectSchema {
+    self = [super init];
+    if (self) {
+        _realm = collection.realm;
+        _objectSchema = objectSchema;
+
+        if (_realm.inWriteTransaction) {
+            _tableView = [collection tableView];
+        }
+        else {
+            _collection = collection;
+            [_realm registerEnumerator:self];
+        }
+    }
+    return self;
+}
+
+- (void)dealloc {
+    if (_collection) {
+        [_realm unregisterEnumerator:self];
+    }
+}
+
+- (void)detach {
+    _tableView = [_collection tableView];
+    _collection = nil;
+}
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
+                                    count:(NSUInteger)len {
+    RLMCheckThread(_realm);
+    if (!_tableView.is_attached() && !_collection) {
+        @throw RLMException(@"Collection is no longer valid");
+    }
+    // The fast enumeration buffer size is currently a hardcoded number in the
+    // compiler so this can't actually happen, but just in case it changes in
+    // the future...
+    if (len > RLMEnumerationBufferSize) {
+        len = RLMEnumerationBufferSize;
+    }
+
+    NSUInteger batchCount = 0, count = state->extra[1];
+
+    Class accessorClass = _objectSchema.accessorClass;
+    for (NSUInteger index = state->state; index < count && batchCount < len; ++index) {
+        size_t row = _collection ? [_collection indexInSource:index] : _tableView.get_source_ndx(index);
+
+        RLMObject *accessor = [[accessorClass alloc] initWithRealm:_realm schema:_objectSchema];
+        accessor->_row = (*_objectSchema.table)[row];
+        _strongBuffer[batchCount] = accessor;
+        batchCount++;
+    }
+
+    for (NSUInteger i = batchCount; i < len; ++i) {
+        _strongBuffer[i] = nil;
+    }
+
+    if (batchCount == 0) {
+        // Release our data if we're done, as we're autoreleased and so may
+        // stick around for a while
+        _collection = nil;
+        if (_tableView.is_attached()) {
+            _tableView = TableView();
+        }
+        else {
+            [_realm unregisterEnumerator:self];
+        }
+    }
+
+    state->itemsPtr = (__unsafe_unretained id *)(void *)_strongBuffer;
+    state->state += batchCount;
+    state->mutationsPtr = state->extra+1;
+
+    return batchCount;
+}
+@end
 
 //
 // RLMResults implementation
@@ -41,7 +137,7 @@ using namespace realm;
     std::unique_ptr<realm::Query> _backingQuery;
     realm::TableView _backingView;
     BOOL _viewCreated;
-    RowIndexes::Sorter _sortOrder;
+    RLMSortOrder _sortOrder;
 
 @protected
     RLMRealm *_realm;
@@ -56,18 +152,18 @@ using namespace realm;
 + (instancetype)resultsWithObjectClassName:(NSString *)objectClassName
                                      query:(std::unique_ptr<realm::Query>)query
                                      realm:(RLMRealm *)realm {
-    return [self resultsWithObjectClassName:objectClassName query:move(query) sort:RowIndexes::Sorter{} realm:realm];
+    return [self resultsWithObjectClassName:objectClassName query:move(query) sort:{} realm:realm];
 }
 
 + (instancetype)resultsWithObjectClassName:(NSString *)objectClassName
                                      query:(std::unique_ptr<realm::Query>)query
-                                      sort:(RowIndexes::Sorter const&)sorter
+                                      sort:(RLMSortOrder)sorter
                                      realm:(RLMRealm *)realm {
     RLMResults *ar = [[self alloc] initPrivate];
     ar->_objectClassName = objectClassName;
     ar->_viewCreated = NO;
     ar->_backingQuery = move(query);
-    ar->_sortOrder = sorter;
+    ar->_sortOrder = std::move(sorter);
     ar->_realm = realm;
     ar->_objectSchema = realm.schema[objectClassName];
     return ar;
@@ -102,8 +198,8 @@ static inline void RLMResultsValidateAttached(__unsafe_unretained RLMResults *co
         // create backing view if needed
         ar->_backingView = ar->_backingQuery->find_all();
         ar->_viewCreated = YES;
-        if (!ar->_sortOrder.m_column_indexes.empty()) {
-            ar->_backingView.sort(ar->_sortOrder.m_column_indexes, ar->_sortOrder.m_ascending);
+        if (ar->_sortOrder) {
+            ar->_backingView.sort(ar->_sortOrder.columnIndices, ar->_sortOrder.ascending);
         }
     }
     // otherwise we're backed by a table and don't need to update anything
@@ -122,14 +218,6 @@ static inline void RLMResultsValidateInWriteTransaction(__unsafe_unretained RLMR
     }
 }
 
-static RowIndexes::Sorter RLMSorterFromDescriptors(RLMObjectSchema *schema, NSArray *descriptors)
-{
-    std::vector<size_t> columns;
-    std::vector<bool> order;
-    RLMGetColumnIndices(schema, descriptors, columns, order);
-    return RowIndexes::Sorter(columns, order);
-}
-
 //
 // public method implementations
 //
@@ -145,47 +233,21 @@ static RowIndexes::Sorter RLMSorterFromDescriptors(RLMObjectSchema *schema, NSAr
 }
 
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
-                                  objects:(__unsafe_unretained id [])buffer
+                                  objects:(__unused __unsafe_unretained id [])buffer
                                     count:(NSUInteger)len {
-    RLMResultsValidate(self);
-
-    __autoreleasing RLMCArrayHolder *items;
+    __autoreleasing RLMFastEnumerator *enumerator;
     if (state->state == 0) {
-        items = [[RLMCArrayHolder alloc] initWithSize:len];
-        state->extra[0] = (long)items;
+        RLMResultsValidate(self);
+
+        enumerator = [[RLMFastEnumerator alloc] initWithCollection:self objectSchema:_objectSchema];
+        state->extra[0] = (long)enumerator;
         state->extra[1] = self.count;
     }
     else {
-        // FIXME: mutationsPtr should be pointing to a value updated by core
-        // whenever the results are changed rather than doing this check
-        if (state->extra[1] != self.count) {
-            @throw RLMException(@"Collection was mutated while being enumerated.");
-        }
-        items = (__bridge id)(void *)state->extra[0];
-        [items resize:len];
+        enumerator = (__bridge id)(void *)state->extra[0];
     }
 
-    NSUInteger batchCount = 0, index = state->state, count = state->extra[1];
-
-    Class accessorClass = _objectSchema.accessorClass;
-    while (index < count && batchCount < len) {
-        // get acessor fot the object class
-        RLMObject *accessor = [[accessorClass alloc] initWithRealm:_realm schema:_objectSchema];
-        accessor->_row = (*_objectSchema.table)[[self indexInSource:index++]];
-        items->array[batchCount] = accessor;
-        buffer[batchCount] = accessor;
-        batchCount++;
-    }
-
-    for (NSUInteger i = batchCount; i < len; ++i) {
-        items->array[i] = nil;
-    }
-
-    state->itemsPtr = buffer;
-    state->state = index;
-    state->mutationsPtr = state->extra+1;
-
-    return batchCount;
+    return [enumerator countByEnumeratingWithState:state count:len];
 }
 
 - (NSUInteger)indexOfObjectWhere:(NSString *)predicateFormat, ... {
@@ -246,35 +308,28 @@ static RowIndexes::Sorter RLMSorterFromDescriptors(RLMObjectSchema *schema, NSAr
     if (object.invalidated) {
         @throw RLMException(@"RLMObject is no longer valid");
     }
-
-    // check that object types align
-    if (object->_row.get_table() != &_backingView.get_parent()) {
-        @throw RLMException(@"Object type does not match RLMResults");
-    }
-
-    size_t object_ndx = object->_row.get_index();
-    size_t result = _backingView.find_by_source_ndx(object_ndx);
-    if (result == realm::not_found) {
+    if (!object->_row) {
         return NSNotFound;
     }
 
-    return result;
+    // check that object types align
+    if (object->_row.get_table() != &_backingView.get_parent()) {
+        NSString *message = [NSString stringWithFormat:@"Object type '%@' does not match RLMResults type '%@'.", object->_objectSchema.className, _objectClassName];
+        @throw RLMException(message);
+    }
+
+    size_t object_ndx = object->_row.get_index();
+    return RLMConvertNotFound(_backingView.find_by_source_ndx(object_ndx));
 }
 
 - (id)valueForKey:(NSString *)key {
     RLMResultsValidate(self);
-    const size_t size = _backingView.size();
-    return RLMCollectionValueForKey(key, _realm, _objectSchema, size, ^size_t(size_t index) {
-        return _backingView.get_source_ndx(index);
-    });
+    return RLMCollectionValueForKey(self, key);
 }
 
 - (void)setValue:(id)value forKey:(NSString *)key {
     RLMResultsValidateInWriteTransaction(self);
-    const size_t size = _backingView.size();
-    RLMCollectionSetValueForKey(value, key, _realm, _objectSchema, size, ^size_t(size_t index) {
-        return _backingView.get_source_ndx(index);
-    });
+    RLMCollectionSetValueForKey(self, key, value);
 }
 
 - (RLMResults *)objectsWhere:(NSString *)predicateFormat, ... {
@@ -308,8 +363,10 @@ static RowIndexes::Sorter RLMSorterFromDescriptors(RLMObjectSchema *schema, NSAr
     RLMCheckThread(_realm);
 
     auto query = [self cloneQuery];
-    auto sorter = RLMSorterFromDescriptors(_objectSchema, properties);
-    return [RLMResults resultsWithObjectClassName:self.objectClassName query:move(query) sort:sorter realm:_realm];
+    return [RLMResults resultsWithObjectClassName:self.objectClassName
+                                            query:move(query)
+                                             sort:RLMSortOrderFromDescriptors(_objectSchema, properties)
+                                            realm:_realm];
 }
 
 - (id)objectAtIndexedSubscript:(NSUInteger)index {
@@ -439,8 +496,10 @@ static NSNumber *averageOfProperty(TableType const& table, RLMRealm *realm, NSSt
 - (void)deleteObjectsFromRealm {
     RLMResultsValidateInWriteTransaction(self);
 
-    // call clear to remove all from the realm
-    _backingView.clear();
+    RLMTrackDeletions(_realm, ^{
+        // call clear to remove all from the realm
+        _backingView.clear();
+    });
 }
 
 - (NSString *)description {
@@ -483,6 +542,12 @@ static NSNumber *averageOfProperty(TableType const& table, RLMRealm *realm, NSSt
     return _backingView.get_source_ndx(index);
 }
 
+- (realm::TableView)tableView {
+    RLMResultsValidateAttached(self);
+    // note: deliberately copies it
+    return _backingView;
+}
+
 @end
 
 @implementation RLMTableResults {
@@ -502,31 +567,19 @@ static NSNumber *averageOfProperty(TableType const& table, RLMRealm *realm, NSSt
     return _table->size();
 }
 
-- (id)valueForKey:(NSString *)key {
-    RLMResultsValidate(self);
-    const size_t size = _table->size();
-    return RLMCollectionValueForKey(key, _realm, _objectSchema, size, ^size_t(size_t index) {
-        return index;
-    });
-}
-
-- (void)setValue:(id)value forKey:(NSString *)key {
-    RLMResultsValidateInWriteTransaction(self);
-    const size_t size = _table->size();
-    RLMCollectionSetValueForKey(value, key, _realm, _objectSchema, size, ^size_t(size_t index) {
-        return index;
-    });
-}
-
 - (NSUInteger)indexOfObject:(RLMObject *)object {
     RLMCheckThread(_realm);
     if (object.invalidated) {
         @throw RLMException(@"RLMObject is no longer valid");
     }
+    if (!object->_row) {
+        return NSNotFound;
+    }
 
     // check that object types align
     if (object->_row.get_table() != _table) {
-        @throw RLMException(@"Object type does not match RLMResults");
+        NSString *message = [NSString stringWithFormat:@"Object type '%@' does not match RLMResults type '%@'.", object->_objectSchema.className, _objectClassName];
+        @throw RLMException(message);
     }
 
     return RLMConvertNotFound(object->_row.get_index());
@@ -562,7 +615,7 @@ static NSNumber *averageOfProperty(TableType const& table, RLMRealm *realm, NSSt
 
 - (void)deleteObjectsFromRealm {
     RLMResultsValidateInWriteTransaction(self);
-    _table->clear();
+    RLMClearTable(self.objectSchema);
 }
 
 - (std::unique_ptr<Query>)cloneQuery {
@@ -571,6 +624,10 @@ static NSNumber *averageOfProperty(TableType const& table, RLMRealm *realm, NSSt
 
 - (NSUInteger)indexInSource:(NSUInteger)index {
     return index;
+}
+
+- (realm::TableView)tableView {
+    return _table->where().find_all();
 }
 @end
 

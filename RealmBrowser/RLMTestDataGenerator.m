@@ -35,7 +35,10 @@ const NSUInteger kMaxItemsInTestArray = 12;
 +(BOOL)createRealmAtUrl:(NSURL *)url withClassesNamed:(NSArray *)classNames objectCount:(NSUInteger)objectCount
 {
     NSError *error;
-    RLMRealm *realm = [RLMRealm realmWithPath:url.path readOnly:NO error:&error];
+    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+    configuration.path = url.path;
+    configuration.readOnly = NO;
+    RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:&error];
     
     if (error) {
         [[NSApplication sharedApplication] presentError:error];

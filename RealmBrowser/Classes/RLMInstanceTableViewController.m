@@ -19,6 +19,7 @@
 #import "RLMInstanceTableViewController.h"
 @import Foundation;
 @import Realm.Private;
+@import Realm.Dynamic;
 
 #import "RLMRealmBrowserWindowController.h"
 #import "RLMObjectLinkSelectionViewController.h"
