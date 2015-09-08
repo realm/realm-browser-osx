@@ -21,10 +21,6 @@
 #  define REALM_MAX_BPNODE_SIZE 1000
 #endif
 
-#if 1
-#  define REALM_ENABLE_REPLICATION 1
-#endif
-
 #if 0
 #  define REALM_ENABLE_ALLOC_SET_ZERO 1
 #endif

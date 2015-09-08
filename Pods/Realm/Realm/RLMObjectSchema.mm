@@ -139,12 +139,12 @@ using namespace realm;
         if (prop.optional && !RLMPropertyTypeIsNullable(type)) {
 #ifdef REALM_ENABLE_NULL
             NSString *error = [NSString stringWithFormat:@"Only 'string', 'binary', and 'object' properties can be made optional, and property '%@' is of type '%@'.", prop.name, RLMTypeToString(type)];
-#else
-            NSString *error = [NSString stringWithFormat:@"Only 'object' properties can be made optional, and property '%@' is of type '%@'.", prop.name, RLMTypeToString(type)];
-#endif
             if (prop.type == RLMPropertyTypeAny && isSwift) {
                 error = [error stringByAppendingString:@"\nIf this is a 'String?' property, it must be declared as 'NSString?' instead."];
             }
+#else
+            NSString *error = [NSString stringWithFormat:@"Only 'object' properties can be made optional, and property '%@' is of type '%@'.", prop.name, RLMTypeToString(type)];
+#endif
             @throw RLMException(error);
         }
     }
@@ -208,8 +208,11 @@ using namespace realm;
 
     if (NSArray *optionalProperties = [objectUtil getOptionalPropertyNames:swiftObjectInstance]) {
         for (RLMProperty *property in propArray) {
-            property.optional = [optionalProperties containsObject:property.name] ||
-                                property.type == RLMPropertyTypeObject; // remove if/when core supports required link columns
+            property.optional = [optionalProperties containsObject:property.name];
+            if (!property.optional && property.type == RLMPropertyTypeObject) { // remove if/when core supports required link columns
+                NSString *message = [NSString stringWithFormat:@"The `%@.%@` property must be marked as being optional.", [objectClass className], property.name];
+                @throw RLMException(message);
+            }
         }
     }
     if (NSArray *requiredProperties = [objectUtil requiredPropertiesForClass:objectClass]) {

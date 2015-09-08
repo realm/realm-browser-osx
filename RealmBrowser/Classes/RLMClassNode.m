@@ -19,6 +19,7 @@
 #import "RLMClassNode.h"
 
 @import Realm.Private;
+@import Realm.Dynamic;
 
 #import "RLMObjectNode.h"
 #import "RLMArrayNode.h"
