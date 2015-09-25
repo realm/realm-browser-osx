@@ -22,6 +22,7 @@
 #import "RLMExportIndicatorWindowController.h"
 @import Realm;
 @import Realm.Private;
+@import Realm.Dynamic;
 
 NSString * const kRealmLockedImage = @"RealmLocked";
 NSString * const kRealmUnlockedImage = @"RealmUnlocked";

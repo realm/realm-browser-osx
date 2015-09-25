@@ -20,6 +20,7 @@
 
 @import Realm;
 @import Realm.Private;
+@import Realm.Dynamic;
 
 #import "RLMSidebarTableCellView.h"
 #import "NSColor+ByteSizeFactory.h"
