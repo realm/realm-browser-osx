@@ -103,11 +103,6 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="WZk-W9-hhB"/>
-                            <menuItem title="Export Copy..." keyEquivalent="S" id="hoM-YX-5ZD">
-                                <connections>
-                                    <action selector="saveCopy:" target="-1" id="nGj-bK-5Sr"/>
-                                </connections>
-                            </menuItem>
                             <menuItem title="Save Model Definitions" id="AC9-MV-vQr">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Save Model Definitions" id="YSO-b8-a2a">
@@ -126,6 +121,11 @@
                                         </menuItem>
                                     </items>
                                 </menu>
+                            </menuItem>
+                            <menuItem title="Export Copy..." keyEquivalent="S" id="hoM-YX-5ZD">
+                                <connections>
+                                    <action selector="saveCopy:" target="-1" id="nGj-bK-5Sr"/>
+                                </connections>
                             </menuItem>
                         </items>
                     </menu>
