@@ -28,6 +28,7 @@
 
 @interface RLMDocument ()
 
+@property (nonatomic, assign, readwrite) BOOL potentiallyEncrypted;
 @property (nonatomic, strong) NSURL *securityScopedURL;
 @property (nonatomic) RLMNotificationToken *changeNotificationToken;
 
@@ -37,20 +38,22 @@
 
 - (instancetype)initWithContentsOfURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError **)outError
 {
+    __block BOOL success = NO;
+    
     if (self = [super init]) {
         if (![[typeName lowercaseString] isEqualToString:@"documenttype"]) {
-            return self;
+            return nil;
         }
         
         NSFileManager *fileManager = [NSFileManager defaultManager];
         if (![fileManager fileExistsAtPath:absoluteURL.path]) {
-            return self;
+            return nil;
         }
         NSString *lastComponent = [absoluteURL lastPathComponent];
         NSString *extension = [absoluteURL pathExtension];
         
         if (![[extension lowercaseString] isEqualToString:@"realm"]) {
-            return self;
+            return nil;
         }
         
         NSURL *folderURL = absoluteURL;
@@ -65,19 +68,35 @@
         }];
         
         if (self.securityScopedURL == nil)
-            return self;
+            return nil;
         
         NSArray *fileNameComponents = [lastComponent componentsSeparatedByString:@"."];
         NSString *realmName = [fileNameComponents firstObject];
         
         RLMRealmNode *realmNode = [[RLMRealmNode alloc] initWithName:realmName url:absoluteURL.path];
-        RLMDocument *ws = self;
+        __block __weak RLMDocument *ws = self;
+        
+        self.fileURL = absoluteURL;
         
         dispatch_sync(dispatch_get_main_queue(), ^{
             [self.securityScopedURL startAccessingSecurityScopedResource];
             
             NSError *error;
-            if ([realmNode connect:&error]) {
+            if ([realmNode connect:&error] || error.code == 2) {
+                if (error) {
+                    NSAlert *encryptionAlert = [[NSAlert alloc] init];
+                    encryptionAlert.messageText = [NSString stringWithFormat:@"'%@' could not be opened. It may be encrypted, or it isn't in a compatible file format.", realmName];
+                    encryptionAlert.informativeText = @"If you know the file is encrypted, you can manually enter its encryption key to open it.";
+                    [encryptionAlert addButtonWithTitle:@"Close"];
+                    [encryptionAlert addButtonWithTitle:@"Enter Encryption Key"];
+                    
+                    if ([encryptionAlert runModal] != NSAlertSecondButtonReturn) {
+                        return;
+                    }
+                    
+                    ws.potentiallyEncrypted = YES;
+                }
+                    
                 ws.presentedRealm  = realmNode;
                 
                 ws.changeNotificationToken = [realmNode.realm addNotificationBlock:^(NSString *notification, RLMRealm *realm) {
@@ -92,6 +111,8 @@
                 for (RLMRealmBrowserWindowController *windowController in ws.windowControllers) {
                     [windowController realmDidLoad];
                 }
+                
+                success = YES;
             }
             else if (error) {
                 [[NSApplication sharedApplication] presentError:error];
@@ -99,7 +120,7 @@
         });
     }
     
-    return self;
+    return success ? self : nil;
 }
 
 - (id)initForURL:(NSURL *)urlOrNil withContentsOfURL:(NSURL *)contentsURL ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError
@@ -118,7 +139,6 @@
 {
     RLMRealmBrowserWindowController *windowController = [[RLMRealmBrowserWindowController alloc] initWithWindowNibName:self.windowNibName];
     windowController.modelDocument = self;
-    
     [self addWindowController:windowController];
 }
 
@@ -129,7 +149,7 @@
 
 #pragma mark - Public methods - NSDocument overrides - Loading Document Data
 
-+(BOOL)canConcurrentlyReadDocumentsOfType:(NSString *)typeName
++ (BOOL)canConcurrentlyReadDocumentsOfType:(NSString *)typeName
 {
     return YES;
 }

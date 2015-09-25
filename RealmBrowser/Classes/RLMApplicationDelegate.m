@@ -41,6 +41,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
 
 @property (nonatomic, weak) IBOutlet NSMenu *fileMenu;
 @property (nonatomic, weak) IBOutlet NSMenuItem *openMenuItem;
+@property (nonatomic, weak) IBOutlet NSMenuItem *openEncryptedMenuItem;
 @property (nonatomic, weak) IBOutlet NSMenu *openAnyRealmMenu;
 
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;

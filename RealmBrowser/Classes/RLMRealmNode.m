@@ -45,7 +45,7 @@
 {
     NSError *localError;
     _realm = [RLMRealm realmWithPath:_url
-                                 key:nil
+                                 key:self.encryptionKey
                             readOnly:NO
                             inMemory:NO
                              dynamic:YES
@@ -70,6 +70,16 @@
 - (void)addTable:(RLMClassNode *)table
 {
 
+}
+
+- (void)setEncryptionKey:(NSData *)encryptionKey
+{
+    if (encryptionKey == _encryptionKey)
+        return;
+    
+    _realm = nil;
+    _encryptionKey = encryptionKey;
+    [self connect:nil];
 }
 
 #pragma mark - RLMRealmOutlineNode implementation
