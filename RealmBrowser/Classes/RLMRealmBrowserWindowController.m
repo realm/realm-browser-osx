@@ -17,9 +17,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #import "RLMRealmBrowserWindowController.h"
-#import "RLMEncryptionKeyWindowController.h"
 #import "RLMNavigationStack.h"
 #import "RLMModelExporter.h"
+#import "RLMExportIndicatorWindowController.h"
 @import Realm;
 @import Realm.Private;
 @import Realm.Dynamic;
@@ -33,6 +33,10 @@ NSString * const kRealmKeyIsLockedForRealm = @"LockedRealm:%@";
 NSString * const kRealmKeyWindowFrameForRealm = @"WindowFrameForRealm:%@";
 NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
+@interface RLMRealm ()
+- (BOOL)compact;
+@end
+
 @interface RLMRealmBrowserWindowController()<NSWindowDelegate>
 
 @property (atomic, weak) IBOutlet NSSplitView *splitView;
@@ -40,10 +44,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 @property (atomic, weak) IBOutlet NSToolbarItem *lockRealmButton;
 @property (nonatomic, strong) IBOutlet NSSearchField *searchField;
 
-@property (nonatomic, strong) RLMEncryptionKeyWindowController *encryptionController;
-@property (nonatomic, strong) NSData *encryptionKey;
-
-- (void)handleEncryptionKeyPrompt;
+@property (nonatomic, strong) RLMExportIndicatorWindowController *exportWindowController;
 
 @end
 
@@ -57,19 +58,10 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 {
     navigationStack = [[RLMNavigationStack alloc] init];
     self.window.alphaValue = 0.0;
-    
+
     if (self.modelDocument.presentedRealm) {
         // if already loaded
         [self realmDidLoad];
-    }
-}
-
-- (IBAction)showWindow:(id)sender
-{
-    [super showWindow:sender];
- 
-    if (self.modelDocument.potentiallyEncrypted) {
-        [self handleEncryptionKeyPrompt];
     }
 }
 
@@ -115,6 +107,81 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 {
     NSArray *objectSchemas = self.modelDocument.presentedRealm.realm.schema.objectSchema;
     [RLMModelExporter saveModelsForSchemas:objectSchemas inLanguage:RLMModelExporterLanguageObjectiveC];
+}
+
+- (IBAction)saveCopy:(id)sender
+{
+    NSString *fileName = [self.modelDocument.presentedRealm.realm.path lastPathComponent];
+    NSSavePanel *panel = [NSSavePanel savePanel];
+    panel.canCreateDirectories = YES;
+    panel.nameFieldStringValue = fileName;
+    [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
+        if (result != NSFileHandlingPanelOKButton)
+            return;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSURL *fileURL = [panel URL];
+            [self exportAndCompactCopyOfRealmFileAtURL:fileURL];
+        });
+    }];
+}
+
+- (void)exportAndCompactCopyOfRealmFileAtURL:(NSURL *)realmFileURL
+{
+    NSError *error = nil;
+    
+    //Check that this won't end up overwriting the original file
+    if ([realmFileURL.path.lowercaseString isEqualToString:self.modelDocument.presentedRealm.realm.path.lowercaseString]) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        alert.messageText = @"You cannot overwrite the original Realm file.";
+        alert.informativeText = @"Please choose a different location in which to save this Realm file.";
+        [alert runModal];
+        return;
+    }
+    
+    //Ensure a file with the same name doesn't already exist
+    BOOL directory = NO;
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:realmFileURL.path isDirectory:&directory] && !directory) {
+        [[NSFileManager defaultManager] removeItemAtPath:realmFileURL.path error:&error];
+        if (error) {
+            [NSApp presentError:error];
+            return;
+        }
+    }
+    
+    //Display an 'exporting' progress indicator
+    self.exportWindowController = [[RLMExportIndicatorWindowController alloc] init];
+    [self.window beginSheet:self.exportWindowController.window completionHandler:nil];
+    
+    //Perform the export/compact operations on a background thread as they can potentially be time-consuming
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSError *error = nil;
+        [self.modelDocument.presentedRealm.realm writeCopyToPath:realmFileURL.path error:&error];
+        if (error) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self.window endSheet:self.exportWindowController.window];
+                [NSApp presentError:error];
+            });
+            return;
+        }
+        
+        @autoreleasepool {
+            RLMRealm *newRealm = [RLMRealm realmWithPath:realmFileURL.path key:nil readOnly:NO inMemory:NO dynamic:YES schema:nil error:&error];
+            if (error) {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    [self.window endSheet:self.exportWindowController.window];
+                    [NSApp presentError:error];
+                });
+                return;
+            }
+            [newRealm compact];
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.window endSheet:self.exportWindowController.window];
+        });
+    });
 }
 
 #pragma mark - Public methods - User Actions
@@ -380,19 +447,5 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     [self.navigationButtons setEnabled:[navigationStack canNavigateForward] forSegment:1];
 }
 
-- (void)handleEncryptionKeyPrompt
-{
-    self.encryptionController = [[RLMEncryptionKeyWindowController alloc] initWithRealmFilePath:self.modelDocument.fileURL];
-    [self.window beginSheet:self.encryptionController.window completionHandler:^(NSModalResponse returnCode){
-        if (returnCode != NSModalResponseOK) {
-            [self.document close];
-            return;
-        }
-        
-        self.encryptionKey = self.encryptionController.encryptionKey;
-        self.modelDocument.presentedRealm.encryptionKey = self.encryptionKey;
-        [self realmDidLoad];
-    }];
-}
 
 @end
