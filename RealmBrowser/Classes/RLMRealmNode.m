@@ -42,6 +42,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    _realm = nil;
+}
+
 - (BOOL)connect:(NSError **)error
 {
     NSError *localError;

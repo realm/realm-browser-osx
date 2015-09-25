@@ -130,7 +130,14 @@
 
 - (void)dealloc
 {
-    [self.securityScopedURL stopAccessingSecurityScopedResource];
+    [self.presentedRealm.realm removeNotification:self.changeNotificationToken];
+    self.presentedRealm = nil;
+    
+    //Release the sandbox rights on the next run-loop iteration
+    //as there are periodically some file operations in RLMRealm's destructor method
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [self.securityScopedURL stopAccessingSecurityScopedResource];
+    });
 }
 
 #pragma mark - Public methods - NSDocument overrides - Creating and Managing Window Controllers
