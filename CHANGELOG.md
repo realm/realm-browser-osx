@@ -1,7 +1,7 @@
 x.x.x Release notes (yyyy-MM-dd)
 =============================================================
 Enhancements:
-* Updated to Realm 0.95
+* Updated to Realm 0.95.2
 * Add the ability to set child Realm objects in parent objects.
 * Export compressed copies of Realm files.
 * Open encrypted Realm files.
