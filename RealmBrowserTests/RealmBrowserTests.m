@@ -19,6 +19,7 @@
 @import XCTest;
 @import Realm;
 @import Realm.Private;
+@import Realm.Dynamic;
 #import "RLMTestObjects.h"
 #import "RLMTestDataGenerator.h"
 #import "RLMRealmNode.h"

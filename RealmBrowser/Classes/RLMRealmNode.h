@@ -27,6 +27,8 @@
 @property (nonatomic, readonly) NSString *url;
 @property (nonatomic, readonly) NSArray *topLevelClasses;
 
+@property (nonatomic, strong) NSData *encryptionKey;
+
 - (instancetype)initWithName:(NSString *)name url:(NSString *)url;
 
 - (BOOL)connect:(NSError **)error;

@@ -19,9 +19,10 @@
 #import "RLMUtil.hpp"
 
 #import "RLMArray_Private.hpp"
+#import "RLMListBase.h"
 #import "RLMObjectSchema_Private.hpp"
-#import "RLMObject_Private.hpp"
 #import "RLMObjectStore.h"
+#import "RLMObject_Private.hpp"
 #import "RLMProperty_Private.h"
 #import "RLMSchema_Private.h"
 #import "RLMSwiftSupport.h"
@@ -148,6 +149,9 @@ BOOL RLMIsObjectValidForProperty(__unsafe_unretained id const obj,
             if (RLMArray *array = RLMDynamicCast<RLMArray>(obj)) {
                 return [array.objectClassName isEqualToString:property.objectClassName];
             }
+            if (RLMListBase *list = RLMDynamicCast<RLMListBase>(obj)) {
+                return [list._rlmArray.objectClassName isEqualToString:property.objectClassName];
+            }
             if (NSArray *array = RLMDynamicCast<NSArray>(obj)) {
                 // check each element for compliance
                 for (id el in array) {
@@ -188,16 +192,19 @@ NSDictionary *RLMDefaultValuesForObjectSchema(__unsafe_unretained RLMObjectSchem
     return defaults;
 }
 
-NSArray *RLMCollectionValueForKey(NSString *key, RLMRealm *realm, RLMObjectSchema *objectSchema, size_t count, size_t (^indexGenerator)(size_t)) {
+NSArray *RLMCollectionValueForKey(id<RLMFastEnumerable> collection, NSString *key) {
+    size_t count = collection.count;
     if (count == 0) {
         return @[];
     }
 
-    NSMutableArray *results = [NSMutableArray arrayWithCapacity:count];
+    RLMRealm *realm = collection.realm;
+    RLMObjectSchema *objectSchema = collection.objectSchema;
 
+    NSMutableArray *results = [NSMutableArray arrayWithCapacity:count];
     if ([key isEqualToString:@"self"]) {
         for (size_t i = 0; i < count; i++) {
-            size_t rowIndex = indexGenerator(i);
+            size_t rowIndex = [collection indexInSource:i];
             [results addObject:RLMCreateObjectAccessor(realm, objectSchema, rowIndex) ?: NSNull.null];
         }
         return results;
@@ -206,7 +213,7 @@ NSArray *RLMCollectionValueForKey(NSString *key, RLMRealm *realm, RLMObjectSchem
     RLMObjectBase *accessor = [[objectSchema.accessorClass alloc] initWithRealm:realm schema:objectSchema];
     realm::Table *table = objectSchema.table;
     for (size_t i = 0; i < count; i++) {
-        size_t rowIndex = indexGenerator(i);
+        size_t rowIndex = [collection indexInSource:i];
         accessor->_row = (*table)[rowIndex];
         RLMInitializeSwiftListAccessor(accessor);
         [results addObject:[accessor valueForKey:key] ?: NSNull.null];
@@ -215,14 +222,18 @@ NSArray *RLMCollectionValueForKey(NSString *key, RLMRealm *realm, RLMObjectSchem
     return results;
 }
 
-void RLMCollectionSetValueForKey(id value, NSString *key, RLMRealm *realm, RLMObjectSchema *objectSchema, size_t count, size_t (^indexGenerator)(size_t)) {
+void RLMCollectionSetValueForKey(id<RLMFastEnumerable> collection, NSString *key, id value) {
+    size_t count = collection.count;
     if (count == 0) {
         return;
     }
+
+    RLMRealm *realm = collection.realm;
+    RLMObjectSchema *objectSchema = collection.objectSchema;
     RLMObjectBase *accessor = [[objectSchema.accessorClass alloc] initWithRealm:realm schema:objectSchema];
     realm::Table *table = objectSchema.table;
     for (size_t i = 0; i < count; i++) {
-        size_t rowIndex = indexGenerator(i);
+        size_t rowIndex = [collection indexInSource:i];
         accessor->_row = (*table)[rowIndex];
         RLMInitializeSwiftListAccessor(accessor);
         [accessor setValue:value forKey:key];

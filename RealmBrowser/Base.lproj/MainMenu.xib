@@ -147,7 +147,7 @@ CA
                                     <action selector="addObjectsAction:" target="-1" id="rvy-Ho-ulx"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="rE6-ne-fLw"/>
+                            <menuItem isSeparatorItem="YES" id="Qmi-Y4-sb2"/>
                             <menuItem title="Remove Object From Array" tag="110" id="XeB-wT-76a">
                                 <string key="keyEquivalent" base64-UTF8="YES">
 CA

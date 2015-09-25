@@ -25,9 +25,15 @@
     [[self.button cell] setBezelStyle:NSInlineBezelStyle];
 }
 
-// The standard rowSizeStyle does some specific layout for us. To customize layout for our button, we first call super and then modify things
-- (void)viewWillDraw {
+- (void)viewWillDraw
+{
     [super viewWillDraw];
+    [self setNeedsLayout:YES];
+}
+
+// The standard rowSizeStyle does some specific layout for us. To customize layout for our button, we first call super and then modify things
+- (void)layout {
+    [super layout];
     
     if (![self.button isHidden]) {
         [self.button sizeToFit];
