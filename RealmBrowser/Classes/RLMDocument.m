@@ -131,12 +131,17 @@
 - (void)dealloc
 {
     [self.presentedRealm.realm removeNotification:self.changeNotificationToken];
-    self.presentedRealm = nil;
     
-    //Release the sandbox rights on the next run-loop iteration
-    //as there are periodically some file operations in RLMRealm's destructor method
-    dispatch_sync(dispatch_get_main_queue(), ^{
-        [self.securityScopedURL stopAccessingSecurityScopedResource];
+    //In certain instances, RLMRealm's C++ destructor method will attempt to clean up
+    //specific auxillary files belonging to this realm file.
+    //If the destructor call occurs after the sandbox scope has been released here, and it attempts to delete
+    //any files, RLMRealm will throw an exception.
+    //Mac OS X apps only have a finite number of sandbox handles allocated at once, so while it's not necessary
+    //to release the sandbox scope straight away, it is still necessary. As such, this will release the handle a minute
+    //after closing the document
+    NSURL *scopedURL = self.securityScopedURL;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(60 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [scopedURL stopAccessingSecurityScopedResource];
     });
 }
 
