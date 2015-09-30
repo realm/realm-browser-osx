@@ -14,5 +14,8 @@ The main design goals of Realm Browser are:
 * Be able to modify the contents of .realm files without needing to use code.
 * Make it easier to automatically generate Realm Object source files.
 
+## Contributing
+See [CONTRIBUTING.md](CONTRIBUTING.md) for more details!
+
 ## License
 The source code to Realm Browser is licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
