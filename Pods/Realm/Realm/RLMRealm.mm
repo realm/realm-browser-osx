@@ -190,6 +190,11 @@ void RLMRealmAddPathSettingsToConfiguration(RLMRealmConfiguration *configuration
     NSData *_encryptionKey;
 }
 
+- (BOOL)isEmpty
+{
+    return realm::ObjectStore::is_empty(self.group);
+}
+
 + (BOOL)isCoreDebug {
     return realm::Version::has_feature(realm::feature_Debug);
 }
@@ -240,8 +245,7 @@ void RLMRealmAddPathSettingsToConfiguration(RLMRealmConfiguration *configuration
             NSString *mode = readonly ? @"read" : @"read-write";
             NSString *additionalMessage = [NSString stringWithFormat:@"Unable to open a realm at path '%@'. Please use a path where your app has %@ permissions.", path, mode];
             NSString *newMessage = [NSString stringWithFormat:@"%s\n%@", ex.what(), additionalMessage];
-            error = RLMMakeError(RLMErrorFilePermissionDenied,
-                                     File::PermissionDenied(newMessage.UTF8String));
+            error = RLMMakeError(RLMErrorFilePermissionDenied, File::PermissionDenied(newMessage.UTF8String, ex.get_path()));
         }
         catch (File::Exists const& ex) {
             error = RLMMakeError(RLMErrorFileExists, ex);
@@ -596,6 +600,10 @@ static void CheckReadWrite(RLMRealm *realm, NSString *msg=@"Cannot write to a re
 }
 
 - (void)commitWriteTransaction {
+    [self commitWriteTransaction:nil];
+}
+
+- (BOOL)commitWriteTransaction:(NSError **)outError {
     CheckReadWrite(self);
     RLMCheckThread(self);
 
@@ -608,24 +616,30 @@ static void CheckReadWrite(RLMRealm *realm, NSString *msg=@"Cannot write to a re
 
             // notify other realm instances of changes
             [self.notifier notifyOtherRealms];
-
-            // send local notification
-            [self sendNotifications:RLMRealmDidChangeNotification];
         }
         catch (std::exception& ex) {
-            @throw RLMException(ex);
+            RLMSetErrorOrThrow(RLMMakeError(RLMErrorFail, ex), outError);
+            return NO;
         }
+        // send local notification
+        [self sendNotifications:RLMRealmDidChangeNotification];
     } else {
-       @throw RLMException(@"Can't commit a non-existing write transaction");
+        @throw RLMException(@"Can't commit a non-existing write transaction");
     }
+    return YES;
 }
 
 - (void)transactionWithBlock:(void(^)(void))block {
+    [self transactionWithBlock:block error:nil];
+}
+
+- (BOOL)transactionWithBlock:(void(^)(void))block error:(NSError **)outError {
     [self beginWriteTransaction];
     block();
     if (_inWriteTransaction) {
-        [self commitWriteTransaction];
+        return [self commitWriteTransaction:outError];
     }
+    return YES;
 }
 
 - (void)cancelWriteTransaction {
@@ -937,9 +951,11 @@ void RLMRealmSetSchemaVersionForPath(uint64_t version, NSString *path, RLMMigrat
     if (error)
         return error;
 
-    @try {
+    try {
         RLMUpdateRealmToSchemaVersion(realm, schemaVersionForPath(realmPath), configuration.customSchema ?: [RLMSchema.sharedSchema copy], [realm migrationBlock:configuration.migrationBlock key:key]);
-    } @catch (NSException *ex) {
+    } catch (std::exception const& ex) {
+        return RLMMakeError(RLMErrorFail, ex);
+    } catch (NSException *ex) {
         return RLMMakeError(ex);
     }
     return nil;

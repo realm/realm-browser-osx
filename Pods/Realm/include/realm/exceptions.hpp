@@ -31,7 +31,7 @@ namespace realm {
 /// exist.
 class NoSuchTable: public std::exception {
 public:
-    const char* what() const REALM_NOEXCEPT_OR_NOTHROW override;
+    const char* what() const noexcept override;
 };
 
 
@@ -39,7 +39,7 @@ public:
 /// already in use.
 class TableNameInUse: public std::exception {
 public:
-    const char* what() const REALM_NOEXCEPT_OR_NOTHROW override;
+    const char* what() const noexcept override;
 };
 
 
@@ -47,7 +47,7 @@ public:
 // columns, unless those link columns are part of the table itself.
 class CrossTableLinkTarget: public std::exception {
 public:
-    const char* what() const REALM_NOEXCEPT_OR_NOTHROW override;
+    const char* what() const noexcept override;
 };
 
 
@@ -55,7 +55,19 @@ public:
 /// does not match a particular other table type (dynamic or static).
 class DescriptorMismatch: public std::exception {
 public:
-    const char* what() const REALM_NOEXCEPT_OR_NOTHROW override;
+    const char* what() const noexcept override;
+};
+
+
+/// The \c FileFormatUpgradeRequired exception can be thrown by the \c
+/// SharedGroup constructor when opening a database that uses a deprecated file
+/// format, and the user has indicated he does not want automatic upgrades to
+/// be performed. This exception indicates that until an upgrade of the file
+/// format is performed, the database will be unavailable for read or write
+/// operations.
+class FileFormatUpgradeRequired: public std::exception {
+public:
+    const char* what() const noexcept override;
 };
 
 
@@ -101,7 +113,9 @@ public:
         table_index_out_of_range,
         row_index_out_of_range,
         column_index_out_of_range,
+        link_index_out_of_range,
         bad_version,
+        illegal_type,
 
         /// Indicates that an argument has a value that is illegal in combination
         /// with another argument, or with the state of an involved object.
@@ -111,8 +125,17 @@ public:
         /// called and the type of the primary key is not `type_Int`.
         type_mismatch,
 
-        /// Indicates that an involved table is of the wrong kind, i.e., if it is a
-        /// subtable, and the function requires a root table.
+        /// Indicates that two involved tables are not in the same group.
+        group_mismatch,
+
+        /// Indicates that an involved descriptor is of the wrong kind, i.e., if
+        /// it is a subtable descriptor, and the function requires a root table
+        /// descriptor.
+        wrong_kind_of_descriptor,
+
+        /// Indicates that an involved table is of the wrong kind, i.e., if it
+        /// is a subtable, and the function requires a root table, or if it is a
+        /// free-standing table, and the function requires a group-level table.
         wrong_kind_of_table,
 
         /// Indicates that an involved accessor is was detached, i.e., was not
@@ -155,8 +178,8 @@ public:
 
     LogicError(ErrorKind message);
 
-    const char* what() const REALM_NOEXCEPT_OR_NOTHROW override;
-    ErrorKind kind() const REALM_NOEXCEPT_OR_NOTHROW;
+    const char* what() const noexcept override;
+    ErrorKind kind() const noexcept;
 private:
     ErrorKind m_kind;
 };
@@ -166,24 +189,29 @@ private:
 
 // Implementation:
 
-inline const char* NoSuchTable::what() const REALM_NOEXCEPT_OR_NOTHROW
+inline const char* NoSuchTable::what() const noexcept
 {
     return "No such table exists";
 }
 
-inline const char* TableNameInUse::what() const REALM_NOEXCEPT_OR_NOTHROW
+inline const char* TableNameInUse::what() const noexcept
 {
     return "The specified table name is already in use";
 }
 
-inline const char* CrossTableLinkTarget::what() const REALM_NOEXCEPT_OR_NOTHROW
+inline const char* CrossTableLinkTarget::what() const noexcept
 {
     return "Table is target of cross-table link columns";
 }
 
-inline const char* DescriptorMismatch::what() const REALM_NOEXCEPT_OR_NOTHROW
+inline const char* DescriptorMismatch::what() const noexcept
 {
     return "Table descriptor mismatch";
+}
+
+inline const char* FileFormatUpgradeRequired::what() const noexcept
+{
+    return "Database upgrade required but prohibited";
 }
 
 inline LogicError::LogicError(LogicError::ErrorKind kind):
@@ -191,7 +219,7 @@ inline LogicError::LogicError(LogicError::ErrorKind kind):
 {
 }
 
-inline LogicError::ErrorKind LogicError::kind() const REALM_NOEXCEPT_OR_NOTHROW
+inline LogicError::ErrorKind LogicError::kind() const noexcept
 {
     return m_kind;
 }

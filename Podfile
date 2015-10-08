@@ -8,4 +8,4 @@ xcodeproj 'RealmBrowser'
 link_with 'RealmBrowser', 'RealmBrowserTests'
 
 pod 'AppSandboxFileAccess'
-pod 'Realm'
+pod 'Realm', '~> 0.96.0-beta'
