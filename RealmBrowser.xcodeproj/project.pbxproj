@@ -903,7 +903,7 @@
 				);
 				INFOPLIST_FILE = "RealmBrowser/RealmBrowser-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = io.realm.realmbrowser;
 				PRODUCT_NAME = "Realm Browser";
@@ -933,7 +933,7 @@
 				);
 				INFOPLIST_FILE = "RealmBrowser/RealmBrowser-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = io.realm.realmbrowser;
 				PRODUCT_NAME = "Realm Browser";
