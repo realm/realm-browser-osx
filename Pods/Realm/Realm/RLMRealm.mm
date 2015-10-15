@@ -345,8 +345,12 @@ void RLMRealmAddPathSettingsToConfiguration(RLMRealmConfiguration *configuration
                         error:(NSError **)outError
 {
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-    configuration.path = path;
-    configuration.inMemoryIdentifier = inMemory ? path.lastPathComponent : nil;
+    if (inMemory) {
+        configuration.inMemoryIdentifier = path.lastPathComponent;
+    }
+    else {
+        configuration.path = path;
+    }
     configuration.encryptionKey = key;
     configuration.readOnly = readonly;
     configuration.dynamic = dynamic;
@@ -374,16 +378,7 @@ static id RLMAutorelease(id value) {
     RLMSchema *customSchema = configuration.customSchema;
     bool dynamic = configuration.dynamic;
     bool readOnly = configuration.readOnly;
-
-    if (!path || path.length == 0) {
-        @throw RLMException([NSString stringWithFormat:@"Path '%@' is not valid", path]);
-    }
-
-    if (![NSRunLoop currentRunLoop]) {
-        @throw RLMException([NSString stringWithFormat:@"%@ \
-                             can only be called from a thread with a runloop.",
-                             NSStringFromSelector(_cmd)]);
-    }
+    NSData *key = configuration.encryptionKey ?: keyForPath(path);
 
     // try to reuse existing realm first
     RLMRealm *realm = RLMGetThreadLocalCachedRealmForPath(path);
@@ -397,10 +392,12 @@ static id RLMAutorelease(id value) {
         if (realm->_dynamic != dynamic) {
             @throw RLMException(@"Realm at path already opened with different dynamic settings", @{@"path":realm.path});
         }
+        if (realm->_encryptionKey != key && (!key || ![realm->_encryptionKey isEqualToData:key])) {
+            @throw RLMException(@"Realm at path already opened with different encryption key", @{@"path":realm.path});
+        }
         return RLMAutorelease(realm);
     }
 
-    NSData *key = configuration.encryptionKey ?: keyForPath(path);
     realm = [[RLMRealm alloc] initWithPath:path key:key readOnly:readOnly inMemory:inMemory dynamic:dynamic error:error];
     if (error && *error) {
         return nil;
