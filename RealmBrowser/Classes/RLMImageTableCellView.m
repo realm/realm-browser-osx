@@ -20,9 +20,4 @@
 
 @implementation RLMImageTableCellView
 
-- (NSSize)sizeThatFits
-{
-    return NSMakeSize(30.0, 30.0);
-}
-
 @end
