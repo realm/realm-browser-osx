@@ -14,6 +14,8 @@
 		2249D9B219A62EBD00A31104 /* RLMTableColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 2249D9B119A62EBD00A31104 /* RLMTableColumn.m */; };
 		225443F519E3E6360045996B /* RLMTableHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 225443F419E3E6360045996B /* RLMTableHeaderCell.m */; };
 		22565D6719C1BCF400C8C8EC /* RLMLinkTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22565D6619C1BCF400C8C8EC /* RLMLinkTableCellView.m */; };
+		2257869E1BD563A00012436A /* RLMEncryptionKeyWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2257869D1BD563A00012436A /* RLMEncryptionKeyWindowController.m */; settings = {ASSET_TAGS = (); }; };
+		225786A11BD564F40012436A /* EncryptionKeyWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2257869F1BD564F40012436A /* EncryptionKeyWindow.xib */; settings = {ASSET_TAGS = (); }; };
 		225AAFEC19C09E520023B595 /* RLMTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 225AAFEB19C09E520023B595 /* RLMTextField.m */; };
 		227C7E6B1B4670C200BE2DB1 /* Pods.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = B4DD42CE427D384E8A7351A0 /* Pods.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		228D1F871A1CAD660028562A /* RLMResultsNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 228D1F861A1CAD660028562A /* RLMResultsNode.m */; };
@@ -105,6 +107,9 @@
 		225443F419E3E6360045996B /* RLMTableHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMTableHeaderCell.m; path = Classes/RLMTableHeaderCell.m; sourceTree = "<group>"; };
 		22565D6519C1BCF400C8C8EC /* RLMLinkTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMLinkTableCellView.h; path = Classes/RLMLinkTableCellView.h; sourceTree = "<group>"; };
 		22565D6619C1BCF400C8C8EC /* RLMLinkTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMLinkTableCellView.m; path = Classes/RLMLinkTableCellView.m; sourceTree = "<group>"; };
+		2257869C1BD563A00012436A /* RLMEncryptionKeyWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMEncryptionKeyWindowController.h; path = Classes/RLMEncryptionKeyWindowController.h; sourceTree = "<group>"; };
+		2257869D1BD563A00012436A /* RLMEncryptionKeyWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMEncryptionKeyWindowController.m; path = Classes/RLMEncryptionKeyWindowController.m; sourceTree = "<group>"; };
+		225786A01BD564F40012436A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EncryptionKeyWindow.xib; sourceTree = "<group>"; };
 		225AAFEA19C09E520023B595 /* RLMTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMTextField.h; path = Classes/RLMTextField.h; sourceTree = "<group>"; };
 		225AAFEB19C09E520023B595 /* RLMTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMTextField.m; path = Classes/RLMTextField.m; sourceTree = "<group>"; };
 		228D1F851A1CAD660028562A /* RLMResultsNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMResultsNode.h; path = Classes/RLMResultsNode.h; sourceTree = "<group>"; };
@@ -264,6 +269,8 @@
 		8413B8FF196D2F4E0012EBE8 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				2257869C1BD563A00012436A /* RLMEncryptionKeyWindowController.h */,
+				2257869D1BD563A00012436A /* RLMEncryptionKeyWindowController.m */,
 				84754ABC193CA4600093604E /* RLMRealmBrowserWindowController.h */,
 				84754ABD193CA4600093604E /* RLMRealmBrowserWindowController.m */,
 				8474E2B219544D8000BCA755 /* RLMTypeOutlineViewController.h */,
@@ -423,6 +430,7 @@
 			children = (
 				840F97C1192B7DD4006B591E /* Classes */,
 				84E0F9641921F3B900D6CA14 /* RLMDocument.xib */,
+				2257869F1BD564F40012436A /* EncryptionKeyWindow.xib */,
 				22DC87E71B9808790024BA34 /* RLMExportIndicatorWindowController.xib */,
 				36B669CA1B8B057F00F04AE1 /* RLMObjectLinkSelectionViewController.xib */,
 				84E0F9671921F3B900D6CA14 /* MainMenu.xib */,
@@ -573,6 +581,7 @@
 				84E0F95A1921F3B900D6CA14 /* InfoPlist.strings in Resources */,
 				84E0F96B1921F3B900D6CA14 /* Images.xcassets in Resources */,
 				22D2863B1B6BE6BA0078D07D /* FormatIcon.icns in Resources */,
+				225786A11BD564F40012436A /* EncryptionKeyWindow.xib in Resources */,
 				84E0F9601921F3B900D6CA14 /* Credits.rtf in Resources */,
 				84E0F9661921F3B900D6CA14 /* RLMDocument.xib in Resources */,
 				84E0F9691921F3B900D6CA14 /* MainMenu.xib in Resources */,
@@ -706,6 +715,7 @@
 				840F97C0192B7DCE006B591E /* RLMDocument.m in Sources */,
 				84AA41B01949CD7700A50F03 /* RLMArrayNode.m in Sources */,
 				22E4737219924CF700EEF7C9 /* RLMBasicTableCellView.m in Sources */,
+				2257869E1BD563A00012436A /* RLMEncryptionKeyWindowController.m in Sources */,
 				22E473791992562400EEF7C9 /* RLMBoolTableCellView.m in Sources */,
 				8474E2BD195452BE00BCA755 /* RLMInstanceTableViewController.m in Sources */,
 				84754ABE193CA4600093604E /* RLMRealmBrowserWindowController.m in Sources */,
@@ -762,6 +772,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		2257869F1BD564F40012436A /* EncryptionKeyWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				225786A01BD564F40012436A /* Base */,
+			);
+			name = EncryptionKeyWindow.xib;
+			sourceTree = "<group>";
+		};
 		84E0F9581921F3B900D6CA14 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -889,7 +907,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CODE_SIGN_ENTITLEMENTS = "RealmBrowser/Realm Browser.entitlements";
-				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -919,7 +936,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CODE_SIGN_ENTITLEMENTS = "RealmBrowser/Realm Browser.entitlements";
-				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

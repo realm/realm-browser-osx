@@ -20,6 +20,7 @@
 #import "RLMNavigationStack.h"
 #import "RLMModelExporter.h"
 #import "RLMExportIndicatorWindowController.h"
+#import "RLMEncryptionKeyWindowController.h"
 @import Realm;
 @import Realm.Private;
 @import Realm.Dynamic;
@@ -46,6 +47,11 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
 @property (nonatomic, strong) RLMExportIndicatorWindowController *exportWindowController;
 
+@property (nonatomic, strong) RLMEncryptionKeyWindowController *encryptionController;
+@property (nonatomic, strong) NSData *encryptionKey;
+
+- (void)handleEncryptionKeyPrompt;
+
 @end
 
 @implementation RLMRealmBrowserWindowController {
@@ -62,6 +68,15 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     if (self.modelDocument.presentedRealm) {
         // if already loaded
         [self realmDidLoad];
+    }
+}
+
+- (IBAction)showWindow:(id)sender
+{
+    [super showWindow:sender];
+    
+    if (self.modelDocument.potentiallyEncrypted) {
+        [self handleEncryptionKeyPrompt];
     }
 }
 
@@ -86,6 +101,21 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     
     [self reloadAfterEdit];
     self.window.alphaValue = 1.0;
+}
+
+- (void)handleEncryptionKeyPrompt
+{
+    self.encryptionController = [[RLMEncryptionKeyWindowController alloc] initWithRealmFilePath:self.modelDocument.fileURL];
+    [self.window beginSheet:self.encryptionController.window completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode != NSModalResponseOK) {
+            [self.document close];
+            return;
+        }
+        
+        self.encryptionKey = self.encryptionController.encryptionKey;
+        self.modelDocument.presentedRealm.encryptionKey = self.encryptionKey;
+        [self realmDidLoad];
+    }];
 }
 
 #pragma mark - Public methods - Accessors
