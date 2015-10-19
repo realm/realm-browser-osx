@@ -73,7 +73,13 @@
 {
     NSError *error = nil;
     @autoreleasepool {
-        [RLMRealm realmWithPath:self.realmFilePath.path encryptionKey:keyData readOnly:NO error:&error];
+        [RLMRealm realmWithPath:self.realmFilePath.path
+                                     key:keyData
+                                readOnly:NO
+                                inMemory:NO
+                                 dynamic:YES
+                                  schema:nil
+                                   error:&localError];
     }
     if (error)
         return NO;
