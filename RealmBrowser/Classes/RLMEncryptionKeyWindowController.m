@@ -17,6 +17,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 @import Realm;
+@import Realm.Dynamic;
+@import Realm.Private;
 
 #import "RLMEncryptionKeyWindowController.h"
 
@@ -79,7 +81,7 @@
                                 inMemory:NO
                                  dynamic:YES
                                   schema:nil
-                                   error:&localError];
+                                   error:nil];
     }
     if (error)
         return NO;
