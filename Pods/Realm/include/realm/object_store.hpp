@@ -74,12 +74,12 @@ namespace realm {
         // deletes the table for the given type
         static void delete_data_for_object(Group *group, const StringData &object_type);
 
+        // indicates if this group contains any objects
+        static bool is_empty(const Group *group);
+
     private:
         // set a new schema version
         static void set_schema_version(Group *group, uint64_t version);
-
-        // check if the realm already has all metadata tables
-        static bool has_metadata_tables(Group *group);
 
         // create any metadata tables that don't already exist
         // must be in write transaction to set

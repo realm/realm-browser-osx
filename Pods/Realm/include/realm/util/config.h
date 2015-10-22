@@ -6,14 +6,14 @@
  *
  *************************************************************************/
 
-#define REALM_VERSION "0.92.2"
+#define REALM_VERSION "unknown"
 
-#define REALM_INSTALL_PREFIX      "/usr/local"
-#define REALM_INSTALL_EXEC_PREFIX "/usr/local"
-#define REALM_INSTALL_INCLUDEDIR  "/usr/local/include"
-#define REALM_INSTALL_BINDIR      "/usr/local/bin"
-#define REALM_INSTALL_LIBDIR      "/usr/local/lib"
-#define REALM_INSTALL_LIBEXECDIR  "/usr/local/libexec"
+#define REALM_INSTALL_PREFIX      "/Users/realm/workspace/core_osx/install"
+#define REALM_INSTALL_EXEC_PREFIX "/Users/realm/workspace/core_osx/install"
+#define REALM_INSTALL_INCLUDEDIR  "/Users/realm/workspace/core_osx/install/include"
+#define REALM_INSTALL_BINDIR      "/Users/realm/workspace/core_osx/install/bin"
+#define REALM_INSTALL_LIBDIR      "/Users/realm/workspace/core_osx/install/lib"
+#define REALM_INSTALL_LIBEXECDIR  "/Users/realm/workspace/core_osx/install/libexec"
 
 #ifdef REALM_DEBUG
 #  define REALM_MAX_BPNODE_SIZE 1000
@@ -32,5 +32,3 @@
 #if 1
 #  define REALM_ENABLE_ASSERTIONS 1
 #endif
-
-#define REALM_NULL_STRINGS 0
