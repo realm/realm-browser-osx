@@ -56,11 +56,28 @@ static NSMutableDictionary *s_localNameToClass = [[NSMutableDictionary alloc] in
     NSMutableArray *schemas = [NSMutableArray arrayWithCapacity:count];
     for (Class cls in classes) {
         if (!RLMIsObjectSubclass(cls)) {
-            @throw RLMException([NSString stringWithFormat:@"Can't add non-Object type '%@' to a schema.", cls]);
+            @throw RLMException(@"Can't add non-Object type '%@' to a schema.", cls);
         }
         [schemas addObject:[cls sharedSchema]];
     }
     schema.objectSchema = schemas;
+
+    NSMutableArray *errors = [NSMutableArray new];
+    // Verify that all of the targets of links are included in the class list
+    for (RLMObjectSchema *objectSchema in schema->_objectSchema) {
+        for (RLMProperty *prop in objectSchema.properties) {
+            if (prop.type != RLMPropertyTypeObject && prop.type != RLMPropertyTypeArray) {
+                continue;
+            }
+            if (!schema->_objectSchemaByName[prop.objectClassName]) {
+                [errors addObject:[NSString stringWithFormat:@"- '%@.%@' links to class '%@', which is missing from the list of classes to persist", objectSchema.className, prop.name, prop.objectClassName]];
+            }
+        }
+    }
+    if (errors.count) {
+        @throw RLMException(@"Invalid class subset list:\n%@", [errors componentsJoinedByString:@"\n"]);
+    }
+
     return schema;
 }
 
@@ -71,8 +88,7 @@ static NSMutableDictionary *s_localNameToClass = [[NSMutableDictionary alloc] in
 - (RLMObjectSchema *)objectForKeyedSubscript:(__unsafe_unretained id<NSCopying> const)className {
     RLMObjectSchema *schema = _objectSchemaByName[className];
     if (!schema) {
-        NSString *message = [NSString stringWithFormat:@"Object type '%@' not persisted in Realm", className];
-        @throw RLMException(message);
+        @throw RLMException(@"Object type '%@' not persisted in Realm", className);
     }
     return schema;
 }
@@ -90,14 +106,16 @@ static NSMutableDictionary *s_localNameToClass = [[NSMutableDictionary alloc] in
 }
 
 + (void)registerClasses:(Class *)classes count:(NSUInteger)count {
+    auto newClasses = [NSMutableArray new];
+    auto threadID = pthread_mach_thread_np(pthread_self());
+
     @synchronized(s_localNameToClass) {
-        auto threadID = pthread_mach_thread_np(pthread_self());
         // first create class to name mapping so we can do array validation
         // when creating object schema
         for (NSUInteger i = 0; i < count; i++) {
             Class cls = classes[i];
 
-            if (!RLMIsObjectSubclass(cls)) {
+            if (!RLMIsObjectSubclass(cls) || RLMIsGeneratedClass(cls)) {
                 continue;
             }
 
@@ -109,19 +127,19 @@ static NSMutableDictionary *s_localNameToClass = [[NSMutableDictionary alloc] in
             // but not for nested classes. _T indicates it's a Swift symbol, t
             // indicates it's a type, and C indicates it's a class.
             else if ([className hasPrefix:@"_TtC"]) {
-                NSString *message = [NSString stringWithFormat:@"RLMObject subclasses cannot be nested within other declarations. Please move %@ to global scope.", className];
-                @throw RLMException(message);
+                @throw RLMException(@"RLMObject subclasses cannot be nested within other declarations. Please move %@ to global scope.", className);
             }
 
             if (Class existingClass = s_localNameToClass[className]) {
                 if (existingClass != cls) {
-                    NSString *message = [NSString stringWithFormat:@"RLMObject subclasses with the same name cannot be included twice in the same target. Please make sure '%@' is only linked once to your current target.", className];
-                    @throw RLMException(message);
+                    @throw RLMException(@"RLMObject subclasses with the same name cannot be included twice in the same target. "
+                                        @"Please make sure '%@' is only linked once to your current target.", className);
                 }
                 continue;
             }
 
             s_localNameToClass[className] = cls;
+            [newClasses addObject:cls];
 
             RLMReplaceClassNameMethod(cls, className);
             // override sharedSchema class method to return nil to avoid topo-sort issues when on this thread
@@ -137,8 +155,8 @@ static NSMutableDictionary *s_localNameToClass = [[NSMutableDictionary alloc] in
             });
         }
 
-        NSMutableArray *schemas = [NSMutableArray arrayWithCapacity:s_localNameToClass.count];
-        for (Class cls in s_localNameToClass.allValues) {
+        NSMutableArray *schemas = [NSMutableArray arrayWithCapacity:newClasses.count];
+        for (Class cls in newClasses) {
             RLMObjectSchema *schema = [RLMObjectSchema schemaForObjectClass:cls];
 
             // set standalone class on shared shema for standalone object creation
