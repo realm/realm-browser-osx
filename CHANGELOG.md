@@ -1,5 +1,10 @@
 x.x.x Release notes (yyyy-MM-dd)
 =============================================================
+
+
+
+0.95.2 Release notes (2015-10-12)
+=============================================================
 Enhancements:
 * Updated to Realm 0.95.2
 * Add the ability to set child Realm objects in parent objects.
