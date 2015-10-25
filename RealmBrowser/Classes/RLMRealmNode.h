@@ -35,4 +35,6 @@
 
 - (void)addTable:(RLMClassNode *)table;
 
+- (BOOL)realmFileRequiresFormatUpgrade;
+
 @end

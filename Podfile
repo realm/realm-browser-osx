@@ -8,4 +8,4 @@ xcodeproj 'RealmBrowser'
 link_with 'RealmBrowser', 'RealmBrowserTests'
 
 pod 'AppSandboxFileAccess'
-pod 'Realm', '~> 0.96.0-beta'
+pod 'Realm', :git => 'https://github.com/realm/realm-cocoa.git', :branch => 'to-file-upgrade-checker'

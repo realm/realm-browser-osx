@@ -21,6 +21,7 @@
 @import Realm.Private;
 
 #import "RLMEncryptionKeyWindowController.h"
+#import "RLMAlert.h"
 
 @interface RLMEncryptionKeyWindowController () <NSTextFieldDelegate>
 
@@ -81,10 +82,26 @@
                                 inMemory:NO
                                  dynamic:YES
                                   schema:nil
-                                   error:nil];
+                    disableFormatUpgrade:YES
+                                   error:&error];
     }
-    if (error)
+    
+    //If an error is thrown, it can either mean the encryption key was incorrect,
+    //or the file format requires upgrading
+    if (error) {
+        //If a format upgrade is required, prompt the user before proceeding
+        if (error.code == RLMErrorFileFormatUpgradeRequired) {
+            if (![RLMAlert showFileFormatUpgradeDialogWithFileName:[self.realmFilePath lastPathComponent]]) {
+                return NO;
+            }
+            
+            //The file format upgrade is allowed
+            return YES;
+        }
+        
+        //another error was thrown, which implies that the encryption key was invalid
         return NO;
+    }
     
     return YES;
 }

@@ -88,6 +88,25 @@
     [self connect:nil];
 }
 
+- (BOOL)realmFileRequiresFormatUpgrade
+{
+    NSError *localError;
+    [RLMRealm realmWithPath:_url
+                      key:self.encryptionKey
+                 readOnly:NO
+                 inMemory:NO
+                  dynamic:YES
+                   schema:nil
+     disableFormatUpgrade:YES
+                    error:&localError];
+    
+    if (localError && localError.code == RLMErrorFileFormatUpgradeRequired) {
+        return YES;
+    }
+    
+    return NO;
+}
+
 #pragma mark - RLMRealmOutlineNode implementation
 
 - (BOOL)isRootNode

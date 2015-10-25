@@ -23,6 +23,7 @@
 #import "RLMClassProperty.h"
 #import "RLMRealmOutlineNode.h"
 #import "RLMRealmBrowserWindowController.h"
+#import "RLMAlert.h"
 
 #import <AppSandboxFileAccess/AppSandboxFileAccess.h>
 
@@ -81,18 +82,19 @@
         dispatch_sync(dispatch_get_main_queue(), ^{
             [self.securityScopedURL startAccessingSecurityScopedResource];
             
+            //Check to see if first the Realm file needs upgrading, and
+            //if it does, prompt the user to confirm with proceeding
+            if ([realmNode realmFileRequiresFormatUpgrade]) {
+                if (![RLMAlert showFileFormatUpgradeDialogWithFileName:realmName]) {
+                    return;
+                }
+            }
+            
             NSError *error;
             if ([realmNode connect:&error] || error.code == 2) {
                 if (error) {
-                    NSAlert *encryptionAlert = [[NSAlert alloc] init];
-                    encryptionAlert.messageText = [NSString stringWithFormat:@"'%@' could not be opened. It may be encrypted, or it isn't in a compatible file format.", realmName];
-                    encryptionAlert.informativeText = @"If you know the file is encrypted, you can manually enter its encryption key to open it.";
-                    [encryptionAlert addButtonWithTitle:@"Close"];
-                    [encryptionAlert addButtonWithTitle:@"Enter Encryption Key"];
-                    
-                    if ([encryptionAlert runModal] != NSAlertSecondButtonReturn) {
+                    if (![RLMAlert showEncryptionConfirmationDialogWithFileName:realmName])
                         return;
-                    }
                     
                     ws.potentiallyEncrypted = YES;
                 }
