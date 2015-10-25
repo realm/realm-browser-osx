@@ -83,7 +83,7 @@ static const int RLMEnumerationBufferSize = 16;
 
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
                                     count:(NSUInteger)len {
-    RLMCheckThread(_realm);
+    [_realm verifyThread];
     if (!_tableView.is_attached() && !_collection) {
         @throw RLMException(@"Collection is no longer valid");
     }
@@ -98,11 +98,12 @@ static const int RLMEnumerationBufferSize = 16;
 
     Class accessorClass = _objectSchema.accessorClass;
     for (NSUInteger index = state->state; index < count && batchCount < len; ++index) {
-        size_t row = _collection ? [_collection indexInSource:index] : _tableView.get_source_ndx(index);
-
         RLMObject *accessor = [[accessorClass alloc] initWithRealm:_realm schema:_objectSchema];
-        if (row != size_t(-1)) {
-            accessor->_row = (*_objectSchema.table)[row];
+        if (_collection) {
+            accessor->_row = (*_objectSchema.table)[[_collection indexInSource:index]];
+        }
+        else if (_tableView.is_row_attached(index)) {
+            accessor->_row = (*_objectSchema.table)[_tableView.get_source_ndx(index)];
         }
         _strongBuffer[batchCount] = accessor;
         batchCount++;
@@ -208,14 +209,14 @@ static inline void RLMResultsValidateAttached(__unsafe_unretained RLMResults *co
 }
 static inline void RLMResultsValidate(__unsafe_unretained RLMResults *const ar) {
     RLMResultsValidateAttached(ar);
-    RLMCheckThread(ar->_realm);
+    [ar->_realm verifyThread];
 }
 
 static inline void RLMResultsValidateInWriteTransaction(__unsafe_unretained RLMResults *const ar) {
     // first verify attached
     RLMResultsValidate(ar);
 
-    if (!ar->_realm->_inWriteTransaction) {
+    if (!ar->_realm.inWriteTransaction) {
         @throw RLMException(@"Can't mutate a persisted array outside of a write transaction.");
     }
 }
@@ -229,7 +230,7 @@ static inline void RLMResultsValidateInWriteTransaction(__unsafe_unretained RLMR
         return _backingView.size();
     }
     else {
-        RLMCheckThread(_realm);
+        [_realm verifyThread];
         return _backingQuery->count();
     }
 }
@@ -280,7 +281,7 @@ static inline void RLMResultsValidateInWriteTransaction(__unsafe_unretained RLMR
     RLMResultsValidate(self);
 
     if (index >= self.count) {
-        @throw RLMException(@"Index is out of bounds.", @{@"index": @(index)});
+        @throw RLMException(@"Index %@ is out of bounds.", @(index));
     }
     return RLMCreateObjectAccessor(_realm, _objectSchema, [self indexInSource:index]);
 }
@@ -316,8 +317,7 @@ static inline void RLMResultsValidateInWriteTransaction(__unsafe_unretained RLMR
 
     // check that object types align
     if (object->_row.get_table() != &_backingView.get_parent()) {
-        NSString *message = [NSString stringWithFormat:@"Object type '%@' does not match RLMResults type '%@'.", object->_objectSchema.className, _objectClassName];
-        @throw RLMException(message);
+        @throw RLMException(@"Object type '%@' does not match RLMResults type '%@'.", object->_objectSchema.className, _objectClassName);
     }
 
     size_t object_ndx = object->_row.get_index();
@@ -346,7 +346,7 @@ static inline void RLMResultsValidateInWriteTransaction(__unsafe_unretained RLMR
 }
 
 - (RLMResults *)objectsWithPredicate:(NSPredicate *)predicate {
-    RLMCheckThread(_realm);
+    [_realm verifyThread];
 
     // copy array and apply new predicate creating a new query and view
     auto query = [self cloneQuery];
@@ -362,7 +362,7 @@ static inline void RLMResultsValidateInWriteTransaction(__unsafe_unretained RLMR
 }
 
 - (RLMResults *)sortedResultsUsingDescriptors:(NSArray *)properties {
-    RLMCheckThread(_realm);
+    [_realm verifyThread];
 
     auto query = [self cloneQuery];
     return [RLMResults resultsWithObjectClassName:self.objectClassName
@@ -565,12 +565,12 @@ static NSNumber *averageOfProperty(TableType const& table, RLMRealm *realm, NSSt
 }
 
 - (NSUInteger)count {
-    RLMCheckThread(_realm);
+    [_realm verifyThread];
     return _table->size();
 }
 
 - (NSUInteger)indexOfObject:(RLMObject *)object {
-    RLMCheckThread(_realm);
+    [_realm verifyThread];
     if (object.invalidated) {
         @throw RLMException(@"RLMObject is no longer valid");
     }
@@ -580,8 +580,7 @@ static NSNumber *averageOfProperty(TableType const& table, RLMRealm *realm, NSSt
 
     // check that object types align
     if (object->_row.get_table() != _table) {
-        NSString *message = [NSString stringWithFormat:@"Object type '%@' does not match RLMResults type '%@'.", object->_objectSchema.className, _objectClassName];
-        @throw RLMException(message);
+        @throw RLMException(@"Object type '%@' does not match RLMResults type '%@'.", object->_objectSchema.className, _objectClassName);
     }
 
     return RLMConvertNotFound(object->_row.get_index());
@@ -596,22 +595,22 @@ static NSNumber *averageOfProperty(TableType const& table, RLMRealm *realm, NSSt
 }
 
 - (id)minOfProperty:(NSString *)property {
-    RLMCheckThread(_realm);
+    [_realm verifyThread];
     return minOfProperty(*_table, _realm, _objectClassName, property);
 }
 
 - (id)maxOfProperty:(NSString *)property {
-    RLMCheckThread(_realm);
+    [_realm verifyThread];
     return maxOfProperty(*_table, _realm, _objectClassName, property);
 }
 
 - (NSNumber *)sumOfProperty:(NSString *)property {
-    RLMCheckThread(_realm);
+    [_realm verifyThread];
     return sumOfProperty(*_table, _realm, _objectClassName, property);
 }
 
 - (NSNumber *)averageOfProperty:(NSString *)property {
-    RLMCheckThread(_realm);
+    [_realm verifyThread];
     return averageOfProperty(*_table, _realm, _objectClassName, property);
 }
 
@@ -664,7 +663,7 @@ static NSNumber *averageOfProperty(TableType const& table, RLMRealm *realm, NSSt
 }
 
 - (id)objectAtIndex:(NSUInteger)index {
-    @throw RLMException(@"Index is out of bounds.", @{@"index": @(index)});
+    @throw RLMException(@"Index %@ is out of bounds.", @(index));
 }
 
 - (id)valueForKey:(NSString *)key {

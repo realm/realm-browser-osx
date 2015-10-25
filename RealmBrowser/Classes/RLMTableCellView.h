@@ -21,8 +21,6 @@
 @class RLMTextField;
 @interface RLMTableCellView : NSTableCellView
 
--(NSSize)sizeThatFits;
-
 @property (nonatomic, readonly) RLMTextField *realmTextField;
 
 @end

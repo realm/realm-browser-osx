@@ -1,15 +1,25 @@
 PODS:
   - AppSandboxFileAccess (1.0.14)
-  - Realm (0.95.2):
-    - Realm/Headers (= 0.95.2)
-  - Realm/Headers (0.95.2)
+  - Realm (0.96.1):
+    - Realm/Headers (= 0.96.1)
+  - Realm/Headers (0.96.1)
 
 DEPENDENCIES:
   - AppSandboxFileAccess
-  - Realm
+  - Realm (from `https://github.com/realm/realm-cocoa.git`, branch `to-file-upgrade-checker`)
+
+EXTERNAL SOURCES:
+  Realm:
+    :branch: to-file-upgrade-checker
+    :git: https://github.com/realm/realm-cocoa.git
+
+CHECKOUT OPTIONS:
+  Realm:
+    :commit: 944c9a4865035924e8ac39e5d3c8401af839befb
+    :git: https://github.com/realm/realm-cocoa.git
 
 SPEC CHECKSUMS:
   AppSandboxFileAccess: f3e10b0ba10bbaa6dc6996639ff47836050329c5
-  Realm: 4c026902041bb39c4bd083ebc5e88f4f17973d72
+  Realm: 4b3953f3031da8172f1b0f12c5445c775156ef92
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0

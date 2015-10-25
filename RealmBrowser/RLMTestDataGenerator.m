@@ -17,7 +17,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #import "RLMTestDataGenerator.h"
+
 @import Realm;
+@import Realm.Private;
 
 const NSUInteger kMaxItemsInTestArray = 12;
 
@@ -158,7 +160,7 @@ const NSUInteger kMaxItemsInTestArray = 12;
     }
     
     // Create an object from [propertyValues] and put in [realm]
-    RLMObject *newObject = [class createInRealm:realm withObject:propertyValues];
+    RLMObject *newObject = [class createInRealm:realm withValue:propertyValues];
     
     // Add object to store of existing objects
     [existingObjectsOfRequiredClass addObject:newObject];

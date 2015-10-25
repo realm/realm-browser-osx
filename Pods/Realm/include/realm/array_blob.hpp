@@ -27,11 +27,11 @@ namespace realm {
 
 class ArrayBlob: public Array {
 public:
-    explicit ArrayBlob(Allocator&) REALM_NOEXCEPT;
-    ~ArrayBlob() REALM_NOEXCEPT override {}
+    explicit ArrayBlob(Allocator&) noexcept;
+    ~ArrayBlob() noexcept override {}
 
-    const char* get(std::size_t index) const REALM_NOEXCEPT;
-    bool is_null(std::size_t index) const REALM_NOEXCEPT;
+    const char* get(std::size_t index) const noexcept;
+    bool is_null(std::size_t index) const noexcept;
     void add(const char* data, std::size_t size, bool add_zero_term = false);
     void insert(std::size_t pos, const char* data, std::size_t size, bool add_zero_term = false);
     void replace(std::size_t begin, std::size_t end, const char* data, std::size_t size,
@@ -42,7 +42,7 @@ public:
     /// array instance. If an array instance is already available, or
     /// you need to get multiple values, then this method will be
     /// slower.
-    static const char* get(const char* header, std::size_t index) REALM_NOEXCEPT;
+    static const char* get(const char* header, std::size_t index) noexcept;
 
     /// Create a new empty blob (binary) array and attach this
     /// accessor to it. This does not modify the parent reference
@@ -58,14 +58,14 @@ public:
     static MemRef create_array(std::size_t size, Allocator&);
 
 #ifdef REALM_DEBUG
-    void Verify() const;
+    void verify() const;
     void to_dot(std::ostream&, StringData title = StringData()) const;
 #endif
 
 private:
-    std::size_t CalcByteLen(std::size_t count, std::size_t width) const override;
-    std::size_t CalcItemCount(std::size_t bytes,
-                              std::size_t width) const REALM_NOEXCEPT override;
+    std::size_t calc_byte_len(std::size_t count, std::size_t width) const override;
+    std::size_t calc_item_count(std::size_t bytes,
+                              std::size_t width) const noexcept override;
     WidthType GetWidthType() const override { return wtype_Ignore; }
 };
 
@@ -75,17 +75,17 @@ private:
 // Implementation:
 
 // Creates new array (but invalid, call init_from_ref() to init)
-inline ArrayBlob::ArrayBlob(Allocator& alloc) REALM_NOEXCEPT:
+inline ArrayBlob::ArrayBlob(Allocator& alloc) noexcept:
     Array(alloc)
 {
 }
 
-inline bool ArrayBlob::is_null(std::size_t index) const REALM_NOEXCEPT
+inline bool ArrayBlob::is_null(std::size_t index) const noexcept
 {
     return (get(index) == nullptr);
 }
 
-inline const char* ArrayBlob::get(std::size_t index) const REALM_NOEXCEPT
+inline const char* ArrayBlob::get(std::size_t index) const noexcept
 {
     return m_data + index;
 }
@@ -108,7 +108,7 @@ inline void ArrayBlob::erase(std::size_t begin, std::size_t end)
     replace(begin, end, data, size);
 }
 
-inline const char* ArrayBlob::get(const char* header, std::size_t pos) REALM_NOEXCEPT
+inline const char* ArrayBlob::get(const char* header, std::size_t pos) noexcept
 {
     const char* data = get_data_from_header(header);
     return data + pos;
@@ -128,12 +128,12 @@ inline MemRef ArrayBlob::create_array(std::size_t size, Allocator& alloc)
     return Array::create(type_Normal, context_flag, wtype_Ignore, size, value, alloc); // Throws
 }
 
-inline std::size_t ArrayBlob::CalcByteLen(std::size_t count, std::size_t) const
+inline std::size_t ArrayBlob::calc_byte_len(std::size_t count, std::size_t) const
 {
     return header_size + count;
 }
 
-inline std::size_t ArrayBlob::CalcItemCount(std::size_t bytes, std::size_t) const REALM_NOEXCEPT
+inline std::size_t ArrayBlob::calc_item_count(std::size_t bytes, std::size_t) const noexcept
 {
     return bytes - header_size;
 }

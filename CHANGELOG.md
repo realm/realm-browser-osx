@@ -6,6 +6,15 @@ x.x.x Release notes (yyyy-MM-dd)
 0.95.2 Release notes (2015-10-12)
 =============================================================
 Enhancements:
+* Updated Realm to Objective-C 0.96.1
+* Added a prompt to alert users about the mandatory format upgrade in Realm Objective-C 0.96.
+
+Bug Fixes:
+* Fixed an issue where the width of text fields wouldn't update when resizing columns in OS X El Capitan.
+
+0.95.2 Release notes (2015-10-12)
+=============================================================
+Enhancements:
 * Updated to Realm 0.95.2
 * Add the ability to set child Realm objects in parent objects.
 * Export compressed copies of Realm files.

@@ -20,22 +20,15 @@
 
 @implementation RLMTableCellView
 
-- (void)awakeFromNib
+- (NSSize)intrinsicContentSize
 {
-    [super awakeFromNib];
-}
-
-- (void)viewWillDraw
-{
-    [super viewWillDraw];
-    self.textField.frame = self.bounds;
-}
-
-- (NSSize)sizeThatFits
-{
-    [self.textField sizeToFit];
-    
-    return self.textField.bounds.size;
+    // NSTextField's intrinsic width is always -1 for editable text fields. Temporarily disable editability so we can
+    // compute the intrinsic size.
+    BOOL editable = self.textField.editable;
+    self.textField.editable = NO;
+    NSSize size = self.textField.intrinsicContentSize;
+    self.textField.editable = editable;
+    return size;
 }
 
 - (RLMTextField *)realmTextField
