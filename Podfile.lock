@@ -1,8 +1,8 @@
 PODS:
   - AppSandboxFileAccess (1.0.14)
-  - Realm (0.96.1):
-    - Realm/Headers (= 0.96.1)
-  - Realm/Headers (0.96.1)
+  - Realm (0.96.2):
+    - Realm/Headers (= 0.96.2)
+  - Realm/Headers (0.96.2)
 
 DEPENDENCIES:
   - AppSandboxFileAccess
@@ -15,11 +15,11 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Realm:
-    :commit: 944c9a4865035924e8ac39e5d3c8401af839befb
+    :commit: 0b41680ee87252bf5222c22f6dadc400119e6893
     :git: https://github.com/realm/realm-cocoa.git
 
 SPEC CHECKSUMS:
   AppSandboxFileAccess: f3e10b0ba10bbaa6dc6996639ff47836050329c5
-  Realm: 4b3953f3031da8172f1b0f12c5445c775156ef92
+  Realm: 962a3daeb000dfd379e0a9ccb2a752a352a88205
 
 COCOAPODS: 0.39.0
