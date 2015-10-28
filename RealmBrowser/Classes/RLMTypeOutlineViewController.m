@@ -26,39 +26,38 @@
 #import "RLMResultsNode.h"
 #import "RLMRealmOutlineNode.h"
 
-@interface RLMTypeOutlineViewController ()
+NSString * RLMTypeOutlineViewControllerClassesKey = @"Classes";
+NSString * RLMTypeOutlineViewControllerObjectsKey = @"Objects";
 
-@property (nonatomic, strong) IBOutlet NSOutlineView *classesOutlineView;
+@interface RLMTypeOutlineViewController ()
 
 @end
 
 @implementation RLMTypeOutlineViewController
 
-#pragma mark - RLMViewController overrides
-
--(void)realmDidLoad
+- (void)viewDidLoad
 {
-    [self.classesOutlineView reloadData];
-    // Expand the root item representing the selected realm.
-    RLMRealmNode *firstItem = self.parentWindowController.modelDocument.presentedRealm;
-    if (firstItem != nil) {
-        // We want the class outline to be expanded as default
-        [self.classesOutlineView expandItem:firstItem expandChildren:YES];
-    }
+    [self.outlineView expandItem:nil expandChildren:YES];
+}
+
+- (void)viewDidAppear
+{
+    [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:1] byExtendingSelection:NO];
+    [self outlineViewSelectionDidChange:[NSNotification notificationWithName:@"" object:self.outlineView]];
 }
 
 #pragma mark - NSOutlineViewDataSource implementation
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
-    if (item == nil) {
-        return self.parentWindowController.modelDocument.presentedRealm;
-    }
-    // ... and second level nodes are all classes.
-    else if ([item conformsToProtocol:@protocol(RLMRealmOutlineNode)]) {
-        id<RLMRealmOutlineNode> outlineItem = item;
-        
-        return [outlineItem childNodeAtIndex:index];
+    if (!item) {
+        if (index == 0) {
+            return RLMTypeOutlineViewControllerClassesKey;
+        } else if (index == 1) {
+            return RLMTypeOutlineViewControllerObjectsKey;
+        }
+    } else if ([item isEqualToString:RLMTypeOutlineViewControllerClassesKey]) {
+        return [self.document.realm.schema.objectSchema objectAtIndex:index];
     }
     
     return nil;
@@ -66,32 +65,34 @@
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
 {
-    // The root node is expandable if we are presenting a realm
-    if (item == nil) {
-        return self.parentWindowController.modelDocument.presentedRealm == nil;
-    }
-    // ... otherwise the exandability check is re-delegated to the node in question.
-    else if ([item conformsToProtocol:@protocol(RLMRealmOutlineNode)]) {
-        id<RLMRealmOutlineNode> outlineItem = item;
-        return outlineItem.isExpandable;
+    if (!item) {
+        return YES;
+    } else if ([item isKindOfClass:[NSString class]]) {
+        return YES;
     }
     
     return NO;
 }
 
+- (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
+{
+    return ([item isKindOfClass:[NSString class]]);
+}
+
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
-    // There is never more than one root node
-    if (item == nil) {
-        return 1;
-    }
-    // ... otherwise the number of child nodes are defined by the node in question.
-    else if ([item conformsToProtocol:@protocol(RLMRealmOutlineNode)]) {
-        id<RLMRealmOutlineNode> outlineItem = item;
-        return outlineItem.numberOfChildNodes;
+    if (!item) {
+        return 2;
+    } else if ([item isEqualToString:RLMTypeOutlineViewControllerClassesKey]) {
+        return self.document.realm.schema.objectSchema.count;
     }
     
     return 0;
+}
+
+- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
+{
+    return item;
 }
 
 #pragma mark - NSOutlineViewDelegate implementation
@@ -99,7 +100,7 @@
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
 {
     // Group headers should not be selectable
-    return ![item isKindOfClass:[RLMRealmNode class]];
+    return ![item isKindOfClass:[NSString class]];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldShowOutlineCellForItem:(id)item
@@ -126,86 +127,23 @@
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification
 {
     NSOutlineView *outlineView = notification.object;
-    if (outlineView == self.classesOutlineView) {
-        NSInteger row = [outlineView selectedRow];
+    NSInteger row = [outlineView selectedRow];
 
-        // The arrays we get from link views are ephemeral, so we
-        // remove them when any class node is selected
-        if (row != -1) {
-            [self selectedItem:[outlineView itemAtRow:row]];
-        }
+    // The arrays we get from link views are ephemeral, so we
+    // remove them when any class node is selected
+    if (row != -1) {
+        self.document.selectedObjectSchema = [outlineView itemAtRow:row];
     }
-}
-
--(void)selectedItem:(id<RLMRealmOutlineNode>)item
-{
-    if ([item isKindOfClass:[RLMResultsNode class]]) {
-        return;
-    }
-
-    id<RLMRealmOutlineNode> theItem = item;
-    
-    // If we didn't select an array, we should flatten the outline view
-    if (![item isKindOfClass:[RLMArrayNode class]]) {
-        [self removeAllChildArrays];
-    }
-    
-    // If we clicked an object, collapse and then select its parent
-    if ([item isKindOfClass:[RLMObjectNode class]]) {
-        theItem = ((RLMObjectNode *)item).parentNode;
-    }
-    
-    RLMNavigationState *state = [[RLMNavigationState alloc] initWithSelectedType:theItem index:0];
-    [self.parentWindowController addNavigationState:state fromViewController:self];
-    NSInteger typeIndex = [self.classesOutlineView rowForItem:theItem];
-    [self setSelectionIndex:typeIndex];
-}
-
-- (void)outlineView:(NSOutlineView *)outlineView didAddRowView:(NSTableRowView *)rowView forRow:(NSInteger)row
-{
-    // No Action
-}
-
-- (void)outlineView:(NSOutlineView *)outlineView didRemoveRowView:(NSTableRowView *)rowView forRow:(NSInteger)row
-{
-    // No Action
-}
-
-- (NSTableRowView *)outlineView:(NSOutlineView *)outlineView rowViewForItem:(id)item
-{
-    return nil;
 }
 
 - (NSView *)outlineView:(NSOutlineView *)outlineView viewForTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
-    if (outlineView == self.classesOutlineView) {
-        if ([item conformsToProtocol:@protocol(RLMRealmOutlineNode)]) {
-            id<RLMRealmOutlineNode> outlineNode = item;
-            return [outlineNode cellViewForTableView:self.tableView];
-        }
-    }
-    
-    return nil;
-}
-
-#pragma mark - Public methods - Accessors
-
-- (NSOutlineView *)outlineView
-{
-    if ([self.view isKindOfClass:[NSOutlineView class]]) {
-        return (NSOutlineView *)self.view;
-    }
-    
-    return nil;
-}
-
-#pragma mark - Private methods
-
-- (void)removeAllChildArrays
-{
-    for (RLMClassNode *node in self.parentWindowController.modelDocument.presentedRealm.topLevelClasses) {
-        [node removeAllChildNodes];
-        [self.classesOutlineView reloadItem:node];
+    if ([item isKindOfClass:[NSString class]]) {
+        return [outlineView makeViewWithIdentifier:@"header" owner:self];
+    } else if ([item isKindOfClass:[RLMObjectSchema class]]) {
+        return [outlineView makeViewWithIdentifier:@"class" owner:self];
+    } else {
+        return nil;
     }
 }
 

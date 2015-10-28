@@ -18,11 +18,14 @@
 
 #import "RLMDocument.h"
 
+@import Realm;
+
+#import "RLMRealmNode.h"
 #import "RLMClassNode.h"
 #import "RLMArrayNode.h"
 #import "RLMClassProperty.h"
 #import "RLMRealmOutlineNode.h"
-#import "RLMRealmBrowserWindowController.h"
+//#import "RLMRealmBrowserWindowController.h"
 #import "RLMAlert.h"
 
 #import <AppSandboxFileAccess/AppSandboxFileAccess.h>
@@ -100,19 +103,20 @@
                 }
                     
                 ws.presentedRealm  = realmNode;
+                _realm = realmNode.realm;
                 
-                ws.changeNotificationToken = [realmNode.realm addNotificationBlock:^(NSString *notification, RLMRealm *realm) {
-                    for (RLMRealmBrowserWindowController *windowController in ws.windowControllers) {
-                        [windowController reloadAfterEdit];
-                    }
-                }];
+//                ws.changeNotificationToken = [realmNode.realm addNotificationBlock:^(NSString *notification, RLMRealm *realm) {
+//                    for (RLMRealmBrowserWindowController *windowController in ws.windowControllers) {
+//                        [windowController reloadAfterEdit];
+//                    }
+//                }];
                 
                 NSDocumentController *documentController = [NSDocumentController sharedDocumentController];
                 [documentController noteNewRecentDocumentURL:absoluteURL];
                 
-                for (RLMRealmBrowserWindowController *windowController in ws.windowControllers) {
-                    [windowController realmDidLoad];
-                }
+//                for (RLMRealmBrowserWindowController *windowController in ws.windowControllers) {
+//                    [windowController realmDidLoad];
+//                }
                 
                 success = YES;
             }
@@ -148,13 +152,6 @@
 }
 
 #pragma mark - Public methods - NSDocument overrides - Creating and Managing Window Controllers
-
-- (void)makeWindowControllers
-{
-    RLMRealmBrowserWindowController *windowController = [[RLMRealmBrowserWindowController alloc] initWithWindowNibName:self.windowNibName];
-    windowController.modelDocument = self;
-    [self addWindowController:windowController];
-}
 
 - (NSString *)windowNibName
 {

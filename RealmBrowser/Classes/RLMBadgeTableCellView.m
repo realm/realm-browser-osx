@@ -19,4 +19,5 @@
 #import "RLMBadgeTableCellView.h"
 
 @implementation RLMBadgeTableCellView
+
 @end

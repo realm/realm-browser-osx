@@ -18,7 +18,7 @@
 
 #import "RLMDescriptions.h"
 
-#import "RLMRealmBrowserWindowController.h"
+//#import "RLMRealmBrowserWindowController.h"
 #import "RLMArrayNavigationState.h"
 #import "RLMQueryNavigationState.h"
 #import "RLMArrayNode.h"

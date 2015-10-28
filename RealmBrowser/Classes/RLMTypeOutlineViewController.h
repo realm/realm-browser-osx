@@ -18,9 +18,11 @@
 
 @import Cocoa;
 
-#import "RLMViewController.h"
-#import "RLMClassNode.h"
+#import "RLMDocument.h"
 
-@interface RLMTypeOutlineViewController : RLMViewController <NSOutlineViewDataSource, NSOutlineViewDelegate>
+@interface RLMTypeOutlineViewController : NSViewController <NSOutlineViewDataSource, NSOutlineViewDelegate>
+
+@property (weak) IBOutlet NSOutlineView *outlineView;
+@property (weak) IBOutlet RLMDocument *document;
 
 @end

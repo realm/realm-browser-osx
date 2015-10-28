@@ -22,6 +22,9 @@
 
 @interface RLMDocument : NSDocument
 
+@property (nonatomic, readonly) RLMRealm *realm;
+@property (nonatomic, strong) RLMObjectSchema *selectedObjectSchema;
+
 @property (nonatomic, readonly) BOOL potentiallyEncrypted;
 @property (nonatomic, strong) IBOutlet RLMRealmNode *presentedRealm;
 
