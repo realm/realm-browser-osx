@@ -31,11 +31,22 @@
     [cellView addSubview:button];
     
     [button setTranslatesAutoresizingMaskIntoConstraints:NO];
-    NSDictionary *views = NSDictionaryOfVariableBindings(button, cellView);
     
-    [cellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[cellView]-(<=1)-[button]" options:NSLayoutFormatAlignAllCenterY metrics:nil views:views]];
-    [cellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[cellView]-(<=1)-[button]" options:NSLayoutFormatAlignAllCenterX metrics:nil views:views]];
-    
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:button
+                                                         attribute:NSLayoutAttributeCenterX
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeCenterX
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:button
+                                                         attribute:NSLayoutAttributeCenterY
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeCenterY
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+
     return cellView;
 }
 

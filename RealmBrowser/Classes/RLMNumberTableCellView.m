@@ -79,10 +79,36 @@
     [cellView addSubview:textField];
     
     [textField setTranslatesAutoresizingMaskIntoConstraints:NO];
-    NSDictionary *views = NSDictionaryOfVariableBindings(textField);
     
-    [cellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[textField]|" options:0 metrics:nil views:views]];
-    [cellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textField]|" options:0 metrics:nil views:views]];
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
+                                                         attribute:NSLayoutAttributeLeading
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeLeading
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
+                                                         attribute:NSLayoutAttributeTrailing
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeTrailing
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
+                                                         attribute:NSLayoutAttributeTop
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeTop
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
+                                                         attribute:NSLayoutAttributeBottom
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeBottom
+                                                        multiplier:1.0
+                                                          constant:0.0]];
     
     return cellView;
 }

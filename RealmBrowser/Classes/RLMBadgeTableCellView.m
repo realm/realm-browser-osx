@@ -38,11 +38,57 @@
     
     [textField setTranslatesAutoresizingMaskIntoConstraints:NO];
     [button setTranslatesAutoresizingMaskIntoConstraints:NO];
-    NSDictionary *views = NSDictionaryOfVariableBindings(textField, button, cellView);
+
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
+                                                         attribute:NSLayoutAttributeLeading
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeLeading
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:textField
+                                                                 attribute:NSLayoutAttributeTrailing
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:button
+                                                                 attribute:NSLayoutAttributeLeading
+                                                                multiplier:1.0
+                                                                  constant:20.0];
+    [constraint setPriority:NSLayoutPriorityRequired];
+    [cellView addConstraint:constraint];
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:button
+                                                         attribute:NSLayoutAttributeTrailing
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeTrailing
+                                                        multiplier:1.0
+                                                          constant:-3.0]];
     
-    [cellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[textField]-(10)-[button(==20@1000)]-(3)-|" options:0 metrics:nil views:views]];
-    [cellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(2)-[button(==17@250)]-(2)-|" options:0 metrics:nil views:views]];
-    [cellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(1)-[textField(==20)]" options:0 metrics:nil views:views]];
+    
+    constraint = [NSLayoutConstraint constraintWithItem:button
+                                                                  attribute:NSLayoutAttributeWidth
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:nil
+                                                                  attribute:0
+                                                                 multiplier:1.0
+                                                                   constant:20.0];
+    [constraint setPriority:NSLayoutPriorityRequired];
+    [cellView addConstraint:constraint];
+    
+    
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:button
+                                                         attribute:NSLayoutAttributeCenterY
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeCenterY
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
+                                                         attribute:NSLayoutAttributeCenterY
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeCenterY
+                                                        multiplier:1.0
+                                                          constant:0.0]];
     
     return cellView;
 }
