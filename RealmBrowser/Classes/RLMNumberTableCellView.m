@@ -74,7 +74,7 @@
     RLMNumberTextField *textField = [[RLMNumberTextField alloc] initWithFrame:[cellView frame]];
     [textField setBordered:NO];
     [textField setDrawsBackground:NO];
-    [textField setAlignment:NSTextAlignmentRight];
+    [textField setAlignment:NSRightTextAlignment];
     cellView.textField = textField;
     [cellView addSubview:textField];
     
