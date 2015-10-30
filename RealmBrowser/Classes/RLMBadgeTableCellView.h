@@ -23,4 +23,6 @@
 
 @property (strong) IBOutlet NSButton *badge;
 
++ (instancetype)makeWithIdentifier:(NSString *)identifier;
+
 @end

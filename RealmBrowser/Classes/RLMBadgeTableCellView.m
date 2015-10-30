@@ -19,4 +19,32 @@
 #import "RLMBadgeTableCellView.h"
 
 @implementation RLMBadgeTableCellView
+
++ (instancetype)makeWithIdentifier:(NSString *)identifier
+{
+    RLMBadgeTableCellView *cellView = [[RLMBadgeTableCellView alloc] initWithFrame:NSZeroRect];
+    cellView.identifier = identifier;
+    NSTextField *textField = [[NSTextField alloc] initWithFrame:[cellView frame]];
+    [textField setBordered:NO];
+    [textField setDrawsBackground:NO];
+    [textField setTextColor:[NSColor selectedMenuItemTextColor]];
+    cellView.textField = textField;
+    [cellView addSubview:textField];
+    NSButton *button = [[NSButton alloc] initWithFrame:NSZeroRect];
+    [button setButtonType:NSMomentaryPushInButton];
+    [button setBezelStyle:NSInlineBezelStyle];
+    cellView.badge = button;
+    [cellView addSubview:button];
+    
+    [textField setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [button setTranslatesAutoresizingMaskIntoConstraints:NO];
+    NSDictionary *views = NSDictionaryOfVariableBindings(textField, button, cellView);
+    
+    [cellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[textField]-(10)-[button(==20@1000)]-(3)-|" options:0 metrics:nil views:views]];
+    [cellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(2)-[button(==17@250)]-(2)-|" options:0 metrics:nil views:views]];
+    [cellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(1)-[textField(==20)]" options:0 metrics:nil views:views]];
+    
+    return cellView;
+}
+
 @end

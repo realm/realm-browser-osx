@@ -22,4 +22,6 @@
 
 @property(strong) IBOutlet NSButton *checkBox;
 
++ (instancetype)makeWithIdentifier:(NSString *)identifier;
+
 @end

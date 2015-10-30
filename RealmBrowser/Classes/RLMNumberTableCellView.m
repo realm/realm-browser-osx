@@ -27,7 +27,24 @@
 
 @implementation RLMNumberTextField
 
-- (void)awakeFromNib {
+- (instancetype)initWithFrame:(NSRect)frameRect {
+    if (self = [super initWithFrame:frameRect]) {
+        [self setupNumberFormatter];
+    }
+    
+    return self;
+}
+
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    if (self = [super initWithCoder:coder]) {
+        [self setupNumberFormatter];
+    }
+    
+    return self;
+}
+
+- (void)setupNumberFormatter {
     [super awakeFromNib];
     self.numberFormatter = [[NSNumberFormatter alloc] init];
     self.numberFormatter.hasThousandSeparators = NO;
@@ -51,8 +68,24 @@
 
 @implementation RLMNumberTableCellView
 
++ (instancetype)makeWithIdentifier:(NSString *)identifier {
+    RLMNumberTableCellView *cellView = [[RLMNumberTableCellView alloc] initWithFrame:NSZeroRect];
+    cellView.identifier = identifier;
+    RLMNumberTextField *textField = [[RLMNumberTextField alloc] initWithFrame:[cellView frame]];
+    [textField setBordered:NO];
+    [textField setDrawsBackground:NO];
+    [textField setAlignment:NSTextAlignmentRight];
+    cellView.textField = textField;
+    [cellView addSubview:textField];
+    
+    [textField setTranslatesAutoresizingMaskIntoConstraints:NO];
+    NSDictionary *views = NSDictionaryOfVariableBindings(textField);
+    
+    [cellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[textField]|" options:0 metrics:nil views:views]];
+    [cellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textField]|" options:0 metrics:nil views:views]];
+    
+    return cellView;
+}
+
 @end
-
-
-
 

@@ -324,7 +324,10 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     
     switch (type) {
         case RLMPropertyTypeArray: {
-            RLMBadgeTableCellView *badgeCellView = [tableView makeViewWithIdentifier:@"BadgeCell" owner:self];
+            RLMBadgeTableCellView *badgeCellView = [tableView makeViewWithIdentifier:@"xBadgeCell" owner:self];
+            if (!badgeCellView) {
+                badgeCellView = [RLMBadgeTableCellView makeWithIdentifier:@"xBadgeCell"];
+            }
             NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             NSDictionary *attr = @{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)};
             badgeCellView.textField.attributedStringValue = [[NSAttributedString alloc] initWithString:string attributes:attr];
@@ -341,7 +344,10 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         }
             
         case RLMPropertyTypeBool: {
-            RLMBoolTableCellView *boolCellView = [tableView makeViewWithIdentifier:@"BoolCell" owner:self];
+            RLMBoolTableCellView *boolCellView = [tableView makeViewWithIdentifier:@"xBoolCell" owner:self];
+            if (!boolCellView) {
+                boolCellView = [RLMBoolTableCellView makeWithIdentifier:@"xBoolCell"];
+            }
             boolCellView.checkBox.state = [(NSNumber *)propertyValue boolValue] ? NSOnState : NSOffState;
             [boolCellView.checkBox setEnabled:!self.realmIsLocked];
             
@@ -353,7 +359,11 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         case RLMPropertyTypeInt:
         case RLMPropertyTypeFloat:
         case RLMPropertyTypeDouble: {
-            RLMNumberTableCellView *numberCellView = [tableView makeViewWithIdentifier:@"NumberCell" owner:self];
+            RLMNumberTableCellView *numberCellView = [tableView makeViewWithIdentifier:@"xNumberCell" owner:self];
+            if (!numberCellView) {
+                numberCellView = [RLMNumberTableCellView makeWithIdentifier:@"xNumberCell"];
+            }
+
             numberCellView.textField.stringValue = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             numberCellView.textField.delegate = self;
             
@@ -366,7 +376,10 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         }
 
         case RLMPropertyTypeObject: {
-            RLMLinkTableCellView *linkCellView = [tableView makeViewWithIdentifier:@"LinkCell" owner:self];
+            RLMLinkTableCellView *linkCellView = [tableView makeViewWithIdentifier:@"xLinkCell" owner:self];
+            if (!linkCellView) {
+                linkCellView = [RLMLinkTableCellView makeWithIdentifier:@"xLinkCell"];
+            }
             NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             NSDictionary *attr = @{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)};
             linkCellView.textField.attributedStringValue = [[NSAttributedString alloc] initWithString:string attributes:attr];
@@ -382,7 +395,10 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         case RLMPropertyTypeAny:
         case RLMPropertyTypeDate:
         case RLMPropertyTypeString: {
-            RLMBasicTableCellView *basicCellView = [tableView makeViewWithIdentifier:@"BasicCell" owner:self];
+            RLMBasicTableCellView *basicCellView = [tableView makeViewWithIdentifier:@"xBasicCell" owner:self];
+            if (!basicCellView) {
+                basicCellView = [RLMBasicTableCellView makeWithIdentifier:@"xBasicCell"];
+            }
             basicCellView.textField.stringValue = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             basicCellView.textField.delegate = self;
             basicCellView.textField.editable = !self.realmIsLocked && type != RLMPropertyTypeData;

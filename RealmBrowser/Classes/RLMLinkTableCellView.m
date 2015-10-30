@@ -21,6 +21,26 @@
 
 @implementation RLMLinkTableCellView
 
++ (instancetype)makeWithIdentifier:(NSString *)identifier
+{
+    RLMLinkTableCellView *cellView = [[RLMLinkTableCellView alloc] initWithFrame:NSZeroRect];
+    cellView.identifier = identifier;
+    NSTextField *textField = [[NSTextField alloc] initWithFrame:[cellView frame]];
+    [textField setBordered:NO];
+    [textField setDrawsBackground:NO];
+    [textField setTextColor:[NSColor selectedMenuItemTextColor]];
+    cellView.textField = textField;
+    [cellView addSubview:textField];
+    
+    [textField setTranslatesAutoresizingMaskIntoConstraints:NO];
+    NSDictionary *views = NSDictionaryOfVariableBindings(textField);
+    
+    [cellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[textField]|" options:0 metrics:nil views:views]];
+    [cellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textField]|" options:0 metrics:nil views:views]];
+    
+    return cellView;
+}
+
 - (void)setBackgroundStyle:(NSBackgroundStyle)backgroundStyle {
     [super setBackgroundStyle:backgroundStyle];
     self.textField.textColor = (backgroundStyle == NSBackgroundStyleLight ? [NSColor linkColor] : [NSColor whiteColor]);
