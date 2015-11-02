@@ -21,6 +21,52 @@
 
 @implementation RLMLinkTableCellView
 
++ (instancetype)makeWithIdentifier:(NSString *)identifier
+{
+    RLMLinkTableCellView *cellView = [[RLMLinkTableCellView alloc] initWithFrame:NSZeroRect];
+    cellView.identifier = identifier;
+    NSTextField *textField = [[NSTextField alloc] initWithFrame:[cellView frame]];
+    [textField setBordered:NO];
+    [textField setDrawsBackground:NO];
+    [textField setTextColor:[NSColor selectedMenuItemTextColor]];
+    cellView.textField = textField;
+    [cellView addSubview:textField];
+    
+    [textField setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
+                                                         attribute:NSLayoutAttributeLeading
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeLeading
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
+                                                         attribute:NSLayoutAttributeTrailing
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeTrailing
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+    
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
+                                                         attribute:NSLayoutAttributeTop
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeTop
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
+                                                         attribute:NSLayoutAttributeBottom
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeBottom
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+    
+    return cellView;
+}
+
 - (void)setBackgroundStyle:(NSBackgroundStyle)backgroundStyle {
     [super setBackgroundStyle:backgroundStyle];
     self.textField.textColor = (backgroundStyle == NSBackgroundStyleLight ? [NSColor linkColor] : [NSColor whiteColor]);

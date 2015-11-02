@@ -20,6 +20,15 @@
 
 @implementation RLMTableCellView
 
+- (instancetype)initWithFrame:(NSRect)frameRect
+{
+    if (self = [super initWithFrame:frameRect]) {
+        self.canDrawSubviewsIntoLayer = YES;
+    }
+    
+    return self;
+}
+
 - (NSSize)intrinsicContentSize
 {
     // NSTextField's intrinsic width is always -1 for editable text fields. Temporarily disable editability so we can

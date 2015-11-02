@@ -20,4 +20,34 @@
 
 @implementation RLMBoolTableCellView
 
++ (instancetype)makeWithIdentifier:(NSString *)identifier {
+    RLMBoolTableCellView *cellView = [[RLMBoolTableCellView alloc] initWithFrame:NSZeroRect];
+    cellView.identifier = identifier;
+    NSButton *button = [[NSButton alloc] initWithFrame:[cellView frame]];
+    [button setTitle:@""];
+    [button setButtonType:NSSwitchButton];
+    [button setBezelStyle:0];
+    cellView.checkBox = button;
+    [cellView addSubview:button];
+    
+    [button setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:button
+                                                         attribute:NSLayoutAttributeCenterX
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeCenterX
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:button
+                                                         attribute:NSLayoutAttributeCenterY
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeCenterY
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+
+    return cellView;
+}
+
 @end

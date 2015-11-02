@@ -27,7 +27,24 @@
 
 @implementation RLMNumberTextField
 
-- (void)awakeFromNib {
+- (instancetype)initWithFrame:(NSRect)frameRect {
+    if (self = [super initWithFrame:frameRect]) {
+        [self setupNumberFormatter];
+    }
+    
+    return self;
+}
+
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    if (self = [super initWithCoder:coder]) {
+        [self setupNumberFormatter];
+    }
+    
+    return self;
+}
+
+- (void)setupNumberFormatter {
     [super awakeFromNib];
     self.numberFormatter = [[NSNumberFormatter alloc] init];
     self.numberFormatter.hasThousandSeparators = NO;
@@ -51,8 +68,50 @@
 
 @implementation RLMNumberTableCellView
 
++ (instancetype)makeWithIdentifier:(NSString *)identifier {
+    RLMNumberTableCellView *cellView = [[RLMNumberTableCellView alloc] initWithFrame:NSZeroRect];
+    cellView.identifier = identifier;
+    RLMNumberTextField *textField = [[RLMNumberTextField alloc] initWithFrame:[cellView frame]];
+    [textField setBordered:NO];
+    [textField setDrawsBackground:NO];
+    [textField setAlignment:NSRightTextAlignment];
+    cellView.textField = textField;
+    [cellView addSubview:textField];
+    
+    [textField setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
+                                                         attribute:NSLayoutAttributeLeading
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeLeading
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
+                                                         attribute:NSLayoutAttributeTrailing
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeTrailing
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
+                                                         attribute:NSLayoutAttributeTop
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeTop
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
+                                                         attribute:NSLayoutAttributeBottom
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:cellView
+                                                         attribute:NSLayoutAttributeBottom
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+    
+    return cellView;
+}
+
 @end
-
-
-
 

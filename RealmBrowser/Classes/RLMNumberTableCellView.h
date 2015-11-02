@@ -29,4 +29,6 @@
 
 @interface RLMNumberTableCellView : RLMTableCellView
 
++ (instancetype)makeWithIdentifier:(NSString *)identifier;
+
 @end
