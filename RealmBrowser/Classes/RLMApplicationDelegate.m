@@ -63,9 +63,8 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     if (!self.didLoadFile && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
-        NSInteger openFileIndex = [self.fileMenu indexOfItem:self.openMenuItem];
-        [self.fileMenu performActionForItemAtIndex:openFileIndex];
-        
+        [NSApp sendAction:self.openMenuItem.action to:self.openMenuItem.target from:self];
+
         self.realmQuery = [[NSMetadataQuery alloc] init];
         [self.realmQuery setSortDescriptors:@[[[NSSortDescriptor alloc] initWithKey:(id)kMDItemContentModificationDate ascending:NO]]];
         NSPredicate *realmPredicate = [NSPredicate predicateWithFormat:@"kMDItemFSName like[c] '*.realm'"];

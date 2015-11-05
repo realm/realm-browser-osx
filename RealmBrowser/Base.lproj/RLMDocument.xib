@@ -21,7 +21,6 @@
         <window title="Realm" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" appearanceType="aqua" animationBehavior="default" id="xOd-HO-29H" userLabel="Window">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES" unifiedTitleAndToolbar="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
-            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="247" y="192" width="977" height="476"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <value key="minSize" type="size" width="440" height="200"/>
@@ -132,6 +131,8 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="MSf-82-x0U" secondAttribute="bottom" id="1MR-hG-UmC"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="225" id="6VO-8s-HPp"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="400" id="Kov-uo-PCT"/>
                                     <constraint firstAttribute="trailing" secondItem="MSf-82-x0U" secondAttribute="trailing" id="SCi-ef-bJn"/>
                                     <constraint firstItem="MSf-82-x0U" firstAttribute="leading" secondItem="wGq-XQ-Lyz" secondAttribute="leading" id="heW-be-7kt"/>
                                     <constraint firstItem="MSf-82-x0U" firstAttribute="top" secondItem="wGq-XQ-Lyz" secondAttribute="top" id="po8-mG-pzB"/>
