@@ -47,7 +47,9 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
 
 @implementation RLMDescriptions {
     NSDateFormatter *dateFormatter;
-    NSNumberFormatter *numberFormatter;
+    NSNumberFormatter *integerFormatter;
+    NSNumberFormatter *floatingPointFormatter;
+    NSNumberFormatter *floatingPointTooltipFormatter;
 }
 
 - (instancetype)init
@@ -58,10 +60,20 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
         dateFormatter.dateStyle = NSDateFormatterMediumStyle;
         dateFormatter.timeStyle = NSDateFormatterMediumStyle;
         
-        numberFormatter = [[NSNumberFormatter alloc] init];
-        numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+        integerFormatter = [[NSNumberFormatter alloc] init];
+        integerFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+
+        floatingPointFormatter = [[NSNumberFormatter alloc] init];
+        floatingPointFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+        floatingPointFormatter.minimumFractionDigits = 3;
+        floatingPointFormatter.maximumFractionDigits = 3;
+
+        floatingPointTooltipFormatter = [[NSNumberFormatter alloc] init];
+        floatingPointTooltipFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+        floatingPointTooltipFormatter.minimumFractionDigits = 0;
+        floatingPointTooltipFormatter.maximumFractionDigits = NSUIntegerMax;
     }
-    
+
     return self;
 }
 
@@ -83,17 +95,12 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
     
     switch (type) {
         case RLMPropertyTypeInt:
-            numberFormatter.minimumFractionDigits = 0;
-            
-            return [numberFormatter stringFromNumber:(NSNumber *)propertyValue];
+            return [integerFormatter stringFromNumber:(NSNumber *)propertyValue];
             
             // Intentional fallthrough
         case RLMPropertyTypeFloat:
         case RLMPropertyTypeDouble:
-            numberFormatter.minimumFractionDigits = 3;
-            numberFormatter.maximumFractionDigits = 3;
-            
-            return [numberFormatter stringFromNumber:(NSNumber *)propertyValue];
+            return [floatingPointFormatter stringFromNumber:(NSNumber *)propertyValue];
             
         case RLMPropertyTypeString: {
             NSString *stringValue = propertyValue;
@@ -202,9 +209,7 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
             
         case RLMPropertyTypeFloat:
         case RLMPropertyTypeDouble:
-            numberFormatter.minimumFractionDigits = 0;
-            numberFormatter.maximumFractionDigits = UINT16_MAX;
-            return [numberFormatter stringFromNumber:propertyValue];
+            return [floatingPointTooltipFormatter stringFromNumber:propertyValue];
             
         case RLMPropertyTypeObject:
             return [self tooltipForObject:(RLMObject *)propertyValue];
