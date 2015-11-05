@@ -362,11 +362,11 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             RLMNumberTableCellView *numberCellView = [tableView makeViewWithIdentifier:@"xNumberCell" owner:self];
             if (!numberCellView) {
                 numberCellView = [RLMNumberTableCellView makeWithIdentifier:@"xNumberCell"];
+                numberCellView.textField.delegate = self;
             }
 
             numberCellView.textField.stringValue = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
-            numberCellView.textField.delegate = self;
-            
+
             ((RLMNumberTextField *)numberCellView.textField).number = propertyValue;
             numberCellView.textField.editable = !self.realmIsLocked;
             
@@ -398,9 +398,9 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             RLMBasicTableCellView *basicCellView = [tableView makeViewWithIdentifier:@"xBasicCell" owner:self];
             if (!basicCellView) {
                 basicCellView = [RLMBasicTableCellView makeWithIdentifier:@"xBasicCell"];
+                basicCellView.textField.delegate = self;
             }
             basicCellView.textField.stringValue = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
-            basicCellView.textField.delegate = self;
             basicCellView.textField.editable = !self.realmIsLocked && type != RLMPropertyTypeData;
             
             cellView = basicCellView;

@@ -142,13 +142,13 @@
                                 <rect key="frame" x="237" y="0.0" width="740" height="476"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
-                                    <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3b6-BA-X5L" userLabel="MainScroll">
+                                    <scrollView wantsLayer="YES" focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3b6-BA-X5L" userLabel="MainScroll">
                                         <rect key="frame" x="0.0" y="0.0" width="740" height="476"/>
                                         <clipView key="contentView" focusRingType="none" id="kRO-aN-FFM">
                                             <rect key="frame" x="0.0" y="0.0" width="740" height="476"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" alternatingRowBackgroundColors="YES" autosaveName="InstanceTable" rowHeight="18" headerView="cDp-e2-1cA" viewBased="YES" id="enp-HN-e6b" customClass="RLMTableView">
+                                                <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="sequential" alternatingRowBackgroundColors="YES" autosaveName="InstanceTable" rowHeight="18" headerView="cDp-e2-1cA" viewBased="YES" id="enp-HN-e6b" customClass="RLMTableView">
                                                     <rect key="frame" x="0.0" y="0.0" width="918" height="0.0"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <animations/>
