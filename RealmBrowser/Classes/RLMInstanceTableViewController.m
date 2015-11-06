@@ -319,14 +319,14 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     RLMObject *selectedInstance = [self.displayedType instanceAtIndex:rowIndex];
     id propertyValue = selectedInstance[classProperty.name];
     RLMPropertyType type = classProperty.type;
+    NSString *reuseIdentifier = [@"property." stringByAppendingString:classProperty.name];
     
     NSTableCellView *cellView;
-    
     switch (type) {
         case RLMPropertyTypeArray: {
-            RLMBadgeTableCellView *badgeCellView = [tableView makeViewWithIdentifier:@"xBadgeCell" owner:self];
+            RLMBadgeTableCellView *badgeCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!badgeCellView) {
-                badgeCellView = [RLMBadgeTableCellView makeWithIdentifier:@"xBadgeCell"];
+                badgeCellView = [RLMBadgeTableCellView makeWithIdentifier:reuseIdentifier];
             }
             NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             NSDictionary *attr = @{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)};
@@ -344,9 +344,9 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         }
             
         case RLMPropertyTypeBool: {
-            RLMBoolTableCellView *boolCellView = [tableView makeViewWithIdentifier:@"xBoolCell" owner:self];
+            RLMBoolTableCellView *boolCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!boolCellView) {
-                boolCellView = [RLMBoolTableCellView makeWithIdentifier:@"xBoolCell"];
+                boolCellView = [RLMBoolTableCellView makeWithIdentifier:reuseIdentifier];
             }
             boolCellView.checkBox.state = [(NSNumber *)propertyValue boolValue] ? NSOnState : NSOffState;
             [boolCellView.checkBox setEnabled:!self.realmIsLocked];
@@ -359,9 +359,9 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         case RLMPropertyTypeInt:
         case RLMPropertyTypeFloat:
         case RLMPropertyTypeDouble: {
-            RLMNumberTableCellView *numberCellView = [tableView makeViewWithIdentifier:@"xNumberCell" owner:self];
+            RLMNumberTableCellView *numberCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!numberCellView) {
-                numberCellView = [RLMNumberTableCellView makeWithIdentifier:@"xNumberCell"];
+                numberCellView = [RLMNumberTableCellView makeWithIdentifier:reuseIdentifier];
                 numberCellView.textField.delegate = self;
             }
 
@@ -369,23 +369,23 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 
             ((RLMNumberTextField *)numberCellView.textField).number = propertyValue;
             numberCellView.textField.editable = !self.realmIsLocked;
-            
+
             cellView = numberCellView;
             
             break;
         }
 
         case RLMPropertyTypeObject: {
-            RLMLinkTableCellView *linkCellView = [tableView makeViewWithIdentifier:@"xLinkCell" owner:self];
+            RLMLinkTableCellView *linkCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!linkCellView) {
-                linkCellView = [RLMLinkTableCellView makeWithIdentifier:@"xLinkCell"];
+                linkCellView = [RLMLinkTableCellView makeWithIdentifier:reuseIdentifier];
             }
             NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             NSDictionary *attr = @{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)};
             linkCellView.textField.attributedStringValue = [[NSAttributedString alloc] initWithString:string attributes:attr];
             
             linkCellView.textField.editable = NO;
-            
+
             cellView = linkCellView;
 
             break;
@@ -395,14 +395,14 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         case RLMPropertyTypeAny:
         case RLMPropertyTypeDate:
         case RLMPropertyTypeString: {
-            RLMBasicTableCellView *basicCellView = [tableView makeViewWithIdentifier:@"xBasicCell" owner:self];
+            RLMBasicTableCellView *basicCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!basicCellView) {
-                basicCellView = [RLMBasicTableCellView makeWithIdentifier:@"xBasicCell"];
+                basicCellView = [RLMBasicTableCellView makeWithIdentifier:reuseIdentifier];
                 basicCellView.textField.delegate = self;
             }
             basicCellView.textField.stringValue = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             basicCellView.textField.editable = !self.realmIsLocked && type != RLMPropertyTypeData;
-            
+
             cellView = basicCellView;
             
             break;
