@@ -3,10 +3,10 @@ x.x.x Release notes (yyyy-MM-dd)
 
 
 
-0.96.1 Release notes (2015-10-12)
+0.96.2 Release notes (2015-10-12)
 =============================================================
 Enhancements:
-* Updated Realm to Objective-C 0.96.1
+* Updated Realm to Objective-C 0.96.2
 * Added a prompt to alert users about the mandatory format upgrade in Realm Objective-C 0.96.
 
 Bug Fixes:
