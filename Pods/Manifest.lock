@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Realm:
-    :commit: 0b41680ee87252bf5222c22f6dadc400119e6893
+    :commit: 89339a8ec4f5ff7622299e4cec42a7f70f9c8066
     :git: https://github.com/realm/realm-cocoa.git
 
 SPEC CHECKSUMS:

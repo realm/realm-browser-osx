@@ -91,14 +91,13 @@
 - (BOOL)realmFileRequiresFormatUpgrade
 {
     NSError *localError;
-    [RLMRealm realmWithPath:_url
-                      key:self.encryptionKey
-                 readOnly:NO
-                 inMemory:NO
-                  dynamic:YES
-                   schema:nil
-     disableFormatUpgrade:YES
-                    error:&localError];
+    
+    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+    configuration.disableFormatUpgrade = YES;
+    configuration.dynamic = YES;
+    configuration.encryptionKey = self.encryptionKey;
+    configuration.path = _url;
+    [RLMRealm realmWithConfiguration:configuration error:&localError];
     
     if (localError && localError.code == RLMErrorFileFormatUpgradeRequired) {
         return YES;
