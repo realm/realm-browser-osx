@@ -76,14 +76,12 @@
 {
     NSError *error = nil;
     @autoreleasepool {
-        [RLMRealm realmWithPath:self.realmFilePath.path
-                                     key:keyData
-                                readOnly:NO
-                                inMemory:NO
-                                 dynamic:YES
-                                  schema:nil
-                    disableFormatUpgrade:YES
-                                   error:&error];
+        RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+        configuration.disableFormatUpgrade = YES;
+        configuration.dynamic = YES;
+        configuration.encryptionKey = keyData;
+        configuration.path = self.realmFilePath.path;
+        [RLMRealm realmWithConfiguration:configuration error:&error];
     }
     
     //If an error is thrown, it can either mean the encryption key was incorrect,
