@@ -431,7 +431,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
                 if (predicate.length != 0) {
                     predicate = [predicate stringByAppendingString:@" OR "];
                 }
-                predicate = [predicate stringByAppendingFormat:@"%@ CONTAINS '%@'", columnName, searchText];
+                predicate = [predicate stringByAppendingFormat:@"%@ CONTAINS[c] '%@'", columnName, searchText];
                 break;
             }
             //case RLMPropertyTypeFloat: // search on float columns disabled until bug is fixed in binding
