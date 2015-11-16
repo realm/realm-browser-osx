@@ -1,6 +1,7 @@
 x.x.x Release notes (yyyy-MM-dd)
 =============================================================
-
+* Improvements to the scrolling performance of the main table view in Realm documents.
+* String-based searches in Realm files made non-case sensitive.
 
 
 0.96.2 Release notes (2015-10-12)
