@@ -414,12 +414,12 @@
 			isa = PBXGroup;
 			children = (
 				220A4F061C02E51B00A32787 /* Application */,
-				220A4F071C02E54E00A32787 /* Controllers */,
 				220A4F0B1C02E59600A32787 /* Models */,
+				220A4F081C02E55700A32787 /* Views */,
+				220A4F071C02E54E00A32787 /* Controllers */,
 				84BCA5FE1951BC99008FC850 /* Resources */,
 				220A4F091C02E55B00A32787 /* Support */,
 				84E0F9561921F3B900D6CA14 /* Supporting Files */,
-				220A4F081C02E55700A32787 /* Views */,
 			);
 			path = RealmBrowser;
 			sourceTree = "<group>";
