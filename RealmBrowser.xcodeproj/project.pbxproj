@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		22096B2719911F7300233D77 /* RLMBadgeTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */; };
+		220A4F131C05A85D00A32787 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 220A4F121C05A85D00A32787 /* libc++.tbd */; };
+		220A4F151C05A98A00A32787 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 220A4F141C05A98A00A32787 /* Realm.framework */; };
+		220A4F171C05AA4700A32787 /* Realm.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 220A4F141C05A98A00A32787 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		220D382819B639D700F79496 /* RLMTestDataGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 220D382719B639D700F79496 /* RLMTestDataGenerator.m */; };
 		221322FA19954AB100D25737 /* RLMImageTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221322F919954AB100D25737 /* RLMImageTableCellView.m */; };
 		221322FD19954B0A00D25737 /* RLMTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221322FC19954B0A00D25737 /* RLMTableCellView.m */; };
 		2249D9B219A62EBD00A31104 /* RLMTableColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 2249D9B119A62EBD00A31104 /* RLMTableColumn.m */; };
-		224B96071C05A6C4001AB061 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 224B96061C05A6C4001AB061 /* Realm.framework */; };
 		225443F519E3E6360045996B /* RLMTableHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 225443F419E3E6360045996B /* RLMTableHeaderCell.m */; };
 		22565D6719C1BCF400C8C8EC /* RLMLinkTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22565D6619C1BCF400C8C8EC /* RLMLinkTableCellView.m */; };
 		2257869E1BD563A00012436A /* RLMEncryptionKeyWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2257869D1BD563A00012436A /* RLMEncryptionKeyWindowController.m */; };
@@ -27,7 +29,6 @@
 		22D9367D1BDC64CD0032DFFE /* RLMAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D9367C1BDC64CD0032DFFE /* RLMAlert.m */; };
 		22DC87E61B98086D0024BA34 /* RLMExportIndicatorWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22DC87E51B98086D0024BA34 /* RLMExportIndicatorWindowController.m */; };
 		22DC87E81B9808790024BA34 /* RLMExportIndicatorWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22DC87E71B9808790024BA34 /* RLMExportIndicatorWindowController.xib */; };
-		22E098741B17005700F72AF1 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 844C34DE19473D9D0027E902 /* libc++.dylib */; };
 		22E4737219924CF700EEF7C9 /* RLMBasicTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E4737119924CF700EEF7C9 /* RLMBasicTableCellView.m */; };
 		22E473791992562400EEF7C9 /* RLMBoolTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E473781992562400EEF7C9 /* RLMBoolTableCellView.m */; };
 		3615BDB6196FA8BF00E1AE3F /* RLMQueryNavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = 3615BDB5196FA8BF00E1AE3F /* RLMQueryNavigationState.m */; };
@@ -66,7 +67,6 @@
 		84E35A4D196B021B007F0344 /* RLMArrayNavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E35A4C196B021B007F0344 /* RLMArrayNavigationState.m */; };
 		97A7B4BEE251DA782A9A95BE /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4DD42CE427D384E8A7351A0 /* Pods.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		ADBD77D758972C8C68C6F371 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
-		E84EB8201A2FB7F500EB780E /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 844C34DE19473D9D0027E902 /* libc++.dylib */; };
 		E84EB8291A2FC38C00EB780E /* RLMTestObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = E84EB8281A2FC38C00EB780E /* RLMTestObjects.m */; };
 /* End PBXBuildFile section */
 
@@ -80,9 +80,24 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		220A4F161C05AA3600A32787 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				220A4F171C05AA4700A32787 /* Realm.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		22096B2519911F7300233D77 /* RLMBadgeTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMBadgeTableCellView.h; path = Classes/RLMBadgeTableCellView.h; sourceTree = "<group>"; };
 		22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMBadgeTableCellView.m; path = Classes/RLMBadgeTableCellView.m; sourceTree = "<group>"; };
+		220A4F121C05A85D00A32787 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		220A4F141C05A98A00A32787 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		220D382619B639D700F79496 /* RLMTestDataGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTestDataGenerator.h; sourceTree = "<group>"; };
 		220D382719B639D700F79496 /* RLMTestDataGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTestDataGenerator.m; sourceTree = "<group>"; };
 		221322F819954AB100D25737 /* RLMImageTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMImageTableCellView.h; path = Classes/RLMImageTableCellView.h; sourceTree = "<group>"; };
@@ -91,7 +106,6 @@
 		221322FC19954B0A00D25737 /* RLMTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMTableCellView.m; path = Classes/RLMTableCellView.m; sourceTree = "<group>"; };
 		2249D9B019A62EBD00A31104 /* RLMTableColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMTableColumn.h; path = Classes/RLMTableColumn.h; sourceTree = "<group>"; };
 		2249D9B119A62EBD00A31104 /* RLMTableColumn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMTableColumn.m; path = Classes/RLMTableColumn.m; sourceTree = "<group>"; };
-		224B96061C05A6C4001AB061 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		225443F319E3E6360045996B /* RLMTableHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMTableHeaderCell.h; path = Classes/RLMTableHeaderCell.h; sourceTree = "<group>"; };
 		225443F419E3E6360045996B /* RLMTableHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMTableHeaderCell.m; path = Classes/RLMTableHeaderCell.m; sourceTree = "<group>"; };
 		22565D6519C1BCF400C8C8EC /* RLMLinkTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMLinkTableCellView.h; path = Classes/RLMLinkTableCellView.h; sourceTree = "<group>"; };
@@ -133,7 +147,6 @@
 		840F97BF192B7DCE006B591E /* RLMDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMDocument.m; path = Classes/RLMDocument.m; sourceTree = "<group>"; };
 		84446532195891AA00CEEA5B /* RLMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMViewController.h; path = Classes/RLMViewController.h; sourceTree = "<group>"; };
 		84446533195891AA00CEEA5B /* RLMViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMViewController.m; path = Classes/RLMViewController.m; sourceTree = "<group>"; };
-		844C34DE19473D9D0027E902 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		844C34E1194859080027E902 /* TestClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestClasses.h; path = Classes/TestClasses.h; sourceTree = "<group>"; };
 		844C34E2194859080027E902 /* TestClasses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestClasses.m; path = Classes/TestClasses.m; sourceTree = "<group>"; };
 		8457294B1962E3860076D4F1 /* RLMTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMTableView.h; path = Classes/RLMTableView.h; sourceTree = "<group>"; };
@@ -196,9 +209,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				224B96071C05A6C4001AB061 /* Realm.framework in Frameworks */,
+				220A4F151C05A98A00A32787 /* Realm.framework in Frameworks */,
+				220A4F131C05A85D00A32787 /* libc++.tbd in Frameworks */,
 				84E0F9501921F3B900D6CA14 /* Cocoa.framework in Frameworks */,
-				22E098741B17005700F72AF1 /* libc++.dylib in Frameworks */,
 				97A7B4BEE251DA782A9A95BE /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -207,7 +220,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E84EB8201A2FB7F500EB780E /* libc++.dylib in Frameworks */,
 				84E0F9731921F3B900D6CA14 /* Cocoa.framework in Frameworks */,
 				84E0F9721921F3B900D6CA14 /* XCTest.framework in Frameworks */,
 				ADBD77D758972C8C68C6F371 /* (null) in Frameworks */,
@@ -413,8 +425,8 @@
 		84E0F94E1921F3B900D6CA14 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				224B96061C05A6C4001AB061 /* Realm.framework */,
-				844C34DE19473D9D0027E902 /* libc++.dylib */,
+				220A4F141C05A98A00A32787 /* Realm.framework */,
+				220A4F121C05A85D00A32787 /* libc++.tbd */,
 				84E0F94F1921F3B900D6CA14 /* Cocoa.framework */,
 				84E0F9521921F3B900D6CA14 /* AppKit.framework */,
 				84E0F9541921F3B900D6CA14 /* Foundation.framework */,
@@ -498,6 +510,7 @@
 				FA654DCC5D49B403CE3C4B67 /* Copy Pods Resources */,
 				C0135F94A90B24CE5E74E20E /* Embed Pods Frameworks */,
 				22D56B951BB5C6300001D65B /* ShellScript */,
+				220A4F161C05AA3600A32787 /* CopyFiles */,
 			);
 			buildRules = (
 			);
