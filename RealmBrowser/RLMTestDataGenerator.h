@@ -22,6 +22,7 @@
 
 @interface RLMTestDataGenerator : NSObject
 
-+(BOOL)createRealmAtUrl:(NSURL *)url withClassesNamed:(NSArray *)classNames objectCount:(NSUInteger)objectCount;
++ (BOOL)createRealmAtUrl:(NSURL *)url withClassesNamed:(NSArray *)classNames objectCount:(NSUInteger)objectCount;
++ (BOOL)createRealmAtUrl:(NSURL *)url withClassesNamed:(NSArray *)classNames objectCount:(NSUInteger)objectCount encryptionKey:(NSData *)encry;
 
 @end

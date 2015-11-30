@@ -36,17 +36,26 @@ const NSUInteger kMaxItemsInTestArray = 12;
 // Creates a test realm at [url], filled with [objectCount] random objects of classes in [classNames]
 +(BOOL)createRealmAtUrl:(NSURL *)url withClassesNamed:(NSArray *)classNames objectCount:(NSUInteger)objectCount
 {
+    return [RLMTestDataGenerator createRealmAtUrl:url withClassesNamed:classNames objectCount:objectCount encryptionKey:nil];
+}
+
++ (BOOL)createRealmAtUrl:(NSURL *)url withClassesNamed:(NSArray *)classNames objectCount:(NSUInteger)objectCount encryptionKey:(NSData *)encryptionKey
+{
     NSError *error;
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
     configuration.path = url.path;
     configuration.readOnly = NO;
+    if (encryptionKey) {
+        configuration.encryptionKey = encryptionKey;
+    }
+    
     RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:&error];
     
     if (error) {
         [[NSApplication sharedApplication] presentError:error];
         return NO;
     }
-
+    
     RLMTestDataGenerator *generator = [[RLMTestDataGenerator alloc] initWithClassesNamed:classNames];
     [generator populateRealm:realm withObjectCount:objectCount];
     
