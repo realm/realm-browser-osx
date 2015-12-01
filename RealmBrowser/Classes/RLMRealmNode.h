@@ -29,6 +29,9 @@
 
 @property (nonatomic, strong) NSData *encryptionKey;
 
+@property (nonatomic, copy) NSString *syncServerURL;
+@property (nonatomic, copy) NSString *syncIdentity;
+
 - (instancetype)initWithName:(NSString *)name url:(NSString *)url;
 
 - (BOOL)connect:(NSError **)error;

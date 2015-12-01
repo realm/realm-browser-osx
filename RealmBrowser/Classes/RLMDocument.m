@@ -30,6 +30,7 @@
 @interface RLMDocument ()
 
 @property (nonatomic, assign, readwrite) BOOL potentiallyEncrypted;
+@property (nonatomic, assign, readwrite) BOOL potentiallySync;
 @property (nonatomic, strong) NSURL *securityScopedURL;
 @property (nonatomic) RLMNotificationToken *changeNotificationToken;
 
@@ -93,10 +94,17 @@
             NSError *error;
             if ([realmNode connect:&error] || error.code == 2) {
                 if (error) {
-                    if (![RLMAlert showEncryptionConfirmationDialogWithFileName:realmName])
+                    RLMConfirmResults results = [RLMAlert showRealmOptionsConfirmationDialogWithFileName:realmName];
+                    if (results == RLMConfirmResultsCancel) {
                         return;
+                    }
                     
-                    ws.potentiallyEncrypted = YES;
+                    if (results == RLMConfirmResultsEncryptionKey) {
+                        ws.potentiallyEncrypted = YES;
+                    }
+                    else if (results == RLMConfirmResultsSyncCredentials) {
+                        ws.potentiallySync = YES;
+                    }
                 }
                     
                 ws.presentedRealm  = realmNode;

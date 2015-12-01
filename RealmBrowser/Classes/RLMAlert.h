@@ -18,9 +18,15 @@
 
 #import <Cocoa/Cocoa.h>
 
+typedef NS_ENUM(NSInteger, RLMConfirmResults) {
+    RLMConfirmResultsCancel,
+    RLMConfirmResultsEncryptionKey,
+    RLMConfirmResultsSyncCredentials
+};
+
 @interface RLMAlert : NSAlert
 
-+ (BOOL)showEncryptionConfirmationDialogWithFileName:(NSString *)fileName;
++ (RLMConfirmResults)showRealmOptionsConfirmationDialogWithFileName:(NSString *)fileName;
 + (BOOL)showFileFormatUpgradeDialogWithFileName:(NSString *)fileName;
 
 @end

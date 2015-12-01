@@ -21,6 +21,8 @@
 #import "RLMModelExporter.h"
 #import "RLMExportIndicatorWindowController.h"
 #import "RLMEncryptionKeyWindowController.h"
+#import "RLMSyncWindowController.h"
+
 @import Realm;
 @import Realm.Private;
 @import Realm.Dynamic;
@@ -46,11 +48,13 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 @property (nonatomic, strong) IBOutlet NSSearchField *searchField;
 
 @property (nonatomic, strong) RLMExportIndicatorWindowController *exportWindowController;
+@property (nonatomic, strong) RLMSyncWindowController *syncController;
 
 @property (nonatomic, strong) RLMEncryptionKeyWindowController *encryptionController;
 @property (nonatomic, strong) NSData *encryptionKey;
 
 - (void)handleEncryptionKeyPrompt;
+- (void)handleSyncPrompt;
 
 @end
 
@@ -77,6 +81,9 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     
     if (self.modelDocument.potentiallyEncrypted) {
         [self handleEncryptionKeyPrompt];
+    }
+    else if (self.modelDocument.potentiallySync) {
+        [self handleSyncPrompt];
     }
 }
 
@@ -114,6 +121,22 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
         
         self.encryptionKey = self.encryptionController.encryptionKey;
         self.modelDocument.presentedRealm.encryptionKey = self.encryptionKey;
+        [self realmDidLoad];
+    }];
+}
+
+- (void)handleSyncPrompt
+{
+    self.syncController = [[RLMSyncWindowController alloc] initWithRealmFilePath:self.modelDocument.fileURL];
+    [self.window beginSheet:self.syncController.window completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode != NSModalResponseOK) {
+            [self.document close];
+            return;
+        }
+        
+        self.modelDocument.presentedRealm.syncServerURL = self.syncController.serverURL;
+        self.modelDocument.presentedRealm.syncIdentity = self.syncController.serverIdentity;
+        [self.modelDocument.presentedRealm connect:nil];
         [self realmDidLoad];
     }];
 }

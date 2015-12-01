@@ -50,13 +50,27 @@
 - (BOOL)connect:(NSError **)error
 {
     NSError *localError;
-    _realm = [RLMRealm realmWithPath:_url
-                                 key:self.encryptionKey
-                            readOnly:NO
-                            inMemory:NO
-                             dynamic:YES
-                              schema:nil
-                               error:&localError];
+    
+    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+    configuration.encryptionKey = self.encryptionKey;
+    configuration.syncIdentity = self.syncIdentity;
+    configuration.path = _url;
+    configuration.dynamic = YES;
+    configuration.customSchema = nil;
+    
+    if (self.syncServerURL) {
+        configuration.syncServerURL = [NSURL URLWithString:self.syncServerURL];
+    }
+    
+    _realm = [RLMRealm realmWithConfiguration:configuration error:&localError];
+    
+//    _realm = [RLMRealm realmWithPath:_url
+//                                 key:self.encryptionKey
+//                            readOnly:NO
+//                            inMemory:NO
+//                             dynamic:YES
+//                              schema:nil
+//                               error:&localError];
 
     if (localError) {
         NSLog(@"Realm was opened with error: %@", localError);
