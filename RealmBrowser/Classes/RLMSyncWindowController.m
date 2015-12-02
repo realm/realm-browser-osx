@@ -20,6 +20,9 @@
 @import Realm.Dynamic;
 @import Realm.Private;
 
+NSString * const kSyncServerURLKey = @"SyncServerURL";
+NSString * const kSyncIdentityKey = @"SyncIdentity";
+
 #import "RLMSyncWindowController.h"
 
 @interface RLMSyncWindowController () <NSTextFieldDelegate>
@@ -44,6 +47,27 @@
     return self;
 }
 
+- (void)windowDidLoad
+{
+    [super windowDidLoad];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *serverURL = [defaults stringForKey:kSyncServerURLKey];
+    if (serverURL.length > 0) {
+        self.urlTextField.stringValue = serverURL;
+    }
+    
+    NSString *identity = [defaults stringForKey:kSyncIdentityKey];
+    if (identity.length > 0) {
+        self.identityTextField.stringValue = identity;
+    }
+    
+    if (serverURL.length > 0 && identity.length > 0) {
+        self.okayButton.enabled = YES;
+    }
+}
+
 - (void)controlTextDidChange:(NSNotification *)notification {
     NSString *serverURL = self.urlTextField.stringValue;
     NSString *identity = self.identityTextField.stringValue;
@@ -63,6 +87,11 @@
     
     self.serverURL = serverURL;
     self.serverIdentity = serverIdentity;
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:serverURL forKey:kSyncServerURLKey];
+    [defaults setObject:serverIdentity forKey:kSyncIdentityKey];
+    [defaults synchronize];
     
     [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
 }
