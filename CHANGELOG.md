@@ -3,6 +3,7 @@ x.x.x Release notes (yyyy-MM-dd)
 * Improvements to the scrolling performance of the main table view in Realm documents.
 * String-based searches in Realm files made non-case sensitive.
 * Added 'Cut', 'Copy', 'Paste' and 'Select All' menu options, initially to make editing text values easier.
+* Fixed an issue where editing properties in Realm objects weren't properly saving to disk.
 
 
 0.96.2 Release notes (2015-10-12)
