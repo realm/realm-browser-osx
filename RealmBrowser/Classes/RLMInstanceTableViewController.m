@@ -347,6 +347,8 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             RLMBoolTableCellView *boolCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!boolCellView) {
                 boolCellView = [RLMBoolTableCellView makeWithIdentifier:reuseIdentifier];
+                boolCellView.checkBox.target = self;
+                boolCellView.checkBox.action = @selector(editedCheckBox:);
             }
             boolCellView.checkBox.state = [(NSNumber *)propertyValue boolValue] ? NSOnState : NSOffState;
             [boolCellView.checkBox setEnabled:!self.realmIsLocked];
@@ -363,6 +365,8 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             if (!numberCellView) {
                 numberCellView = [RLMNumberTableCellView makeWithIdentifier:reuseIdentifier];
                 numberCellView.textField.delegate = self;
+                numberCellView.textField.target = self;
+                numberCellView.textField.action = @selector(editedTextField:);
             }
 
             numberCellView.textField.stringValue = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
@@ -379,6 +383,8 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             RLMLinkTableCellView *linkCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!linkCellView) {
                 linkCellView = [RLMLinkTableCellView makeWithIdentifier:reuseIdentifier];
+                linkCellView.textField.target = self;
+                linkCellView.textField.action = @selector(editedTextField:);
             }
             NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             NSDictionary *attr = @{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)};
@@ -399,6 +405,8 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             if (!basicCellView) {
                 basicCellView = [RLMBasicTableCellView makeWithIdentifier:reuseIdentifier];
                 basicCellView.textField.delegate = self;
+                basicCellView.textField.target = self;
+                basicCellView.textField.action = @selector(editedTextField:);
             }
             basicCellView.textField.stringValue = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             basicCellView.textField.editable = !self.realmIsLocked && type != RLMPropertyTypeData;
