@@ -33,13 +33,17 @@ RLM_ASSUME_NONNULL_BEGIN
  */
 @interface RLMSchema : NSObject<NSCopying>
 
+#pragma mark - Properties
+
 /**
  An NSArray containing RLMObjectSchema's for all object types in this Realm. Meant
  to be used during migrations for dynamic introspection.
 
  @see RLMObjectSchema
  */
-@property (nonatomic, readonly, copy) NSArray *objectSchema;
+@property (nonatomic, readonly, copy) NSArray RLM_GENERIC(RLMObjectSchema *) *objectSchema;
+
+#pragma mark - Methods
 
 /**
  Returns an RLMObjectSchema for the given class name in this RLMSchema.
