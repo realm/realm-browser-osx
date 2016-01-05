@@ -255,6 +255,16 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             
             return [NSString stringWithFormat:@"Earliest: %@\nLatest: %@", min, max];
         }
+        case RLMPropertyTypeBool: {
+            // we have to query for both, as there might also be NULL values.
+            NSUInteger trueCount  = [results objectsWhere:@"%K == YES", propertyName].count;
+            NSUInteger falseCount = [results objectsWhere:@"%K == NO",  propertyName].count;
+            NSUInteger count = results.count;
+            float percentTrue  = trueCount * 100.0 / count;
+            float percentFalse = falseCount * 100.0 / count;
+
+            return [NSString stringWithFormat:@"True: %lu (%.1f%%)\nFalse: %lu (%.1f%%)", (unsigned long)trueCount, percentTrue, (unsigned long)falseCount, percentFalse];
+        }
         default:
             return nil;
     }
