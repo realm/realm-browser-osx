@@ -155,9 +155,15 @@
         theItem = ((RLMObjectNode *)item).parentNode;
     }
     
-    RLMNavigationState *state = [[RLMNavigationState alloc] initWithSelectedType:theItem index:0];
+    RLMNavigationState *state = [[RLMNavigationState alloc] initWithSelectedType:theItem index:-1];
     [self.parentWindowController addNavigationState:state fromViewController:self];
     NSInteger typeIndex = [self.classesOutlineView rowForItem:theItem];
+    [self setSelectionIndex:typeIndex];
+}
+
+- (void)performUpdateUsingState:(RLMNavigationState *)newState oldState:(RLMNavigationState *)oldState
+{
+    NSInteger typeIndex = [self.classesOutlineView rowForItem:newState.selectedType];
     [self setSelectionIndex:typeIndex];
 }
 
