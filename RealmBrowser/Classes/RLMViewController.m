@@ -71,7 +71,7 @@
 {
     NSUInteger oldIndex = self.tableView.selectedRow;
     if (oldIndex != newIndex) {
-        if (newIndex == NSUIntegerMax) {
+        if (newIndex == NSNotFound) {
             [self.tableView deselectAll:self];
             [self.tableView scrollRowToVisible:0];
         }

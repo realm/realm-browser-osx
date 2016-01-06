@@ -155,7 +155,7 @@
         theItem = ((RLMObjectNode *)item).parentNode;
     }
     
-    RLMNavigationState *state = [[RLMNavigationState alloc] initWithSelectedType:theItem index:-1];
+    RLMNavigationState *state = [[RLMNavigationState alloc] initWithSelectedType:theItem index:NSNotFound];
     [self.parentWindowController addNavigationState:state fromViewController:self];
     NSInteger typeIndex = [self.classesOutlineView rowForItem:theItem];
     [self setSelectionIndex:typeIndex];
