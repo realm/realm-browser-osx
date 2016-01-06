@@ -71,9 +71,14 @@
 {
     NSUInteger oldIndex = self.tableView.selectedRow;
     if (oldIndex != newIndex) {
-        [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:newIndex] byExtendingSelection:NO];
-        
-        [self.tableView scrollRowToVisible:newIndex];
+        if (newIndex == (NSUInteger)-1) {
+            [self.tableView deselectAll:self];
+            [self.tableView scrollRowToVisible:0];
+        }
+        else {
+            [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:newIndex] byExtendingSelection:NO];
+            [self.tableView scrollRowToVisible:newIndex];
+        }
     }
 }
 
