@@ -172,7 +172,7 @@ inline void LinkColumn::do_swap_link(size_t row_ndx, size_t target_row_ndx_1,
     ++target_row_ndx_1;
     ++target_row_ndx_2;
 
-    size_t value = LinkColumnBase::get(row_ndx);
+    uint64_t value = LinkColumnBase::get(row_ndx);
     if (value == target_row_ndx_1) {
         LinkColumnBase::set(row_ndx, target_row_ndx_2);
     }
