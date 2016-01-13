@@ -58,6 +58,27 @@
             return nil;
         }
         
+        BOOL isSyncRealm = [absoluteURL.fragment isEqualToString:@"sync"];
+        
+        //for the purpose of ensuring one sync agent per Realm file,
+        //make a tmp copy of the Realm file and refer to that one for now
+        if (isSyncRealm) {
+            NSString *tempFilePath = NSTemporaryDirectory();
+            
+            NSString *folderName = [NSString stringWithFormat:@"realm-sync-%lu", (unsigned long)[absoluteURL.absoluteString hash]];
+            tempFilePath = [tempFilePath stringByAppendingPathComponent:folderName];
+            
+            NSString *fileName = absoluteURL.absoluteString.lastPathComponent;
+            //strip the fragment
+            fileName = [[fileName componentsSeparatedByString:@"#"] firstObject];
+            tempFilePath = [tempFilePath stringByAppendingPathComponent:fileName];
+            
+            NSURL *tempFileURL = [NSURL fileURLWithPath:tempFilePath];
+            [[NSFileManager defaultManager] copyItemAtURL:absoluteURL toURL:tempFileURL error:nil];
+            
+            absoluteURL = tempFileURL;
+        }
+        
         NSURL *folderURL = absoluteURL;
         BOOL isDir = NO;
         if (([[NSFileManager defaultManager] fileExistsAtPath:folderURL.path isDirectory:&isDir] && isDir == NO)) {
@@ -93,7 +114,7 @@
             
             NSError *error;
             if ([realmNode connect:&error] || error.code == 2) {
-                if (error) {
+                if (isSyncRealm == NO && error) {
                     RLMConfirmResults results = [RLMAlert showRealmOptionsConfirmationDialogWithFileName:realmName];
                     if (results == RLMConfirmResultsCancel) {
                         return;
@@ -102,11 +123,9 @@
                     if (results == RLMConfirmResultsEncryptionKey) {
                         ws.potentiallyEncrypted = YES;
                     }
-                    else if (results == RLMConfirmResultsSyncCredentials) {
-                        ws.potentiallySync = YES;
-                    }
                 }
-                    
+                
+                ws.potentiallySync = isSyncRealm;
                 ws.presentedRealm  = realmNode;
                 
                 ws.changeNotificationToken = [realmNode.realm addNotificationBlock:^(NSString *notification, RLMRealm *realm) {

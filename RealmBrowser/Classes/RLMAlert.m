@@ -23,20 +23,16 @@
 + (RLMConfirmResults)showRealmOptionsConfirmationDialogWithFileName:(NSString *)fileName
 {
     NSAlert *encryptionAlert = [[NSAlert alloc] init];
-    encryptionAlert.messageText = [NSString stringWithFormat:@"'%@' could not be opened. It may be encrypted, may require sync connection credentials, or it isn't in a compatible file format.", fileName];
-    encryptionAlert.informativeText = @"If you know the file is encrypted or uses sync, you can manually enter its crdentials to open it.";
+    encryptionAlert.messageText = [NSString stringWithFormat:@"'%@' could not be opened. It may be encrypted or it isn't in a compatible file format.", fileName];
+    encryptionAlert.informativeText = @"If you know the file is encrypted, you can manually enter its crdentials to open it.";
     [encryptionAlert addButtonWithTitle:@"Close"];
     [encryptionAlert addButtonWithTitle:@"Enter Encryption Key"];
-    [encryptionAlert addButtonWithTitle:@"Enter Sync Credentials"];
     
     NSModalResponse response = [encryptionAlert runModal];
     if (response == NSAlertSecondButtonReturn) {
         return RLMConfirmResultsEncryptionKey;
     }
-    else if (response == NSAlertThirdButtonReturn) {
-        return RLMConfirmResultsSyncCredentials;
-    }
-    
+
     return RLMConfirmResultsCancel;
 }
 

@@ -76,7 +76,7 @@
                                     <action selector="openDocument:" target="-1" id="bVn-NM-KNZ"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Open Sync..." keyEquivalent="O" id="Jwe-jQ-6st">
+                            <menuItem title="Open With Sync..." keyEquivalent="O" id="Jwe-jQ-6st">
                                 <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                 <connections>
                                     <action selector="openSyncRealmFileWithMenuItem:" target="PLw-ns-0qo" id="1uA-qT-7jd"/>
