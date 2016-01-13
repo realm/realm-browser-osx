@@ -95,12 +95,6 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     [self.tableViewController realmDidLoad];
     
     [self updateNavigationButtons];
-    
-    id firstItem = self.modelDocument.presentedRealm.topLevelClasses.firstObject;
-    if (firstItem != nil) {
-        RLMNavigationState *initState = [[RLMNavigationState alloc] initWithSelectedType:firstItem index:0];
-        [self addNavigationState:initState fromViewController:nil];
-    }
 
     NSString *realmPath = self.modelDocument.presentedRealm.realm.path;
     [self setWindowFrameAutosaveName:[NSString stringWithFormat:kRealmKeyWindowFrameForRealm, realmPath]];
@@ -108,6 +102,12 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     
     [self reloadAfterEdit];
     self.window.alphaValue = 1.0;
+
+    id firstItem = self.modelDocument.presentedRealm.topLevelClasses.firstObject;
+    if (firstItem != nil) {
+        RLMNavigationState *initState = [[RLMNavigationState alloc] initWithSelectedType:firstItem index:NSNotFound];
+        [self addNavigationState:initState fromViewController:nil];
+    }
 }
 
 - (void)handleEncryptionKeyPrompt
