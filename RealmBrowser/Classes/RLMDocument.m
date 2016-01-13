@@ -43,7 +43,7 @@
     __block BOOL success = NO;
     
     if (self = [super init]) {
-        if (![[typeName lowercaseString] isEqualToString:@"documenttype"]) {
+        if (![[typeName lowercaseString] isEqualToString:@"realm"]) {
             return nil;
         }
         
@@ -80,7 +80,7 @@
         
         self.fileURL = absoluteURL;
         
-        dispatch_sync(dispatch_get_main_queue(), ^{
+        void (^mainThreadBlock)() = ^{
             [self.securityScopedURL startAccessingSecurityScopedResource];
             
             //Check to see if first the Realm file needs upgrading, and
@@ -127,7 +127,16 @@
             else if (error) {
                 [[NSApplication sharedApplication] presentError:error];
             }
-        });
+        };
+        
+        // If RLMDocument is instantiated on the main thread, dispatching
+        // that block synchronously will freeze the app.
+        if (![NSThread isMainThread]) {
+            dispatch_sync(dispatch_get_main_queue(), mainThreadBlock);
+        }
+        else {
+            mainThreadBlock();
+        }
     }
     
     return success ? self : nil;

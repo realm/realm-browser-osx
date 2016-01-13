@@ -17,6 +17,7 @@
                 <outlet property="fileMenu" destination="bib-Uj-vzu" id="xMk-IQ-flg"/>
                 <outlet property="openAnyRealmMenu" destination="ZOZ-6y-KFJ" id="vHm-DP-i8r"/>
                 <outlet property="openMenuItem" destination="IAo-SY-fd9" id="U7H-mk-W2m"/>
+                <outlet property="openSyncMenuItem" destination="Jwe-jQ-6st" id="O0w-1a-dC5"/>
             </connections>
         </customObject>
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
@@ -73,6 +74,12 @@
                             <menuItem title="Open…" keyEquivalent="o" id="IAo-SY-fd9">
                                 <connections>
                                     <action selector="openDocument:" target="-1" id="bVn-NM-KNZ"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Open Sync..." keyEquivalent="O" id="Jwe-jQ-6st">
+                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
+                                <connections>
+                                    <action selector="openSyncRealmFileWithMenuItem:" target="PLw-ns-0qo" id="1uA-qT-7jd"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Open Recent" id="tXI-mr-wws">

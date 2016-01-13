@@ -21,6 +21,7 @@
 #import "RLMApplicationDelegate.h"
 #import "RLMTestDataGenerator.h"
 #import "TestClasses.h"
+#import "RLMDocument.h"
 
 #import <AppSandboxFileAccess/AppSandboxFileAccess.h>
 
@@ -28,7 +29,7 @@ const NSUInteger kTopTipDelay = 250;
 const NSUInteger kMaxFilesPerCategory = 7;
 const CGFloat kMenuImageSize = 16;
 
-NSString *const kRealmFileExension = @"realm";
+NSString *const kRealmFileExtension = @"realm";
 NSString *const kDeveloperFolder = @"/Developer";
 NSString *const kSimulatorFolder = @"/Library/Application Support/iPhone Simulator";
 NSString *const kDesktopFolder = @"/Desktop";
@@ -41,6 +42,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
 
 @property (nonatomic, weak) IBOutlet NSMenu *fileMenu;
 @property (nonatomic, weak) IBOutlet NSMenuItem *openMenuItem;
+@property (nonatomic, weak) IBOutlet NSMenuItem *openSyncMenuItem;
 @property (nonatomic, weak) IBOutlet NSMenuItem *openEncryptedMenuItem;
 @property (nonatomic, weak) IBOutlet NSMenu *openAnyRealmMenu;
 
@@ -383,11 +385,36 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
 
 -(void)openFileAtURL:(NSURL *)url
 {
-    NSDocumentController *documentController = [[NSDocumentController alloc] init];
-    [documentController openDocumentWithContentsOfURL:url
+    [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:url
                                               display:YES
                                     completionHandler:^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error){
                                     }];
+}
+
+- (IBAction)openSyncRealmFileWithMenuItem:(NSMenuItem *)menuItem
+{
+    NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+    openPanel.allowedFileTypes = @[kRealmFileExtension];
+    openPanel.canChooseDirectories = NO;
+    openPanel.allowsMultipleSelection = NO;
+
+    if ([openPanel runModal] == NSFileHandlingPanelCancelButton) {
+        return;
+    }
+    
+    NSURL *realmFileURL = [openPanel.URLs firstObject];
+    if (realmFileURL == nil) {
+        return;
+    }
+    
+    NSURLComponents *components = [NSURLComponents componentsWithURL:realmFileURL resolvingAgainstBaseURL:NO];
+    components.fragment = @"sync";
+    [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:components.URL
+                                                                           display:YES
+                                                                 completionHandler:^(NSDocument * __nullable document, BOOL documentWasAlreadyOpen, NSError * __nullable error)
+    {
+        
+    }];
 }
 
 - (void)showSavePanelStringFromDirectory:(NSURL *)directoryUrl completionHandler:(void(^)(BOOL userSelectesFile, NSURL *selectedFile))completion
@@ -395,7 +422,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     NSSavePanel *savePanel = [NSSavePanel savePanel];
     
     // Restrict the file type to whatever you like
-    savePanel.allowedFileTypes = @[kRealmFileExension];
+    savePanel.allowedFileTypes = @[kRealmFileExtension];
     
     // Set the starting directory
     savePanel.directoryURL = directoryUrl;
