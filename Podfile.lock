@@ -1,0 +1,10 @@
+PODS:
+  - AppSandboxFileAccess (1.0.14)
+
+DEPENDENCIES:
+  - AppSandboxFileAccess
+
+SPEC CHECKSUMS:
+  AppSandboxFileAccess: f3e10b0ba10bbaa6dc6996639ff47836050329c5
+
+COCOAPODS: 0.39.0
