@@ -134,6 +134,12 @@ typedef void(^RLMNotificationBlock)(NSString *notification, RLMRealm *realm);
 /**
  Add a notification handler for changes in this RLMRealm.
 
+ Notification handlers are called after each write transaction is committed,
+ either on the current thread or other threads. The block is called on the same
+ thread as they were added on, and can only be added on threads which are
+ currently within a run loop. Unless you are specifically creating and running a
+ run loop on a background thread, this normally will only be the main thread.
+
  The block has the following definition:
 
      typedef void(^RLMNotificationBlock)(NSString *notification, RLMRealm *realm);
@@ -496,6 +502,8 @@ typedef void (^RLMMigrationBlock)(RLMMigration *migration, uint64_t oldSchemaVer
  @see                 RLMMigration
  */
 + (NSError *)migrateRealm:(RLMRealmConfiguration *)configuration;
+
+#pragma mark - Synchronization
 
 /// Set the log level for the synchronization network protocol for all Realms.
 + (void)setGlobalSynchronizationLoggingLevel:(RLMSyncLogLevel)level;
