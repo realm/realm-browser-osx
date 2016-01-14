@@ -143,6 +143,14 @@
 
         // fields
         for (RLMProperty *property in schema.properties) {
+            if (property.isPrimary) {
+                [model appendString:@"    @PrimaryKey\n"];
+            } else if (property.indexed) {
+                [model appendString:@"    @Index\n"];
+            }
+            if (!property.optional && [self javaPropertyTypeCanBeMarkedRequired:property.type]) {
+                [model appendString:@"    @Required\n"];
+            }
             [model appendFormat:@"    private %@ %@;\n", [self javaNameForProperty:property], property.name];
         }
         [model appendFormat:@"\n"];
@@ -190,6 +198,24 @@
             return [NSString stringWithFormat:@"RealmList<%@>", property.objectClassName];
         case RLMPropertyTypeObject:
             return property.objectClassName;
+    }
+}
+
++ (BOOL)javaPropertyTypeCanBeMarkedRequired:(RLMPropertyType)type
+{
+    switch (type) {
+        case RLMPropertyTypeBool:
+        case RLMPropertyTypeInt:
+        case RLMPropertyTypeFloat:
+        case RLMPropertyTypeDouble:
+        case RLMPropertyTypeArray:
+        case RLMPropertyTypeObject:
+            return NO;
+        case RLMPropertyTypeString:
+        case RLMPropertyTypeData:
+        case RLMPropertyTypeAny:
+        case RLMPropertyTypeDate:
+            return YES;
     }
 }
 
