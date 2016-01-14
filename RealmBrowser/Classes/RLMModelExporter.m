@@ -278,23 +278,28 @@
 
 + (NSArray *)swiftModelsOfSchemas:(NSArray *)schemas withFileName:(NSString *)fileName
 {
-    // TODO: handle primary key properties
-
-    // Filename
-    NSString *swiftFileName = [fileName stringByAppendingPathExtension:@"swift"];
-
-    // Contents
     NSMutableString *contents = [NSMutableString stringWithString:@"import RealmSwift\n\n"];
 
     for (RLMObjectSchema *schema in schemas) {
         [contents appendFormat:@"class %@: Object {\n", schema.className];
         NSMutableArray<NSString *> *indexedProperties = [NSMutableArray array];
+        NSString *primaryKey = nil;
+
         for (RLMProperty *property in schema.properties) {
             [contents appendFormat:@"  %@\n", [self swiftDefinitionForProperty:property]];
-            if (property.indexed) {
+            if (property.isPrimary) {
+                primaryKey = property.name;
+            } else if (property.indexed) {
                 [indexedProperties addObject:property.name];
             }
         }
+
+        if (primaryKey) {
+            [contents appendString:@"\n  override static func primaryKey() -> String? {\n"];
+            [contents appendFormat:@"    return \"%@\"\n", primaryKey];
+            [contents appendString:@"  }\n"];
+        }
+
         if (indexedProperties.count > 0) {
             [contents appendString:@"\n  override static func indexedProperties() -> [String] {\n    return [\n"];
             for (NSString *propertyName in indexedProperties) {
@@ -302,11 +307,12 @@
             }
             [contents appendString:@"    ]\n  }\n"];
         }
+
         [contents appendString:@"}\n\n"];
     }
 
     // An array of a single model array with filename and contents
-    return @[@[swiftFileName, contents]];
+    return @[@[[fileName stringByAppendingPathExtension:@"swift"], contents]];
 }
 
 + (NSString *)swiftDefinitionForProperty:(RLMProperty *)property
