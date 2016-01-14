@@ -250,6 +250,15 @@
             [mContents appendFormat:@"\n+ (NSString *)primaryKey {\n    return @\"%@\";\n}\n", primaryKey];
         }
 
+        NSArray *indexedProperties = [[schema.properties filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isPrimary == NO && indexed == YES"]] valueForKey:@"name"];
+        if (indexedProperties.count > 0) {
+            [mContents appendString:@"\n+ (NSArray<NSString *> *)indexedProperties {\n    return @[\n"];
+            for (NSString *indexedProperty in indexedProperties) {
+                [mContents appendFormat:@"        @\"%@\",\n", indexedProperty];
+            }
+            [mContents appendString:@"    ];\n}\n"];
+        }
+
         [mContents appendString:@"\n@end\n\n\n"];
     }
 
