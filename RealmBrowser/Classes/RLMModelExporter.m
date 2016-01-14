@@ -120,30 +120,25 @@
 
     for (RLMObjectSchema *schema in schemas) {
         // imports
-        NSMutableOrderedSet *realmImports = [NSMutableOrderedSet orderedSetWithArray:@[@"io.realm.RealmObject"]];
-        NSMutableOrderedSet *objectImports = [NSMutableOrderedSet orderedSet];
+        NSMutableSet *imports = [NSMutableSet setWithArray:@[@"io.realm.RealmObject"]];
         for (RLMProperty *property in schema.properties) {
             if (property.type == RLMPropertyTypeArray) {
-                [realmImports addObject:@"io.realm.RealmList"];
-                [objectImports addObject:property.objectClassName];
+                [imports addObjectsFromArray:@[@"io.realm.RealmList", property.objectClassName]];
             } else if (property.type == RLMPropertyTypeObject) {
-                [objectImports addObject:property.objectClassName];
+                [imports addObject:property.objectClassName];
             }
             if (property.isPrimary) {
-                [realmImports addObject:@"io.realm.annotations.PrimaryKey"];
+                [imports addObject:@"io.realm.annotations.PrimaryKey"];
             } else if (property.indexed) {
-                [realmImports addObject:@"io.realm.annotations.Index"];
+                [imports addObject:@"io.realm.annotations.Index"];
             }
             if (!property.optional && [self javaPropertyTypeCanBeMarkedRequired:property.type]) {
-                [realmImports addObject:@"io.realm.annotations.Required"];
+                [imports addObject:@"io.realm.annotations.Required"];
             }
         }
 
         NSMutableString *model = [NSMutableString stringWithString:@"package your.package.name.here;\n\n"];
-        for (NSString *import in realmImports) {
-            [model appendFormat:@"import %@;\n", import];
-        }
-        for (NSString *import in objectImports) {
+        for (NSString *import in [imports sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES]]]) {
             [model appendFormat:@"import %@;\n", import];
         }
         [model appendFormat:@"\npublic class %@ extends RealmObject {\n", schema.className];
