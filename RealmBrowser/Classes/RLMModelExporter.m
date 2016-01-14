@@ -119,26 +119,33 @@
     NSMutableArray *models = [NSMutableArray arrayWithCapacity:schemas.count];
 
     for (RLMObjectSchema *schema in schemas) {
-        NSMutableString *model = [NSMutableString stringWithString:@"package your.package.name.here;\n\nimport io.realm.RealmObject;\n"];
-
-        BOOL importedRealmList = YES;
-        NSMutableArray *importedRealmObjects = [[NSMutableArray alloc] init];
+        // imports
+        NSMutableOrderedSet *realmImports = [NSMutableOrderedSet orderedSetWithArray:@[@"io.realm.RealmObject"]];
+        NSMutableOrderedSet *objectImports = [NSMutableOrderedSet orderedSet];
         for (RLMProperty *property in schema.properties) {
             if (property.type == RLMPropertyTypeArray) {
-                if (!importedRealmList) {
-                    [model appendFormat:@"import io.realm.RealmList;\n"];
-                    importedRealmList = YES;
-                }
-                if (![importedRealmObjects containsObject:property.objectClassName]) {
-                    [model appendFormat:@"import %@;\n", property.objectClassName];
-                    [importedRealmObjects addObject:property.objectClassName];
-                }
-            } else if (property.type == RLMPropertyTypeObject && ![importedRealmObjects containsObject:property.objectClassName]) {
-                [model appendFormat:@"import %@;\n", property.objectClassName];
-                [importedRealmObjects addObject:property.objectClassName];
+                [realmImports addObject:@"io.realm.RealmList"];
+                [objectImports addObject:property.objectClassName];
+            } else if (property.type == RLMPropertyTypeObject) {
+                [objectImports addObject:property.objectClassName];
+            }
+            if (property.isPrimary) {
+                [realmImports addObject:@"io.realm.annotations.PrimaryKey"];
+            } else if (property.indexed) {
+                [realmImports addObject:@"io.realm.annotations.Index"];
+            }
+            if (!property.optional && [self javaPropertyTypeCanBeMarkedRequired:property.type]) {
+                [realmImports addObject:@"io.realm.annotations.Required"];
             }
         }
 
+        NSMutableString *model = [NSMutableString stringWithString:@"package your.package.name.here;\n\n"];
+        for (NSString *import in realmImports) {
+            [model appendFormat:@"import %@;\n", import];
+        }
+        for (NSString *import in objectImports) {
+            [model appendFormat:@"import %@;\n", import];
+        }
         [model appendFormat:@"\npublic class %@ extends RealmObject {\n", schema.className];
 
         // fields
