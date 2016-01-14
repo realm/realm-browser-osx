@@ -107,7 +107,7 @@ NSString * const kSyncIdentityKey = @"SyncIdentity";
     configuration.customSchema = nil;
     configuration.syncServerURL = [NSURL URLWithString:url];
     
-    if (identity) {
+    if (identity.length == 40) {
         configuration.syncIdentity = identity;
     }
         
