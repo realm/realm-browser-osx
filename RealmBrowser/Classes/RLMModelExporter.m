@@ -262,7 +262,7 @@
         case RLMPropertyTypeDate:
             return @"NSDate *";
         case RLMPropertyTypeArray:
-            return [NSString stringWithFormat:@"RLMArray<%@> *", property.objectClassName];
+            return [NSString stringWithFormat:@"RLMArray<%@ *><%@> *", property.objectClassName, property.objectClassName];
         case RLMPropertyTypeObject:
             return [NSString stringWithFormat:@"%@ *", property.objectClassName];
     }
