@@ -407,14 +407,18 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
         return;
     }
     
-    NSURLComponents *components = [NSURLComponents componentsWithURL:realmFileURL resolvingAgainstBaseURL:NO];
-    components.fragment = @"sync";
-    [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:components.URL
-                                                                           display:YES
-                                                                 completionHandler:^(NSDocument * __nullable document, BOOL documentWasAlreadyOpen, NSError * __nullable error)
-    {
-        
-    }];
+    //Deferred to the next run loop iteration to give the modal prompt
+    //time to dismiss before the sandboxing prompt appears.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSURLComponents *components = [NSURLComponents componentsWithURL:realmFileURL resolvingAgainstBaseURL:NO];
+        components.fragment = @"sync";
+        [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:components.URL
+                                                                               display:YES
+                                                                     completionHandler:^(NSDocument * __nullable document, BOOL documentWasAlreadyOpen, NSError * __nullable error)
+        {
+            
+        }];
+    });
 }
 
 - (void)showSavePanelStringFromDirectory:(NSURL *)directoryUrl completionHandler:(void(^)(BOOL userSelectesFile, NSURL *selectedFile))completion
