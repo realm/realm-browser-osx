@@ -70,9 +70,7 @@ NSString * const kSyncIdentityKey = @"SyncIdentity";
 
 - (void)controlTextDidChange:(NSNotification *)notification {
     NSString *serverURL = self.urlTextField.stringValue;
-    NSString *identity = self.identityTextField.stringValue;
-    
-    self.okayButton.enabled = (serverURL.length > 0 && identity.length > 0);
+    self.okayButton.enabled = (serverURL.length > 0);
 }
 
 - (IBAction)okayButtonClicked:(id)sender
@@ -107,9 +105,12 @@ NSString * const kSyncIdentityKey = @"SyncIdentity";
     configuration.path = self.realmFilePath.path;
     configuration.dynamic = YES;
     configuration.customSchema = nil;
-    configuration.syncIdentity = identity;
     configuration.syncServerURL = [NSURL URLWithString:url];
     
+    if (identity) {
+        configuration.syncIdentity = identity;
+    }
+        
     NSError *error = nil;
     @autoreleasepool {
         [RLMRealm realmWithConfiguration:configuration error:&error];

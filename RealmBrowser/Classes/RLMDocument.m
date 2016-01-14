@@ -65,7 +65,7 @@
         if (isSyncRealm) {
             NSString *tempFilePath = NSTemporaryDirectory();
             
-            NSString *folderName = [NSString stringWithFormat:@"realm-sync-%lu", (unsigned long)[absoluteURL.absoluteString hash]];
+            NSString *folderName = [NSString stringWithFormat:@"io.realm.sync.%lu", (unsigned long)[absoluteURL.absoluteString hash]];
             tempFilePath = [tempFilePath stringByAppendingPathComponent:folderName];
             
             NSString *fileName = absoluteURL.absoluteString.lastPathComponent;
