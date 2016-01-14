@@ -278,7 +278,7 @@
 
 + (NSArray *)swiftModelsOfSchemas:(NSArray *)schemas withFileName:(NSString *)fileName
 {
-    // TODO: handle primary key & indexed properties
+    // TODO: handle primary key properties
 
     // Filename
     NSString *swiftFileName = [fileName stringByAppendingPathExtension:@"swift"];
@@ -288,11 +288,23 @@
 
     for (RLMObjectSchema *schema in schemas) {
         [contents appendFormat:@"class %@: Object {\n", schema.className];
+        NSMutableArray<NSString *> *indexedProperties = [NSMutableArray array];
         for (RLMProperty *property in schema.properties) {
             [contents appendFormat:@"  %@\n", [self swiftDefinitionForProperty:property]];
+            if (property.indexed) {
+                [indexedProperties addObject:property.name];
+            }
+        }
+        if (indexedProperties.count > 0) {
+            [contents appendString:@"\n  override static func indexedProperties() -> [String] {\n    return [\n"];
+            for (NSString *propertyName in indexedProperties) {
+                [contents appendFormat:@"      \"%@\",\n", propertyName];
+            }
+            [contents appendString:@"    ]\n  }\n"];
         }
         [contents appendString:@"}\n\n"];
     }
+
     // An array of a single model array with filename and contents
     return @[@[swiftFileName, contents]];
 }
