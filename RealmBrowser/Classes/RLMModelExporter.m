@@ -230,9 +230,22 @@
     NSArray *hModel = @[hFilename, hContents];
     
     // Contents of m-file
-    NSMutableString *mContents= [NSMutableString stringWithFormat:@"#import \"%@\"\n\n", hFilename];
+    NSMutableString *mContents = [NSMutableString stringWithFormat:@"#import \"%@\"\n\n", hFilename];
     for (RLMObjectSchema *schema in schemas) {
-        [mContents appendFormat:@"@implementation %@\n\n@end\n\n\n", schema.className];
+        [mContents appendFormat:@"@implementation %@\n", schema.className];
+
+        NSArray *requiredProperties = [[schema.properties filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(RLMProperty *property, __unused NSDictionary *bindings) {
+            return !property.optional && [self objcPropertyTypeIsOptionalByDefault:property.type];
+        }]] valueForKey:@"name"];
+        if (requiredProperties.count > 0) {
+            [mContents appendString:@"\n+ (NSArray<NSString *> *)requiredProperties {\n    return @[\n"];
+            for (NSString *requiredProperty in requiredProperties) {
+                [mContents appendFormat:@"        @\"%@\",\n", requiredProperty];
+            }
+            [mContents appendString:@"    ];\n}\n"];
+        }
+
+        [mContents appendString:@"\n@end\n\n\n"];
     }
 
     // An array with filename and contents for the m-file model
@@ -246,13 +259,13 @@
 {
     switch (property.type) {
         case RLMPropertyTypeBool:
-            return @"BOOL ";
+            return property.optional ? @"NSNumber<RLMBool> *" : @"BOOL ";
         case RLMPropertyTypeInt:
-            return @"NSInteger ";
+            return property.optional ? @"NSNumber<RLMInt> *" :  @"NSInteger ";
         case RLMPropertyTypeFloat:
-            return @"float ";
+            return property.optional ? @"NSNumber<RLMFloat> *" : @"float ";
         case RLMPropertyTypeDouble:
-            return @"double ";
+            return property.optional ? @"NSNumber<RLMDouble> *" : @"double ";
         case RLMPropertyTypeString:
             return @"NSString *";
         case RLMPropertyTypeData:
@@ -265,6 +278,24 @@
             return [NSString stringWithFormat:@"RLMArray<%@ *><%@> *", property.objectClassName, property.objectClassName];
         case RLMPropertyTypeObject:
             return [NSString stringWithFormat:@"%@ *", property.objectClassName];
+    }
+}
+
++ (BOOL)objcPropertyTypeIsOptionalByDefault:(RLMPropertyType)type
+{
+    switch (type) {
+        case RLMPropertyTypeBool:
+        case RLMPropertyTypeInt:
+        case RLMPropertyTypeFloat:
+        case RLMPropertyTypeDouble:
+        case RLMPropertyTypeArray:
+            return NO;
+        case RLMPropertyTypeString:
+        case RLMPropertyTypeData:
+        case RLMPropertyTypeAny:
+        case RLMPropertyTypeDate:
+        case RLMPropertyTypeObject:
+            return YES;
     }
 }
 
