@@ -245,6 +245,11 @@
             [mContents appendString:@"    ];\n}\n"];
         }
 
+        NSString *primaryKey = [[[schema.properties filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isPrimary == YES"]] firstObject] name];
+        if (primaryKey) {
+            [mContents appendFormat:@"\n+ (NSString *)primaryKey {\n    return @\"%@\";\n}\n", primaryKey];
+        }
+
         [mContents appendString:@"\n@end\n\n\n"];
     }
 
