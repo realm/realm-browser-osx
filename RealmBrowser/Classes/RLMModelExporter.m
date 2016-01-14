@@ -317,14 +317,38 @@
 
 + (NSString *)swiftDefinitionForProperty:(RLMProperty *)property
 {
-    // TODO: handle optional properties
-
     NSString *(^namedProperty)(NSString *) = ^NSString *(NSString *formatString) {
         return [NSString stringWithFormat:formatString, property.name];
     };
     NSString *(^objectClassProperty)(NSString *) = ^NSString *(NSString *formatString) {
         return [NSString stringWithFormat:formatString, property.name, property.objectClassName];
     };
+
+    if (property.optional) {
+        switch (property.type) {
+            case RLMPropertyTypeBool:
+                return namedProperty(@"let %@ = RealmOptional<Bool>())");
+            case RLMPropertyTypeInt:
+                return namedProperty(@"let %@ = RealmOptional<Int>())");
+            case RLMPropertyTypeFloat:
+                return namedProperty(@"let %@ = RealmOptional<Float>())");
+            case RLMPropertyTypeDouble:
+                return namedProperty(@"let %@ = RealmOptional<Double>())");
+            case RLMPropertyTypeString:
+                return namedProperty(@"dynamic var %@: String?");
+            case RLMPropertyTypeData:
+                return namedProperty(@"dynamic var %@: NSData?");
+            case RLMPropertyTypeAny:
+                return @"/* Error! 'Any' properties are unsupported in Swift. */";
+            case RLMPropertyTypeDate:
+                return namedProperty(@"dynamic var %@: NSDate?");
+            case RLMPropertyTypeArray:
+                return @"/* Error! 'List' properties should never be optional. Please report this by emailing help@realm.io. */";
+            case RLMPropertyTypeObject:
+                return objectClassProperty(@"dynamic var %@: %@?");
+        }
+    }
+
     switch (property.type) {
         case RLMPropertyTypeBool:
             return namedProperty(@"dynamic var %@ = false");
@@ -345,7 +369,7 @@
         case RLMPropertyTypeArray:
             return objectClassProperty(@"let %@ = List<%@>()");
         case RLMPropertyTypeObject:
-            return objectClassProperty(@"dynamic var %@: %@?");
+            return @"/* Error! 'Object' properties should always be optional. Please report this by emailing help@realm.io. */";
     }
 }
 
