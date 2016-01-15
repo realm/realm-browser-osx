@@ -200,26 +200,24 @@
     }
 }
 
-#pragma mark - Private methods - Objective C helpers
+#pragma mark - Private methods - Objective-C helpers
 
-+(NSArray *)objcModelsOfSchemas:(NSArray *)schemas withFileName:(NSString *)fileName
++ (NSArray *)objcModelsOfSchemas:(NSArray *)schemas withFileName:(NSString *)fileName
 {
     // Filename for h-file
     NSString *hFilename = [fileName stringByAppendingPathExtension:@"h"];
     
     // Contents of h-file
-    NSMutableString *hContents= [NSMutableString string];
-    [hContents appendFormat:@"#import <Foundation/Foundation.h>\n#import <Realm/Realm.h>\n\n"];
-    
+    NSMutableString *hContents= [NSMutableString stringWithFormat:@"#import <Foundation/Foundation.h>\n#import <Realm/Realm.h>\n\n"];
     for (RLMObjectSchema *schema in schemas) {
         [hContents appendFormat:@"@class %@;\n", schema.className];
     }
-    [hContents appendString: @"\n"];
+    [hContents appendString:@"\n"];
     
     for (RLMObjectSchema *schema in schemas) {
         [hContents appendFormat:@"RLM_ARRAY_TYPE(%@)\n", schema.className];
     }
-    [hContents appendString: @"\n\n"];
+    [hContents appendString:@"\n\n"];
     
     for (RLMObjectSchema *schema in schemas) {
         [hContents appendFormat:@"@interface %@ : RLMObject\n\n", schema.className];
@@ -228,37 +226,60 @@
         }
         [hContents appendString:@"\n@end\n\n\n"];
     }
-    // An array with filename and contents, i.e. the h-file model
+    // An array with filename and contents for the h-file model
     NSArray *hModel = @[hFilename, hContents];
     
-    // Filename for m-file
-    NSString *mFilename = [fileName stringByAppendingPathExtension:@"m"];
-    
     // Contents of m-file
-    NSMutableString *mContents= [NSMutableString string];
-    [mContents appendFormat:@"#import \"%@\"\n\n", hFilename];
+    NSMutableString *mContents = [NSMutableString stringWithFormat:@"#import \"%@\"\n\n", hFilename];
     for (RLMObjectSchema *schema in schemas) {
-        [mContents appendFormat:@"@implementation %@\n\n@end\n\n\n", schema.className];
+        [mContents appendFormat:@"@implementation %@\n", schema.className];
+
+        NSArray *requiredProperties = [[schema.properties filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(RLMProperty *property, __unused NSDictionary *bindings) {
+            return !property.optional && [self objcPropertyTypeIsOptionalByDefault:property.type];
+        }]] valueForKey:@"name"];
+        if (requiredProperties.count > 0) {
+            [mContents appendString:@"\n+ (NSArray<NSString *> *)requiredProperties {\n    return @[\n"];
+            for (NSString *requiredProperty in requiredProperties) {
+                [mContents appendFormat:@"        @\"%@\",\n", requiredProperty];
+            }
+            [mContents appendString:@"    ];\n}\n"];
+        }
+
+        NSString *primaryKey = [[[schema.properties filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isPrimary == YES"]] firstObject] name];
+        if (primaryKey) {
+            [mContents appendFormat:@"\n+ (NSString *)primaryKey {\n    return @\"%@\";\n}\n", primaryKey];
+        }
+
+        NSArray *indexedProperties = [[schema.properties filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isPrimary == NO && indexed == YES"]] valueForKey:@"name"];
+        if (indexedProperties.count > 0) {
+            [mContents appendString:@"\n+ (NSArray<NSString *> *)indexedProperties {\n    return @[\n"];
+            for (NSString *indexedProperty in indexedProperties) {
+                [mContents appendFormat:@"        @\"%@\",\n", indexedProperty];
+            }
+            [mContents appendString:@"    ];\n}\n"];
+        }
+
+        [mContents appendString:@"\n@end\n\n\n"];
     }
 
-    // An array with filename and contents, i.e. the m-file model
-    NSArray *mModel = @[mFilename, mContents];
+    // An array with filename and contents for the m-file model
+    NSArray *mModel = @[[fileName stringByAppendingPathExtension:@"m"], mContents];
 
     // An aray with models for both files
     return @[hModel, mModel];
 }
 
-+(NSString *)objcNameForProperty:(RLMProperty *)property
++ (NSString *)objcNameForProperty:(RLMProperty *)property
 {
     switch (property.type) {
         case RLMPropertyTypeBool:
-            return @"BOOL ";
+            return property.optional ? @"NSNumber<RLMBool> *" : @"BOOL ";
         case RLMPropertyTypeInt:
-            return @"NSInteger ";
+            return property.optional ? @"NSNumber<RLMInt> *" :  @"NSInteger ";
         case RLMPropertyTypeFloat:
-            return @"float ";
+            return property.optional ? @"NSNumber<RLMFloat> *" : @"float ";
         case RLMPropertyTypeDouble:
-            return @"double ";
+            return property.optional ? @"NSNumber<RLMDouble> *" : @"double ";
         case RLMPropertyTypeString:
             return @"NSString *";
         case RLMPropertyTypeData:
@@ -268,9 +289,27 @@
         case RLMPropertyTypeDate:
             return @"NSDate *";
         case RLMPropertyTypeArray:
-            return [NSString stringWithFormat:@"RLMArray<%@> *", property.objectClassName];
+            return [NSString stringWithFormat:@"RLMArray<%@ *><%@> *", property.objectClassName, property.objectClassName];
         case RLMPropertyTypeObject:
             return [NSString stringWithFormat:@"%@ *", property.objectClassName];
+    }
+}
+
++ (BOOL)objcPropertyTypeIsOptionalByDefault:(RLMPropertyType)type
+{
+    switch (type) {
+        case RLMPropertyTypeBool:
+        case RLMPropertyTypeInt:
+        case RLMPropertyTypeFloat:
+        case RLMPropertyTypeDouble:
+        case RLMPropertyTypeArray:
+            return NO;
+        case RLMPropertyTypeString:
+        case RLMPropertyTypeData:
+        case RLMPropertyTypeAny:
+        case RLMPropertyTypeDate:
+        case RLMPropertyTypeObject:
+            return YES;
     }
 }
 
