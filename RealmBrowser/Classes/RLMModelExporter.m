@@ -114,67 +114,75 @@
 
 #pragma mark - Private methods - Java helpers
 
-+(NSArray *)javaModelsOfSchemas:(NSArray *)schemas
++ (NSArray *)javaModelsOfSchemas:(NSArray *)schemas
 {
-    NSMutableArray *models = [NSMutableArray array];
-    
-    for (RLMObjectSchema *schema in schemas) {
-        NSString *fileName = [schema.className stringByAppendingPathExtension:@"java"];
-        
-        NSMutableString *model = [NSMutableString string];
-        [model appendFormat:@"package your.package.name.here;\n\nimport io.realm.RealmObject;\n"];
+    NSMutableArray *models = [NSMutableArray arrayWithCapacity:schemas.count];
 
-        bool importedRealmList = false;
-        NSMutableArray *importedRealmObjects = [[NSMutableArray alloc] init];
+    for (RLMObjectSchema *schema in schemas) {
+        // imports
+        NSMutableOrderedSet *realmImports = [NSMutableOrderedSet orderedSetWithArray:@[@"io.realm.RealmObject"]];
+        NSMutableOrderedSet *objectImports = [NSMutableOrderedSet orderedSet];
         for (RLMProperty *property in schema.properties) {
             if (property.type == RLMPropertyTypeArray) {
-                if (!importedRealmList) {
-                    [model appendFormat:@"import io.realm.RealmList;\n"];
-                    importedRealmList = true;
-                }
-                if (![importedRealmObjects containsObject:property.objectClassName]) {
-                    [model appendFormat:@"import %@;\n", property.objectClassName];
-                    [importedRealmObjects addObject:property.objectClassName];
-                }
+                [realmImports addObject:@"io.realm.RealmList"];
+                [objectImports addObject:property.objectClassName];
+            } else if (property.type == RLMPropertyTypeObject) {
+                [objectImports addObject:property.objectClassName];
             }
-            if (property.type == RLMPropertyTypeObject) {
-                if (![importedRealmObjects containsObject:property.objectClassName]) {
-                    [model appendFormat:@"import %@;\n", property.objectClassName];
-                    [importedRealmObjects addObject:property.objectClassName];
-                }
+            if (property.isPrimary) {
+                [realmImports addObject:@"io.realm.annotations.PrimaryKey"];
+            } else if (property.indexed) {
+                [realmImports addObject:@"io.realm.annotations.Index"];
+            }
+            if (!property.optional && [self javaPropertyTypeCanBeMarkedRequired:property.type]) {
+                [realmImports addObject:@"io.realm.annotations.Required"];
             }
         }
-        [model appendFormat:@"\n"];
 
-        [model appendFormat:@"public class %@ extends RealmObject {\n", schema.className];
+        NSMutableString *model = [NSMutableString stringWithString:@"package your.package.name.here;\n\n"];
+        for (NSString *import in realmImports) {
+            [model appendFormat:@"import %@;\n", import];
+        }
+        for (NSString *import in objectImports) {
+            [model appendFormat:@"import %@;\n", import];
+        }
+        [model appendFormat:@"\npublic class %@ extends RealmObject {\n", schema.className];
 
         // fields
         for (RLMProperty *property in schema.properties) {
+            if (property.isPrimary) {
+                [model appendString:@"    @PrimaryKey\n"];
+            } else if (property.indexed) {
+                [model appendString:@"    @Index\n"];
+            }
+            if (!property.optional && [self javaPropertyTypeCanBeMarkedRequired:property.type]) {
+                [model appendString:@"    @Required\n"];
+            }
             [model appendFormat:@"    private %@ %@;\n", [self javaNameForProperty:property], property.name];
         }
         [model appendFormat:@"\n"];
 
         // setters and getters
         for (RLMProperty *property in schema.properties) {
+            NSString *javaNameForProperty = [self javaNameForProperty:property];
             [model appendFormat:@"    public %@ %@%@() { return %@; }\n\n",
-             [self javaNameForProperty:property],
-             (property.type == RLMPropertyTypeBool)? @"is" : @"get",
+             javaNameForProperty, (property.type == RLMPropertyTypeBool) ? @"is" : @"get",
              [property.name capitalizedString], property.name];
             [model appendFormat:@"    public void set%@(%@ %@) { this.%@ = %@; } \n\n",
-               [property.name capitalizedString], [self javaNameForProperty:property], property.name, property.name,
-               property.name
+             [property.name capitalizedString], javaNameForProperty, property.name, property.name,
+             property.name
              ];
         }
 
         [model appendFormat:@"}\n"];
 
-        [models addObject:@[fileName, model]];
+        [models addObject:@[[schema.className stringByAppendingPathExtension:@"java"], model]];
     }
     
     return models;
 }
 
-+(NSString *)javaNameForProperty:(RLMProperty *)property
++ (NSString *)javaNameForProperty:(RLMProperty *)property
 {
     switch (property.type) {
         case RLMPropertyTypeBool:
@@ -196,7 +204,25 @@
         case RLMPropertyTypeArray:
             return [NSString stringWithFormat:@"RealmList<%@>", property.objectClassName];
         case RLMPropertyTypeObject:
-            return [NSString stringWithFormat:@"%@", property.objectClassName];
+            return property.objectClassName;
+    }
+}
+
++ (BOOL)javaPropertyTypeCanBeMarkedRequired:(RLMPropertyType)type
+{
+    switch (type) {
+        case RLMPropertyTypeBool:
+        case RLMPropertyTypeInt:
+        case RLMPropertyTypeFloat:
+        case RLMPropertyTypeDouble:
+        case RLMPropertyTypeArray:
+        case RLMPropertyTypeObject:
+            return NO;
+        case RLMPropertyTypeString:
+        case RLMPropertyTypeData:
+        case RLMPropertyTypeAny:
+        case RLMPropertyTypeDate:
+            return YES;
     }
 }
 
