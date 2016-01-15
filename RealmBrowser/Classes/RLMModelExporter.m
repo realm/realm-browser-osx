@@ -20,50 +20,59 @@
 @import Realm;
 #import <AppSandboxFileAccess/AppSandboxFileAccess.h>
 
-@interface RLMModelExporter ()
-
-+ (NSString *)stringForLanguage:(RLMModelExporterLanguage)language;
-
-@end
-
 @implementation RLMModelExporter
 
 #pragma mark - Public methods
 
 + (void)saveModelsForSchemas:(NSArray *)objectSchemas inLanguage:(RLMModelExporterLanguage)language
 {
-    NSString *dialogTitle = [NSString stringWithFormat:@"Save %@ model definitions", [RLMModelExporter stringForLanguage:language]];
-    
-    if (language == RLMModelExporterLanguageJava) {
-        NSOpenPanel *fileDialog = [NSOpenPanel openPanel];
-        
-        fileDialog.prompt = @"Select folder";
-        fileDialog.canChooseDirectories = YES;
-        fileDialog.canChooseFiles = NO;
-        fileDialog.canCreateDirectories = YES;
-        fileDialog.title = dialogTitle;
-        [fileDialog beginWithCompletionHandler:^(NSInteger result) {
+    void(^saveMultipleFiles)(NSSavePanel *, void(^)()) = ^void(NSSavePanel *panel, void(^completionBlock)()) {
+        panel.canCreateDirectories = YES;
+        panel.title = [NSString stringWithFormat:@"Save %@ model definitions", [RLMModelExporter stringForLanguage:language]];
+        [panel beginWithCompletionHandler:^(NSInteger result) {
             if (result == NSFileHandlingPanelOKButton) {
-                [fileDialog orderOut:self];
-                NSArray *models = [self javaModelsOfSchemas:objectSchemas];
-                [self saveModels:models toFolder:fileDialog.URL];
+                [panel orderOut:self];
+                completionBlock(panel);
             }
         }];
-    }
-    else if (language == RLMModelExporterLanguageObjectiveC) {
-        NSSavePanel *fileDialog = [NSSavePanel savePanel];
-        fileDialog.prompt = @"Save as filename";
-        fileDialog.nameFieldStringValue = @"RealmModels";
-        fileDialog.canCreateDirectories = YES;
-        fileDialog.title = dialogTitle;
-        [fileDialog beginWithCompletionHandler:^(NSInteger result) {
-            if (result == NSFileHandlingPanelOKButton) {
-                [fileDialog orderOut:self];
-                NSString *fileName = [[fileDialog.URL lastPathComponent] stringByDeletingPathExtension];
-                NSArray *models = [self objcModelsOfSchemas:objectSchemas withFileName:fileName];
-                [self saveModels:models toFolder:[fileDialog.URL URLByDeletingLastPathComponent]];
-            }
-        }];
+    };
+
+    void(^saveSingleFile)(NSArray *(^)(NSString *)) = ^void(NSArray *(^modelsWithFileName)(NSString *fileName)) {
+        NSSavePanel *panel = [NSSavePanel savePanel];
+        panel.prompt = @"Save as filename";
+        panel.nameFieldStringValue = @"RealmModels";
+        saveMultipleFiles(panel, ^{
+            NSString *fileName = [[panel.URL lastPathComponent] stringByDeletingPathExtension];
+            [self saveModels:modelsWithFileName(fileName) toFolder:[panel.URL URLByDeletingLastPathComponent]];
+        });
+    };
+
+    switch (language) {
+        case RLMModelExporterLanguageJava:
+        {
+            NSOpenPanel *panel = [NSOpenPanel openPanel];
+            panel.prompt = @"Select folder";
+            panel.canChooseDirectories = YES;
+            panel.canChooseFiles = NO;
+            saveMultipleFiles(panel, ^{
+                [self saveModels:[self javaModelsOfSchemas:objectSchemas] toFolder:panel.URL];
+            });
+            break;
+        }
+        case RLMModelExporterLanguageObjectiveC:
+        {
+            saveSingleFile(^(NSString *fileName){
+                return [self objcModelsOfSchemas:objectSchemas withFileName:fileName];
+            });
+            break;
+        }
+        case RLMModelExporterLanguageSwift:
+        {
+            saveSingleFile(^(NSString *fileName){
+                return [self swiftModelsOfSchemas:objectSchemas withFileName:fileName];
+            });
+            break;
+        }
     }
 }
 
@@ -92,6 +101,16 @@
         [securityScopedURL stopAccessingSecurityScopedResource];
     }];
 }
+
++ (NSString *)stringForLanguage:(RLMModelExporterLanguage)language
+{
+    switch (language) {
+        case RLMModelExporterLanguageJava: return @"Java";
+        case RLMModelExporterLanguageObjectiveC: return @"Objective-C";
+        case RLMModelExporterLanguageSwift: return @"Swift";
+    }
+}
+
 
 #pragma mark - Private methods - Java helpers
 
@@ -255,14 +274,103 @@
     }
 }
 
-+ (NSString *)stringForLanguage:(RLMModelExporterLanguage)language
+#pragma mark - Private methods - Swift helpers
+
++ (NSArray *)swiftModelsOfSchemas:(NSArray *)schemas withFileName:(NSString *)fileName
 {
-    switch (language) {
-        case RLMModelExporterLanguageJava: return @"Java";
-        default: return @"Objective-C";
+    NSMutableString *contents = [NSMutableString stringWithString:@"import RealmSwift\n\n"];
+
+    for (RLMObjectSchema *schema in schemas) {
+        [contents appendFormat:@"class %@: Object {\n", schema.className];
+        NSMutableArray<NSString *> *indexedProperties = [NSMutableArray array];
+        NSString *primaryKey = nil;
+
+        for (RLMProperty *property in schema.properties) {
+            [contents appendFormat:@"  %@\n", [self swiftDefinitionForProperty:property]];
+            if (property.isPrimary) {
+                primaryKey = property.name;
+            } else if (property.indexed) {
+                [indexedProperties addObject:property.name];
+            }
+        }
+
+        if (primaryKey) {
+            [contents appendString:@"\n  override static func primaryKey() -> String? {\n"];
+            [contents appendFormat:@"    return \"%@\"\n", primaryKey];
+            [contents appendString:@"  }\n"];
+        }
+
+        if (indexedProperties.count > 0) {
+            [contents appendString:@"\n  override static func indexedProperties() -> [String] {\n    return [\n"];
+            for (NSString *propertyName in indexedProperties) {
+                [contents appendFormat:@"      \"%@\",\n", propertyName];
+            }
+            [contents appendString:@"    ]\n  }\n"];
+        }
+
+        [contents appendString:@"}\n\n"];
     }
-    
-    return nil;
+
+    // An array of a single model array with filename and contents
+    return @[@[[fileName stringByAppendingPathExtension:@"swift"], contents]];
+}
+
++ (NSString *)swiftDefinitionForProperty:(RLMProperty *)property
+{
+    NSString *(^namedProperty)(NSString *) = ^NSString *(NSString *formatString) {
+        return [NSString stringWithFormat:formatString, property.name];
+    };
+    NSString *(^objectClassProperty)(NSString *) = ^NSString *(NSString *formatString) {
+        return [NSString stringWithFormat:formatString, property.name, property.objectClassName];
+    };
+
+    if (property.optional) {
+        switch (property.type) {
+            case RLMPropertyTypeBool:
+                return namedProperty(@"let %@ = RealmOptional<Bool>())");
+            case RLMPropertyTypeInt:
+                return namedProperty(@"let %@ = RealmOptional<Int>())");
+            case RLMPropertyTypeFloat:
+                return namedProperty(@"let %@ = RealmOptional<Float>())");
+            case RLMPropertyTypeDouble:
+                return namedProperty(@"let %@ = RealmOptional<Double>())");
+            case RLMPropertyTypeString:
+                return namedProperty(@"dynamic var %@: String?");
+            case RLMPropertyTypeData:
+                return namedProperty(@"dynamic var %@: NSData?");
+            case RLMPropertyTypeAny:
+                return @"/* Error! 'Any' properties are unsupported in Swift. */";
+            case RLMPropertyTypeDate:
+                return namedProperty(@"dynamic var %@: NSDate?");
+            case RLMPropertyTypeArray:
+                return @"/* Error! 'List' properties should never be optional. Please report this by emailing help@realm.io. */";
+            case RLMPropertyTypeObject:
+                return objectClassProperty(@"dynamic var %@: %@?");
+        }
+    }
+
+    switch (property.type) {
+        case RLMPropertyTypeBool:
+            return namedProperty(@"dynamic var %@ = false");
+        case RLMPropertyTypeInt:
+            return namedProperty(@"dynamic var %@ = 0");
+        case RLMPropertyTypeFloat:
+            return namedProperty(@"dynamic var %@: Float = 0");
+        case RLMPropertyTypeDouble:
+            return namedProperty(@"dynamic var %@: Double = 0");
+        case RLMPropertyTypeString:
+            return namedProperty(@"dynamic var %@ = \"\"");
+        case RLMPropertyTypeData:
+            return namedProperty(@"dynamic var %@ = NSData()");
+        case RLMPropertyTypeAny:
+            return @"/* Error! 'Any' properties are unsupported in Swift. */";
+        case RLMPropertyTypeDate:
+            return namedProperty(@"dynamic var %@ = NSDate()");
+        case RLMPropertyTypeArray:
+            return objectClassProperty(@"let %@ = List<%@>()");
+        case RLMPropertyTypeObject:
+            return @"/* Error! 'Object' properties should always be optional. Please report this by emailing help@realm.io. */";
+    }
 }
 
 @end

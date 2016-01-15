@@ -107,7 +107,7 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Save Model Definitions" id="YSO-b8-a2a">
                                     <items>
-                                        <menuItem title="Save Java definitions..." tag="101" id="kuf-fu-JL0">
+                                        <menuItem title="Save Java definitions..." id="kuf-fu-JL0">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="saveJavaModels:" target="-1" id="6op-mb-kj6"/>
@@ -117,6 +117,12 @@
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="saveObjcModels:" target="-1" id="6Rj-7H-W6J"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Save Swift definitions..." id="Nxi-3A-mZH">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="saveSwiftModels:" target="-1" id="7le-yg-BNa"/>
                                             </connections>
                                         </menuItem>
                                     </items>
