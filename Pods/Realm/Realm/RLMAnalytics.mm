@@ -47,7 +47,7 @@
 // - What version of Realm is being used, and from which language (obj-c or Swift).
 // - What version of OS X it's running on (in case Xcode aggressively drops
 //   support for older versions again, we need to know what we need to support).
-// - The mimimum iOS/OS X version that the application is targeting (again, to
+// - The minimum iOS/OS X version that the application is targeting (again, to
 //   help us decide what versions we need to support). 
 // - An anonymous MAC address and bundle ID to aggregate the other information on.
 
@@ -55,7 +55,7 @@
 
 #import <Foundation/Foundation.h>
 
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_MAC || (TARGET_OS_WATCH && TARGET_OS_SIMULATOR)
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_MAC || (TARGET_OS_WATCH && TARGET_OS_SIMULATOR) || (TARGET_OS_TV && TARGET_OS_SIMULATOR)
 #import "RLMRealm.h"
 #import "RLMUtil.hpp"
 
@@ -169,7 +169,7 @@ static NSDictionary *RLMAnalyticsPayload() {
     }
 
     NSString *osVersionString = [[NSProcessInfo processInfo] operatingSystemVersionString];
-    BOOL isSwift = NSClassFromString(@"RealmSwift.ObjectUtil") != nil;
+    BOOL isSwift = NSClassFromString(@"RealmSwiftObjectUtil") != nil;
 
     static NSString *kUnknownString = @"unknown";
     NSString *hashedMACAddress = RLMMACAddress() ?: kUnknownString;
@@ -189,10 +189,12 @@ static NSDictionary *RLMAnalyticsPayload() {
                      @"Binding": @"cocoa",
                      @"Language": isSwift ? @"swift" : @"objc",
                      @"Realm Version": REALM_COCOA_VERSION,
-#if TARGET_OS_IOS
-                     @"Target OS Type": @"ios",
-#elif TARGET_OS_WATCH
+#if TARGET_OS_WATCH
                      @"Target OS Type": @"watchos",
+#elif TARGET_OS_TV
+                     @"Target OS Type": @"tvos",
+#elif TARGET_OS_IPHONE
+                     @"Target OS Type": @"ios",
 #else
                      @"Target OS Type": @"osx",
 #endif

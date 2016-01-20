@@ -174,7 +174,7 @@ static void RLMValidateArrayBounds(__unsafe_unretained RLMArray *const ar,
     // reflect changes made during enumeration. This copy has to be autoreleased
     // (since there's nowhere for us to store a strong reference), and uses
     // RLMArrayHolder rather than an NSArray because NSArray doesn't guarantee
-    // that it'll use a single contiugous block of memory, and if it doesn't
+    // that it'll use a single contiguous block of memory, and if it doesn't
     // we'd need to forward multiple calls to this method to the same NSArray,
     // which would require holding a reference to it somewhere.
     __autoreleasing RLMArrayHolder *copy = [[RLMArrayHolder alloc] init];
@@ -297,6 +297,25 @@ static void RLMValidateArrayBounds(__unsafe_unretained RLMArray *const ar,
 - (RLMResults *)objectsWhere:(NSString *)predicateFormat args:(va_list)args
 {
     return [self objectsWithPredicate:[NSPredicate predicateWithFormat:predicateFormat arguments:args]];
+}
+
+- (id)valueForKeyPath:(NSString *)keyPath {
+    if (!_backingArray) {
+        return [super valueForKeyPath:keyPath];
+    }
+    // Although delegating to valueForKeyPath: here would allow to support
+    // nested key paths as well, limiting functionality gives consistency
+    // between standalone and persisted arrays.
+    if ([keyPath characterAtIndex:0] == '@') {
+        NSRange operatorRange = [keyPath rangeOfString:@"." options:NSLiteralSearch];
+        if (operatorRange.location != NSNotFound) {
+            NSString *operatorKeyPath = [keyPath substringFromIndex:operatorRange.location + 1];
+            if ([operatorKeyPath rangeOfString:@"."].location != NSNotFound) {
+                @throw RLMException(@"Nested key paths are not supported yet for KVC collection operators.");
+            }
+        }
+    }
+    return [_backingArray valueForKeyPath:keyPath];
 }
 
 - (id)valueForKey:(NSString *)key {

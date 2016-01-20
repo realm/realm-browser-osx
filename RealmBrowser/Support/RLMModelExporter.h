@@ -19,8 +19,9 @@
 @import Foundation;
 
 typedef NS_ENUM(NSInteger, RLMModelExporterLanguage) {
+    RLMModelExporterLanguageJava,
     RLMModelExporterLanguageObjectiveC,
-    RLMModelExporterLanguageJava
+    RLMModelExporterLanguageSwift
 };
 
 @interface RLMModelExporter : NSObject

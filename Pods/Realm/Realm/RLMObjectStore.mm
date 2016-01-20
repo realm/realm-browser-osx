@@ -33,7 +33,9 @@
 #import "RLMUtil.hpp"
 
 #import "object_store.hpp"
+#import "results.hpp"
 #import "shared_realm.hpp"
+
 #import <objc/message.h>
 
 using namespace realm;
@@ -74,12 +76,19 @@ void RLMClearAccessorCache() {
     [s_accessorSchema removeAllObjects];
 }
 
+static inline void RLMVerifyRealmRead(__unsafe_unretained RLMRealm *const realm) {
+    if (!realm) {
+        @throw RLMException(@"Realm must not be nil");
+    }
+    [realm verifyThread];
+}
+
 static inline void RLMVerifyInWriteTransaction(__unsafe_unretained RLMRealm *const realm) {
+    RLMVerifyRealmRead(realm);
     // if realm is not writable throw
     if (!realm.inWriteTransaction) {
         @throw RLMException(@"Can only add, remove, or create objects in a Realm in a write transaction - call beginWriteTransaction on an RLMRealm instance first.");
     }
-    [realm verifyThread];
 }
 
 void RLMInitializeSwiftAccessorGenerics(__unsafe_unretained RLMObjectBase *const object) {
@@ -87,7 +96,7 @@ void RLMInitializeSwiftAccessorGenerics(__unsafe_unretained RLMObjectBase *const
         return;
     }
 
-    static Class s_swiftObjectClass = NSClassFromString(@"RealmSwift.Object");
+    static Class s_swiftObjectClass = NSClassFromString(@"RealmSwiftObject");
     if (![object isKindOfClass:s_swiftObjectClass]) {
         return; // Is a Swift class using the obj-c API
     }
@@ -100,10 +109,8 @@ void RLMInitializeSwiftAccessorGenerics(__unsafe_unretained RLMObjectBase *const
                                                                      key:prop.name
                                                             parentSchema:object->_objectSchema];
             [RLMObjectUtilClass(YES) initializeListProperty:object property:prop array:array];
-        } else if (auto ivar = prop.swiftIvar) {
-            auto optional = static_cast<RLMOptionalBase *>(object_getIvar(object, ivar));
-            optional.object = object;
-            optional.property = prop;
+        } else if (prop.swiftIvar) {
+            [RLMObjectUtilClass(YES) initializeOptionalProperty:object property:prop];
         }
     }
 }
@@ -167,7 +174,7 @@ void RLMAddObjectToRealm(__unsafe_unretained RLMObjectBase *const object,
     RLMObjectSchema *schema = [realm.schema schemaForClassName:objectClassName];
     if (!schema) {
         @throw RLMException(@"Object type '%@' is not persisted in the Realm. "
-                            @"If using a custom `objectClasses` / `obejctTypes` array in your configuration, "
+                            @"If using a custom `objectClasses` / `objectTypes` array in your configuration, "
                             @"add `%@` to the list of `objectClasses` / `objectTypes`.",
                             objectClassName, objectClassName);
     }
@@ -355,7 +362,7 @@ RLMObjectBase *RLMCreateObjectInRealmWithValue(RLMRealm *realm, NSString *classN
     RLMObjectSchema *objectSchema = [realm.schema schemaForClassName:className];
     if (!objectSchema) {
         @throw RLMException(@"Object type '%@' is not persisted in the Realm. "
-                             @"If using a custom `objectClasses` / `obejctTypes` array in your configuration, "
+                             @"If using a custom `objectClasses` / `objectTypes` array in your configuration, "
                              @"add `%@` to the list of `objectClasses` / `objectTypes`.",
                              className, className);
     }
@@ -371,7 +378,7 @@ RLMObjectBase *RLMCreateObjectInRealmWithValue(RLMRealm *realm, NSString *classN
         object->_row = (*objectSchema.table)[RLMCreateOrGetRowForObject(objectSchema, primaryGetter, createOrUpdate, created)];
 
         // populate
-        NSArray *props = objectSchema.properties;
+        NSArray *props = objectSchema.propertiesInDeclaredOrder;
         for (NSUInteger i = 0; i < array.count; i++) {
             RLMProperty *prop = props[i];
             // skip primary key when updating since it doesn't change
@@ -449,14 +456,14 @@ void RLMDeleteAllObjectsFromRealm(RLMRealm *realm) {
 }
 
 RLMResults *RLMGetObjects(RLMRealm *realm, NSString *objectClassName, NSPredicate *predicate) {
-    [realm verifyThread];
+    RLMVerifyRealmRead(realm);
 
     // create view from table and predicate
     RLMObjectSchema *objectSchema = realm.schema[objectClassName];
     if (!objectSchema.table) {
         // read-only realms may be missing tables since we can't add any
         // missing ones on init
-        return [RLMEmptyResults emptyResultsWithObjectClassName:objectClassName realm:realm];
+        return [RLMResults resultsWithObjectSchema:objectSchema results:{}];
     }
 
     if (predicate) {
@@ -464,16 +471,16 @@ RLMResults *RLMGetObjects(RLMRealm *realm, NSString *objectClassName, NSPredicat
         RLMUpdateQueryWithPredicate(&query, predicate, realm.schema, objectSchema);
 
         // create and populate array
-        return [RLMResults resultsWithObjectClassName:objectClassName
-                                                query:std::make_unique<Query>(query)
-                                                realm:realm];
+        return [RLMResults resultsWithObjectSchema:objectSchema
+                                           results:realm::Results(realm->_realm, std::move(query))];
     }
 
-    return [RLMTableResults tableResultsWithObjectSchema:objectSchema realm:realm];
+    return [RLMResults resultsWithObjectSchema:objectSchema
+                                       results:realm::Results(realm->_realm, *objectSchema.table)];
 }
 
 id RLMGetObject(RLMRealm *realm, NSString *objectClassName, id key) {
-    [realm verifyThread];
+    RLMVerifyRealmRead(realm);
 
     RLMObjectSchema *objectSchema = realm.schema[objectClassName];
 
@@ -520,12 +527,18 @@ id RLMGetObject(RLMRealm *realm, NSString *objectClassName, id key) {
     return RLMCreateObjectAccessor(realm, objectSchema, row);
 }
 
-// Create accessor and register with realm
 RLMObjectBase *RLMCreateObjectAccessor(__unsafe_unretained RLMRealm *const realm,
                                        __unsafe_unretained RLMObjectSchema *const objectSchema,
                                        NSUInteger index) {
+    return RLMCreateObjectAccessor(realm, objectSchema, (*objectSchema.table)[index]);
+}
+
+// Create accessor and register with realm
+RLMObjectBase *RLMCreateObjectAccessor(__unsafe_unretained RLMRealm *const realm,
+                                       __unsafe_unretained RLMObjectSchema *const objectSchema,
+                                       realm::RowExpr row) {
     RLMObjectBase *accessor = [[objectSchema.accessorClass alloc] initWithRealm:realm schema:objectSchema];
-    accessor->_row = (*objectSchema.table)[index];
+    accessor->_row = row;
     RLMInitializeSwiftAccessorGenerics(accessor);
     return accessor;
 }

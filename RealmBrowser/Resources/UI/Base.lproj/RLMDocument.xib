@@ -143,7 +143,7 @@
                                 <rect key="frame" x="237" y="0.0" width="740" height="476"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
-                                    <scrollView wantsLayer="YES" focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3b6-BA-X5L" userLabel="MainScroll">
+                                    <scrollView wantsLayer="YES" focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="10" translatesAutoresizingMaskIntoConstraints="NO" id="3b6-BA-X5L" userLabel="MainScroll">
                                         <rect key="frame" x="0.0" y="0.0" width="740" height="476"/>
                                         <clipView key="contentView" focusRingType="none" id="kRO-aN-FFM">
                                             <rect key="frame" x="0.0" y="0.0" width="740" height="476"/>

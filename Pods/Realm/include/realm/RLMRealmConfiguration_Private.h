@@ -35,3 +35,4 @@
 
 // Get a path in the platform-appropriate documents directory with the given filename
 FOUNDATION_EXTERN NSString *RLMRealmPathForFile(NSString *fileName);
+FOUNDATION_EXTERN NSString *RLMRealmPathForFileAndBundleIdentifier(NSString *fileName, NSString *mainBundleIdentifier);

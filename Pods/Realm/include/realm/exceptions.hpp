@@ -113,6 +113,7 @@ public:
         table_index_out_of_range,
         row_index_out_of_range,
         column_index_out_of_range,
+        string_position_out_of_range,
         link_index_out_of_range,
         bad_version,
         illegal_type,
@@ -142,19 +143,14 @@ public:
         /// attached to an underlying object.
         detached_accessor,
 
+        /// Indicates that a specified row index of a target table (a link) is
+        /// out of range. This is used for disambiguation in cases such as
+        /// Table::set_link() where one specifies both a row index of the origin
+        /// table, and a row index of the target table.
+        target_row_index_out_of_range,
+
         // Indicates that an involved column lacks a search index.
         no_search_index,
-
-        // Indicates that an involved table lacks a primary key.
-        no_primary_key,
-
-        // Indicates that an attempt was made to add a primary key to a table that
-        // already had a primary key.
-        has_primary_key,
-
-        /// Indicates that a modification to a column was attempted that cannot
-        /// be done because the column is the primary key of the table.
-        is_primary_key,
 
         /// Indicates that a modification was attempted that would have produced a
         /// duplicate primary value.

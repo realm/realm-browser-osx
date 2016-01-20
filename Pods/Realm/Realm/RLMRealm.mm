@@ -89,9 +89,6 @@ NSData *RLMRealmValidatedEncryptionKey(NSData *key) {
         if (key.length != 64) {
             @throw RLMException(@"Encryption key must be exactly 64 bytes long");
         }
-        if (RLMIsDebuggerAttached()) {
-            @throw RLMException(@"Cannot open an encrypted Realm with a debugger attached to the process");
-        }
 #if TARGET_OS_WATCH
         @throw RLMException(@"Cannot open an encrypted Realm on watchOS.");
 #endif
@@ -244,7 +241,8 @@ static void RLMRealmSetSchemaAndAlign(RLMRealm *realm, RLMSchema *targetSchema) 
                                  "architecture. For sharing files between the Realm "
                                  "Browser and an iOS simulator, this means that you "
                                  "must use a 64-bit simulator.";
-                RLMSetErrorOrThrow(RLMMakeError(RLMErrorIncompatibleLockFile, File::PermissionDenied(err.UTF8String, "FIXME: ex.get_path()")), outError);
+                RLMSetErrorOrThrow(RLMMakeError(RLMErrorIncompatibleLockFile,
+                                                File::PermissionDenied(err.UTF8String, ex.path())), outError);
                 break;
             }
             case RealmFileException::Kind::Exists:
@@ -373,7 +371,7 @@ static void RLMRealmSetSchemaAndAlign(RLMRealm *realm, RLMSchema *targetSchema) 
     if (!readOnly) {
         // initializing the schema started a read transaction, so end it
         [realm invalidate];
-        realm->_realm->m_delegate = RLMCreateRealmDelegate(realm);
+        realm->_realm->m_binding_context = RLMCreateBindingContext(realm);
     }
 
     return RLMAutorelease(realm);
@@ -396,6 +394,9 @@ static void CheckReadWrite(RLMRealm *realm, NSString *msg=@"Cannot write to a re
     CheckReadWrite(self, @"Read-only Realms do not change and do not have change notifications");
     if (!block) {
         @throw RLMException(@"The notification block should not be nil");
+    }
+    if (!RLMIsInRunLoop()) {
+        @throw RLMException(@"Can only add notification blocks from within runloops.");
     }
 
     _realm->read_group();
@@ -446,13 +447,6 @@ static void CheckReadWrite(RLMRealm *realm, NSString *msg=@"Cannot write to a re
     catch (std::exception &ex) {
         @throw RLMException(ex);
     }
-
-    // notify any collections currently being enumerated that they need
-    // to switch to enumerating a copy as the data may change on them
-    for (RLMFastEnumerator *enumerator in _collectionEnumerators) {
-        [enumerator detach];
-    }
-    _collectionEnumerators = nil;
 }
 
 - (void)commitWriteTransaction {
@@ -498,6 +492,8 @@ static void CheckReadWrite(RLMRealm *realm, NSString *msg=@"Cannot write to a re
               "transaction and all pending changes have been rolled back.");
     }
 
+    [self detachAllEnumerators];
+
     for (RLMObjectSchema *objectSchema in _schema.objectSchema) {
         for (RLMObservationInfo *info : objectSchema->_observedObjects) {
             info->willChange(RLMInvalidatedKey);
@@ -534,9 +530,21 @@ static void CheckReadWrite(RLMRealm *realm, NSString *msg=@"Cannot write to a re
 
  @return YES if the compaction succeeded.
  */
-- (BOOL)compact
-{
-    return _realm->compact();
+- (BOOL)compact {
+    // compact() automatically ends the read transaction, but we need to clean
+    // up cached state and send invalidated notifications when that happens, so
+    // explicitly end it first unless we're in a write transaction (in which
+    // case compact() will throw an exception)
+    if (!_realm->is_in_transaction()) {
+        [self invalidate];
+    }
+
+    try {
+        return _realm->compact();
+    }
+    catch (std::exception const& ex) {
+        @throw RLMException(ex);
+    }
 }
 
 - (void)dealloc {
@@ -727,6 +735,13 @@ static void CheckReadWrite(RLMRealm *realm, NSString *msg=@"Cannot write to a re
 
 - (void)unregisterEnumerator:(RLMFastEnumerator *)enumerator {
     [_collectionEnumerators removeObject:enumerator];
+}
+
+- (void)detachAllEnumerators {
+    for (RLMFastEnumerator *enumerator in _collectionEnumerators) {
+        [enumerator detach];
+    }
+    _collectionEnumerators = nil;
 }
 
 @end

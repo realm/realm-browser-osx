@@ -88,12 +88,6 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     [self.tableViewController realmDidLoad];
     
     [self updateNavigationButtons];
-    
-    id firstItem = self.modelDocument.presentedRealm.topLevelClasses.firstObject;
-    if (firstItem != nil) {
-        RLMNavigationState *initState = [[RLMNavigationState alloc] initWithSelectedType:firstItem index:0];
-        [self addNavigationState:initState fromViewController:nil];
-    }
 
     NSString *realmPath = self.modelDocument.presentedRealm.realm.path;
     [self setWindowFrameAutosaveName:[NSString stringWithFormat:kRealmKeyWindowFrameForRealm, realmPath]];
@@ -101,6 +95,12 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     
     [self reloadAfterEdit];
     self.window.alphaValue = 1.0;
+
+    id firstItem = self.modelDocument.presentedRealm.topLevelClasses.firstObject;
+    if (firstItem != nil) {
+        RLMNavigationState *initState = [[RLMNavigationState alloc] initWithSelectedType:firstItem index:NSNotFound];
+        [self addNavigationState:initState fromViewController:nil];
+    }
 }
 
 - (void)handleEncryptionKeyPrompt
@@ -127,16 +127,25 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
 #pragma mark - Public methods - Menu items
 
-- (IBAction)saveJavaModels:(id)sender
+- (void)saveModelsForLanguage:(RLMModelExporterLanguage)language
 {
     NSArray *objectSchemas = self.modelDocument.presentedRealm.realm.schema.objectSchema;
-    [RLMModelExporter saveModelsForSchemas:objectSchemas inLanguage:RLMModelExporterLanguageJava];
+    [RLMModelExporter saveModelsForSchemas:objectSchemas inLanguage:language];
+}
+
+- (IBAction)saveJavaModels:(id)sender
+{
+    [self saveModelsForLanguage:RLMModelExporterLanguageJava];
 }
 
 - (IBAction)saveObjcModels:(id)sender
 {
-    NSArray *objectSchemas = self.modelDocument.presentedRealm.realm.schema.objectSchema;
-    [RLMModelExporter saveModelsForSchemas:objectSchemas inLanguage:RLMModelExporterLanguageObjectiveC];
+    [self saveModelsForLanguage:RLMModelExporterLanguageObjectiveC];
+}
+
+- (IBAction)saveSwiftModels:(id)sender
+{
+    [self saveModelsForLanguage:RLMModelExporterLanguageSwift];
 }
 
 - (IBAction)saveCopy:(id)sender

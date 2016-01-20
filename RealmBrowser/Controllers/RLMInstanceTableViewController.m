@@ -255,6 +255,18 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             
             return [NSString stringWithFormat:@"Earliest: %@\nLatest: %@", min, max];
         }
+        case RLMPropertyTypeBool: {
+            NSUInteger count = results.count;
+            if (count == 0) return nil;
+
+            // we have to query for both, as there might also be NULL values.
+            NSUInteger trueCount  = [results objectsWhere:@"%K == YES", propertyName].count;
+            NSUInteger falseCount = [results objectsWhere:@"%K == NO",  propertyName].count;
+            float percentTrue  = trueCount * 100.0 / count;
+            float percentFalse = falseCount * 100.0 / count;
+
+            return [NSString stringWithFormat:@"True: %lu (%.1f%%)\nFalse: %lu (%.1f%%)", (unsigned long)trueCount, percentTrue, (unsigned long)falseCount, percentFalse];
+        }
         default:
             return nil;
     }
@@ -347,6 +359,8 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             RLMBoolTableCellView *boolCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!boolCellView) {
                 boolCellView = [RLMBoolTableCellView makeWithIdentifier:reuseIdentifier];
+                boolCellView.checkBox.target = self;
+                boolCellView.checkBox.action = @selector(editedCheckBox:);
             }
             boolCellView.checkBox.state = [(NSNumber *)propertyValue boolValue] ? NSOnState : NSOffState;
             [boolCellView.checkBox setEnabled:!self.realmIsLocked];
@@ -363,6 +377,8 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             if (!numberCellView) {
                 numberCellView = [RLMNumberTableCellView makeWithIdentifier:reuseIdentifier];
                 numberCellView.textField.delegate = self;
+                numberCellView.textField.target = self;
+                numberCellView.textField.action = @selector(editedTextField:);
             }
 
             numberCellView.textField.stringValue = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
@@ -379,6 +395,8 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             RLMLinkTableCellView *linkCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!linkCellView) {
                 linkCellView = [RLMLinkTableCellView makeWithIdentifier:reuseIdentifier];
+                linkCellView.textField.target = self;
+                linkCellView.textField.action = @selector(editedTextField:);
             }
             NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             NSDictionary *attr = @{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)};
@@ -399,6 +417,8 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             if (!basicCellView) {
                 basicCellView = [RLMBasicTableCellView makeWithIdentifier:reuseIdentifier];
                 basicCellView.textField.delegate = self;
+                basicCellView.textField.target = self;
+                basicCellView.textField.action = @selector(editedTextField:);
             }
             basicCellView.textField.stringValue = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             basicCellView.textField.editable = !self.realmIsLocked && type != RLMPropertyTypeData;
