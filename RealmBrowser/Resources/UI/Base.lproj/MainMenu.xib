@@ -133,6 +133,12 @@
                                     <action selector="saveCopy:" target="-1" id="nGj-bK-5Sr"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Export as CSV..." id="CZz-Aj-Tst">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="exportToCSV:" target="-1" id="crG-Zw-rjL"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
@@ -273,5 +279,8 @@ CA
                 </menuItem>
             </items>
         </menu>
+        <menuItem title="Item" id="FTR-b1-6Fe">
+            <modifierMask key="keyEquivalentModifierMask"/>
+        </menuItem>
     </objects>
 </document>

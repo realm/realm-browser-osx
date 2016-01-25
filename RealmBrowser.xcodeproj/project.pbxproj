@@ -9,6 +9,21 @@
 /* Begin PBXBuildFile section */
 		22096B2719911F7300233D77 /* RLMBadgeTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */; };
 		220D382819B639D700F79496 /* RLMTestDataGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 220D382719B639D700F79496 /* RLMTestDataGenerator.m */; };
+		2212D2DA1C56178F00455162 /* RealmConvertKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2212D2D91C56178F00455162 /* RealmConvertKit.framework */; };
+		2212D2DB1C561BB000455162 /* RealmConvertKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2212D2D91C56178F00455162 /* RealmConvertKit.framework */; };
+		2212D2DC1C561BB000455162 /* RealmConvertKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2212D2D91C56178F00455162 /* RealmConvertKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2212D2E01C561BDA00455162 /* CSwiftV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2212D2DE1C561BDA00455162 /* CSwiftV.framework */; };
+		2212D2E11C561BDA00455162 /* CSwiftV.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2212D2DE1C561BDA00455162 /* CSwiftV.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2212D2E21C561BDA00455162 /* PathKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2212D2DF1C561BDA00455162 /* PathKit.framework */; };
+		2212D2E31C561BDA00455162 /* PathKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2212D2DF1C561BDA00455162 /* PathKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2212D2E51C561C2A00455162 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2212D2E41C561C2A00455162 /* RealmSwift.framework */; };
+		2212D2E61C561C2A00455162 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2212D2E41C561C2A00455162 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2212D2E91C561C5700455162 /* SpreadsheetWriter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2212D2E71C561C5700455162 /* SpreadsheetWriter.framework */; };
+		2212D2EA1C561C5700455162 /* SSZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2212D2E81C561C5700455162 /* SSZipArchive.framework */; };
+		2212D2EB1C561C6E00455162 /* SpreadsheetWriter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2212D2E71C561C5700455162 /* SpreadsheetWriter.framework */; };
+		2212D2EC1C561C6E00455162 /* SpreadsheetWriter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2212D2E71C561C5700455162 /* SpreadsheetWriter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2212D2ED1C561C6E00455162 /* SSZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2212D2E81C561C5700455162 /* SSZipArchive.framework */; };
+		2212D2EE1C561C6E00455162 /* SSZipArchive.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2212D2E81C561C5700455162 /* SSZipArchive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		221322FA19954AB100D25737 /* RLMImageTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221322F919954AB100D25737 /* RLMImageTableCellView.m */; };
 		221322FD19954B0A00D25737 /* RLMTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221322FC19954B0A00D25737 /* RLMTableCellView.m */; };
 		2249D9B219A62EBD00A31104 /* RLMTableColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 2249D9B119A62EBD00A31104 /* RLMTableColumn.m */; };
@@ -79,11 +94,36 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		2212D2DD1C561BB000455162 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2212D2E31C561BDA00455162 /* PathKit.framework in Embed Frameworks */,
+				2212D2EE1C561C6E00455162 /* SSZipArchive.framework in Embed Frameworks */,
+				2212D2DC1C561BB000455162 /* RealmConvertKit.framework in Embed Frameworks */,
+				2212D2EC1C561C6E00455162 /* SpreadsheetWriter.framework in Embed Frameworks */,
+				2212D2E61C561C2A00455162 /* RealmSwift.framework in Embed Frameworks */,
+				2212D2E11C561BDA00455162 /* CSwiftV.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		22096B2519911F7300233D77 /* RLMBadgeTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMBadgeTableCellView.h; sourceTree = "<group>"; };
 		22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMBadgeTableCellView.m; sourceTree = "<group>"; };
 		220D382619B639D700F79496 /* RLMTestDataGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTestDataGenerator.h; sourceTree = "<group>"; };
 		220D382719B639D700F79496 /* RLMTestDataGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTestDataGenerator.m; sourceTree = "<group>"; };
+		2212D2D91C56178F00455162 /* RealmConvertKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmConvertKit.framework; path = Frameworks/RealmConvertKit.framework; sourceTree = "<group>"; };
+		2212D2DE1C561BDA00455162 /* CSwiftV.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CSwiftV.framework; path = Frameworks/CSwiftV.framework; sourceTree = "<group>"; };
+		2212D2DF1C561BDA00455162 /* PathKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PathKit.framework; path = Frameworks/PathKit.framework; sourceTree = "<group>"; };
+		2212D2E41C561C2A00455162 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Frameworks/RealmSwift.framework; sourceTree = "<group>"; };
+		2212D2E71C561C5700455162 /* SpreadsheetWriter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpreadsheetWriter.framework; path = Frameworks/SpreadsheetWriter.framework; sourceTree = "<group>"; };
+		2212D2E81C561C5700455162 /* SSZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SSZipArchive.framework; path = Frameworks/SSZipArchive.framework; sourceTree = "<group>"; };
 		221322F819954AB100D25737 /* RLMImageTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMImageTableCellView.h; sourceTree = "<group>"; };
 		221322F919954AB100D25737 /* RLMImageTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMImageTableCellView.m; sourceTree = "<group>"; };
 		221322FB19954B0A00D25737 /* RLMTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTableCellView.h; sourceTree = "<group>"; };
@@ -195,8 +235,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				84E0F9501921F3B900D6CA14 /* Cocoa.framework in Frameworks */,
+				2212D2ED1C561C6E00455162 /* SSZipArchive.framework in Frameworks */,
+				2212D2DB1C561BB000455162 /* RealmConvertKit.framework in Frameworks */,
+				2212D2E91C561C5700455162 /* SpreadsheetWriter.framework in Frameworks */,
 				22E098741B17005700F72AF1 /* libc++.dylib in Frameworks */,
+				2212D2E01C561BDA00455162 /* CSwiftV.framework in Frameworks */,
+				2212D2EA1C561C5700455162 /* SSZipArchive.framework in Frameworks */,
 				97A7B4BEE251DA782A9A95BE /* Pods.framework in Frameworks */,
+				2212D2DA1C56178F00455162 /* RealmConvertKit.framework in Frameworks */,
+				2212D2E51C561C2A00455162 /* RealmSwift.framework in Frameworks */,
+				2212D2E21C561BDA00455162 /* PathKit.framework in Frameworks */,
+				2212D2EB1C561C6E00455162 /* SpreadsheetWriter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,6 +449,12 @@
 		84E0F94E1921F3B900D6CA14 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2212D2E41C561C2A00455162 /* RealmSwift.framework */,
+				2212D2DE1C561BDA00455162 /* CSwiftV.framework */,
+				2212D2DF1C561BDA00455162 /* PathKit.framework */,
+				2212D2E71C561C5700455162 /* SpreadsheetWriter.framework */,
+				2212D2E81C561C5700455162 /* SSZipArchive.framework */,
+				2212D2D91C56178F00455162 /* RealmConvertKit.framework */,
 				844C34DE19473D9D0027E902 /* libc++.dylib */,
 				84E0F94F1921F3B900D6CA14 /* Cocoa.framework */,
 				84E0F9521921F3B900D6CA14 /* AppKit.framework */,
@@ -470,6 +525,7 @@
 				FA654DCC5D49B403CE3C4B67 /* Copy Pods Resources */,
 				C0135F94A90B24CE5E74E20E /* Embed Pods Frameworks */,
 				22D56B951BB5C6300001D65B /* ShellScript */,
+				2212D2DD1C561BB000455162 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -891,6 +947,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RealmBrowser/Supporting Files/RealmBrowser-Prefix.pch";
@@ -899,6 +956,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = "RealmBrowser/Supporting Files/RealmBrowser-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
@@ -923,6 +981,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RealmBrowser/Supporting Files/RealmBrowser-Prefix.pch";
@@ -931,6 +990,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = "RealmBrowser/Supporting Files/RealmBrowser-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
