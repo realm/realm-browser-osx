@@ -112,8 +112,10 @@ NSString * const kSyncIdentityKey = @"SyncIdentity";
     }
         
     NSError *error = nil;
+    BOOL realmCreated = NO;
     @autoreleasepool {
-        [RLMRealm realmWithConfiguration:configuration error:&error];
+        RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:&error];
+        realmCreated = (realm != nil);
     }
     
     return (error == nil);

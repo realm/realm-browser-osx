@@ -17,13 +17,13 @@
 ////////////////////////////////////////////////////////////////////////////
 
 @import Realm;
+@import Realm.Private;
 
 #import "RLMApplicationDelegate.h"
 #import "RLMTestDataGenerator.h"
 #import "TestClasses.h"
 #import "RLMDocument.h"
-
-#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
+#import "RLMSyncCredentialsView.h"
 
 const NSUInteger kTopTipDelay = 250;
 const NSUInteger kMaxFilesPerCategory = 7;
@@ -328,51 +328,40 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     [self showSavePanelStringFromDirectory:url completionHandler:^(BOOL userSelectedFile, NSURL *selectedFile) {
         
         NSURL *directoryURL = [selectedFile URLByDeletingLastPathComponent];
-        
-        AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
-        [fileAccess requestAccessPermissionsForFileURL:directoryURL persistPermission:YES withBlock:^(NSURL *securelyScopedURL, NSData *bookmarkData) {
-            [securelyScopedURL startAccessingSecurityScopedResource];
             
-            // If the user has selected a file url for storing the demo database, we first check if the
-            // file already exists (and is actually a file) we delete the old file before creating the
-            // new demo file.
-            if (userSelectedFile) {
-                NSString *path = selectedFile.path;
-                BOOL isDirectory = NO;
-                
-                if ([fileManager fileExistsAtPath:path isDirectory:&isDirectory]) {
-                    if (!isDirectory) {
-                        NSError *error;
-                        [fileManager removeItemAtURL:selectedFile error:&error];
-                    }
-                }
-                
-                NSArray *classNames = @[[RealmTestClass0 className], [RealmTestClass1 className], [RealmTestClass2 className]];
-                BOOL success = [RLMTestDataGenerator createRealmAtUrl:selectedFile withClassesNamed:classNames objectCount:1000];
-                
-                if (success) {
-                    NSAlert *alert = [[NSAlert alloc] init];
-                    
-                    alert.alertStyle = NSInformationalAlertStyle;
-                    alert.showsHelp = NO;
-                    alert.informativeText = @"A demo database has been generated. Would you like to open it?";
-                    alert.messageText = @"Open demo database?";
-                    [alert addButtonWithTitle:@"Open"];
-                    [alert addButtonWithTitle:@"Cancel"];
-                    
-                    NSUInteger response = [alert runModal];
-                    if (response == NSAlertFirstButtonReturn) {
-                        [self openFileAtURL:selectedFile];
-                    }
+        // If the user has selected a file url for storing the demo database, we first check if the
+        // file already exists (and is actually a file) we delete the old file before creating the
+        // new demo file.
+        if (userSelectedFile) {
+            NSString *path = selectedFile.path;
+            BOOL isDirectory = NO;
+            
+            if ([fileManager fileExistsAtPath:path isDirectory:&isDirectory]) {
+                if (!isDirectory) {
+                    NSError *error;
+                    [fileManager removeItemAtURL:selectedFile error:&error];
                 }
             }
             
-            //As realm files perform some file-system level cleanup during their dealloc phase,
-            //make sure the sandbox access is removed in the next run loop to give it some time to finish.
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [securelyScopedURL stopAccessingSecurityScopedResource];
-            });
-        }];
+            NSArray *classNames = @[[RealmTestClass0 className], [RealmTestClass1 className], [RealmTestClass2 className]];
+            BOOL success = [RLMTestDataGenerator createRealmAtUrl:selectedFile withClassesNamed:classNames objectCount:1000];
+            
+            if (success) {
+                NSAlert *alert = [[NSAlert alloc] init];
+                
+                alert.alertStyle = NSInformationalAlertStyle;
+                alert.showsHelp = NO;
+                alert.informativeText = @"A demo database has been generated. Would you like to open it?";
+                alert.messageText = @"Open demo database?";
+                [alert addButtonWithTitle:@"Open"];
+                [alert addButtonWithTitle:@"Cancel"];
+                
+                NSUInteger response = [alert runModal];
+                if (response == NSAlertFirstButtonReturn) {
+                    [self openFileAtURL:selectedFile];
+                }
+            }
+        }
     }];
 }
 
@@ -407,17 +396,84 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
         return;
     }
     
+    NSAlert *alert = [NSAlert alertWithMessageText:@"Make a copy of this Realm file?"
+                                     defaultButton:@"No"
+                                   alternateButton:@"Yes"
+                                       otherButton:nil
+                         informativeTextWithFormat:@"Making a copy of this file is necessary if it is going to be accessed from another process at the same time (eg, via iOS Simulator)."];
+    
+    NSModalResponse response = [alert runModal];
+    
     //Deferred to the next run loop iteration to give the modal prompt
     //time to dismiss before the sandboxing prompt appears.
     dispatch_async(dispatch_get_main_queue(), ^{
         NSURLComponents *components = [NSURLComponents componentsWithURL:realmFileURL resolvingAgainstBaseURL:NO];
-        components.fragment = @"sync";
+        if (response == 0) {
+            components.fragment = @"sync";
+        }
+        else {
+            components.fragment = @"sync&nocopy";
+        }
+        
         [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:components.URL
                                                                                display:YES
                                                                      completionHandler:^(NSDocument * __nullable document, BOOL documentWasAlreadyOpen, NSError * __nullable error)
         {
             
         }];
+    });
+}
+
+- (IBAction)openSyncFileFromURLFromMenuItem:(NSMenuItem *)menuItem
+{
+    NSNib *accessoryViewNib = [[NSNib alloc] initWithNibNamed:@"SyncCredentialsView" bundle:nil];
+    NSArray *views = nil;
+    [accessoryViewNib instantiateWithOwner:self topLevelObjects:&views];
+    
+    RLMSyncCredentialsView *accessoryView = nil;
+    for (NSObject *view in views) {
+        if ([view isKindOfClass:[RLMSyncCredentialsView class]]) {
+            accessoryView = (RLMSyncCredentialsView *)view;
+            break;
+        }
+    }
+    
+    NSSavePanel *savePanel = [NSSavePanel savePanel];
+    savePanel.allowedFileTypes = @[kRealmFileExtension];
+    savePanel.accessoryView = accessoryView;
+    if ([savePanel runModal] != NSFileHandlingPanelOKButton) {
+        return;
+    }
+    
+    NSString *filePath = savePanel.URL.path;
+    
+    //Create a new Realm instance to create the file on disk
+    @autoreleasepool {
+        RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+        configuration.path = filePath;
+        configuration.dynamic = YES;
+        configuration.customSchema = nil;
+        
+        if (accessoryView.syncServerURLField.stringValue.length) {
+            configuration.syncServerURL = [NSURL URLWithString:accessoryView.syncServerURLField.stringValue];
+        }
+        
+        if (accessoryView.syncIdentityField.stringValue.length) {
+            configuration.syncIdentity = accessoryView.syncIdentityField.stringValue;
+        }
+            
+        [RLMRealm realmWithConfiguration:configuration error:nil];
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSURLComponents *components = [NSURLComponents componentsWithURL:[NSURL fileURLWithPath:filePath] resolvingAgainstBaseURL:NO];
+        components.fragment = @"sync&nocopy";
+        [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:components.URL
+                                                                               display:YES
+                                                                     completionHandler:^(NSDocument * __nullable document, BOOL documentWasAlreadyOpen, NSError * __nullable error)
+         {
+             
+         }];
     });
 }
 

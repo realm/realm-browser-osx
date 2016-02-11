@@ -25,13 +25,10 @@
 #import "RLMRealmBrowserWindowController.h"
 #import "RLMAlert.h"
 
-#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
-
 @interface RLMDocument ()
 
 @property (nonatomic, assign, readwrite) BOOL potentiallyEncrypted;
 @property (nonatomic, assign, readwrite) BOOL potentiallySync;
-@property (nonatomic, strong) NSURL *securityScopedURL;
 @property (nonatomic) RLMNotificationToken *changeNotificationToken;
 
 @end
@@ -58,11 +55,12 @@
             return nil;
         }
         
-        BOOL isSyncRealm = [absoluteURL.fragment isEqualToString:@"sync"];
+        BOOL isSyncRealm = [absoluteURL.fragment containsString:@"sync"];
+        BOOL disableCopy = [absoluteURL.fragment containsString:@"nocopy"];
         
         //for the purpose of ensuring one sync agent per Realm file,
         //make a tmp copy of the Realm file and refer to that one for now
-        if (isSyncRealm) {
+        if (isSyncRealm && !disableCopy) {
             NSString *tempFilePath = NSTemporaryDirectory();
             
             NSString *folderName = [NSString stringWithFormat:@"io.realm.sync.%lu", (unsigned long)[absoluteURL.absoluteString hash]];
@@ -85,14 +83,6 @@
             folderURL = [folderURL URLByDeletingLastPathComponent];
         }
         
-        AppSandboxFileAccess *sandBoxAccess = [AppSandboxFileAccess fileAccess];
-        [sandBoxAccess requestAccessPermissionsForFileURL:folderURL persistPermission:YES withBlock:^(NSURL *securityScopedFileURL, NSData *bookmarkData){
-            self.securityScopedURL = securityScopedFileURL;
-        }];
-        
-        if (self.securityScopedURL == nil)
-            return nil;
-        
         NSArray *fileNameComponents = [lastComponent componentsSeparatedByString:@"."];
         NSString *realmName = [fileNameComponents firstObject];
         
@@ -102,7 +92,6 @@
         self.fileURL = absoluteURL;
         
         void (^mainThreadBlock)() = ^{
-            [self.securityScopedURL startAccessingSecurityScopedResource];
             
             //Check to see if first the Realm file needs upgrading, and
             //if it does, prompt the user to confirm with proceeding
@@ -169,18 +158,6 @@
 - (void)dealloc
 {
     [self.presentedRealm.realm removeNotification:self.changeNotificationToken];
-    
-    //In certain instances, RLMRealm's C++ destructor method will attempt to clean up
-    //specific auxiliary files belonging to this realm file.
-    //If the destructor call occurs after the access to the sandbox resource has been released here,
-    //and it attempts to delete any files, RLMRealm will throw an exception.
-    //Mac OS X apps only have a finite number of open sandbox resources at any given time, so while it's not necessary
-    //to release them straight away, it is still good practice to do so eventually.
-    //As such, this will release the handle a minute, after closing the document.
-    NSURL *scopedURL = self.securityScopedURL;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(60 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [scopedURL stopAccessingSecurityScopedResource];
-    });
 }
 
 #pragma mark - Public methods - NSDocument overrides - Creating and Managing Window Controllers

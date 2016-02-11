@@ -18,7 +18,6 @@
 
 #import "RLMModelExporter.h"
 @import Realm;
-#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
 
 @interface RLMModelExporter ()
 
@@ -71,26 +70,19 @@
 
 +(void)saveModels:(NSArray *)models toFolder:(NSURL *)url
 {
-    AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
-    [fileAccess requestAccessPermissionsForFileURL:url persistPermission:YES withBlock:^(NSURL *securityScopedURL, NSData *bookmarkData) {
-        [securityScopedURL startAccessingSecurityScopedResource];
+    // A 'model' is an array with two strings, a filename plus the contents of that file
+    for (NSArray *model in models) {
+        NSURL *fileURL = [url URLByAppendingPathComponent:model[0]];
+        NSString *fileContents = model[1];
+            
+        NSError *error;
+        BOOL success = [fileContents writeToURL:fileURL atomically:YES encoding:NSUTF8StringEncoding error:&error];
         
-        // A 'model' is an array with two strings, a filename plus the contents of that file
-        for (NSArray *model in models) {
-            NSURL *fileURL = [url URLByAppendingPathComponent:model[0]];
-            NSString *fileContents = model[1];
-            
-            NSError *error;
-            BOOL success = [fileContents writeToURL:fileURL atomically:YES encoding:NSUTF8StringEncoding error:&error];
-            
-            if (!success) {
-                NSLog(@"Error writing file at %@\n%@", url, [error localizedFailureReason]);
-                [[NSApplication sharedApplication] presentError:error];
-            }
+        if (!success) {
+            NSLog(@"Error writing file at %@\n%@", url, [error localizedFailureReason]);
+            [[NSApplication sharedApplication] presentError:error];
         }
-        
-        [securityScopedURL stopAccessingSecurityScopedResource];
-    }];
+    }
 }
 
 #pragma mark - Private methods - Java helpers
