@@ -126,8 +126,11 @@
                 ws.presentedRealm  = realmNode;
                 
                 ws.changeNotificationToken = [realmNode.realm addNotificationBlock:^(NSString *notification, RLMRealm *realm) {
+                    [ws.presentedRealm connect:nil];
+                    
                     for (RLMRealmBrowserWindowController *windowController in ws.windowControllers) {
                         [windowController reloadAfterEdit];
+                        [windowController realmDidLoad];
                     }
                 }];
                 
