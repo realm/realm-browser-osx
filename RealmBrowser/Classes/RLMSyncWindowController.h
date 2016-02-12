@@ -29,6 +29,12 @@
 @property (readonly) NSString *serverURL;
 @property (readonly) NSString *serverIdentity;
 
+@property (nonatomic, readonly) NSString *realmFilePath;
+
+- (instancetype)initWithTempRealmFile;
 - (instancetype)initWithRealmFilePath:(NSURL *)realmFilePath;
+
+@property (nonatomic, copy) void (^OKButtonClickedHandler)(void);
+@property (nonatomic, copy) void (^windowClosedHandler)(void);
 
 @end

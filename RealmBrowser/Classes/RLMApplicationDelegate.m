@@ -24,6 +24,8 @@
 #import "TestClasses.h"
 #import "RLMDocument.h"
 #import "RLMSyncCredentialsView.h"
+#import "RLMSyncWindowController.h"
+#import "NSURLComponents+FragmentItems.h"
 
 const NSUInteger kTopTipDelay = 250;
 const NSUInteger kMaxFilesPerCategory = 7;
@@ -54,6 +56,8 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
 @property (nonatomic, strong) NSMetadataQuery *appQuery;
 @property (nonatomic, strong) NSMetadataQuery *projQuery;
 @property (nonatomic, strong) NSArray *groupedFileItems;
+
+@property (nonatomic, strong) RLMSyncWindowController *syncWindowController;
 
 @end
 
@@ -407,24 +411,56 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     //Deferred to the next run loop iteration to give the modal prompt
     //time to dismiss before the sandboxing prompt appears.
     dispatch_async(dispatch_get_main_queue(), ^{
+        
+        NSMutableArray *fragmentItems = [NSMutableArray array];
+        [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"syncCredentialsPrompt" value:@"1"]];
+        
         NSURLComponents *components = [NSURLComponents componentsWithURL:realmFileURL resolvingAgainstBaseURL:NO];
-        if (response == 0) {
-            components.fragment = @"sync";
+        if (response != 0) {
+            [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"disableSyncFileCopy" value:@"1"]];
         }
-        else {
-            components.fragment = @"sync&nocopy";
-        }
+        
+        components.fragmentItems = fragmentItems;
         
         [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:components.URL
                                                                                display:YES
                                                                      completionHandler:^(NSDocument * __nullable document, BOOL documentWasAlreadyOpen, NSError * __nullable error)
-        {
-            
-        }];
+         {
+             
+         }];
     });
 }
 
-- (IBAction)openSyncFileFromURLFromMenuItem:(NSMenuItem *)menuItem
+- (IBAction)connectToSyncRealmWithURL:(NSMenuItem *)item
+{
+    if (self.syncWindowController) {
+        return;
+    }
+    
+    self.syncWindowController = [[RLMSyncWindowController alloc] initWithTempRealmFile];
+    [self.syncWindowController showWindow:self];
+    
+    __weak typeof(self) weakSelf = self;
+    self.syncWindowController.OKButtonClickedHandler = ^{
+        NSURL *url = [NSURL fileURLWithPath:weakSelf.syncWindowController.realmFilePath];
+        NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
+        NSURLQueryItem *syncURLItem = [NSURLQueryItem queryItemWithName:@"syncServerURL" value:weakSelf.syncWindowController.serverURL];
+        NSURLQueryItem *syncIdentityItem = [NSURLQueryItem queryItemWithName:@"syncIdentity" value:weakSelf.syncWindowController.serverIdentity];
+        components.fragmentItems = @[syncURLItem, syncIdentityItem];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:components.URL
+                                                                                   display:YES
+                                                                         completionHandler:^(NSDocument * __nullable document, BOOL documentWasAlreadyOpen, NSError * __nullable error){ }];
+        });
+    };
+    
+    self.syncWindowController.windowClosedHandler = ^{
+        weakSelf.syncWindowController = nil;
+    };
+}
+
+- (IBAction)createNewRealmFileAndOpenWithSyncURL:(NSMenuItem *)item
 {
     NSNib *accessoryViewNib = [[NSNib alloc] initWithNibNamed:@"SyncCredentialsView" bundle:nil];
     NSArray *views = nil;
@@ -446,6 +482,8 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     }
     
     NSString *filePath = savePanel.URL.path;
+    NSString *syncServerURL = accessoryView.syncServerURLField.stringValue;
+    NSString *syncServerIdentity = accessoryView.syncIdentityField.stringValue;
     
     //Create a new Realm instance to create the file on disk
     @autoreleasepool {
@@ -455,11 +493,11 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
         configuration.customSchema = nil;
         
         if (accessoryView.syncServerURLField.stringValue.length) {
-            configuration.syncServerURL = [NSURL URLWithString:accessoryView.syncServerURLField.stringValue];
+            configuration.syncServerURL = [NSURL URLWithString:syncServerURL];
         }
         
         if (accessoryView.syncIdentityField.stringValue.length) {
-            configuration.syncIdentity = accessoryView.syncIdentityField.stringValue;
+            configuration.syncIdentity = syncServerIdentity;
         }
             
         [RLMRealm realmWithConfiguration:configuration error:nil];
@@ -467,7 +505,10 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         NSURLComponents *components = [NSURLComponents componentsWithURL:[NSURL fileURLWithPath:filePath] resolvingAgainstBaseURL:NO];
-        components.fragment = @"sync&nocopy";
+        NSURLQueryItem *syncURLItem = [NSURLQueryItem queryItemWithName:@"syncServerURL" value:syncServerURL];
+        NSURLQueryItem *syncIdentityItem = [NSURLQueryItem queryItemWithName:@"syncIdentity" value:syncServerIdentity];
+        components.fragmentItems = @[syncURLItem, syncIdentityItem];
+        
         [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:components.URL
                                                                                display:YES
                                                                      completionHandler:^(NSDocument * __nullable document, BOOL documentWasAlreadyOpen, NSError * __nullable error)

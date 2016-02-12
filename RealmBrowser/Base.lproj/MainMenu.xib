@@ -77,15 +77,21 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
+                            <menuItem title="Connect to Sync at URL..." keyEquivalent="O" id="qa5-9s-ojq">
+                                <modifierMask key="keyEquivalentModifierMask" shift="YES" control="YES" command="YES"/>
+                                <connections>
+                                    <action selector="connectToSyncRealmWithURL:" target="PLw-ns-0qo" id="Se4-SN-HVD"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Open File With Sync..." keyEquivalent="O" id="Jwe-jQ-6st">
                                 <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                 <connections>
-                                    <action selector="openSyncRealmFileWithMenuItem:" target="PLw-ns-0qo" id="1uA-qT-7jd"/>
+                                    <action selector="openSyncRealmFileWithMenuItem:" target="PLw-ns-0qo" id="DUj-lv-XRd"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="New Sync Realm File..." keyEquivalent="n" id="dF2-8a-Fa3">
                                 <connections>
-                                    <action selector="openSyncFileFromURLFromMenuItem:" target="PLw-ns-0qo" id="bEP-tl-IKr"/>
+                                    <action selector="createNewRealmFileAndOpenWithSyncURL:" target="PLw-ns-0qo" id="daO-af-oJG"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="Vpq-6Q-Py8"/>

@@ -27,7 +27,7 @@ NSString * const kSyncIdentityKey = @"SyncIdentity";
 
 @interface RLMSyncWindowController () <NSTextFieldDelegate>
 
-@property (nonatomic, strong) NSURL *realmFilePath;
+@property (nonatomic, strong, readwrite) NSString *realmFilePath;
 
 @property (strong, nonatomic, readwrite) NSString *serverURL;
 @property (strong, nonatomic, readwrite) NSString *serverIdentity;
@@ -38,10 +38,20 @@ NSString * const kSyncIdentityKey = @"SyncIdentity";
 
 @implementation RLMSyncWindowController
 
+- (instancetype)initWithTempRealmFile
+{
+    if (self = [super initWithWindowNibName:@"SyncWindow"]) {
+        NSString *tempFileName = [NSString stringWithFormat:@"%@.realm", [NSUUID UUID].UUIDString];
+        _realmFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:tempFileName];
+    }
+    
+    return self;
+}
+
 - (instancetype)initWithRealmFilePath:(NSURL *)realmFilePath
 {
     if (self = [super initWithWindowNibName:@"SyncWindow"]) {
-        _realmFilePath = realmFilePath;
+        _realmFilePath = realmFilePath.path;
     }
     
     return self;
@@ -91,18 +101,38 @@ NSString * const kSyncIdentityKey = @"SyncIdentity";
     [defaults setObject:serverIdentity forKey:kSyncIdentityKey];
     [defaults synchronize];
     
-    [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
+    if (self.window.sheetParent) {
+        [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
+        return;
+    }
+    
+    if (self.OKButtonClickedHandler) {
+        self.OKButtonClickedHandler();
+    }
+    
+    [self close];
+    if (self.windowClosedHandler) {
+        self.windowClosedHandler();
+    }
 }
 
 - (IBAction)cancelButtonClicked:(id)sender
 {
-    [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
+    if (self.window.sheetParent) {
+        [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
+        return;
+    }
+    
+    [self close];
+    if (self.windowClosedHandler) {
+        self.windowClosedHandler();
+    }
 }
 
 - (BOOL)testSyncCredentialsWithURL:(NSString *)url identity:(NSString *)identity
 {
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-    configuration.path = self.realmFilePath.path;
+    configuration.path = self.realmFilePath;
     configuration.dynamic = YES;
     configuration.customSchema = nil;
     configuration.syncServerURL = [NSURL URLWithString:url];
