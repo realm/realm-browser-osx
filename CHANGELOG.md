@@ -3,6 +3,7 @@ x.x.x Release notes (yyyy-MM-dd)
 * Added the ability to generate Swift model classes from a Realm file.
 * Improvements to the Objective-C model generation, including generics and Realm's latest features.
 * Improvements to the Java model generation, handling primary, indexed and required fields.
+* Fixed a rendering issue involving properties in different objects that had the same name.
 
 0.97.0 Release notes (2016-01-14)
 =============================================================

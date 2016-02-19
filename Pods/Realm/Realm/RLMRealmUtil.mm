@@ -90,29 +90,67 @@ class RLMNotificationHelper : public realm::BindingContext {
 public:
     RLMNotificationHelper(RLMRealm *realm) : _realm(realm) { }
 
+    bool can_deliver_notifications() const noexcept override {
+        // The main thread may not be in a run loop yet if we're called from
+        // something like `applicationDidFinishLaunching:`, but it presumably will
+        // be in the future
+        if ([NSThread isMainThread]) {
+            return true;
+        }
+        // Current mode indicates why the current callout from the runloop was made,
+        // and is null if a runloop callout isn't currently being processed
+        if (auto mode = CFRunLoopCopyCurrentMode(CFRunLoopGetCurrent())) {
+            CFRelease(mode);
+            return true;
+        }
+        return false;
+    }
+
     void changes_available() override {
-        if (!_realm.autorefresh) {
-            [_realm sendNotifications:RLMRealmRefreshRequiredNotification];
+        @autoreleasepool {
+            auto realm = _realm;
+            if (realm && !realm.autorefresh) {
+                [realm sendNotifications:RLMRealmRefreshRequiredNotification];
+            }
         }
     }
 
     std::vector<ObserverState> get_observed_rows() override {
-        [_realm detachAllEnumerators];
-        return RLMGetObservedRows(_realm.schema.objectSchema);
+        @autoreleasepool {
+            auto realm = _realm;
+            [realm detachAllEnumerators];
+            return RLMGetObservedRows(realm.schema.objectSchema);
+        }
     }
 
     void will_change(std::vector<ObserverState> const& observed, std::vector<void*> const& invalidated) override {
-        RLMWillChange(observed, invalidated);
+        @autoreleasepool {
+            RLMWillChange(observed, invalidated);
+        }
     }
 
     void did_change(std::vector<ObserverState> const& observed, std::vector<void*> const& invalidated) override {
-        RLMDidChange(observed, invalidated);
-        [_realm sendNotifications:RLMRealmDidChangeNotification];
+        try {
+            @autoreleasepool {
+                RLMDidChange(observed, invalidated);
+                [_realm sendNotifications:RLMRealmDidChangeNotification];
+            }
+        }
+        catch (...) {
+            // This can only be called during a write transaction if it was
+            // called due to the transaction beginning, so cancel it to ensure
+            // exceptions thrown here behave the same as exceptions thrown when
+            // actually beginning the write
+            if (_realm.inWriteTransaction) {
+                [_realm cancelWriteTransaction];
+            }
+            throw;
+        }
     }
 
 private:
     // This is owned by the realm, so it needs to not retain the realm
-    __unsafe_unretained RLMRealm *const _realm;
+    __weak RLMRealm *const _realm;
 };
 } // anonymous namespace
 

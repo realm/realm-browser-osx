@@ -331,7 +331,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     RLMObject *selectedInstance = [self.displayedType instanceAtIndex:rowIndex];
     id propertyValue = selectedInstance[classProperty.name];
     RLMPropertyType type = classProperty.type;
-    NSString *reuseIdentifier = [@"property." stringByAppendingString:classProperty.name];
+    NSString *reuseIdentifier = [NSString stringWithFormat:@"property.%@.%@", self.displayedType.schema.className, classProperty.name];
     
     NSTableCellView *cellView;
     switch (type) {
