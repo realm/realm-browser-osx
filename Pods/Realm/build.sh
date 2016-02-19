@@ -14,7 +14,7 @@ set -o pipefail
 set -e
 
 # You can override the version of the core library
-: ${REALM_CORE_VERSION:=0.95.5} # set to "current" to always use the current build
+: ${REALM_CORE_VERSION:=0.96.1} # set to "current" to always use the current build
 
 # You can override the xcmode used
 : ${XCMODE:=xcodebuild} # must be one of: xcodebuild (default), xcpretty, xctool
@@ -150,7 +150,7 @@ build_combined() {
     if [ -d $simulator_path/Modules/$module_name.swiftmodule ]; then
       cp $simulator_path/Modules/$module_name.swiftmodule/* $os_path/Modules/$module_name.swiftmodule/
     fi
-    
+
     # Copy *.bcsymbolmap to .framework for submitting app with bitcode
     copy_bcsymbolmap "$build_products_path/$config-$os$scope_suffix" "$os_path"
 
@@ -158,7 +158,12 @@ build_combined() {
     clean_retrieve $os_path $out_path $product_name
 
     # Combine ar archives
-    xcrun lipo -create "$simulator_path/$binary_path" "$os_path/$binary_path" -output "$out_path/$product_name/$module_name"
+    LIPO_OUTPUT="$out_path/$product_name/$module_name"
+    xcrun lipo -create "$simulator_path/$binary_path" "$os_path/$binary_path" -output "$LIPO_OUTPUT"
+
+    if [[ $REALM_SWIFT_VERSION != '1.2' && "$destination" != "" && "$config" == "Release" ]]; then
+        sh build.sh binary-has-bitcode "$LIPO_OUTPUT"
+    fi
 }
 
 xc_work_around_rdar_23055637() {
@@ -166,6 +171,9 @@ xc_work_around_rdar_23055637() {
     # build (<http://openradar.appspot.com/23055637>). Work around this by having the test phases intentionally
     # exit after they finish building the first time, then run the tests for real.
     ( REALM_EXIT_AFTER_BUILDING_TESTS=YES xc "$1" ) || true
+    # Xcode 7.2.1 fails to run tests in the iOS simulator for unknown reasons. Resetting the simulator here works
+    # around this issue.
+    sh build.sh prelaunch-simulator
     xc "$1"
 }
 
@@ -252,9 +260,8 @@ build_docs() {
       --xcodebuild-arguments ${xcodebuild_arguments} \
       --module ${module} \
       --root-url https://realm.io/docs/${language}/${version}/api/ \
-      --output $(pwd)/docs/${language}_output \
-      --template-directory $(pwd)/docs/templates \
-      --swift-version 2.1.1
+      --output docs/${language}_output \
+      --head "$(cat docs/custom_head.html)"
 
     rm Realm/RLMPlatform.h
 }
@@ -279,8 +286,15 @@ download_core() {
     CORE_TMP_TAR="${TMP_DIR}/core-${REALM_CORE_VERSION}.tar.bz2.tmp"
     CORE_TAR="${TMP_DIR}/core-${REALM_CORE_VERSION}.tar.bz2"
     if [ ! -f "${CORE_TAR}" ]; then
-        curl -f -L -s "https://static.realm.io/downloads/core/realm-core-${REALM_CORE_VERSION}.tar.bz2" -o "${CORE_TMP_TAR}" ||
-          (echo "Downloading core failed. Please try again once you have an Internet connection." && exit 1)
+        local CORE_URL="https://static.realm.io/downloads/core/realm-core-${REALM_CORE_VERSION}.tar.bz2"
+        set +e # temporarily disable immediate exit
+        local ERROR # sweeps the exit code unless declared separately
+        ERROR=$(curl --fail --silent --show-error --location "$CORE_URL" --output "${CORE_TMP_TAR}" 2>&1 >/dev/null)
+        if [[ $? -ne 0 ]]; then
+            echo "Downloading core failed:\n${ERROR}"
+            exit 1
+        fi
+        set -e # re-enable flag
         mv "${CORE_TMP_TAR}" "${CORE_TAR}"
     fi
 
@@ -382,7 +396,7 @@ case "$COMMAND" in
         # objectstore repo
         git rev-list --reverse $commit..HEAD -- Realm/ObjectStore \
             | xargs -I@ git format-patch --stdout @^! Realm/ObjectStore \
-            | git -C $path am -p 3
+            | git -C $path am -p 3 --directory src
         ;;
 
     "pull-object-store-changes")
@@ -393,7 +407,7 @@ case "$COMMAND" in
             exit 1
         fi
 
-        git -C $path format-patch --stdout $commit..HEAD | git am --directory Realm/ObjectStore
+        git -C $path format-patch --stdout $commit..HEAD | git am -p 2 --directory Realm/ObjectStore --exclude='*CMake*'
         ;;
 
     ######################################
@@ -411,6 +425,15 @@ case "$COMMAND" in
         rm -rf RealmSwift
         ln -s "RealmSwift-swift$version" RealmSwift
         git update-index --assume-unchanged RealmSwift || true
+
+        # Only write SwiftVersion.swift if RealmSwift supports the given version of Swift.
+        if [[ -e "RealmSwift-swift$version" ]]; then
+            SWIFT_VERSION_FILE="RealmSwift/SwiftVersion.swift"
+            CONTENTS="let swiftLanguageVersion = \"$version\""
+            if [ ! -f "$SWIFT_VERSION_FILE" ] || ! grep -q "$CONTENTS" "$SWIFT_VERSION_FILE"; then
+                echo "$CONTENTS" > "$SWIFT_VERSION_FILE"
+            fi
+        fi
 
         cd Realm/Tests
         rm -rf Swift
@@ -622,9 +645,13 @@ case "$COMMAND" in
 
     "verify-cocoapods")
         cd examples/installation
-        # FIXME: tests are duplicated to work around https://github.com/realm/realm-cocoa/issues/2701
-        sh build.sh test-ios-objc-cocoapods || sh build.sh test-ios-objc-cocoapods || exit 1
-        sh build.sh test-ios-swift-cocoapods || sh build.sh test-ios-swift-cocoapods || exit 1
+        sh build.sh test-ios-objc-cocoapods || exit 1
+        sh build.sh test-ios-swift-cocoapods || exit 1
+        ;;
+
+    "verify-osx-encryption")
+        REALM_ENCRYPT_ALL=YES sh build.sh test-osx || exit 1
+        exit 0
         ;;
 
     "verify-osx")
@@ -808,10 +835,42 @@ case "$COMMAND" in
         ;;
 
     ######################################
+    # Bitcode Detection
+    ######################################
+
+    "binary-has-bitcode")
+        BINARY="$2"
+        # Although grep has a '-q' flag to prevent logging to stdout, grep
+        # behaves differently when used, so redirect stdout to /dev/null.
+        if otool -l "$BINARY" | grep "segname __LLVM" > /dev/null 2>&1; then
+            exit 0
+        fi
+        # Work around rdar://21826157 by checking for bitcode in thin binaries
+
+        # Get architectures for binary
+        archs="$(lipo -info "$BINARY" | rev | cut -d ':' -f1 | rev)"
+
+        archs_array=( $archs )
+        if [[ ${#archs_array[@]} < 2 ]]; then
+            exit 1 # Early exit if not a fat binary
+        fi
+
+        TEMPDIR=$(mktemp -d $TMPDIR/realm-bitcode-check.XXXX)
+
+        for arch in $archs; do
+            lipo -thin "$arch" "$BINARY" -output "$TEMPDIR/$arch"
+            if otool -l "$TEMPDIR/$arch" | grep -q "segname __LLVM"; then
+                exit 0
+            fi
+        done
+        exit 1
+        ;;
+
+    ######################################
     # CocoaPods
     ######################################
     "cocoapods-setup")
-        if [[ "$2" != "without-core" ]]; then
+        if [[ "$2" != "swift" ]]; then
             sh build.sh download-core
             mv core/librealm.a core/librealm-osx.a
             if [[ "$REALM_SWIFT_VERSION" = "1.2" ]]; then
@@ -832,26 +891,22 @@ case "$COMMAND" in
           fi
         done
 
-        if [[ "$2" != "without-core" ]]; then
-          # CocoaPods doesn't support multiple header_mappings_dir, so combine
-          # both sets of headers into a single directory
+        if [[ "$2" != "swift" ]]; then
           rm -rf include
-          # Create uppercase `Realm` header directory for a case-sensitive filesystem.
-          # Both `Realm` and `realm` directories are required.
-          if [ ! -e core/include/Realm ]; then
-            cp -R core/include/realm core/include/Realm
-          fi
-          cp -R core/include include
+          mkdir -p include
+          mv core/include include/core
+
+          mkdir -p include/impl/apple
+          cp Realm/*.hpp include
+          cp Realm/ObjectStore/*.hpp include
+          cp Realm/ObjectStore/impl/*.hpp include/impl
+          cp Realm/ObjectStore/impl/apple/*.hpp include/impl/apple
+
           mkdir -p include/Realm
-          cp Realm/*.{h,hpp} include/Realm
-          cp Realm/ObjectStore/*.hpp include/Realm
-          cp Realm/ObjectStore/impl/*.hpp include/Realm
-          cp Realm/ObjectStore/impl/apple/*.hpp include/Realm
-          # Create lowercase `realm` header directory for a case-sensitive filesystem.
-          if [ ! -e include/realm ]; then
-            cp -R include/Realm include/realm
-          fi
-          touch include/Realm/RLMPlatform.h
+          touch Realm/RLMPlatform.h
+          cp Realm/*.h include/Realm
+        else
+          echo "let swiftLanguageVersion = \"$(get_swift_version)\"" > RealmSwift/SwiftVersion.swift
         fi
         ;;
 
@@ -919,7 +974,6 @@ case "$COMMAND" in
         cp $0 ${SWIFT}
         cp -r $(dirname $0)/scripts ${SWIFT}
         cd ${SWIFT}
-        REALM_SWIFT_VERSION=1.2 sh build.sh examples-ios-swift
         REALM_SWIFT_VERSION=2.1.1 sh build.sh examples-ios-swift
         cd ..
         rm -rf ${SWIFT}
@@ -966,23 +1020,22 @@ case "$COMMAND" in
 
     "package-ios-swift")
         cd tightdb_objc
-        for version in 1.2 2.1.1; do
+        for version in 2.1.1; do
             rm -rf build/ios/Realm.framework
             REALM_SWIFT_VERSION=$version sh build.sh prelaunch-simulator
             REALM_SWIFT_VERSION=$version sh build.sh ios-swift
         done
 
         cd build/ios
-        zip --symlinks -r realm-swift-framework-ios.zip swift-1.2 swift-2.1.1
+        zip --symlinks -r realm-swift-framework-ios.zip swift-2.1.1
         ;;
 
     "package-osx-swift")
         cd tightdb_objc
-        REALM_SWIFT_VERSION=1.2 sh build.sh osx-swift
         REALM_SWIFT_VERSION=2.1.1 sh build.sh osx-swift
 
         cd build/osx
-        zip --symlinks -r realm-swift-framework-osx.zip swift-1.2 swift-2.1.1
+        zip --symlinks -r realm-swift-framework-osx.zip swift-2.1.1
         ;;
 
     "package-watchos")
@@ -1094,7 +1147,7 @@ case "$COMMAND" in
             unzip ${WORKSPACE}/realm-examples.zip
             cd examples
             if [[ "${LANG}" == "objc" ]]; then
-                rm -rf ios/swift-1.2 ios/swift-2.1.1
+                rm -rf ios/swift-2.1.1
             else
                 rm -rf ios/objc ios/rubymotion osx
             fi

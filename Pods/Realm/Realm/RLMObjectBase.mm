@@ -185,7 +185,7 @@ static id RLMValidatedObjectForProperty(id obj, RLMProperty *prop, RLMSchema *sc
 
 // overridden at runtime per-class for performance
 + (RLMObjectSchema *)sharedSchema {
-    return RLMSchema.sharedSchema[self.className];
+    return [RLMSchema sharedSchemaForClass:self.class];
 }
 
 - (NSString *)description
@@ -300,6 +300,19 @@ static id RLMValidatedObjectForProperty(id obj, RLMProperty *prop, RLMSchema *sc
 
 - (void)setObservationInfo:(void *)observationInfo {
     _observationInfo->kvoInfo = observationInfo;
+}
+
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
+{
+    const char *className = class_getName(self);
+    const char accessorClassPrefix[] = "RLMAccessor_";
+    if (!strncmp(className, accessorClassPrefix, sizeof(accessorClassPrefix) - 1)) {
+        if (self.sharedSchema[key]) {
+            return NO;
+        }
+    }
+
+    return [super automaticallyNotifiesObserversForKey:key];
 }
 
 @end
