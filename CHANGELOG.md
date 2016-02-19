@@ -1,5 +1,6 @@
 x.x.x Release notes (yyyy-MM-dd)
 =============================================================
+* Updated to Realm 0.98.2
 * Added the ability to generate Swift model classes from a Realm file.
 * Improvements to the Objective-C model generation, including generics and Realm's latest features.
 * Improvements to the Java model generation, handling primary, indexed and required fields.
