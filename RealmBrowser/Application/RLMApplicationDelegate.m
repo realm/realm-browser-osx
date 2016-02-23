@@ -23,6 +23,7 @@
 #import "TestClasses.h"
 
 #import <AppSandboxFileAccess/AppSandboxFileAccess.h>
+#import <RealmConverter/RealmConverter.h>
 
 const NSUInteger kTopTipDelay = 250;
 const NSUInteger kMaxFilesPerCategory = 7;
@@ -372,6 +373,17 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
             });
         }];
     }];
+}
+
+#pragma mark - Import Methods -
+- (IBAction)importFileFromXLSX:(id)sender
+{
+    
+}
+
+- (IBAction)importFileFromCSV:(id)sender
+{
+    
 }
 
 #pragma mark - Private methods

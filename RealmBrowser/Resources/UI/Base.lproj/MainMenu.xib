@@ -135,9 +135,15 @@
                                     <items>
                                         <menuItem title="CSV..." id="xX6-Jo-Xnr">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="importFileFromCSV:" target="PLw-ns-0qo" id="K9H-ZF-cLu"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="XLSX..." id="rzP-vT-bQx">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="importFileFromXLSX:" target="PLw-ns-0qo" id="JkU-oL-OKa"/>
+                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
@@ -148,9 +154,15 @@
                                     <items>
                                         <menuItem title="Compressed Realm..." id="pNK-cr-EuG">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="saveCopy:" target="-1" id="o1I-h3-Hhd"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="CSV..." id="r4f-YM-16u">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="exportToCSV:" target="-1" id="iMl-yy-kcK"/>
+                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
