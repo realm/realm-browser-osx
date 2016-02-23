@@ -25,7 +25,7 @@
 @import Realm.Private;
 @import Realm.Dynamic;
 
-#import <RealmConvertKit/RealmConvertKit.h>
+#import <RealmConverter/RealmConverter-Swift.h>
 
 NSString * const kRealmLockedImage = @"RealmLocked";
 NSString * const kRealmUnlockedImage = @"RealmUnlocked";
@@ -180,10 +180,9 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
         
         NSString *folderPath = panel.URL.path;
         NSString *realmFolderPath = self.modelDocument.presentedRealm.realm.path;
-        RLMCSVDataExporter *exporter = [[RLMCSVDataExporter alloc] initWithRealmFileAtPath:realmFolderPath
-                                                                      outputToFolderAtPath:folderPath];
+        RLMCSVDataExporter *exporter = [[RLMCSVDataExporter alloc] initWithRealmFileAtPath:realmFolderPath];
         NSError *error = nil;
-        [exporter exportWithError:&error];
+        [exporter exportToFolderAtPath:folderPath withError:&error];
         
         NSLog(@"%@", error.localizedDescription);
     }];
