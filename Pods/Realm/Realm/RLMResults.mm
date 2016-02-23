@@ -30,12 +30,39 @@
 #import "RLMUtil.hpp"
 
 #import "results.hpp"
+#import "impl/external_commit_helper.hpp"
 
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import <realm/table_view.hpp>
 
 using namespace realm;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincomplete-implementation"
+@implementation RLMNotificationToken
+@end
+#pragma clang diagnostic pop
+
+@interface RLMCancellationToken : RLMNotificationToken
+@end
+
+@implementation RLMCancellationToken {
+    realm::AsyncQueryCancelationToken _token;
+}
+- (instancetype)initWithToken:(realm::AsyncQueryCancelationToken)token {
+    self = [super init];
+    if (self) {
+        _token = std::move(token);
+    }
+    return self;
+}
+
+- (void)stop {
+    _token = {};
+}
+
+@end
 
 static const int RLMEnumerationBufferSize = 16;
 
@@ -109,6 +136,7 @@ static const int RLMEnumerationBufferSize = 16;
         else if (_tableView.is_row_attached(index)) {
             accessor->_row = (*_objectSchema.table)[_tableView.get_source_ndx(index)];
         }
+        RLMInitializeSwiftAccessorGenerics(accessor);
         _strongBuffer[batchCount] = accessor;
         batchCount++;
     }
@@ -240,8 +268,10 @@ static inline void RLMResultsValidateInWriteTransaction(__unsafe_unretained RLMR
 
 - (NSUInteger)indexOfObjectWhere:(NSString *)predicateFormat, ... {
     va_list args;
-    RLM_VARARG(predicateFormat, args);
-    return [self indexOfObjectWhere:predicateFormat args:args];
+    va_start(args, predicateFormat);
+    NSUInteger index = [self indexOfObjectWhere:predicateFormat args:args];
+    va_end(args);
+    return index;
 }
 
 - (NSUInteger)indexOfObjectWhere:(NSString *)predicateFormat args:(va_list)args {
@@ -380,8 +410,10 @@ static inline void RLMResultsValidateInWriteTransaction(__unsafe_unretained RLMR
 
 - (RLMResults *)objectsWhere:(NSString *)predicateFormat, ... {
     va_list args;
-    RLM_VARARG(predicateFormat, args);
-    return [self objectsWhere:predicateFormat args:args];
+    va_start(args, predicateFormat);
+    RLMResults *results = [self objectsWhere:predicateFormat args:args];
+    va_end(args);
+    return results;
 }
 
 - (RLMResults *)objectsWhere:(NSString *)predicateFormat args:(va_list)args {
@@ -496,4 +528,31 @@ static inline void RLMResultsValidateInWriteTransaction(__unsafe_unretained RLMR
     return translateErrors([&] { return _results.get_tableview(); });
 }
 
+// The compiler complains about the method's argument type not matching due to
+// it not having the generic type attached, but it doesn't seem to be possible
+// to actually include the generic type
+// http://www.openradar.me/radar?id=6135653276319744
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmismatched-parameter-types"
+- (RLMNotificationToken *)addNotificationBlock:(void (^)(RLMResults *results, NSError *error))block {
+    [_realm verifyNotificationsAreSupported];
+    auto token = _results.async([self, block](std::exception_ptr err) {
+        if (err) {
+            try {
+                rethrow_exception(err);
+            }
+            catch (...) {
+                NSError *error;
+                RLMRealmTranslateException(&error);
+                block(nil, error);
+            }
+        }
+        else {
+            block(self, nil);
+        }
+    });
+
+    return [[RLMCancellationToken alloc] initWithToken:std::move(token)];
+}
+#pragma clang diagnostic pop
 @end

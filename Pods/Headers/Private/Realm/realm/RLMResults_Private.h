@@ -1,1 +1,1 @@
-../../../../Realm/include/realm/RLMResults_Private.h
+../../../../Realm/include/Realm/RLMResults_Private.h

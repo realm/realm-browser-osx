@@ -290,8 +290,10 @@ static void RLMValidateArrayBounds(__unsafe_unretained RLMArray *const ar,
 - (RLMResults *)objectsWhere:(NSString *)predicateFormat, ...
 {
     va_list args;
-    RLM_VARARG(predicateFormat, args);
-    return [self objectsWhere:predicateFormat args:args];
+    va_start(args, predicateFormat);
+    RLMResults *results = [self objectsWhere:predicateFormat args:args];
+    va_end(args);
+    return results;
 }
 
 - (RLMResults *)objectsWhere:(NSString *)predicateFormat args:(va_list)args
@@ -375,13 +377,26 @@ static void RLMValidateArrayBounds(__unsafe_unretained RLMArray *const ar,
     @throw RLMException(@"This method can only be called on RLMArray instances retrieved from an RLMRealm");
 }
 
+// The compiler complains about the method's argument type not matching due to
+// it not having the generic type attached, but it doesn't seem to be possible
+// to actually include the generic type
+// http://www.openradar.me/radar?id=6135653276319744
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmismatched-parameter-types"
+- (RLMNotificationToken *)addNotificationBlock:(void (^)(RLMArray *, NSError *))block {
+    @throw RLMException(@"This method can only be called on RLMArray instances retrieved from an RLMRealm");
+}
+#pragma clang diagnostic pop
+
 #pragma GCC diagnostic pop
 
 - (NSUInteger)indexOfObjectWhere:(NSString *)predicateFormat, ...
 {
     va_list args;
-    RLM_VARARG(predicateFormat, args);
-    return [self indexOfObjectWhere:predicateFormat args:args];
+    va_start(args, predicateFormat);
+    NSUInteger index = [self indexOfObjectWhere:predicateFormat args:args];
+    va_end(args);
+    return index;
 }
 
 - (NSUInteger)indexOfObjectWhere:(NSString *)predicateFormat args:(va_list)args
