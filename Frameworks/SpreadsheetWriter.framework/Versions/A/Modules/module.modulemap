@@ -1,6 +1,0 @@
-framework module SpreadsheetWriter {
-  umbrella header "SpreadsheetWriter-umbrella.h"
-
-  export *
-  module * { export * }
-}
