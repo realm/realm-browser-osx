@@ -29,8 +29,8 @@
 		22E098741B17005700F72AF1 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 844C34DE19473D9D0027E902 /* libc++.dylib */; };
 		22E4737219924CF700EEF7C9 /* RLMBasicTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E4737119924CF700EEF7C9 /* RLMBasicTableCellView.m */; };
 		22E473791992562400EEF7C9 /* RLMBoolTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E473781992562400EEF7C9 /* RLMBoolTableCellView.m */; };
-		22FAADC21C7C551A00832102 /* RealmConverter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22FAADC11C7C551A00832102 /* RealmConverter.framework */; };
-		22FAADC41C7C553200832102 /* RealmConverter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22FAADC11C7C551A00832102 /* RealmConverter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		22E9437A1C7D8A38004CF1FB /* RealmConverter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22E943791C7D8A38004CF1FB /* RealmConverter.framework */; };
+		22E9437C1C7D8A41004CF1FB /* RealmConverter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E943791C7D8A38004CF1FB /* RealmConverter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3615BDB6196FA8BF00E1AE3F /* RLMQueryNavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = 3615BDB5196FA8BF00E1AE3F /* RLMQueryNavigationState.m */; };
 		36B669CB1B8B057F00F04AE1 /* RLMObjectLinkSelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36B669CA1B8B057F00F04AE1 /* RLMObjectLinkSelectionViewController.xib */; };
 		36B669CE1B8B096A00F04AE1 /* RLMObjectLinkSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 36B669CD1B8B096A00F04AE1 /* RLMObjectLinkSelectionViewController.m */; };
@@ -88,7 +88,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				22FAADC41C7C553200832102 /* RealmConverter.framework in Embed Frameworks */,
+				22E9437C1C7D8A41004CF1FB /* RealmConverter.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -136,7 +136,7 @@
 		22E4737119924CF700EEF7C9 /* RLMBasicTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMBasicTableCellView.m; sourceTree = "<group>"; };
 		22E473771992562400EEF7C9 /* RLMBoolTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMBoolTableCellView.h; sourceTree = "<group>"; };
 		22E473781992562400EEF7C9 /* RLMBoolTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMBoolTableCellView.m; sourceTree = "<group>"; };
-		22FAADC11C7C551A00832102 /* RealmConverter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmConverter.framework; sourceTree = "<group>"; };
+		22E943791C7D8A38004CF1FB /* RealmConverter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmConverter.framework; path = Frameworks/RealmConverter.framework; sourceTree = "<group>"; };
 		3615BDB5196FA8BF00E1AE3F /* RLMQueryNavigationState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMQueryNavigationState.m; sourceTree = "<group>"; };
 		3615BDB7196FA8E500E1AE3F /* RLMQueryNavigationState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMQueryNavigationState.h; sourceTree = "<group>"; };
 		36B669CA1B8B057F00F04AE1 /* RLMObjectLinkSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RLMObjectLinkSelectionViewController.xib; sourceTree = "<group>"; };
@@ -211,8 +211,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22FAADC21C7C551A00832102 /* RealmConverter.framework in Frameworks */,
 				84E0F9501921F3B900D6CA14 /* Cocoa.framework in Frameworks */,
+				22E9437A1C7D8A38004CF1FB /* RealmConverter.framework in Frameworks */,
 				22E098741B17005700F72AF1 /* libc++.dylib in Frameworks */,
 				97A7B4BEE251DA782A9A95BE /* Pods.framework in Frameworks */,
 			);
@@ -418,7 +418,7 @@
 		84E0F94E1921F3B900D6CA14 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				22FAADC11C7C551A00832102 /* RealmConverter.framework */,
+				22E943791C7D8A38004CF1FB /* RealmConverter.framework */,
 				844C34DE19473D9D0027E902 /* libc++.dylib */,
 				84E0F94F1921F3B900D6CA14 /* Cocoa.framework */,
 				84E0F9521921F3B900D6CA14 /* AppKit.framework */,
@@ -535,7 +535,7 @@
 						DevelopmentTeam = QX5CR2FTN2;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -904,7 +904,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
-				CODE_SIGN_ENTITLEMENTS = "RealmBrowser/Supporting Files/Realm Browser.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 50;
@@ -938,7 +937,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
-				CODE_SIGN_ENTITLEMENTS = "RealmBrowser/Supporting Files/Realm Browser.entitlements";
 				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 50;

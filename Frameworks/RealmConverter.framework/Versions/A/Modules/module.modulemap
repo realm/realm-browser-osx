@@ -1,0 +1,10 @@
+framework module RealmConverter {
+  umbrella header "RealmConverter.h"
+
+  export *
+  module * { export * }
+}
+
+module RealmConverter.Swift {
+    header "RealmConverter-Swift.h"
+}
