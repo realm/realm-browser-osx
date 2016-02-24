@@ -173,7 +173,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     panel.canCreateDirectories = YES;
     panel.canChooseDirectories = YES;
     panel.canChooseFiles = NO;
-    panel.title = @"Choose the directory in which to save the CSV files generated from this Realm file.";
+    panel.message = @"Choose the directory in which to save the CSV files generated from this Realm file.";
     [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
         if (result != NSFileHandlingPanelOKButton) {
             return;

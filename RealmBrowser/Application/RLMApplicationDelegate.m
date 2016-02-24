@@ -384,7 +384,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     openPanel.canChooseFiles = YES;
     openPanel.canCreateDirectories = YES;
     openPanel.allowsMultipleSelection = NO;
-    openPanel.title = @"Please choose the XLSX file you wish to import.";
+    openPanel.message = @"Please choose the XLSX file you wish to import.";
     openPanel.allowedFileTypes = @[@"xlsx"];
 
     NSInteger result = [openPanel runModal];
@@ -400,7 +400,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     savePanel.canChooseFiles = NO;
     savePanel.canCreateDirectories = YES;
     savePanel.allowsMultipleSelection = NO;
-    savePanel.title = @"Please choose the destination folder for the new Realm file.";
+    savePanel.message = @"Please choose the destination folder for the new Realm file.";
     
     result = [savePanel runModal];
     if (result != NSFileHandlingPanelOKButton) {
@@ -453,7 +453,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     openPanel.canChooseFiles = YES;
     openPanel.canCreateDirectories = YES;
     openPanel.allowsMultipleSelection = NO;
-    openPanel.title = @"Please choose the CSV files you wish to import.";
+    openPanel.message   = @"Please choose the CSV files you wish to import.";
     openPanel.allowedFileTypes = @[@"csv"];
     
     NSInteger result = [openPanel runModal];
@@ -472,7 +472,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     savePanel.canChooseFiles = NO;
     savePanel.canCreateDirectories = YES;
     savePanel.allowsMultipleSelection = NO;
-    savePanel.title = @"Please choose the destination folder for the new Realm file.";
+    savePanel.message = @"Please choose the destination folder for the new Realm file.";
     
     result = [savePanel runModal];
     if (result != NSFileHandlingPanelOKButton) {
