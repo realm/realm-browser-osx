@@ -14,7 +14,7 @@ set -o pipefail
 set -e
 
 # You can override the version of the core library
-: ${REALM_CORE_VERSION:=0.96.1} # set to "current" to always use the current build
+: ${REALM_CORE_VERSION:=0.96.2} # set to "current" to always use the current build
 
 # You can override the xcmode used
 : ${XCMODE:=xcodebuild} # must be one of: xcodebuild (default), xcpretty, xctool
@@ -761,52 +761,55 @@ case "$COMMAND" in
         ;;
 
     "examples-ios")
+        sh build.sh prelaunch-simulator
         if [[ -d "examples/ios/objc" ]]; then
-            project="examples/ios/objc/RealmExamples.xcodeproj"
+            workspace="examples/ios/objc/RealmExamples.xcworkspace"
         elif [[ "$REALM_SWIFT_VERSION" = 1.2 ]]; then
-            project="examples/ios/xcode-6/objc/RealmExamples.xcodeproj"
+            workspace="examples/ios/xcode-6/objc/RealmExamples.xcworkspace"
         else
-            project="examples/ios/xcode-7/objc/RealmExamples.xcodeproj"
+            workspace="examples/ios/xcode-7/objc/RealmExamples.xcworkspace"
         fi
-
-        xc "-project $project -scheme Simple -configuration $CONFIGURATION build ${CODESIGN_PARAMS}"
-        xc "-project $project -scheme TableView -configuration $CONFIGURATION build ${CODESIGN_PARAMS}"
-        xc "-project $project -scheme Migration -configuration $CONFIGURATION build ${CODESIGN_PARAMS}"
-        xc "-project $project -scheme Backlink -configuration $CONFIGURATION build ${CODESIGN_PARAMS}"
-        xc "-project $project -scheme GroupedTableView -configuration $CONFIGURATION build ${CODESIGN_PARAMS}"
-        xc "-project $project -scheme Encryption -configuration $CONFIGURATION build ${CODESIGN_PARAMS}"
+        xc "-workspace $workspace -scheme Simple -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
+        xc "-workspace $workspace -scheme TableView -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
+        xc "-workspace $workspace -scheme Migration -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
+        xc "-workspace $workspace -scheme Backlink -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
+        xc "-workspace $workspace -scheme GroupedTableView -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
+        xc "-workspace $workspace -scheme Encryption -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
 
         if [ ! -z "${JENKINS_HOME}" ]; then
-            xc "-project $project -scheme Extension -configuration $CONFIGURATION build ${CODESIGN_PARAMS}"
+            xc "-workspace $workspace -scheme Extension -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
         fi
 
         exit 0
         ;;
 
     "examples-ios-swift")
-        project="examples/ios/swift-$REALM_SWIFT_VERSION/RealmExamples.xcodeproj"
-        xc "-project $project -scheme Simple -configuration $CONFIGURATION build ${CODESIGN_PARAMS}"
-        xc "-project $project -scheme TableView -configuration $CONFIGURATION build ${CODESIGN_PARAMS}"
-        xc "-project $project -scheme Migration -configuration $CONFIGURATION build ${CODESIGN_PARAMS}"
-        xc "-project $project -scheme Encryption -configuration $CONFIGURATION build ${CODESIGN_PARAMS}"
-        xc "-project $project -scheme Backlink -configuration $CONFIGURATION build ${CODESIGN_PARAMS}"
-        xc "-project $project -scheme GroupedTableView -configuration $CONFIGURATION build ${CODESIGN_PARAMS}"
+        sh build.sh prelaunch-simulator
+        workspace="examples/ios/swift-$REALM_SWIFT_VERSION/RealmExamples.xcworkspace"
+        xc "-workspace $workspace -scheme Simple -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
+        xc "-workspace $workspace -scheme TableView -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
+        xc "-workspace $workspace -scheme Migration -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
+        xc "-workspace $workspace -scheme Encryption -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
+        xc "-workspace $workspace -scheme Backlink -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
+        xc "-workspace $workspace -scheme GroupedTableView -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
         exit 0
         ;;
 
     "examples-osx")
-        xc "-project examples/osx/objc/RealmExamples.xcodeproj -scheme JSONImport -configuration ${CONFIGURATION} build ${CODESIGN_PARAMS}"
+        xc "-workspace examples/osx/objc/RealmExamples.xcworkspace -scheme JSONImport -configuration ${CONFIGURATION} build ${CODESIGN_PARAMS}"
         ;;
 
     "examples-tvos")
-        xc "-project examples/tvos/objc/RealmExamples.xcodeproj -scheme DownloadCache -configuration $CONFIGURATION build ${CODESIGN_PARAMS}"
-        xc "-project examples/tvos/objc/RealmExamples.xcodeproj -scheme PreloadedData -configuration $CONFIGURATION build ${CODESIGN_PARAMS}"
+        workspace="examples/tvos/objc/RealmExamples.xcworkspace"
+        xc "-workspace $workspace -scheme DownloadCache -configuration $CONFIGURATION -destination 'name=Apple TV 1080p' build ${CODESIGN_PARAMS}"
+        xc "-workspace $workspace -scheme PreloadedData -configuration $CONFIGURATION -destination 'name=Apple TV 1080p' build ${CODESIGN_PARAMS}"
         exit 0
         ;;
 
     "examples-tvos-swift")
-        xc "-project examples/tvos/swift/RealmExamples.xcodeproj -scheme DownloadCache -configuration $CONFIGURATION build ${CODESIGN_PARAMS}"
-        xc "-project examples/tvos/swift/RealmExamples.xcodeproj -scheme PreloadedData -configuration $CONFIGURATION build ${CODESIGN_PARAMS}"
+        workspace="examples/tvos/swift/RealmExamples.xcworkspace"
+        xc "-workspace $workspace -scheme DownloadCache -configuration $CONFIGURATION -destination 'name=Apple TV 1080p' build ${CODESIGN_PARAMS}"
+        xc "-workspace $workspace -scheme PreloadedData -configuration $CONFIGURATION -destination 'name=Apple TV 1080p' build ${CODESIGN_PARAMS}"
         exit 0
         ;;
 
@@ -872,7 +875,6 @@ case "$COMMAND" in
     "cocoapods-setup")
         if [[ "$2" != "swift" ]]; then
             sh build.sh download-core
-            mv core/librealm.a core/librealm-osx.a
             if [[ "$REALM_SWIFT_VERSION" = "1.2" ]]; then
                 echo 'Installing for Xcode 6.'
                 mv core/librealm-ios-no-bitcode.a core/librealm-ios.a
@@ -902,9 +904,19 @@ case "$COMMAND" in
           cp Realm/ObjectStore/impl/*.hpp include/impl
           cp Realm/ObjectStore/impl/apple/*.hpp include/impl/apple
 
-          mkdir -p include/Realm
           touch Realm/RLMPlatform.h
-          cp Realm/*.h include/Realm
+          if [ -n "$COCOAPODS_VERSION" ]; then
+            # This variable is set for the prepare_command available
+            # from the 1.0 prereleases, which requires a different
+            # header layout within the header_mappings_dir.
+            cp Realm/*.h include
+          else
+            # For CocoaPods < 1.0, we need to scope the headers within
+            # the header_mappings_dir by another subdirectory to avoid
+            # Clang from complaining about non-modular headers.
+            mkdir -p include/Realm
+            cp Realm/*.h include/Realm
+          fi
         else
           echo "let swiftLanguageVersion = \"$(get_swift_version)\"" > RealmSwift/SwiftVersion.swift
         fi
