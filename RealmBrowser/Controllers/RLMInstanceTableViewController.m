@@ -28,7 +28,6 @@
 #import "RLMResultsNode.h"
 #import "RLMRealmNode.h"
 
-#import "RLMTableRowView.h"
 #import "RLMBadgeTableCellView.h"
 #import "RLMBasicTableCellView.h"
 #import "RLMBoolTableCellView.h"
@@ -292,21 +291,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             self.didSelectedBlock(selectedInstance);
         }
     }
-}
-
-- (NSTableRowView *)tableView:(NSTableView *)tableView rowViewForRow:(NSInteger)row
-{
-    RLMTableRowView *rowView;
-    
-    rowView = [tableView makeViewWithIdentifier:@"row" owner:self];
-    
-    if (!rowView) {
-        rowView = [[RLMTableRowView alloc] initWithFrame:NSZeroRect];
-        rowView.identifier = @"row";
-        rowView.canDrawSubviewsIntoLayer = YES;
-    }
-    
-    return rowView;
 }
 
 -(NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)rowIndex

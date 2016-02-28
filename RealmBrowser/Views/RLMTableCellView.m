@@ -24,6 +24,7 @@
 {
     if (self = [super initWithFrame:frameRect]) {
         self.canDrawSubviewsIntoLayer = YES;
+        self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawDuringViewResize;
     }
     
     return self;
