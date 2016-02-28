@@ -25,12 +25,10 @@
     CGRect fillRect, borderRect;
     CGRectDivide(cellFrame, &borderRect, &fillRect, 1.0, CGRectMaxYEdge);
     
-    NSGradient *gradient = [[NSGradient alloc]
-                            initWithStartingColor:[NSColor whiteColor]
-                            endingColor:[NSColor whiteColor]];
-    [gradient drawInRect:fillRect angle:90.0];
+    [[NSColor whiteColor] set];
+    NSRectFill(fillRect);
     
-    [[NSColor colorWithDeviceWhite:0.0 alpha:1.0] set];
+    [[NSColor grayColor] set];
     NSRectFill(borderRect);
     
     [self drawInteriorWithFrame:cellFrame inView:view];
