@@ -21,8 +21,6 @@
 
 @interface RLMBadgeTableCellView : RLMLinkTableCellView
 
-@property (strong) IBOutlet NSButton *badge;
-
-+ (instancetype)makeWithIdentifier:(NSString *)identifier;
+@property (assign) IBOutlet NSButton *badge;
 
 @end
