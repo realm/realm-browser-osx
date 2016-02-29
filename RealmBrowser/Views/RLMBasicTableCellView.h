@@ -20,6 +20,4 @@
 
 @interface RLMBasicTableCellView : RLMTableCellView
 
-+ (instancetype)makeWithIdentifier:(NSString *)identifier;
-
 @end

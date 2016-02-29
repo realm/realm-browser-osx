@@ -20,10 +20,29 @@
 
 @implementation RLMTableCellView
 
++ (instancetype)viewWithIdentifier:(NSString *)identifier
+{
+    RLMTableCellView *view = [[self alloc] initWithFrame:NSZeroRect];
+    view.identifier = identifier;
+    
+    return view;
+}
+
 - (instancetype)initWithFrame:(NSRect)frameRect
 {
     if (self = [super initWithFrame:frameRect]) {
         self.canDrawSubviewsIntoLayer = YES;
+        self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawDuringViewResize;
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    if (self = [super initWithCoder:coder]) {
+        self.canDrawSubviewsIntoLayer = YES;
+        self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawDuringViewResize;
     }
     
     return self;

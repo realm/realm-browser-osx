@@ -16,10 +16,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#import "RLMTableCellView.h"
+#import "RLMBasicTableCellView.h"
 
-@interface RLMLinkTableCellView : RLMTableCellView
-
-+ (instancetype)makeWithIdentifier:(NSString *)identifier;
+@interface RLMLinkTableCellView : RLMBasicTableCellView
 
 @end

@@ -20,8 +20,6 @@
 
 @interface RLMBoolTableCellView : RLMTableCellView
 
-@property(strong) IBOutlet NSButton *checkBox;
-
-+ (instancetype)makeWithIdentifier:(NSString *)identifier;
+@property (assign) IBOutlet NSButton *checkBox;
 
 @end
