@@ -129,8 +129,13 @@
                     [ws.presentedRealm connect:nil];
                     
                     for (RLMRealmBrowserWindowController *windowController in ws.windowControllers) {
+                        NSScrollView *tableScrollView = windowController.tableViewController.tableView.enclosingScrollView;
+                        CGRect bounds = tableScrollView.bounds;
+                        
                         [windowController reloadAfterEdit];
                         [windowController realmDidLoad];
+            
+                        tableScrollView.bounds = bounds;
                     }
                 }];
                 

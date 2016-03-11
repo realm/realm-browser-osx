@@ -104,7 +104,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     self.window.alphaValue = 1.0;
 
     id firstItem = self.modelDocument.presentedRealm.topLevelClasses.firstObject;
-    if (firstItem != nil) {
+    if (firstItem != nil && navigationStack.currentState == nil) {
         RLMNavigationState *initState = [[RLMNavigationState alloc] initWithSelectedType:firstItem index:NSNotFound];
         [self addNavigationState:initState fromViewController:nil];
     }
