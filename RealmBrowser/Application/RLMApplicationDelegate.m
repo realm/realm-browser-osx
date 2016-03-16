@@ -17,6 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 @import Realm;
+@import RealmConverter;
 
 #import "RLMApplicationDelegate.h"
 #import "RLMTestDataGenerator.h"

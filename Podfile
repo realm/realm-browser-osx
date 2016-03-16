@@ -9,3 +9,4 @@ link_with 'RealmBrowser', 'RealmBrowserTests'
 
 pod 'AppSandboxFileAccess'
 pod 'Realm'
+pod 'RealmConverter'

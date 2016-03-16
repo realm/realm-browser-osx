@@ -85,9 +85,19 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods/AppSandboxFileAccess.framework"
+  install_framework "Pods/CSwiftV.framework"
+  install_framework "Pods/PathKit.framework"
   install_framework "Pods/Realm.framework"
+  install_framework "Pods/RealmConverter.framework"
+  install_framework "Pods/SSZipArchive.framework"
+  install_framework "Pods/TGSpreadsheetWriter.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods/AppSandboxFileAccess.framework"
+  install_framework "Pods/CSwiftV.framework"
+  install_framework "Pods/PathKit.framework"
   install_framework "Pods/Realm.framework"
+  install_framework "Pods/RealmConverter.framework"
+  install_framework "Pods/SSZipArchive.framework"
+  install_framework "Pods/TGSpreadsheetWriter.framework"
 fi
