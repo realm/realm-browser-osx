@@ -24,8 +24,9 @@
 @import Realm;
 @import Realm.Private;
 @import Realm.Dynamic;
+@import RealmConverter;
 
-#import <RealmConverter/RealmConverter-Swift.h>
+#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
 
 NSString * const kRealmLockedImage = @"RealmLocked";
 NSString * const kRealmUnlockedImage = @"RealmUnlocked";
@@ -162,7 +163,15 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
         
         dispatch_async(dispatch_get_main_queue(), ^{
             NSURL *fileURL = [panel URL];
-            [self exportAndCompactCopyOfRealmFileAtURL:fileURL];
+            
+            AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
+            [fileAccess requestAccessPermissionsForFileURL:panel.URL persistPermission:YES withBlock:^(NSURL *securelyScopedURL, NSData *bookmarkData) {
+                [securelyScopedURL startAccessingSecurityScopedResource];
+                [self exportAndCompactCopyOfRealmFileAtURL:fileURL];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [securelyScopedURL stopAccessingSecurityScopedResource];
+                });
+            }];
         });
     }];
 }
@@ -178,14 +187,21 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
         if (result != NSFileHandlingPanelOKButton) {
             return;
         }
-        
-        NSString *folderPath = panel.URL.path;
-        NSString *realmFolderPath = self.modelDocument.presentedRealm.realm.path;
-        RLMCSVDataExporter *exporter = [[RLMCSVDataExporter alloc] initWithRealmFileAtPath:realmFolderPath];
-        NSError *error = nil;
-        [exporter exportToFolderAtPath:folderPath withError:&error];
-        
-        NSLog(@"%@", error.localizedDescription);
+    
+        AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
+        [fileAccess requestAccessPermissionsForFileURL:panel.URL persistPermission:YES withBlock:^(NSURL *securelyScopedURL, NSData *bookmarkData) {
+            [securelyScopedURL startAccessingSecurityScopedResource];
+            
+            NSString *folderPath = panel.URL.path;
+            NSString *realmFolderPath = self.modelDocument.presentedRealm.realm.path;
+            RLMCSVDataExporter *exporter = [[RLMCSVDataExporter alloc] initWithRealmFileAtPath:realmFolderPath];
+            NSError *error = nil;
+            [exporter exportToFolderAtPath:folderPath withError:&error];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [securelyScopedURL stopAccessingSecurityScopedResource];
+            });
+        }];
     }];
 }
 
