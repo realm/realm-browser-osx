@@ -1,0 +1,6 @@
+framework module CSwiftV {
+  umbrella header "CSwiftV-umbrella.h"
+
+  export *
+  module * { export * }
+}
