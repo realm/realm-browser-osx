@@ -170,7 +170,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
                 [self exportAndCompactCopyOfRealmFileAtURL:fileURL];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [securelyScopedURL stopAccessingSecurityScopedResource];
-                });
+                }); 
             }];
         });
     }];

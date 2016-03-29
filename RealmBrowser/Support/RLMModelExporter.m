@@ -18,6 +18,7 @@
 
 #import "RLMModelExporter.h"
 @import Realm;
+@import Realm.Private;
 #import <AppSandboxFileAccess/AppSandboxFileAccess.h>
 
 @implementation RLMModelExporter
@@ -206,6 +207,8 @@
         case RLMPropertyTypeObject:
             return property.objectClassName;
     }
+    
+    return nil;
 }
 
 + (BOOL)javaPropertyTypeCanBeMarkedRequired:(RLMPropertyType)type
@@ -224,6 +227,8 @@
         case RLMPropertyTypeDate:
             return YES;
     }
+    
+    return NO;
 }
 
 #pragma mark - Private methods - Objective-C helpers
@@ -337,6 +342,8 @@
         case RLMPropertyTypeObject:
             return YES;
     }
+    
+    return NO;
 }
 
 #pragma mark - Private methods - Swift helpers
@@ -436,6 +443,8 @@
         case RLMPropertyTypeObject:
             return @"/* Error! 'Object' properties should always be optional. Please report this by emailing help@realm.io. */";
     }
+    
+    return nil;
 }
 
 @end
