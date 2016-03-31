@@ -26,6 +26,7 @@
 #import "RLMSyncCredentialsView.h"
 #import "RLMSyncWindowController.h"
 #import "NSURLComponents+FragmentItems.h"
+#import "RLMSyncAuthWindowController.h"
 
 const NSUInteger kTopTipDelay = 250;
 const NSUInteger kMaxFilesPerCategory = 7;
@@ -58,6 +59,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
 @property (nonatomic, strong) NSArray *groupedFileItems;
 
 @property (nonatomic, strong) RLMSyncWindowController *syncWindowController;
+@property (nonatomic, strong) RLMSyncAuthWindowController *syncAuthWindowController;
 
 @end
 
@@ -548,6 +550,18 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
             completion(NO, nil);
         }
     }];
+}
+
+- (IBAction)generateAuthCredentials:(id)sender
+{
+    if (self.syncAuthWindowController) {
+        return;
+    }
+    
+    __weak typeof(self) weakSelf = self;
+    self.syncAuthWindowController = [[RLMSyncAuthWindowController alloc] init];
+    self.syncAuthWindowController.closedHandler = ^{ weakSelf.syncAuthWindowController = nil; };
+    [self.syncAuthWindowController showWindow:nil];
 }
 
 @end
