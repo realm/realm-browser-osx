@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="RLMRealmBrowserWindowController">
@@ -26,7 +26,7 @@
             <value key="minSize" type="size" width="440" height="200"/>
             <view key="contentView" id="gIp-Ho-8D9">
                 <rect key="frame" x="0.0" y="0.0" width="977" height="476"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <splitView focusRingType="none" placeholderIntrinsicWidth="977" placeholderIntrinsicHeight="300" dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IXc-8a-g01" userLabel="Left-Right Split">
                         <rect key="frame" x="0.0" y="0.0" width="977" height="476"/>
@@ -38,11 +38,11 @@
                                     <scrollView appearanceType="aqua" borderType="none" autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MSf-82-x0U" userLabel="OutlineScroll">
                                         <rect key="frame" x="0.0" y="0.0" width="236" height="476"/>
                                         <clipView key="contentView" focusRingType="none" drawsBackground="NO" id="udQ-xx-2L4">
-                                            <rect key="frame" x="0.0" y="0.0" width="236" height="564"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="236" height="476"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowHeight="22" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="14" outlineTableColumn="ye8-fR-LJ8" id="IMi-6Y-gQF">
-                                                    <rect key="frame" x="0.0" y="0.0" width="236" height="0.0"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="236" height="476"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="0.0"/>
                                                     <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -139,7 +139,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="sequential" alternatingRowBackgroundColors="YES" autosaveName="InstanceTable" rowHeight="18" headerView="cDp-e2-1cA" viewBased="YES" id="enp-HN-e6b" customClass="RLMTableView">
-                                                    <rect key="frame" x="0.0" y="0.0" width="918" height="0.0"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="918" height="453"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -399,7 +399,7 @@
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             <prototypeCellViews>
                                                                 <customView identifier="BoolCell" id="sLz-cM-Sl8" userLabel="BoolCellView" customClass="RLMBoolTableCellView">
-                                                                    <rect key="frame" x="660" y="1" width="86" height="22"/>
+                                                                    <rect key="frame" x="660" y="1" width="256" height="22"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                                     <subviews>
                                                                         <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CbB-PG-BtE">
@@ -433,7 +433,7 @@
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </clipView>
                                         <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="4Ib-5w-NOS">
-                                            <rect key="frame" x="0.0" y="548" width="740" height="16"/>
+                                            <rect key="frame" x="0.0" y="460" width="740" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="PKq-wN-eoD">
