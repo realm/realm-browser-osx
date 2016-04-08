@@ -32,9 +32,15 @@
     textField.translatesAutoresizingMaskIntoConstraints = NO;
     textField.bordered = NO;
     textField.drawsBackground = NO;
-    textField.usesSingleLineMode = YES;
-    textField.lineBreakMode = NSLineBreakByTruncatingTail;
     
+    if ([textField respondsToSelector:@selector(setUsesSingleLineMode:)]) {
+        textField.usesSingleLineMode = YES;
+    }
+    
+    if ([textField respondsToSelector:@selector(setLineBreakMode:)]) {
+        textField.lineBreakMode = NSLineBreakByTruncatingTail;
+    }
+        
     self.textField = textField;
     [self addSubview:textField];
     
