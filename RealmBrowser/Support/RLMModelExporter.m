@@ -241,7 +241,7 @@
     // Contents of h-file
     NSMutableString *hContents= [NSMutableString stringWithFormat:@"#import <Foundation/Foundation.h>\n#import <Realm/Realm.h>\n\n"];
     for (RLMObjectSchema *schema in schemas) {
-        [hContents appendFormat:@"@class %@;\n", schema.className];
+        [hContents appendFormat:@"@interface %@ : RLMObject\n@end\n\n", schema.className];
     }
     [hContents appendString:@"\n"];
     
@@ -251,7 +251,7 @@
     [hContents appendString:@"\n\n"];
     
     for (RLMObjectSchema *schema in schemas) {
-        [hContents appendFormat:@"@interface %@ : RLMObject\n\n", schema.className];
+        [hContents appendFormat:@"@interface %@()\n\n", schema.className];
         for (RLMProperty *property in schema.properties) {
             [hContents appendFormat:@"@property %@%@;\n", [self objcNameForProperty:property], property.name];
         }
