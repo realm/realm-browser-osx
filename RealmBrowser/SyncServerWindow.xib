@@ -7,6 +7,8 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="RLMRunSyncServerWindowController">
             <connections>
+                <outlet property="choosePublicKeyButton" destination="LiN-ic-dhN" id="xT3-s2-CDG"/>
+                <outlet property="chooseRealmDirectoryButton" destination="YNb-d9-dkh" id="s5l-rv-HvK"/>
                 <outlet property="consoleOutputField" destination="2m0-xi-QZ1" id="BaT-VZ-d0X"/>
                 <outlet property="hostTextField" destination="iRt-AH-ZhW" id="vr2-T3-K4o"/>
                 <outlet property="loggingLevelPopup" destination="xPa-BD-loI" id="tvt-fM-umc"/>
@@ -24,8 +26,8 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="821" height="513"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
-            <view key="contentView" misplaced="YES" id="EiT-Mj-1SZ">
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="821" height="513"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
@@ -75,6 +77,9 @@
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="runServerButtonClicked:" target="-2" id="NbQ-TA-XXi"/>
+                        </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fIa-A9-Exl">
                         <rect key="frame" x="623" y="436" width="184" height="32"/>
@@ -82,6 +87,9 @@
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="stopServerButtonClicked:" target="-2" id="Zou-lZ-ptc"/>
+                        </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tJ1-l7-lFu">
                         <rect key="frame" x="447" y="476" width="64" height="17"/>
@@ -152,7 +160,7 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2m0-xi-QZ1">
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2m0-xi-QZ1">
                         <rect key="frame" x="20" y="20" width="781" height="328"/>
                         <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="m7K-ug-3QS">
                             <font key="font" metaFont="system"/>
@@ -167,13 +175,6 @@
                         <font key="titleFont" metaFont="system"/>
                     </box>
                 </subviews>
-                <constraints>
-                    <constraint firstItem="2m0-xi-QZ1" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="3zz-tu-TKR"/>
-                    <constraint firstAttribute="bottom" secondItem="2m0-xi-QZ1" secondAttribute="bottom" constant="20" id="DYG-z5-Y2q"/>
-                    <constraint firstAttribute="trailing" secondItem="2m0-xi-QZ1" secondAttribute="trailing" constant="20" id="XyM-zc-YDa"/>
-                    <constraint firstItem="2m0-xi-QZ1" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="x01-9H-EQ9"/>
-                    <constraint firstItem="2m0-xi-QZ1" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="165" id="zIj-Lk-jpz"/>
-                </constraints>
             </view>
             <point key="canvasLocation" x="1119.5" y="783.5"/>
         </window>

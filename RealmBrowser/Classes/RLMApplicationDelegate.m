@@ -27,6 +27,7 @@
 #import "RLMSyncWindowController.h"
 #import "NSURLComponents+FragmentItems.h"
 #import "RLMSyncAuthWindowController.h"
+#import "RLMRunSyncServerWindowController.h"
 
 const NSUInteger kTopTipDelay = 250;
 const NSUInteger kMaxFilesPerCategory = 7;
@@ -59,6 +60,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
 @property (nonatomic, strong) NSArray *groupedFileItems;
 
 @property (nonatomic, strong) RLMSyncWindowController *syncWindowController;
+@property (nonatomic, strong) RLMRunSyncServerWindowController *runSyncWindowController;
 @property (nonatomic, strong) RLMSyncAuthWindowController *syncAuthWindowController;
 
 @end
@@ -562,6 +564,18 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     self.syncAuthWindowController = [[RLMSyncAuthWindowController alloc] init];
     self.syncAuthWindowController.closedHandler = ^{ weakSelf.syncAuthWindowController = nil; };
     [self.syncAuthWindowController showWindow:nil];
+}
+
+- (IBAction)runSyncServer:(id)sender
+{
+    if (self.runSyncWindowController) {
+        return;
+    }
+    
+    __weak typeof(self) weakSelf = self;
+    self.runSyncWindowController = [[RLMRunSyncServerWindowController alloc] init];
+    self.runSyncWindowController.closedHandler = ^{ weakSelf.runSyncWindowController = nil; };
+    [self.runSyncWindowController showWindow:nil];
 }
 
 @end

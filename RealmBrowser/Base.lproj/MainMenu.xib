@@ -229,6 +229,9 @@ CA
                             <menuItem isSeparatorItem="YES" id="S7S-kD-YoS"/>
                             <menuItem title="Run Sync Server..." id="wNt-To-CtP">
                                 <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="runSyncServer:" target="PLw-ns-0qo" id="B5t-uv-a6k"/>
+                                </connections>
                             </menuItem>
                             <menuItem title="Generate Sync Auth Credentials..." id="LYR-EO-Y8x">
                                 <modifierMask key="keyEquivalentModifierMask"/>

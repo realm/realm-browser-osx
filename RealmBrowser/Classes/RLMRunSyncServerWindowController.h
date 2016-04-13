@@ -24,4 +24,6 @@
 
 @property (nonatomic, weak) IBOutlet NSTextField *consoleOutputField;
 
+@property (nonatomic, copy) void (^closedHandler)();
+
 @end
