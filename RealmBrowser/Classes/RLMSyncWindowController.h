@@ -22,12 +22,14 @@
 
 @property (nonatomic, weak) IBOutlet NSTextField *urlTextField;
 @property (nonatomic, weak) IBOutlet NSTextField *identityTextField;
+@property (nonatomic, weak) IBOutlet NSTextField *signatureTextField;
 @property (nonatomic, weak) IBOutlet NSButton *okayButton;
 @property (nonatomic, weak) IBOutlet NSButton *cancelButton;
 @property (nonatomic, weak) IBOutlet NSTextField *errorTextField;
 
 @property (readonly) NSString *serverURL;
 @property (readonly) NSString *serverIdentity;
+@property (readonly) NSString *serverSignature;
 
 @property (nonatomic, readonly) NSString *realmFilePath;
 

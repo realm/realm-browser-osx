@@ -22,6 +22,7 @@
 
 NSString * const kSyncServerURLKey = @"SyncServerURL";
 NSString * const kSyncIdentityKey = @"SyncIdentity";
+NSString * const kSyncSignatureKey = @"SyncSignature";
 
 #import "RLMSyncWindowController.h"
 
@@ -31,8 +32,9 @@ NSString * const kSyncIdentityKey = @"SyncIdentity";
 
 @property (strong, nonatomic, readwrite) NSString *serverURL;
 @property (strong, nonatomic, readwrite) NSString *serverIdentity;
+@property (strong, nonatomic, readwrite) NSString *serverSignature;
 
-- (BOOL)testSyncCredentialsWithURL:(NSString *)url identity:(NSString *)identity;
+- (BOOL)testSyncCredentialsWithURL:(NSString *)url identity:(NSString *)identity signature:(NSString *)signature;
 
 @end
 
@@ -87,18 +89,21 @@ NSString * const kSyncIdentityKey = @"SyncIdentity";
 {
     NSString *serverURL = self.urlTextField.stringValue;
     NSString *serverIdentity = self.identityTextField.stringValue;
+    NSString *serverSignature = self.signatureTextField.stringValue;
     
-    if ([self testSyncCredentialsWithURL:serverURL identity:serverIdentity] == NO) {
+    if ([self testSyncCredentialsWithURL:serverURL identity:serverIdentity signature:serverSignature] == NO) {
         self.errorTextField.hidden = NO;
         return;
     }
     
     self.serverURL = serverURL;
     self.serverIdentity = serverIdentity;
+    self.serverSignature = serverSignature;
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:serverURL forKey:kSyncServerURLKey];
     [defaults setObject:serverIdentity forKey:kSyncIdentityKey];
+    [defaults setObject:serverSignature forKey:kSyncSignatureKey];
     [defaults synchronize];
     
     if (self.window.sheetParent) {
@@ -129,7 +134,7 @@ NSString * const kSyncIdentityKey = @"SyncIdentity";
     }
 }
 
-- (BOOL)testSyncCredentialsWithURL:(NSString *)url identity:(NSString *)identity
+- (BOOL)testSyncCredentialsWithURL:(NSString *)url identity:(NSString *)identity signature:(NSString *)signature
 {
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
     configuration.path = self.realmFilePath;
@@ -137,8 +142,12 @@ NSString * const kSyncIdentityKey = @"SyncIdentity";
     configuration.customSchema = nil;
     configuration.syncServerURL = [NSURL URLWithString:url];
     
-    if (identity.length == 40) {
+    if (identity.length > 0) {
         configuration.syncIdentity = identity;
+    }
+    
+    if (signature.length > 0) {
+        configuration.syncSignature = signature;
     }
         
     NSError *error = nil;

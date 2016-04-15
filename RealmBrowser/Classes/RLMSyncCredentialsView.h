@@ -12,5 +12,6 @@
 
 @property (nonatomic, weak) IBOutlet NSTextField *syncServerURLField;
 @property (nonatomic, weak) IBOutlet NSTextField *syncIdentityField;
+@property (nonatomic, weak) IBOutlet NSTextField *syncSignatureField;
 
 @end

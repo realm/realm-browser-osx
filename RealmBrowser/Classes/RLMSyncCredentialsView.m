@@ -25,6 +25,11 @@
     if (identity.length > 0) {
         self.syncIdentityField.stringValue = identity;
     }
+    
+    NSString *signature = [defaults stringForKey:@"SyncSignature"];
+    if (signature.length > 0) {
+        self.syncSignatureField.stringValue = signature;
+    }
 }
 
 @end

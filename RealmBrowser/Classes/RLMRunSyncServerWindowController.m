@@ -48,21 +48,23 @@
     }
     
     NSString *resourcePath =[[NSBundle mainBundle] resourcePath];
-    NSString *serverBinaryPath = [resourcePath stringByAppendingPathComponent:@"realm-server-noinst"];
+    NSString *serverBinaryPath = [resourcePath stringByAppendingPathComponent:@"realm-server-dbg-noinst"];
     
     self.serverTask = [[NSTask alloc] init];
     self.serverTask.launchPath = serverBinaryPath;
     self.serverTask.environment = @{@"DYLD_LIBRARY_PATH":resourcePath};
     
     NSMutableArray *arguments = [NSMutableArray array];
-//    [arguments addObject:@"--help"];
+//    /[arguments addObject:@"--help"];
     
     [arguments addObject:self.realmFolderPath];
     [arguments addObject:self.IPAddressString];
     
-    [arguments addObject:@"-k"];
-    [arguments addObject:self.publicKeyPath];
-    
+    if (self.publicKeyPath.length > 0) {
+        [arguments addObject:@"-k"];
+        [arguments addObject:self.publicKeyPath];
+    }
+        
     if (self.portTextField.stringValue.length > 0) {
         [arguments addObject:@"-p"];
         [arguments addObject:self.portTextField.stringValue];
@@ -194,7 +196,7 @@
 {
     NSString *publicKeyPath = self.publicTextField.stringValue;
     if (publicKeyPath.length == 0) {
-        publicKeyPath = self.publicTextField.placeholderString;
+        return nil;
     }
     
     return publicKeyPath;

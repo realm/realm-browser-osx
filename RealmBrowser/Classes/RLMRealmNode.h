@@ -31,6 +31,7 @@
 
 @property (nonatomic, copy) NSString *syncServerURL;
 @property (nonatomic, copy) NSString *syncIdentity;
+@property (nonatomic, copy) NSString *syncSignature;
 
 - (instancetype)initWithName:(NSString *)name url:(NSString *)url;
 

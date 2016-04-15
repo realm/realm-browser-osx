@@ -54,6 +54,7 @@
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
     configuration.encryptionKey = self.encryptionKey;
     configuration.syncIdentity = self.syncIdentity;
+    configuration.syncSignature = self.syncSignature;
     configuration.path = _url;
     configuration.dynamic = YES;
     configuration.customSchema = nil;

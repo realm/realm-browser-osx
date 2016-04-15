@@ -450,7 +450,8 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
         NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
         NSURLQueryItem *syncURLItem = [NSURLQueryItem queryItemWithName:@"syncServerURL" value:weakSelf.syncWindowController.serverURL];
         NSURLQueryItem *syncIdentityItem = [NSURLQueryItem queryItemWithName:@"syncIdentity" value:weakSelf.syncWindowController.serverIdentity];
-        components.fragmentItems = @[syncURLItem, syncIdentityItem];
+        NSURLQueryItem *syncSignatureItem = [NSURLQueryItem queryItemWithName:@"syncSignature" value:weakSelf.syncWindowController.serverSignature];
+        components.fragmentItems = @[syncURLItem, syncIdentityItem, syncSignatureItem];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:components.URL
@@ -488,6 +489,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     NSString *filePath = savePanel.URL.path;
     NSString *syncServerURL = accessoryView.syncServerURLField.stringValue;
     NSString *syncServerIdentity = accessoryView.syncIdentityField.stringValue;
+    NSString *syncServerSignature = accessoryView.syncSignatureField.stringValue;
     
     //Create a new Realm instance to create the file on disk
     @autoreleasepool {
@@ -503,6 +505,10 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
         if (accessoryView.syncIdentityField.stringValue.length) {
             configuration.syncIdentity = syncServerIdentity;
         }
+        
+        if (accessoryView.syncSignatureField.stringValue.length) {
+            configuration.syncSignature = syncServerSignature;
+        }
             
         [RLMRealm realmWithConfiguration:configuration error:nil];
     }
@@ -511,7 +517,8 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
         NSURLComponents *components = [NSURLComponents componentsWithURL:[NSURL fileURLWithPath:filePath] resolvingAgainstBaseURL:NO];
         NSURLQueryItem *syncURLItem = [NSURLQueryItem queryItemWithName:@"syncServerURL" value:syncServerURL];
         NSURLQueryItem *syncIdentityItem = [NSURLQueryItem queryItemWithName:@"syncIdentity" value:syncServerIdentity];
-        components.fragmentItems = @[syncURLItem, syncIdentityItem];
+        NSURLQueryItem *syncSignatureItem = [NSURLQueryItem queryItemWithName:@"syncSignature" value:syncServerSignature];
+        components.fragmentItems = @[syncURLItem, syncIdentityItem, syncSignatureItem];
         
         [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:components.URL
                                                                                display:YES

@@ -96,6 +96,7 @@
         
         realmNode.syncServerURL = fragmentsDictionary[@"syncServerURL"];
         realmNode.syncIdentity = fragmentsDictionary[@"syncIdentity"];
+        realmNode.syncSignature = fragmentsDictionary[@"syncSignature"];
         
         self.fileURL = absoluteURL;
         
