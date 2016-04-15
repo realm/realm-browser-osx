@@ -26,6 +26,9 @@
 
 - (void)receivedData:(NSNotification *)notification;
 
+- (IBAction)selectRealmFolderButtonClicked:(id)sender;
+- (IBAction)selectPublicKeyFileButtonClicked:(id)sender;
+
 @end
 
 @implementation RLMRunSyncServerWindowController
@@ -126,6 +129,38 @@
 - (IBAction)stopServerButtonClicked:(id)sender
 {
     [self stopServer];
+}
+
+- (IBAction)selectRealmFolderButtonClicked:(id)sender
+{
+    NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+    openPanel.canChooseFiles = NO;
+    openPanel.canChooseDirectories = YES;
+    openPanel.canCreateDirectories = YES;
+    [openPanel runModal];
+    
+    NSURL *folderURL = openPanel.URL;
+    if (folderURL == nil) {
+        return;
+    }
+    
+    self.realmDirectoryTextField.stringValue = folderURL.path;
+}
+
+- (IBAction)selectPublicKeyFileButtonClicked:(id)sender
+{
+    NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+    openPanel.canChooseFiles = YES;
+    openPanel.canChooseDirectories = NO;
+    openPanel.allowedFileTypes = @[@"pem"];
+    [openPanel runModal];
+    
+    NSURL *fileURL = openPanel.URL;
+    if (fileURL == nil) {
+        return;
+    }
+    
+    self.publicTextField.stringValue = fileURL.path;
 }
 
 #pragma mark - Argument Creation/Sanitation Accessors -

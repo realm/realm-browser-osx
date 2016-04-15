@@ -105,6 +105,9 @@
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="selectRealmFolderButtonClicked:" target="-2" id="WaK-0g-IKC"/>
+                        </connections>
                     </button>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xzc-mN-Roj">
                         <rect key="frame" x="129" y="413" width="448" height="22"/>
@@ -128,6 +131,9 @@
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="selectPublicKeyFileButtonClicked:" target="-2" id="vl3-pQ-7Tg"/>
+                        </connections>
                     </button>
                     <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ERq-uq-2kl">
                         <rect key="frame" x="127" y="385" width="134" height="18"/>
