@@ -233,7 +233,7 @@ RLM_ASSUME_NONNULL_BEGIN
 
 /**
  Return an array of property names for properties which should be indexed. Only supported
- for string and int properties.
+ for strings, integers, booleans and NSDate properties.
  @return    NSArray of property names.
  */
 + (NSArray RLM_GENERIC(NSString *) *)indexedProperties;
@@ -297,6 +297,9 @@ RLM_ASSUME_NONNULL_BEGIN
  */
 + (RLMResults *)objectsWhere:(NSString *)predicateFormat, ...;
 
+/// :nodoc:
++ (RLMResults *)objectsWhere:(NSString *)predicateFormat args:(va_list)args;
+
 
 /**
  Get objects matching the given predicate for this type from the default Realm.
@@ -342,6 +345,9 @@ RLM_ASSUME_NONNULL_BEGIN
  @return    An RLMResults of objects of the subclass type in the specified Realm that match the given predicate
  */
 + (RLMResults *)objectsInRealm:(RLMRealm *)realm where:(NSString *)predicateFormat, ...;
+
+/// :nodoc:
++ (RLMResults *)objectsInRealm:(RLMRealm *)realm where:(NSString *)predicateFormat args:(va_list)args;
 
 /**
  Get objects matching the given predicate for this type from the specified Realm.

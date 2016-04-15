@@ -7,11 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22023AC51CBFE85D00F469EE /* Realm.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2204B8DC1CBE91FA00EA1D29 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		22023AC61CBFE87E00F469EE /* realm-server in Resources */ = {isa = PBXBuildFile; fileRef = 22023AC21CBFE6FA00F469EE /* realm-server */; };
+		22023AC71CBFE88000F469EE /* librealm-server.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 22023AC11CBFE6FA00F469EE /* librealm-server.1.dylib */; };
+		22023ACA1CBFF00A00F469EE /* librealm-sync.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 22023AC81CBFEFE200F469EE /* librealm-sync.1.dylib */; };
+		22023ACC1CBFF7BE00F469EE /* librealm.9.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 22023ACB1CBFF7BE00F469EE /* librealm.9.dylib */; };
+		22023ACE1CBFFBE000F469EE /* realm-server-noinst in Resources */ = {isa = PBXBuildFile; fileRef = 22023ACD1CBFFBE000F469EE /* realm-server-noinst */; };
+		2204B8DD1CBE91FA00EA1D29 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2204B8DC1CBE91FA00EA1D29 /* Realm.framework */; };
+		220657A91CC0C9C000E1EF67 /* libdogless.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 220657A81CC0C9C000E1EF67 /* libdogless.dylib */; };
 		22068CFC1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 22068CFB1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m */; };
 		22096B2719911F7300233D77 /* RLMBadgeTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */; };
 		220A4F131C05A85D00A32787 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 220A4F121C05A85D00A32787 /* libc++.tbd */; };
-		220A4F151C05A98A00A32787 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 220A4F141C05A98A00A32787 /* Realm.framework */; };
-		220A4F171C05AA4700A32787 /* Realm.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 220A4F141C05A98A00A32787 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		220D382819B639D700F79496 /* RLMTestDataGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 220D382719B639D700F79496 /* RLMTestDataGenerator.m */; };
 		221322FA19954AB100D25737 /* RLMImageTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221322F919954AB100D25737 /* RLMImageTableCellView.m */; };
 		221322FD19954B0A00D25737 /* RLMTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221322FC19954B0A00D25737 /* RLMTableCellView.m */; };
@@ -25,7 +31,6 @@
 		2257869E1BD563A00012436A /* RLMEncryptionKeyWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2257869D1BD563A00012436A /* RLMEncryptionKeyWindowController.m */; };
 		225786A11BD564F40012436A /* EncryptionKeyWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2257869F1BD564F40012436A /* EncryptionKeyWindow.xib */; };
 		225AAFEC19C09E520023B595 /* RLMTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 225AAFEB19C09E520023B595 /* RLMTextField.m */; };
-		226B9C001CBE4933009980E7 /* realm-server-noinst in Resources */ = {isa = PBXBuildFile; fileRef = 226B9BFE1CBE4933009980E7 /* realm-server-noinst */; };
 		2289367D1CABD2F80015B3C1 /* RLMSyncAuthWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2289367B1CABD2F80015B3C1 /* RLMSyncAuthWindowController.m */; };
 		2289367E1CABD2F80015B3C1 /* RLMSyncAuthWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2289367C1CABD2F80015B3C1 /* RLMSyncAuthWindowController.xib */; };
 		228D1F871A1CAD660028562A /* RLMResultsNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 228D1F861A1CAD660028562A /* RLMResultsNode.m */; };
@@ -98,19 +103,25 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				220A4F171C05AA4700A32787 /* Realm.framework in CopyFiles */,
+				22023AC51CBFE85D00F469EE /* Realm.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		22023AC11CBFE6FA00F469EE /* librealm-server.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "librealm-server.1.dylib"; sourceTree = "<group>"; };
+		22023AC21CBFE6FA00F469EE /* realm-server */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "realm-server"; sourceTree = "<group>"; };
+		22023AC81CBFEFE200F469EE /* librealm-sync.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "librealm-sync.1.dylib"; sourceTree = "<group>"; };
+		22023ACB1CBFF7BE00F469EE /* librealm.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = librealm.9.dylib; sourceTree = "<group>"; };
+		22023ACD1CBFFBE000F469EE /* realm-server-noinst */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "realm-server-noinst"; sourceTree = "<group>"; };
+		2204B8DC1CBE91FA00EA1D29 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
+		220657A81CC0C9C000E1EF67 /* libdogless.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libdogless.dylib; sourceTree = "<group>"; };
 		22068CFA1C6E298C008C0BFA /* NSURLComponents+FragmentItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSURLComponents+FragmentItems.h"; path = "Classes/NSURLComponents+FragmentItems.h"; sourceTree = "<group>"; };
 		22068CFB1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSURLComponents+FragmentItems.m"; path = "Classes/NSURLComponents+FragmentItems.m"; sourceTree = "<group>"; };
 		22096B2519911F7300233D77 /* RLMBadgeTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMBadgeTableCellView.h; path = Classes/RLMBadgeTableCellView.h; sourceTree = "<group>"; };
 		22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMBadgeTableCellView.m; path = Classes/RLMBadgeTableCellView.m; sourceTree = "<group>"; };
 		220A4F121C05A85D00A32787 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
-		220A4F141C05A98A00A32787 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		220D382619B639D700F79496 /* RLMTestDataGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTestDataGenerator.h; sourceTree = "<group>"; };
 		220D382719B639D700F79496 /* RLMTestDataGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTestDataGenerator.m; sourceTree = "<group>"; };
 		221322F819954AB100D25737 /* RLMImageTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMImageTableCellView.h; path = Classes/RLMImageTableCellView.h; sourceTree = "<group>"; };
@@ -134,9 +145,6 @@
 		225786A01BD564F40012436A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EncryptionKeyWindow.xib; sourceTree = "<group>"; };
 		225AAFEA19C09E520023B595 /* RLMTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMTextField.h; path = Classes/RLMTextField.h; sourceTree = "<group>"; };
 		225AAFEB19C09E520023B595 /* RLMTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMTextField.m; path = Classes/RLMTextField.m; sourceTree = "<group>"; };
-		226B9BFD1CBE4933009980E7 /* librealm-server-dbg.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "librealm-server-dbg.1.dylib"; sourceTree = "<group>"; };
-		226B9BFE1CBE4933009980E7 /* realm-server-noinst */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "realm-server-noinst"; sourceTree = "<group>"; };
-		226B9C011CBE512A009980E7 /* librealm-server.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "librealm-server.1.dylib"; sourceTree = "<group>"; };
 		2289367A1CABD2F80015B3C1 /* RLMSyncAuthWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMSyncAuthWindowController.h; path = Classes/RLMSyncAuthWindowController.h; sourceTree = "<group>"; };
 		2289367B1CABD2F80015B3C1 /* RLMSyncAuthWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMSyncAuthWindowController.m; path = Classes/RLMSyncAuthWindowController.m; sourceTree = "<group>"; };
 		2289367C1CABD2F80015B3C1 /* RLMSyncAuthWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RLMSyncAuthWindowController.xib; path = Classes/RLMSyncAuthWindowController.xib; sourceTree = "<group>"; };
@@ -239,7 +247,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				220A4F151C05A98A00A32787 /* Realm.framework in Frameworks */,
+				2204B8DD1CBE91FA00EA1D29 /* Realm.framework in Frameworks */,
 				220A4F131C05A85D00A32787 /* libc++.tbd in Frameworks */,
 				84E0F9501921F3B900D6CA14 /* Cocoa.framework in Frameworks */,
 				97A7B4BEE251DA782A9A95BE /* Pods.framework in Frameworks */,
@@ -269,12 +277,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		226B9C031CBE512C009980E7 /* Sync */ = {
+		22023AC31CBFE6FD00F469EE /* Sync */ = {
 			isa = PBXGroup;
 			children = (
-				226B9BFD1CBE4933009980E7 /* librealm-server-dbg.1.dylib */,
-				226B9C011CBE512A009980E7 /* librealm-server.1.dylib */,
-				226B9BFE1CBE4933009980E7 /* realm-server-noinst */,
+				220657A81CC0C9C000E1EF67 /* libdogless.dylib */,
+				22023ACB1CBFF7BE00F469EE /* librealm.9.dylib */,
+				22023AC81CBFEFE200F469EE /* librealm-sync.1.dylib */,
+				22023AC11CBFE6FA00F469EE /* librealm-server.1.dylib */,
+				22023ACD1CBFFBE000F469EE /* realm-server-noinst */,
+				22023AC21CBFE6FA00F469EE /* realm-server */,
 			);
 			name = Sync;
 			sourceTree = "<group>";
@@ -453,7 +464,6 @@
 		84BCA5FE1951BC99008FC850 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				226B9C031CBE512C009980E7 /* Sync */,
 				22D2863A1B6BE6BA0078D07D /* FormatIcon.icns */,
 				84E0F9571921F3B900D6CA14 /* RealmBrowser-Info.plist */,
 				84E0F9581921F3B900D6CA14 /* InfoPlist.strings */,
@@ -486,7 +496,8 @@
 		84E0F94E1921F3B900D6CA14 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				220A4F141C05A98A00A32787 /* Realm.framework */,
+				22023AC31CBFE6FD00F469EE /* Sync */,
+				2204B8DC1CBE91FA00EA1D29 /* Realm.framework */,
 				220A4F121C05A85D00A32787 /* libc++.tbd */,
 				84E0F94F1921F3B900D6CA14 /* Cocoa.framework */,
 				84E0F9521921F3B900D6CA14 /* AppKit.framework */,
@@ -653,13 +664,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				220657A91CC0C9C000E1EF67 /* libdogless.dylib in Resources */,
+				22023ACC1CBFF7BE00F469EE /* librealm.9.dylib in Resources */,
+				22023ACA1CBFF00A00F469EE /* librealm-sync.1.dylib in Resources */,
+				22023ACE1CBFFBE000F469EE /* realm-server-noinst in Resources */,
+				22023AC71CBFE88000F469EE /* librealm-server.1.dylib in Resources */,
+				22023AC61CBFE87E00F469EE /* realm-server in Resources */,
 				84E0F95A1921F3B900D6CA14 /* InfoPlist.strings in Resources */,
 				22D9B8171CA1303A006C0399 /* SyncServerWindow.xib in Resources */,
 				84E0F96B1921F3B900D6CA14 /* Images.xcassets in Resources */,
 				2289367E1CABD2F80015B3C1 /* RLMSyncAuthWindowController.xib in Resources */,
 				22D2863B1B6BE6BA0078D07D /* FormatIcon.icns in Resources */,
 				225786A11BD564F40012436A /* EncryptionKeyWindow.xib in Resources */,
-				226B9C001CBE4933009980E7 /* realm-server-noinst in Resources */,
 				84E0F9601921F3B900D6CA14 /* Credits.rtf in Resources */,
 				84E0F9661921F3B900D6CA14 /* RLMDocument.xib in Resources */,
 				84E0F9691921F3B900D6CA14 /* MainMenu.xib in Resources */,
@@ -1009,9 +1025,11 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = "RealmBrowser/RealmBrowser-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/RealmBrowser",
+					"$(PROJECT_DIR)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CFLAGS = "$(inherited)";
@@ -1045,9 +1063,11 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = "RealmBrowser/RealmBrowser-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/RealmBrowser",
+					"$(PROJECT_DIR)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CODE_SIGN_FLAGS = "--deep";

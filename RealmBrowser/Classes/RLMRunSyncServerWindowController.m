@@ -11,7 +11,12 @@
 @interface RLMRunSyncServerWindowController ()
 
 @property (nonatomic, strong) NSTask *serverTask;
-@property (nonatomic, strong) NSPipe *serverPipe;
+@property (nonatomic, strong) NSPipe *serverErrorPipe;
+@property (nonatomic, strong) NSPipe *serverOutputPipe;
+
+@property (nonatomic, readonly) NSString *IPAddressString;
+@property (nonatomic, readonly) NSString *realmFolderPath;
+@property (nonatomic, readonly) NSString *publicKeyPath;
 
 - (IBAction)runServerButtonClicked:(id)sender;
 - (IBAction)stopServerButtonClicked:(id)sender;
@@ -39,36 +44,75 @@
         return;
     }
     
-    NSString *serverBinaryPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"realm-server-noinst"];
+    NSString *resourcePath =[[NSBundle mainBundle] resourcePath];
+    NSString *serverBinaryPath = [resourcePath stringByAppendingPathComponent:@"realm-server-noinst"];
     
     self.serverTask = [[NSTask alloc] init];
     self.serverTask.launchPath = serverBinaryPath;
+    self.serverTask.environment = @{@"DYLD_LIBRARY_PATH":resourcePath};
     
     NSMutableArray *arguments = [NSMutableArray array];
+//    [arguments addObject:@"--help"];
     
-    self.serverPipe = [[NSPipe alloc] init];
-    self.serverTask.standardOutput = self.serverPipe;
+    [arguments addObject:self.realmFolderPath];
+    [arguments addObject:self.IPAddressString];
     
-    NSFileHandle *fileHandle = self.serverPipe.fileHandleForReading;
-    [fileHandle waitForDataInBackgroundAndNotify];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedData:) name:NSFileHandleDataAvailableNotification object:fileHandle];
+    [arguments addObject:@"-k"];
+    [arguments addObject:self.publicKeyPath];
+    
+    if (self.portTextField.stringValue.length > 0) {
+        [arguments addObject:@"-p"];
+        [arguments addObject:self.portTextField.stringValue];
+    }
+    
+    if (self.noReuseCheckbox.state > 0) {
+        [arguments addObject:@"-r"];
+    }
+    
+    if (self.loggingLevelPopup.indexOfSelectedItem > 0) {
+        [arguments addObject:@"-l"];
+        [arguments addObject:[NSString stringWithFormat:@"%ld", (long)self.loggingLevelPopup.indexOfSelectedItem]];
+    }
+    
+    self.serverTask.arguments = arguments;
+    
+    self.serverOutputPipe = [NSPipe pipe];
+    self.serverErrorPipe = [NSPipe pipe];
+    
+    self.serverTask.standardOutput  = self.serverOutputPipe;
+    [self.serverOutputPipe.fileHandleForReading waitForDataInBackgroundAndNotify];
+    
+    self.serverTask.standardError = self.serverErrorPipe;
+    [self.serverErrorPipe.fileHandleForReading waitForDataInBackgroundAndNotify];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedData:) name:NSFileHandleDataAvailableNotification object:self.serverErrorPipe.fileHandleForReading];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedData:) name:NSFileHandleDataAvailableNotification object:self.serverOutputPipe.fileHandleForReading];
     
     [self.serverTask launch];
+    
+    self.startServerButton.enabled = NO;
+    self.stopServerButton.enabled = YES;
 }
 
 - (void)stopServer
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSFileHandleDataAvailableNotification object:self.serverPipe.fileHandleForReading];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSFileHandleDataAvailableNotification object:self.serverErrorPipe.fileHandleForReading];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSFileHandleDataAvailableNotification object:self.serverOutputPipe.fileHandleForReading];
     
+    self.serverTask = nil;
+    self.serverOutputPipe = nil;
+    self.serverErrorPipe = nil;
+    
+    self.startServerButton.enabled = YES;
+    self.stopServerButton.enabled = NO;
 }
 
-- (void)receivedData:(NSNotification *)notification
-{
-    NSFileHandle *fileHandle = notification.object;
-    NSData *data = fileHandle.availableData;
-    
-    if (data.length > 0) {
-        [fileHandle waitForDataInBackgroundAndNotify];
+- (void)receivedData:(NSNotification *)notif {
+    NSFileHandle *fh = [notif object];
+    NSData *data = [fh availableData];
+    if (data.length > 0) { // if data is found, re-register for more data (and print)
+        [fh waitForDataInBackgroundAndNotify];
         NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         self.consoleOutputField.stringValue = [self.consoleOutputField.stringValue stringByAppendingString:str];
     }
@@ -82,6 +126,43 @@
 - (IBAction)stopServerButtonClicked:(id)sender
 {
     [self stopServer];
+}
+
+#pragma mark - Argument Creation/Sanitation Accessors -
+- (NSString *)IPAddressString
+{
+    NSString *IPAddressString = self.hostTextField.stringValue;
+    if (IPAddressString.length == 0) {
+        IPAddressString = self.hostTextField.placeholderString;
+    }
+    
+    return IPAddressString;
+}
+
+- (NSString *)realmFolderPath
+{
+    //The folder to host the sync-created Realm files
+    NSString *realmFolderPath = self.realmDirectoryTextField.stringValue;
+    if (realmFolderPath.length == 0) {
+        realmFolderPath = self.realmDirectoryTextField.placeholderString;
+    }
+    
+    NSFileManager *manager = [NSFileManager defaultManager];
+    if ([manager fileExistsAtPath:realmFolderPath] == NO) {
+        [manager createDirectoryAtPath:realmFolderPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    
+    return realmFolderPath;
+}
+
+- (NSString *)publicKeyPath
+{
+    NSString *publicKeyPath = self.publicTextField.stringValue;
+    if (publicKeyPath.length == 0) {
+        publicKeyPath = self.publicTextField.placeholderString;
+    }
+    
+    return publicKeyPath;
 }
 
 @end

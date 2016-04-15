@@ -131,7 +131,7 @@
                     </button>
                     <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ERq-uq-2kl">
                         <rect key="frame" x="127" y="385" width="134" height="18"/>
-                        <buttonCell key="cell" type="check" title="No Reuse Address" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Vkl-wH-9w4">
+                        <buttonCell key="cell" type="check" title="No Reuse Address" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Vkl-wH-9w4">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
