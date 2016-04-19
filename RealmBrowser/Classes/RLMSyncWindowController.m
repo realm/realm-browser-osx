@@ -21,8 +21,7 @@
 @import Realm.Private;
 
 NSString * const kSyncServerURLKey = @"SyncServerURL";
-NSString * const kSyncIdentityKey = @"SyncIdentity";
-NSString * const kSyncSignatureKey = @"SyncSignature";
+NSString * const kSyncSignedUserTokenKey = @"SyncSignedUserToken";
 
 #import "RLMSyncWindowController.h"
 
@@ -31,10 +30,9 @@ NSString * const kSyncSignatureKey = @"SyncSignature";
 @property (nonatomic, strong, readwrite) NSString *realmFilePath;
 
 @property (strong, nonatomic, readwrite) NSString *serverURL;
-@property (strong, nonatomic, readwrite) NSString *serverIdentity;
-@property (strong, nonatomic, readwrite) NSString *serverSignature;
+@property (strong, nonatomic, readwrite) NSString *serverSignedUserToken;
 
-- (BOOL)testSyncCredentialsWithURL:(NSString *)url identity:(NSString *)identity signature:(NSString *)signature;
+- (BOOL)testSyncCredentialsWithURL:(NSString *)url token:(NSString *)token;
 
 @end
 
@@ -70,40 +68,38 @@ NSString * const kSyncSignatureKey = @"SyncSignature";
         self.urlTextField.stringValue = serverURL;
     }
     
-    NSString *identity = [defaults stringForKey:kSyncIdentityKey];
-    if (identity.length > 0) {
-        self.identityTextField.stringValue = identity;
+    NSString *token = [defaults stringForKey:kSyncSignedUserTokenKey];
+    if (token.length > 0) {
+        self.signedUserTokenTextField.stringValue = token;
     }
     
-    if (serverURL.length > 0 && identity.length > 0) {
+    if (serverURL.length > 0 && token.length > 0) {
         self.okayButton.enabled = YES;
     }
 }
 
 - (void)controlTextDidChange:(NSNotification *)notification {
     NSString *serverURL = self.urlTextField.stringValue;
-    self.okayButton.enabled = (serverURL.length > 0);
+    NSString *token = self.signedUserTokenTextField.stringValue;
+    self.okayButton.enabled = (serverURL.length > 0) && (token.length == 0 || [token rangeOfString:@":"].location != NSNotFound);
 }
 
 - (IBAction)okayButtonClicked:(id)sender
 {
     NSString *serverURL = self.urlTextField.stringValue;
-    NSString *serverIdentity = self.identityTextField.stringValue;
-    NSString *serverSignature = self.signatureTextField.stringValue;
+    NSString *serverToken = self.signedUserTokenTextField.stringValue;
     
-    if ([self testSyncCredentialsWithURL:serverURL identity:serverIdentity signature:serverSignature] == NO) {
+    if ([self testSyncCredentialsWithURL:serverURL token:serverToken] == NO) {
         self.errorTextField.hidden = NO;
         return;
     }
     
     self.serverURL = serverURL;
-    self.serverIdentity = serverIdentity;
-    self.serverSignature = serverSignature;
+    self.serverSignedUserToken = serverToken;
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:serverURL forKey:kSyncServerURLKey];
-    [defaults setObject:serverIdentity forKey:kSyncIdentityKey];
-    [defaults setObject:serverSignature forKey:kSyncSignatureKey];
+    [defaults setObject:serverToken forKey:kSyncSignedUserTokenKey];
     [defaults synchronize];
     
     if (self.window.sheetParent) {
@@ -134,13 +130,20 @@ NSString * const kSyncSignatureKey = @"SyncSignature";
     }
 }
 
-- (BOOL)testSyncCredentialsWithURL:(NSString *)url identity:(NSString *)identity signature:(NSString *)signature
+- (BOOL)testSyncCredentialsWithURL:(NSString *)url token:(NSString *)token
 {
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
     configuration.path = self.realmFilePath;
     configuration.dynamic = YES;
     configuration.customSchema = nil;
     configuration.syncServerURL = [NSURL URLWithString:url];
+    
+    // User token is presented in the format of "identity:signature"
+    // so split those components out
+    NSString *userToken = token;
+    NSArray *components = [userToken componentsSeparatedByString:@":"];
+    NSString *identity = components.firstObject;
+    NSString *signature = (components.count >= 2 ? components[1] : nil);
     
     if (identity.length > 0) {
         configuration.syncIdentity = identity;

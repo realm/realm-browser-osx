@@ -53,11 +53,17 @@
     
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
     configuration.encryptionKey = self.encryptionKey;
-    configuration.syncIdentity = self.syncIdentity;
-    configuration.syncSignature = self.syncSignature;
     configuration.path = _url;
     configuration.dynamic = YES;
     configuration.customSchema = nil;
+    
+    if (self.syncSignedUserToken.length) {
+        NSArray *components = [self.syncSignedUserToken componentsSeparatedByString:@":"];
+        if (components.count >= 2) {
+            configuration.syncIdentity = components.firstObject;
+            configuration.syncSignature = components[1];
+        }
+    }
     
     if (self.syncServerURL) {
         configuration.syncServerURL = [NSURL URLWithString:self.syncServerURL];

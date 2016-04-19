@@ -62,7 +62,7 @@
     self.serverTask.environment = @{@"DYLD_LIBRARY_PATH":resourcePath};
     
     NSMutableArray *arguments = [NSMutableArray array];
-//    /[arguments addObject:@"--help"];
+//    [arguments addObject:@"--help"];
     
     [arguments addObject:self.realmFolderPath];
     [arguments addObject:self.IPAddressString];

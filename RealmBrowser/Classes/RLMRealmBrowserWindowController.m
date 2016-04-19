@@ -135,7 +135,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
         }
         
         self.modelDocument.presentedRealm.syncServerURL = self.syncController.serverURL;
-        self.modelDocument.presentedRealm.syncIdentity = self.syncController.serverIdentity;
+        self.modelDocument.presentedRealm.syncSignedUserToken = self.syncController.serverSignedUserToken;
         [self.modelDocument.presentedRealm connect:nil];
         [self realmDidLoad];
     }];

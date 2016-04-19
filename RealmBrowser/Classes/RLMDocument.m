@@ -95,8 +95,7 @@
         __block __weak RLMDocument *ws = self;
         
         realmNode.syncServerURL = fragmentsDictionary[@"syncServerURL"];
-        realmNode.syncIdentity = fragmentsDictionary[@"syncIdentity"];
-        realmNode.syncSignature = fragmentsDictionary[@"syncSignature"];
+        realmNode.syncSignedUserToken = fragmentsDictionary[@"syncSignedUserToken"];
         
         self.fileURL = absoluteURL;
         

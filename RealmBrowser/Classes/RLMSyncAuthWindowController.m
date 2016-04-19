@@ -184,7 +184,7 @@
     NSString *base64SignedString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     
     NSString *filePath = [[URL.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"Credentials.txt"];
-    NSString *output = [NSString stringWithFormat:@"syncIdentity:\n%@\n\nsyncSignature:\n%@", base64String, base64SignedString];
+    NSString *output = [NSString stringWithFormat:@"Signed User Token:\n%@:%@", base64String, base64SignedString];
     [output writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:nil];
     
     NSURL *folderURL = [URL URLByDeletingLastPathComponent];

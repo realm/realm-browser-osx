@@ -21,14 +21,9 @@
         self.syncServerURLField.stringValue = serverURL;
     }
     
-    NSString *identity = [defaults stringForKey:@"SyncIdentity"];
-    if (identity.length > 0) {
-        self.syncIdentityField.stringValue = identity;
-    }
-    
-    NSString *signature = [defaults stringForKey:@"SyncSignature"];
-    if (signature.length > 0) {
-        self.syncSignatureField.stringValue = signature;
+    NSString *userToken = [defaults stringForKey:@"SyncSignedUserToken"];
+    if (userToken.length > 0) {
+        self.syncSignedUserTokenField.stringValue = userToken;
     }
 }
 
