@@ -174,7 +174,7 @@
 
 - (void)dealloc
 {
-    [self.presentedRealm.realm removeNotification:self.changeNotificationToken];
+    [self.changeNotificationToken stop];
 }
 
 #pragma mark - Public methods - NSDocument overrides - Creating and Managing Window Controllers
