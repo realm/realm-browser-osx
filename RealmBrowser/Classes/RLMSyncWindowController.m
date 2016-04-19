@@ -132,35 +132,36 @@ NSString * const kSyncSignedUserTokenKey = @"SyncSignedUserToken";
 
 - (BOOL)testSyncCredentialsWithURL:(NSString *)url token:(NSString *)token
 {
-    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-    configuration.path = self.realmFilePath;
-    configuration.dynamic = YES;
-    configuration.customSchema = nil;
-    configuration.syncServerURL = [NSURL URLWithString:url];
-    
-    // User token is presented in the format of "identity:signature"
-    // so split those components out
-    NSString *userToken = token;
-    NSArray *components = [userToken componentsSeparatedByString:@":"];
-    NSString *identity = components.firstObject;
-    NSString *signature = (components.count >= 2 ? components[1] : nil);
-    
-    if (identity.length > 0) {
-        configuration.syncIdentity = identity;
-    }
-    
-    if (signature.length > 0) {
-        configuration.syncSignature = signature;
-    }
-        
-    NSError *error = nil;
-    BOOL realmCreated = NO;
-    @autoreleasepool {
-        RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:&error];
-        realmCreated = (realm != nil);
-    }
-    
-    return (error == nil);
+    return YES;
+//    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+//    configuration.path = self.realmFilePath;
+//    configuration.dynamic = YES;
+//    configuration.customSchema = nil;
+//    configuration.syncServerURL = [NSURL URLWithString:url];
+//    
+//    // User token is presented in the format of "identity:signature"
+//    // so split those components out
+//    NSString *userToken = token;
+//    NSArray *components = [userToken componentsSeparatedByString:@":"];
+//    NSString *identity = components.firstObject;
+//    NSString *signature = (components.count >= 2 ? components[1] : nil);
+//    
+//    if (identity.length > 0) {
+//        configuration.syncIdentity = identity;
+//    }
+//    
+//    if (signature.length > 0) {
+//        configuration.syncSignature = signature;
+//    }
+//        
+//    NSError *error = nil;
+//    BOOL realmCreated = NO;
+//    @autoreleasepool {
+//        RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:&error];
+//        realmCreated = (realm != nil);
+//    }
+//    
+//    return (error == nil);
 }
 
 @end

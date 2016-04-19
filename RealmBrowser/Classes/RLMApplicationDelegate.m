@@ -490,6 +490,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     NSString *syncServerSignedUserToken = accessoryView.syncSignedUserTokenField.stringValue;
     
     //Create a new Realm instance to create the file on disk
+    //(This NEEDS to be done since RLMDocument requires a file on disk to open)
     @autoreleasepool {
         RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
         configuration.path = filePath;

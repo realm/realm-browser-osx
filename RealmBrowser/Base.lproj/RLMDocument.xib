@@ -38,11 +38,11 @@
                                     <scrollView appearanceType="aqua" borderType="none" autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MSf-82-x0U" userLabel="OutlineScroll">
                                         <rect key="frame" x="0.0" y="0.0" width="236" height="476"/>
                                         <clipView key="contentView" focusRingType="none" drawsBackground="NO" id="udQ-xx-2L4">
-                                            <rect key="frame" x="0.5" y="-0.5" width="236" height="476"/>
+                                            <rect key="frame" x="0.5" y="0.0" width="236" height="476"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowHeight="22" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="14" outlineTableColumn="ye8-fR-LJ8" id="IMi-6Y-gQF">
-                                                    <rect key="frame" x="0.0" y="0.0" width="236" height="476"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="236" height="0.0"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="0.0"/>
                                                     <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>

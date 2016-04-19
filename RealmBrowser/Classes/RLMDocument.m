@@ -103,11 +103,11 @@
             
             //Check to see if first the Realm file needs upgrading, and
             //if it does, prompt the user to confirm with proceeding
-            if ([realmNode realmFileRequiresFormatUpgrade]) {
-                if (![RLMAlert showFileFormatUpgradeDialogWithFileName:realmName]) {
-                    return;
-                }
-            }
+//            if ([realmNode realmFileRequiresFormatUpgrade]) {
+//                if (![RLMAlert showFileFormatUpgradeDialogWithFileName:realmName]) {
+//                    return;
+//                }
+//            }
             
             NSError *error;
             if ([realmNode connect:&error] || error.code == 2) {
