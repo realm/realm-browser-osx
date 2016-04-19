@@ -8,7 +8,7 @@
 
 #import "RLMRunSyncServerWindowController.h"
 
-@interface RLMRunSyncServerWindowController ()
+@interface RLMRunSyncServerWindowController () <NSWindowDelegate>
 
 @property (nonatomic, strong) NSTask *serverTask;
 @property (nonatomic, strong) NSPipe *serverErrorPipe;
@@ -17,6 +17,8 @@
 @property (nonatomic, readonly) NSString *IPAddressString;
 @property (nonatomic, readonly) NSString *realmFolderPath;
 @property (nonatomic, readonly) NSString *publicKeyPath;
+
+@property (nonatomic, strong) id observerToken;
 
 - (IBAction)runServerButtonClicked:(id)sender;
 - (IBAction)stopServerButtonClicked:(id)sender;
@@ -39,6 +41,11 @@
     }
     
     return self;
+}
+
+- (void)windowWillClose:(NSNotification *)notification
+{
+    [self stopServer];
 }
 
 - (void)startServer
@@ -98,12 +105,26 @@
     
     self.startServerButton.enabled = NO;
     self.stopServerButton.enabled = YES;
+    
+    //If the Browser is quit while the server is still active, make sure the server is closed too.
+    self.observerToken = [[NSNotificationCenter defaultCenter] addObserverForName:NSApplicationWillTerminateNotification object:nil queue:nil usingBlock:^(NSNotification *notification) {
+        [self stopServer];
+    }];
 }
 
 - (void)stopServer
 {
+    if (self.serverTask == nil) {
+        return;
+    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSFileHandleDataAvailableNotification object:self.serverErrorPipe.fileHandleForReading];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSFileHandleDataAvailableNotification object:self.serverOutputPipe.fileHandleForReading];
+    [[NSNotificationCenter defaultCenter] removeObserver:self.observerToken];
+    
+    [self.serverTask suspend];
+    [self.serverTask interrupt];
+    [self.serverTask terminate];
     
     self.serverTask = nil;
     self.serverOutputPipe = nil;
@@ -111,6 +132,8 @@
     
     self.startServerButton.enabled = YES;
     self.stopServerButton.enabled = NO;
+    
+    self.consoleOutputField.stringValue = [self.consoleOutputField.stringValue stringByAppendingString:@"Server terminated.\n"];
 }
 
 - (void)receivedData:(NSNotification *)notif {
