@@ -69,8 +69,9 @@
     
     NSString *fragmentString = @"";
     for (NSURLQueryItem *item in fragmentItems) {
-        NSString *encodedName = [item.name stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-        NSString *encodedValue = [item.value stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        NSCharacterSet *URLCombinedCharacterSet = [[NSCharacterSet characterSetWithCharactersInString:@" \"#%/:<>?@[\\]^`{|}=&+."] invertedSet];
+        NSString *encodedName = [item.name stringByAddingPercentEncodingWithAllowedCharacters:URLCombinedCharacterSet];
+        NSString *encodedValue = [item.value stringByAddingPercentEncodingWithAllowedCharacters:URLCombinedCharacterSet];
         
         //preprend '&' if this isn't the first value in the string
         if (fragmentString.length > 0) {
