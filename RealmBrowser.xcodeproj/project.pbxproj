@@ -13,13 +13,7 @@
 		22096B2719911F7300233D77 /* RLMBadgeTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */; };
 		220A4F131C05A85D00A32787 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 220A4F121C05A85D00A32787 /* libc++.tbd */; };
 		220D382819B639D700F79496 /* RLMTestDataGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 220D382719B639D700F79496 /* RLMTestDataGenerator.m */; };
-		221193621CC1235100D22675 /* librealm-server-dbg.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 2211935A1CC1235100D22675 /* librealm-server-dbg.1.dylib */; };
-		221193631CC1235100D22675 /* librealm-server.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 2211935B1CC1235100D22675 /* librealm-server.1.dylib */; };
-		221193641CC1235100D22675 /* librealm-sync-dbg.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 2211935C1CC1235100D22675 /* librealm-sync-dbg.1.dylib */; };
-		221193651CC1235100D22675 /* librealm-sync.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 2211935D1CC1235100D22675 /* librealm-sync.1.dylib */; };
 		221193661CC1235100D22675 /* realm-server in Resources */ = {isa = PBXBuildFile; fileRef = 2211935E1CC1235100D22675 /* realm-server */; };
-		221193671CC1235100D22675 /* realm-server-dbg in Resources */ = {isa = PBXBuildFile; fileRef = 2211935F1CC1235100D22675 /* realm-server-dbg */; };
-		221193681CC1235100D22675 /* realm-server-dbg-noinst in Resources */ = {isa = PBXBuildFile; fileRef = 221193601CC1235100D22675 /* realm-server-dbg-noinst */; };
 		221193691CC1235100D22675 /* realm-server-noinst in Resources */ = {isa = PBXBuildFile; fileRef = 221193611CC1235100D22675 /* realm-server-noinst */; };
 		2211936C1CC1238F00D22675 /* librealm-dbg.9.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 2211936A1CC1238F00D22675 /* librealm-dbg.9.dylib */; };
 		2211936D1CC1238F00D22675 /* librealm.9.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 2211936B1CC1238F00D22675 /* librealm.9.dylib */; };
@@ -40,6 +34,12 @@
 		228D1F871A1CAD660028562A /* RLMResultsNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 228D1F861A1CAD660028562A /* RLMResultsNode.m */; };
 		22A55FEB19D18BA8009178BC /* RLMObjectNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A55FEA19D18BA8009178BC /* RLMObjectNode.m */; };
 		22A55FF119D19842009178BC /* RLMDescriptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A55FF019D19842009178BC /* RLMDescriptions.m */; };
+		22BBC6F91CC7C7A000E2410B /* librealm-server-dbg.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 22BBC6F31CC7C7A000E2410B /* librealm-server-dbg.1.dylib */; };
+		22BBC6FA1CC7C7A000E2410B /* librealm-server.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 22BBC6F41CC7C7A000E2410B /* librealm-server.1.dylib */; };
+		22BBC6FB1CC7C7A000E2410B /* librealm-sync-dbg.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 22BBC6F51CC7C7A000E2410B /* librealm-sync-dbg.1.dylib */; };
+		22BBC6FC1CC7C7A000E2410B /* librealm-sync.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 22BBC6F61CC7C7A000E2410B /* librealm-sync.1.dylib */; };
+		22BBC6FD1CC7C7A000E2410B /* realm-server-dbg-noinst in Resources */ = {isa = PBXBuildFile; fileRef = 22BBC6F71CC7C7A000E2410B /* realm-server-dbg-noinst */; };
+		22BBC6FE1CC7C7A000E2410B /* realm-server-noinst in Resources */ = {isa = PBXBuildFile; fileRef = 22BBC6F81CC7C7A000E2410B /* realm-server-noinst */; };
 		22D2863B1B6BE6BA0078D07D /* FormatIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 22D2863A1B6BE6BA0078D07D /* FormatIcon.icns */; };
 		22D28EA71993AAAB00497FD3 /* RLMNumberTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D28EA61993AAAB00497FD3 /* RLMNumberTableCellView.m */; };
 		22D3AC8A19CC5D710042C1B2 /* RLMModelExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D3AC8919CC5D710042C1B2 /* RLMModelExporter.m */; };
@@ -122,13 +122,7 @@
 		220A4F121C05A85D00A32787 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		220D382619B639D700F79496 /* RLMTestDataGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTestDataGenerator.h; sourceTree = "<group>"; };
 		220D382719B639D700F79496 /* RLMTestDataGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTestDataGenerator.m; sourceTree = "<group>"; };
-		2211935A1CC1235100D22675 /* librealm-server-dbg.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "librealm-server-dbg.1.dylib"; sourceTree = "<group>"; };
-		2211935B1CC1235100D22675 /* librealm-server.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "librealm-server.1.dylib"; sourceTree = "<group>"; };
-		2211935C1CC1235100D22675 /* librealm-sync-dbg.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "librealm-sync-dbg.1.dylib"; sourceTree = "<group>"; };
-		2211935D1CC1235100D22675 /* librealm-sync.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "librealm-sync.1.dylib"; sourceTree = "<group>"; };
 		2211935E1CC1235100D22675 /* realm-server */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "realm-server"; sourceTree = "<group>"; };
-		2211935F1CC1235100D22675 /* realm-server-dbg */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "realm-server-dbg"; sourceTree = "<group>"; };
-		221193601CC1235100D22675 /* realm-server-dbg-noinst */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "realm-server-dbg-noinst"; sourceTree = "<group>"; };
 		221193611CC1235100D22675 /* realm-server-noinst */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "realm-server-noinst"; sourceTree = "<group>"; };
 		2211936A1CC1238F00D22675 /* librealm-dbg.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "librealm-dbg.9.dylib"; sourceTree = "<group>"; };
 		2211936B1CC1238F00D22675 /* librealm.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = librealm.9.dylib; sourceTree = "<group>"; };
@@ -162,6 +156,12 @@
 		22A55FEA19D18BA8009178BC /* RLMObjectNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMObjectNode.m; path = Classes/RLMObjectNode.m; sourceTree = "<group>"; };
 		22A55FEF19D19842009178BC /* RLMDescriptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMDescriptions.h; path = Classes/RLMDescriptions.h; sourceTree = "<group>"; };
 		22A55FF019D19842009178BC /* RLMDescriptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMDescriptions.m; path = Classes/RLMDescriptions.m; sourceTree = "<group>"; };
+		22BBC6F31CC7C7A000E2410B /* librealm-server-dbg.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "librealm-server-dbg.1.dylib"; sourceTree = "<group>"; };
+		22BBC6F41CC7C7A000E2410B /* librealm-server.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "librealm-server.1.dylib"; sourceTree = "<group>"; };
+		22BBC6F51CC7C7A000E2410B /* librealm-sync-dbg.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "librealm-sync-dbg.1.dylib"; sourceTree = "<group>"; };
+		22BBC6F61CC7C7A000E2410B /* librealm-sync.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "librealm-sync.1.dylib"; sourceTree = "<group>"; };
+		22BBC6F71CC7C7A000E2410B /* realm-server-dbg-noinst */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "realm-server-dbg-noinst"; sourceTree = "<group>"; };
+		22BBC6F81CC7C7A000E2410B /* realm-server-noinst */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "realm-server-noinst"; sourceTree = "<group>"; };
 		22D2863A1B6BE6BA0078D07D /* FormatIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = FormatIcon.icns; sourceTree = "<group>"; };
 		22D28EA51993AAAB00497FD3 /* RLMNumberTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMNumberTableCellView.h; path = Classes/RLMNumberTableCellView.h; sourceTree = "<group>"; };
 		22D28EA61993AAAB00497FD3 /* RLMNumberTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMNumberTableCellView.m; path = Classes/RLMNumberTableCellView.m; sourceTree = "<group>"; };
@@ -288,15 +288,15 @@
 		22023AC31CBFE6FD00F469EE /* Sync */ = {
 			isa = PBXGroup;
 			children = (
+				22BBC6F31CC7C7A000E2410B /* librealm-server-dbg.1.dylib */,
+				22BBC6F41CC7C7A000E2410B /* librealm-server.1.dylib */,
+				22BBC6F51CC7C7A000E2410B /* librealm-sync-dbg.1.dylib */,
+				22BBC6F61CC7C7A000E2410B /* librealm-sync.1.dylib */,
 				2211936A1CC1238F00D22675 /* librealm-dbg.9.dylib */,
 				2211936B1CC1238F00D22675 /* librealm.9.dylib */,
-				2211935A1CC1235100D22675 /* librealm-server-dbg.1.dylib */,
-				2211935B1CC1235100D22675 /* librealm-server.1.dylib */,
-				2211935C1CC1235100D22675 /* librealm-sync-dbg.1.dylib */,
-				2211935D1CC1235100D22675 /* librealm-sync.1.dylib */,
+				22BBC6F71CC7C7A000E2410B /* realm-server-dbg-noinst */,
+				22BBC6F81CC7C7A000E2410B /* realm-server-noinst */,
 				2211935E1CC1235100D22675 /* realm-server */,
-				2211935F1CC1235100D22675 /* realm-server-dbg */,
-				221193601CC1235100D22675 /* realm-server-dbg-noinst */,
 				221193611CC1235100D22675 /* realm-server-noinst */,
 			);
 			name = Sync;
@@ -686,18 +686,18 @@
 				84E0F9661921F3B900D6CA14 /* RLMDocument.xib in Resources */,
 				84E0F9691921F3B900D6CA14 /* MainMenu.xib in Resources */,
 				22265F261C6C493D00BE57FB /* SyncCredentialsView.xib in Resources */,
-				221193671CC1235100D22675 /* realm-server-dbg in Resources */,
+				22BBC6FD1CC7C7A000E2410B /* realm-server-dbg-noinst in Resources */,
+				22BBC6FE1CC7C7A000E2410B /* realm-server-noinst in Resources */,
 				221193691CC1235100D22675 /* realm-server-noinst in Resources */,
 				22DC87E81B9808790024BA34 /* RLMExportIndicatorWindowController.xib in Resources */,
 				221193661CC1235100D22675 /* realm-server in Resources */,
 				2223E65B1C0DA3C300C0B936 /* SyncWindow.xib in Resources */,
-				221193681CC1235100D22675 /* realm-server-dbg-noinst in Resources */,
-				221193651CC1235100D22675 /* librealm-sync.1.dylib in Resources */,
 				2211936C1CC1238F00D22675 /* librealm-dbg.9.dylib in Resources */,
-				221193621CC1235100D22675 /* librealm-server-dbg.1.dylib in Resources */,
 				2211936D1CC1238F00D22675 /* librealm.9.dylib in Resources */,
-				221193631CC1235100D22675 /* librealm-server.1.dylib in Resources */,
-				221193641CC1235100D22675 /* librealm-sync-dbg.1.dylib in Resources */,
+				22BBC6FC1CC7C7A000E2410B /* librealm-sync.1.dylib in Resources */,
+				22BBC6F91CC7C7A000E2410B /* librealm-server-dbg.1.dylib in Resources */,
+				22BBC6FA1CC7C7A000E2410B /* librealm-server.1.dylib in Resources */,
+				22BBC6FB1CC7C7A000E2410B /* librealm-sync-dbg.1.dylib in Resources */,
 				36B669CB1B8B057F00F04AE1 /* RLMObjectLinkSelectionViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
