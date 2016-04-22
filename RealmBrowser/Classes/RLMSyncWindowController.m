@@ -24,6 +24,7 @@ NSString * const kSyncServerURLKey = @"SyncServerURL";
 NSString * const kSyncSignedUserTokenKey = @"SyncSignedUserToken";
 
 #import "RLMSyncWindowController.h"
+#import "RLMRealmFileManager.h"
 
 @interface RLMSyncWindowController () <NSTextFieldDelegate>
 
@@ -152,13 +153,16 @@ NSString * const kSyncSignedUserTokenKey = @"SyncSignedUserToken";
     if (signature.length > 0) {
         configuration.syncSignature = signature;
     }
-        
+    
     NSError *error = nil;
-    BOOL realmCreated = NO;
-    //@autoreleasepool {
-        RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:&error];
-        realmCreated = (realm != nil);
-    //}
+    RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:&error];
+    
+    if (error != nil) {
+        return NO;
+    }
+    
+    //Hold on to this reference to ensure we don't kill the sync conenction
+    [[RLMRealmFileManager sharedManager] addRealm:realm];
     
     return (error == nil);
 }

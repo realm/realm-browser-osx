@@ -22,6 +22,7 @@
 @import Realm.Private;
 @import Realm.Dynamic;
 
+#import "RLMRealmFileManager.h"
 #import "RLMSidebarTableCellView.h"
 #import "NSColor+ByteSizeFactory.h"
 
@@ -44,6 +45,7 @@
 
 - (void)dealloc
 {
+    [[RLMRealmFileManager sharedManager] removeRealm:_realm];
     _realm = nil;
 }
 
@@ -51,25 +53,34 @@
 {
     NSError *localError;
     
-    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-    configuration.encryptionKey = self.encryptionKey;
-    configuration.path = _url;
-    configuration.dynamic = YES;
-    configuration.customSchema = nil;
+    RLMRealm *connectedRealm = [[RLMRealmFileManager sharedManager] realmForPath:_url];
     
-    if (self.syncSignedUserToken.length) {
-        NSArray *components = [self.syncSignedUserToken componentsSeparatedByString:@":"];
-        if (components.count >= 2) {
-            configuration.syncIdentity = components.firstObject;
-            configuration.syncSignature = components[1];
+    if (connectedRealm) {
+        _realm = connectedRealm;
+    }
+    else {
+        RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+        configuration.encryptionKey = self.encryptionKey;
+        configuration.path = _url;
+        configuration.dynamic = YES;
+        configuration.customSchema = nil;
+        
+        if (self.syncSignedUserToken.length) {
+            NSArray *components = [self.syncSignedUserToken componentsSeparatedByString:@":"];
+            if (components.count >= 2) {
+                configuration.syncIdentity = components.firstObject;
+                configuration.syncSignature = components[1];
+            }
         }
+        
+        if (self.syncServerURL) {
+            configuration.syncServerURL = [NSURL URLWithString:self.syncServerURL];
+        }
+        
+        _realm = [RLMRealm realmWithConfiguration:configuration error:&localError];
     }
     
-    if (self.syncServerURL) {
-        configuration.syncServerURL = [NSURL URLWithString:self.syncServerURL];
-    }
-    
-    _realm = [RLMRealm realmWithConfiguration:configuration error:&localError];
+
     
 //    _realm = [RLMRealm realmWithPath:_url
 //                                 key:self.encryptionKey

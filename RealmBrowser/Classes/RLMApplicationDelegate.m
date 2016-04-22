@@ -28,6 +28,7 @@
 #import "NSURLComponents+FragmentItems.h"
 #import "RLMSyncAuthWindowController.h"
 #import "RLMRunSyncServerWindowController.h"
+#import "RLMRealmFileManager.h"
 
 const NSUInteger kTopTipDelay = 250;
 const NSUInteger kMaxFilesPerCategory = 7;
@@ -509,7 +510,8 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
             }
         }
             
-        [RLMRealm realmWithConfiguration:configuration error:nil];
+        RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:nil];
+        [[RLMRealmFileManager sharedManager] addRealm:realm];
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		22013F731CCA1955000F79B5 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22FB99091CC8CB4F00411106 /* Realm.framework */; };
 		22013F741CCA1955000F79B5 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22FB99091CC8CB4F00411106 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		22013F781CCA35D2000F79B5 /* RLMRealmFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 22013F771CCA35D2000F79B5 /* RLMRealmFileManager.m */; };
 		22068CFC1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 22068CFB1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m */; };
 		22096B2719911F7300233D77 /* RLMBadgeTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */; };
 		220A4F131C05A85D00A32787 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 220A4F121C05A85D00A32787 /* libc++.tbd */; };
@@ -119,6 +120,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		22013F761CCA35D2000F79B5 /* RLMRealmFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMRealmFileManager.h; path = Classes/RLMRealmFileManager.h; sourceTree = "<group>"; };
+		22013F771CCA35D2000F79B5 /* RLMRealmFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMRealmFileManager.m; path = Classes/RLMRealmFileManager.m; sourceTree = "<group>"; };
 		22068CFA1C6E298C008C0BFA /* NSURLComponents+FragmentItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSURLComponents+FragmentItems.h"; path = "Classes/NSURLComponents+FragmentItems.h"; sourceTree = "<group>"; };
 		22068CFB1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSURLComponents+FragmentItems.m"; path = "Classes/NSURLComponents+FragmentItems.m"; sourceTree = "<group>"; };
 		22096B2519911F7300233D77 /* RLMBadgeTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMBadgeTableCellView.h; path = Classes/RLMBadgeTableCellView.h; sourceTree = "<group>"; };
@@ -400,6 +403,8 @@
 				2249D9B119A62EBD00A31104 /* RLMTableColumn.m */,
 				840F97BE192B7DCE006B591E /* RLMDocument.h */,
 				840F97BF192B7DCE006B591E /* RLMDocument.m */,
+				22013F761CCA35D2000F79B5 /* RLMRealmFileManager.h */,
+				22013F771CCA35D2000F79B5 /* RLMRealmFileManager.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -839,6 +844,7 @@
 				220D382819B639D700F79496 /* RLMTestDataGenerator.m in Sources */,
 				84E35A42196A9F3B007F0344 /* RLMNavigationState.m in Sources */,
 				84D7990D19388E8900FC76A0 /* RLMRealmNode.m in Sources */,
+				22013F781CCA35D2000F79B5 /* RLMRealmFileManager.m in Sources */,
 				22DC87E61B98086D0024BA34 /* RLMExportIndicatorWindowController.m in Sources */,
 				22565D6719C1BCF400C8C8EC /* RLMLinkTableCellView.m in Sources */,
 				22265F291C6C497600BE57FB /* RLMSyncCredentialsView.m in Sources */,
