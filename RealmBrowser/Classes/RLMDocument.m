@@ -71,6 +71,9 @@
             NSString *folderName = [NSString stringWithFormat:@"io.realm.sync.%lu", (unsigned long)[absoluteURL.absoluteString hash]];
             tempFilePath = [tempFilePath stringByAppendingPathComponent:folderName];
             
+            //Create the folder
+            [[NSFileManager defaultManager] createDirectoryAtPath:tempFilePath withIntermediateDirectories:YES attributes:nil error:nil];
+            
             NSString *fileName = absoluteURL.absoluteString.lastPathComponent;
             //strip the fragment
             fileName = [[fileName componentsSeparatedByString:@"#"] firstObject];
