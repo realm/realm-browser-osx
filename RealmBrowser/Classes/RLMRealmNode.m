@@ -45,6 +45,7 @@
 
 - (void)dealloc
 {
+    [self.notificationToken stop];
     [[RLMRealmFileManager sharedManager] removeRealm:_realm];
     _realm = nil;
 }
@@ -77,10 +78,13 @@
             configuration.syncServerURL = [NSURL URLWithString:self.syncServerURL];
         }
         
+        [RLMRealmConfiguration setDefaultConfiguration:configuration];
         _realm = [RLMRealm realmWithConfiguration:configuration error:&localError];
     }
     
-
+    if (self.notificationBlock && self.notificationToken == nil) {
+        self.notificationToken = [_realm addNotificationBlock:self.notificationBlock];
+    }
     
 //    _realm = [RLMRealm realmWithPath:_url
 //                                 key:self.encryptionKey
@@ -103,6 +107,7 @@
     
     return !localError;
 }
+
 
 
 - (void)addTable:(RLMClassNode *)table

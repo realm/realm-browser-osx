@@ -32,6 +32,9 @@
 @property (nonatomic, copy) NSString *syncServerURL;
 @property (nonatomic, copy) NSString *syncSignedUserToken;
 
+@property (nonatomic, copy) RLMNotificationBlock notificationBlock;
+@property (nonatomic, strong) RLMNotificationToken  *notificationToken;
+
 - (instancetype)initWithName:(NSString *)name url:(NSString *)url;
 
 - (BOOL)connect:(NSError **)error;

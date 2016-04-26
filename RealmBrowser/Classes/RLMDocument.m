@@ -31,7 +31,6 @@
 
 @property (nonatomic, assign, readwrite) BOOL potentiallyEncrypted;
 @property (nonatomic, assign, readwrite) BOOL potentiallySync;
-@property (nonatomic) RLMNotificationToken *changeNotificationToken;
 
 @end
 
@@ -112,6 +111,20 @@
 //                }
 //            }
             
+            realmNode.notificationBlock = ^(NSString *notification, RLMRealm *realm) {
+                [ws.presentedRealm connect:nil];
+                
+                for (RLMRealmBrowserWindowController *windowController in ws.windowControllers) {
+                    NSScrollView *tableScrollView = windowController.tableViewController.tableView.enclosingScrollView;
+                    CGRect bounds = tableScrollView.bounds;
+                    
+                    [windowController reloadAfterEdit];
+                    [windowController realmDidLoad];
+                    
+                    tableScrollView.bounds = bounds;
+                }
+            };
+            
             NSError *error;
             if ([realmNode connect:&error] || error.code == 2) {
                 if (showSyncRealmPrompt == NO && error) {
@@ -127,21 +140,7 @@
                 
                 ws.potentiallySync = showSyncRealmPrompt;
                 ws.presentedRealm  = realmNode;
-                
-                ws.changeNotificationToken = [realmNode.realm addNotificationBlock:^(NSString *notification, RLMRealm *realm) {
-                    [ws.presentedRealm connect:nil];
-                    
-                    for (RLMRealmBrowserWindowController *windowController in ws.windowControllers) {
-                        NSScrollView *tableScrollView = windowController.tableViewController.tableView.enclosingScrollView;
-                        CGRect bounds = tableScrollView.bounds;
-                        
-                        [windowController reloadAfterEdit];
-                        [windowController realmDidLoad];
-            
-                        tableScrollView.bounds = bounds;
-                    }
-                }];
-                
+
                 NSDocumentController *documentController = [NSDocumentController sharedDocumentController];
                 [documentController noteNewRecentDocumentURL:absoluteURL];
                 
@@ -174,10 +173,6 @@
     return nil;
 }
 
-- (void)dealloc
-{
-    [self.changeNotificationToken stop];
-}
 
 #pragma mark - Public methods - NSDocument overrides - Creating and Managing Window Controllers
 

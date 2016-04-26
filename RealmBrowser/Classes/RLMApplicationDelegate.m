@@ -509,8 +509,9 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
                 configuration.syncSignature = componenets[1];
             }
         }
-            
-        RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:nil];
+        
+        [RLMRealmConfiguration setDefaultConfiguration:configuration];
+        RLMRealm *realm = [RLMRealm defaultRealm];
         [[RLMRealmFileManager sharedManager] addRealm:realm];
     }
     
