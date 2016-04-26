@@ -27,6 +27,7 @@
 - (void)stopServer;
 
 - (void)receivedData:(NSNotification *)notification;
+- (void)serverDidTerminate:(NSNotification *)notification;
 
 - (IBAction)selectRealmFolderButtonClicked:(id)sender;
 - (IBAction)selectPublicKeyFileButtonClicked:(id)sender;
@@ -46,6 +47,9 @@
 - (void)windowWillClose:(NSNotification *)notification
 {
     [self stopServer];
+    if (self.closedHandler) {
+        self.closedHandler();
+    }
 }
 
 - (void)startServer
@@ -97,9 +101,9 @@
     self.serverTask.standardError = self.serverErrorPipe;
     [self.serverErrorPipe.fileHandleForReading waitForDataInBackgroundAndNotify];
     
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedData:) name:NSFileHandleDataAvailableNotification object:self.serverErrorPipe.fileHandleForReading];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(serverDidTerminate:) name:NSTaskDidTerminateNotification object:self.serverTask];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedData:) name:NSFileHandleDataAvailableNotification object:self.serverOutputPipe.fileHandleForReading];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedData:) name:NSFileHandleDataAvailableNotification object:self.serverErrorPipe.fileHandleForReading];
     
     [self.serverTask launch];
     
@@ -118,6 +122,7 @@
         return;
     }
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:self.serverTask];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSFileHandleDataAvailableNotification object:self.serverErrorPipe.fileHandleForReading];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSFileHandleDataAvailableNotification object:self.serverOutputPipe.fileHandleForReading];
     [[NSNotificationCenter defaultCenter] removeObserver:self.observerToken];
@@ -136,14 +141,26 @@
     self.consoleOutputField.stringValue = [self.consoleOutputField.stringValue stringByAppendingString:@"Server terminated.\n"];
 }
 
-- (void)receivedData:(NSNotification *)notif {
-    NSFileHandle *fh = [notif object];
+- (void)receivedData:(NSNotification *)notification {
+    NSFileHandle *fh = [notification object];
     NSData *data = [fh availableData];
     if (data.length > 0) { // if data is found, re-register for more data (and print)
         [fh waitForDataInBackgroundAndNotify];
         NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         self.consoleOutputField.stringValue = [self.consoleOutputField.stringValue stringByAppendingString:str];
     }
+}
+
+- (void)serverDidTerminate:(NSNotification *)notification
+{
+    NSFileHandle *handle = self.serverErrorPipe.fileHandleForReading;
+    NSData *data = [handle readDataToEndOfFile];
+    if (data.length > 0) {
+        NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        self.consoleOutputField.stringValue = [self.consoleOutputField.stringValue stringByAppendingString:str];
+    }
+    
+    [self stopServer];
 }
 
 - (IBAction)runServerButtonClicked:(id)sender
