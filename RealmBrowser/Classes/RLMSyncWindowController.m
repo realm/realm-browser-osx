@@ -138,21 +138,7 @@ NSString * const kSyncSignedUserTokenKey = @"SyncSignedUserToken";
     configuration.dynamic = YES;
     configuration.customSchema = nil;
     configuration.syncServerURL = [NSURL URLWithString:url];
-    
-    // User token is presented in the format of "identity:signature"
-    // so split those components out
-    NSString *userToken = token;
-    NSArray *components = [userToken componentsSeparatedByString:@":"];
-    NSString *identity = components.firstObject;
-    NSString *signature = (components.count >= 2 ? components[1] : nil);
-    
-    if (identity.length > 0) {
-        configuration.syncIdentity = identity;
-    }
-    
-    if (signature.length > 0) {
-        configuration.syncSignature = signature;
-    }
+    configuration.syncUserToken = token;
     
     NSError *error = nil;
     RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:&error];

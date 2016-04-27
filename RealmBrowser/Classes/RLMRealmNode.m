@@ -56,8 +56,6 @@ void RLMClearRealmCache();
 {
     NSError *localError;
     
-    [RLMRealm resetRealmCache];
-    
 //    RLMRealm *connectedRealm = [[RLMRealmFileManager sharedManager] realmForPath:_url];
 //    
 //    if (connectedRealm) {
@@ -69,13 +67,9 @@ void RLMClearRealmCache();
         configuration.path = _url;
         configuration.dynamic = YES;
         configuration.customSchema = nil;
-        
+    
         if (self.syncSignedUserToken.length) {
-            NSArray *components = [self.syncSignedUserToken componentsSeparatedByString:@":"];
-            if (components.count >= 2) {
-                configuration.syncIdentity = components.firstObject;
-                configuration.syncSignature = components[1];
-            }
+            configuration.syncUserToken = self.syncSignedUserToken;
         }
         
         if (self.syncServerURL) {

@@ -74,7 +74,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     if (!self.didLoadFile && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
-        [NSApp sendAction:self.openMenuItem.action to:self.openMenuItem.target from:self];
+        //[NSApp sendAction:self.openMenuItem.action to:self.openMenuItem.target from:self];
 
         self.realmQuery = [[NSMetadataQuery alloc] init];
         [self.realmQuery setSortDescriptors:@[[[NSSortDescriptor alloc] initWithKey:(id)kMDItemContentModificationDate ascending:NO]]];
@@ -524,11 +524,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
         }
         
         if (syncServerSignedUserToken.length > 0) {
-            NSArray *componenets = [syncServerSignedUserToken componentsSeparatedByString:@":"];
-            if (componenets.count >= 2) {
-                configuration.syncIdentity = componenets.firstObject;
-                configuration.syncSignature = componenets[1];
-            }
+            configuration.syncUserToken = syncServerSignedUserToken;
         }
         
         [RLMRealmConfiguration setDefaultConfiguration:configuration];
