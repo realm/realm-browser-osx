@@ -139,8 +139,9 @@ void RLMClearRealmCache();
     }
     else if (self.notificationRunLoop) {
         dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+        RLMNotificationToken __weak *token = self.notificationToken;
         CFRunLoopPerformBlock(self.notificationRunLoop.getCFRunLoop, kCFRunLoopDefaultMode, ^{
-            [self.notificationToken stop];
+            [token stop];
             dispatch_semaphore_signal(sem);
         });
         CFRunLoopWakeUp(self.notificationRunLoop.getCFRunLoop);
