@@ -28,7 +28,16 @@
 
 void RLMClearRealmCache();
 
+@interface RLMRealmNode ()
+
+@property (nonatomic, strong) RLMRealm *internalRealmForSync;
+@property (assign) BOOL didInitialRefresh;
+
+@end
+
 @implementation RLMRealmNode
+@synthesize topLevelClasses = _topLevelClasses;
+@synthesize realm = _realm;
 
 - (instancetype)init
 {
@@ -47,56 +56,17 @@ void RLMClearRealmCache();
 
 - (void)dealloc
 {
-    [self.notificationToken stop];
-    [[RLMRealmFileManager sharedManager] removeRealm:_realm];
-    _realm = nil;
+    [self registerChangeNotification:NO schemaLoadedCallBack:nil error:nil];
 }
 
-- (BOOL)connect:(NSError **)error
+- (BOOL)connect:(NSError **)error schemaLoadedCallBack:(RLMSchemaLoadedCallback)callback
 {
     NSError *localError;
     
-//    RLMRealm *connectedRealm = [[RLMRealmFileManager sharedManager] realmForPath:_url];
-//    
-//    if (connectedRealm) {
-//        _realm = connectedRealm;
-//    }
-//    else {
-        RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-        configuration.encryptionKey = self.encryptionKey;
-        configuration.path = _url;
-        configuration.dynamic = YES;
-        configuration.customSchema = nil;
+    [self registerChangeNotification:YES schemaLoadedCallBack:callback error:&localError];
     
-        if (self.syncSignedUserToken.length) {
-            configuration.syncUserToken = self.syncSignedUserToken;
-        }
-        
-        if (self.syncServerURL) {
-            configuration.syncServerURL = [NSURL URLWithString:self.syncServerURL];
-        }
-        
-        [RLMRealmConfiguration setDefaultConfiguration:configuration];
-        _realm = [RLMRealm realmWithConfiguration:configuration error:&localError];
-//    }
-
-    if (self.notificationBlock && self.notificationToken == nil) {
-        self.notificationToken = [_realm addNotificationBlock:self.notificationBlock];
-    }
-    
-//    _realm = [RLMRealm realmWithPath:_url
-//                                 key:self.encryptionKey
-//                            readOnly:NO
-//                            inMemory:NO
-//                             dynamic:YES
-//                              schema:nil
-//                               error:&localError];
-
     if (localError) {
         NSLog(@"Realm was opened with error: %@", localError);
-    }
-    else {
-        _topLevelClasses = [self constructTopLevelClasses];    
     }
 
     if (error) {
@@ -106,7 +76,80 @@ void RLMClearRealmCache();
     return !localError;
 }
 
-
+- (void)registerChangeNotification:(BOOL)registerNotifications
+              schemaLoadedCallBack:(RLMSchemaLoadedCallback)callback
+                             error:(NSError **)error
+{
+    if (registerNotifications) {
+        typeof(self) __weak weakSelf = self;
+        
+        // Setup run loop
+        if (!self.notificationRunLoop) {
+            dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                CFRunLoopPerformBlock(CFRunLoopGetCurrent(), kCFRunLoopDefaultMode, ^{
+                    weakSelf.notificationRunLoop = [NSRunLoop currentRunLoop];
+                    
+                    dispatch_semaphore_signal(sem);
+                });
+                
+                CFRunLoopRun();
+            });
+            
+            dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+        }
+        
+        dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+        CFRunLoopPerformBlock(self.notificationRunLoop.getCFRunLoop, kCFRunLoopDefaultMode, ^{
+            if (weakSelf.notificationToken) {
+                [weakSelf.notificationToken stop];
+                weakSelf.notificationToken = nil;
+                weakSelf.internalRealmForSync = nil;
+            }
+            
+            RLMRealm *realm = [RLMRealm realmWithConfiguration:weakSelf.realmConfiguration error:error];
+            
+            if (realm) {
+                weakSelf.internalRealmForSync = realm;
+                weakSelf.notificationToken = [realm addNotificationBlock:^(NSString * _Nonnull notification,
+                                                                           RLMRealm * _Nonnull realm) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // The first notification means the schema is loaded so fire callback
+                        if (!weakSelf.didInitialRefresh) {
+                            weakSelf.didInitialRefresh = YES;
+                            if (callback) {
+                                callback();
+                            }
+                        }
+                        else { // All other notifications call the registered notification block
+                            if (weakSelf.notificationBlock) {
+                                RLMRealm *aRealm = [RLMRealm realmWithConfiguration:weakSelf.realmConfiguration error:error];
+                                weakSelf.notificationBlock(notification, aRealm);
+                            }
+                        }
+                    });
+                }];
+            }
+            dispatch_semaphore_signal(sem);
+        });
+        
+        CFRunLoopWakeUp(self.notificationRunLoop.getCFRunLoop);
+        
+        dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+    }
+    else if (self.notificationRunLoop) {
+        dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+        CFRunLoopPerformBlock(self.notificationRunLoop.getCFRunLoop, kCFRunLoopDefaultMode, ^{
+            [self.notificationToken stop];
+            dispatch_semaphore_signal(sem);
+        });
+        CFRunLoopWakeUp(self.notificationRunLoop.getCFRunLoop);
+        
+        dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+        
+        CFRunLoopStop(self.notificationRunLoop.getCFRunLoop);
+    }
+}
 
 - (void)addTable:(RLMClassNode *)table
 {
@@ -120,7 +163,9 @@ void RLMClearRealmCache();
     
     _realm = nil;
     _encryptionKey = encryptionKey;
-    [self connect:nil];
+    
+    // Is this necessary?
+    [self connect:nil schemaLoadedCallBack:nil];
 }
 
 - (BOOL)realmFileRequiresFormatUpgrade
@@ -139,6 +184,45 @@ void RLMClearRealmCache();
     }
     
     return NO;
+}
+
+#pragma mark - Getters
+
+- (RLMRealm *)realm
+{
+    if (!_realm) {
+        _realm = [RLMRealm realmWithConfiguration:self.realmConfiguration error:nil];
+    }
+    
+    return _realm;
+}
+
+- (RLMRealmConfiguration *)realmConfiguration
+{
+    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+    configuration.encryptionKey = self.encryptionKey;
+    configuration.path = _url;
+    configuration.dynamic = YES;
+    configuration.customSchema = nil;
+    
+    if (self.syncSignedUserToken.length) {
+        configuration.syncUserToken = self.syncSignedUserToken;
+    }
+    
+    if (self.syncServerURL) {
+        configuration.syncServerURL = [NSURL URLWithString:self.syncServerURL];
+    }
+    
+    return configuration;
+}
+
+- (NSArray *)topLevelClasses
+{
+    if (!_topLevelClasses) {
+        _topLevelClasses = [self constructTopLevelClasses];
+    }
+    
+    return _topLevelClasses;
 }
 
 #pragma mark - RLMRealmOutlineNode implementation
@@ -185,14 +269,15 @@ void RLMClearRealmCache();
 
 - (NSArray *)constructTopLevelClasses
 {
-    RLMSchema *realmSchema = _realm.schema;
+    RLMRealm *realm = self.realm;
+    RLMSchema *realmSchema = realm.schema;
     NSArray *objectSchemas = realmSchema.objectSchema;
 
     NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:objectSchemas.count];
     
     for (RLMObjectSchema *objectSchema in objectSchemas) {
         if (objectSchema.properties.count > 0) {
-            RLMClassNode *tableNode = [[RLMClassNode alloc] initWithSchema:objectSchema inRealm:_realm];
+            RLMClassNode *tableNode = [[RLMClassNode alloc] initWithSchema:objectSchema inRealm:realm];
             [result addObject:tableNode];
         }
     }

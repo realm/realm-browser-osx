@@ -112,7 +112,8 @@
 //            }
             
             realmNode.notificationBlock = ^(NSString *notification, RLMRealm *realm) {
-                [ws.presentedRealm connect:nil];
+                // I am not sure why connect was setup to be called in the notification block?
+                //[ws.presentedRealm connect:nil];
                 
                 for (RLMRealmBrowserWindowController *windowController in ws.windowControllers) {
                     NSScrollView *tableScrollView = windowController.tableViewController.tableView.enclosingScrollView;
@@ -126,7 +127,20 @@
             };
             
             NSError *error;
-            if ([realmNode connect:&error] || error.code == 2) {
+            
+            BOOL didConnect = [realmNode connect:&error schemaLoadedCallBack:^{
+                ws.potentiallySync = showSyncRealmPrompt;
+                ws.presentedRealm  = realmNode;
+                
+                NSDocumentController *documentController = [NSDocumentController sharedDocumentController];
+                [documentController noteNewRecentDocumentURL:absoluteURL];
+                
+                for (RLMRealmBrowserWindowController *windowController in ws.windowControllers) {
+                    [windowController realmDidLoad];
+                }
+            }];
+            
+            if (didConnect || error.code == 2) {
                 if (showSyncRealmPrompt == NO && error) {
                     RLMConfirmResults results = [RLMAlert showRealmOptionsConfirmationDialogWithFileName:realmName];
                     if (results == RLMConfirmResultsCancel) {
@@ -136,16 +150,6 @@
                     if (results == RLMConfirmResultsEncryptionKey) {
                         ws.potentiallyEncrypted = YES;
                     }
-                }
-                
-                ws.potentiallySync = showSyncRealmPrompt;
-                ws.presentedRealm  = realmNode;
-
-                NSDocumentController *documentController = [NSDocumentController sharedDocumentController];
-                [documentController noteNewRecentDocumentURL:absoluteURL];
-                
-                for (RLMRealmBrowserWindowController *windowController in ws.windowControllers) {
-                    [windowController realmDidLoad];
                 }
                 
                 success = YES;
