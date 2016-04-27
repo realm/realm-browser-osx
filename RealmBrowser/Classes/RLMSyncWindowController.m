@@ -161,6 +161,8 @@ NSString * const kSyncSignedUserTokenKey = @"SyncSignedUserToken";
         return NO;
     }
     
+    [RLMRealmConfiguration setDefaultConfiguration:configuration];
+    
     //Hold on to this reference to ensure we don't kill the sync conenction
     [[RLMRealmFileManager sharedManager] addRealm:realm];
     

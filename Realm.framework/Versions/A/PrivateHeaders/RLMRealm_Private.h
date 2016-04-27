@@ -37,6 +37,8 @@ void RLMRealmTranslateException(NSError **error);
 
 + (void)resetRealmState;
 
++ (void)resetRealmCache;
+
 /**
  This method is useful only in specialized circumstances, for example, when opening Realm files
  retrieved externally that contain a different schema than defined in your application.

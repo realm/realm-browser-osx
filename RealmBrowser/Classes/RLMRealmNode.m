@@ -26,6 +26,8 @@
 #import "RLMSidebarTableCellView.h"
 #import "NSColor+ByteSizeFactory.h"
 
+void RLMClearRealmCache();
+
 @implementation RLMRealmNode
 
 - (instancetype)init
@@ -54,12 +56,14 @@
 {
     NSError *localError;
     
-    RLMRealm *connectedRealm = [[RLMRealmFileManager sharedManager] realmForPath:_url];
+    [RLMRealm resetRealmCache];
     
-    if (connectedRealm) {
-        _realm = connectedRealm;
-    }
-    else {
+//    RLMRealm *connectedRealm = [[RLMRealmFileManager sharedManager] realmForPath:_url];
+//    
+//    if (connectedRealm) {
+//        _realm = connectedRealm;
+//    }
+//    else {
         RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
         configuration.encryptionKey = self.encryptionKey;
         configuration.path = _url;
@@ -80,8 +84,8 @@
         
         [RLMRealmConfiguration setDefaultConfiguration:configuration];
         _realm = [RLMRealm realmWithConfiguration:configuration error:&localError];
-    }
-    
+//    }
+
     if (self.notificationBlock && self.notificationToken == nil) {
         self.notificationToken = [_realm addNotificationBlock:self.notificationBlock];
     }

@@ -391,10 +391,23 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
 
 - (IBAction)openSyncRealmFileWithMenuItem:(NSMenuItem *)menuItem
 {
+    NSNib *accessoryViewNib = [[NSNib alloc] initWithNibNamed:@"SyncCredentialsView" bundle:nil];
+    NSArray *views = nil;
+    [accessoryViewNib instantiateWithOwner:self topLevelObjects:&views];
+    
+    RLMSyncCredentialsView *accessoryView = nil;
+    for (NSObject *view in views) {
+        if ([view isKindOfClass:[RLMSyncCredentialsView class]]) {
+            accessoryView = (RLMSyncCredentialsView *)view;
+            break;
+        }
+    }
+    
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];
     openPanel.allowedFileTypes = @[kRealmFileExtension];
     openPanel.canChooseDirectories = NO;
     openPanel.allowsMultipleSelection = NO;
+    openPanel.accessoryView = accessoryView;
 
     if ([openPanel runModal] == NSFileHandlingPanelCancelButton) {
         return;
@@ -404,6 +417,9 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     if (realmFileURL == nil) {
         return;
     }
+    
+    NSString *syncServerURL = accessoryView.syncServerURLField.stringValue;
+    NSString *syncServerSignedUserToken = accessoryView.syncSignedUserTokenField.stringValue;
     
     NSAlert *alert = [NSAlert alertWithMessageText:@"Make a copy of this Realm file?"
                                      defaultButton:@"No"
@@ -418,12 +434,17 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     dispatch_async(dispatch_get_main_queue(), ^{
         
         NSMutableArray *fragmentItems = [NSMutableArray array];
-        [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"syncCredentialsPrompt" value:@"1"]];
         
         NSURLComponents *components = [NSURLComponents componentsWithURL:realmFileURL resolvingAgainstBaseURL:NO];
         if (response != 0) {
             [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"disableSyncFileCopy" value:@"1"]];
         }
+        
+        NSURLQueryItem *syncURLItem = [NSURLQueryItem queryItemWithName:@"syncServerURL" value:syncServerURL];
+        [fragmentItems addObject:syncURLItem];
+        
+        NSURLQueryItem *syncSignedUserTokenItem = [NSURLQueryItem queryItemWithName:@"syncSignedUserToken" value:syncServerSignedUserToken];
+        [fragmentItems addObject:syncSignedUserTokenItem];
         
         components.fragmentItems = fragmentItems;
         
@@ -511,8 +532,8 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
         }
         
         [RLMRealmConfiguration setDefaultConfiguration:configuration];
-        RLMRealm *realm = [RLMRealm defaultRealm];
-        [[RLMRealmFileManager sharedManager] addRealm:realm];
+        RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:nil];
+        //[[RLMRealmFileManager sharedManager] addRealm:realm];
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
