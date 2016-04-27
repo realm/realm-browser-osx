@@ -30,6 +30,9 @@ void RLMClearRealmCache();
 
 @interface RLMRealmNode ()
 
+@property (nonatomic, strong) RLMNotificationToken  *notificationToken;
+@property (nonatomic, strong) NSRunLoop *notificationRunLoop;
+@property (nonatomic, strong) RLMRealmConfiguration *realmConfiguration;
 @property (nonatomic, strong) RLMRealm *internalRealmForSync;
 @property (assign) BOOL didInitialRefresh;
 
@@ -99,7 +102,8 @@ void RLMClearRealmCache();
             dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
         }
         
-        dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+        dispatch_semaphore_t sem = dispatch_semaphore_create(0);        
+        
         CFRunLoopPerformBlock(self.notificationRunLoop.getCFRunLoop, kCFRunLoopDefaultMode, ^{
             if (weakSelf.notificationToken) {
                 [weakSelf.notificationToken stop];
@@ -117,6 +121,9 @@ void RLMClearRealmCache();
                         // The first notification means the schema is loaded so fire callback
                         if (!weakSelf.didInitialRefresh) {
                             weakSelf.didInitialRefresh = YES;
+                            
+                            [weakSelf setupAfterSchemaLoad];
+                            
                             if (callback) {
                                 callback();
                             }
@@ -136,6 +143,13 @@ void RLMClearRealmCache();
         CFRunLoopWakeUp(self.notificationRunLoop.getCFRunLoop);
         
         dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+        
+        // Stop sync service if we didn't connect after 5 seconds
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (!weakSelf.didInitialRefresh) {
+                [weakSelf registerChangeNotification:NO schemaLoadedCallBack:nil error:nil];
+            }
+        });
     }
     else if (self.notificationRunLoop) {
         dispatch_semaphore_t sem = dispatch_semaphore_create(0);
@@ -149,7 +163,17 @@ void RLMClearRealmCache();
         dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
         
         CFRunLoopStop(self.notificationRunLoop.getCFRunLoop);
+        
+        self.notificationRunLoop = nil;
+        self.notificationToken = nil;
+        self.internalRealmForSync = nil;
     }
+}
+
+- (void)setupAfterSchemaLoad
+{
+    _realm = [RLMRealm realmWithConfiguration:self.realmConfiguration error:nil];
+    _topLevelClasses = [self constructTopLevelClasses];
 }
 
 - (void)addTable:(RLMClassNode *)table
@@ -189,15 +213,6 @@ void RLMClearRealmCache();
 
 #pragma mark - Getters
 
-- (RLMRealm *)realm
-{
-    if (!_realm) {
-        _realm = [RLMRealm realmWithConfiguration:self.realmConfiguration error:nil];
-    }
-    
-    return _realm;
-}
-
 - (RLMRealmConfiguration *)realmConfiguration
 {
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
@@ -215,15 +230,6 @@ void RLMClearRealmCache();
     }
     
     return configuration;
-}
-
-- (NSArray *)topLevelClasses
-{
-    if (!_topLevelClasses) {
-        _topLevelClasses = [self constructTopLevelClasses];
-    }
-    
-    return _topLevelClasses;
 }
 
 #pragma mark - RLMRealmOutlineNode implementation

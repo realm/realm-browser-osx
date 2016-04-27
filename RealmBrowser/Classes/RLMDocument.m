@@ -128,10 +128,10 @@
             
             NSError *error;
             
+            ws.potentiallySync = showSyncRealmPrompt;
+            ws.presentedRealm  = realmNode;
+            
             BOOL didConnect = [realmNode connect:&error schemaLoadedCallBack:^{
-                ws.potentiallySync = showSyncRealmPrompt;
-                ws.presentedRealm  = realmNode;
-                
                 NSDocumentController *documentController = [NSDocumentController sharedDocumentController];
                 [documentController noteNewRecentDocumentURL:absoluteURL];
                 
