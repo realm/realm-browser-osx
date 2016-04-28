@@ -594,7 +594,6 @@
 				84E0F9481921F3B900D6CA14 /* Sources */,
 				84E0F94A1921F3B900D6CA14 /* Resources */,
 				84E0F9491921F3B900D6CA14 /* Frameworks */,
-				22D56B951BB5C6300001D65B /* ShellScript */,
 				B470C1B2CD85792E8F9B1979 /* Embed Pods Frameworks */,
 				22013F711CCA1230000F79B5 /* CopyFiles */,
 				22013F751CCA1956000F79B5 /* Embed Frameworks */,
@@ -707,19 +706,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		22D56B951BB5C6300001D65B /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
-		};
 		5E20F1CC39E81B5C5A7BC33C /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
