@@ -161,6 +161,16 @@ void RLMClearRealmCache();
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             if (!weakSelf.didInitialRefresh) {
                 [weakSelf registerChangeNotification:NO schemaLoadedCallBack:nil error:nil];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSAlert *alert = [NSAlert alertWithMessageText:@"Failed To Connect To Sync Server"
+                                                     defaultButton:@"OK"
+                                                   alternateButton:nil
+                                                       otherButton:nil
+                                         informativeTextWithFormat:@"The URL for the sync server is either not available or not responding. Please verify the server is accessible and try again."];
+                    
+                    [alert runModal];
+                });
             }
         });
     }
