@@ -114,6 +114,19 @@ void RLMClearRealmCache();
             RLMRealm *realm = [RLMRealm realmWithConfiguration:weakSelf.realmConfiguration error:error];
             
             if (realm) {
+                // We might already have schema, so fire call back immediately if we have any objects
+                if (realm.schema.objectSchema.count > 0) {
+                    weakSelf.didInitialRefresh = YES;
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [weakSelf setupAfterSchemaLoad];
+                        
+                        if (callback) {
+                            callback();
+                        }
+                    });
+                }
+                
                 weakSelf.internalRealmForSync = realm;
                 weakSelf.notificationToken = [realm addNotificationBlock:^(NSString * _Nonnull notification,
                                                                            RLMRealm * _Nonnull realm) {
