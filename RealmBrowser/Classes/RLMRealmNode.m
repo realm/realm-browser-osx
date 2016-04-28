@@ -114,6 +114,19 @@ void RLMClearRealmCache();
             RLMRealm *realm = [RLMRealm realmWithConfiguration:weakSelf.realmConfiguration error:error];
             
             if (realm) {
+                // We might already have schema, so fire call back immediately if we have any objects
+                if (realm.schema.objectSchema.count > 0) {
+                    weakSelf.didInitialRefresh = YES;
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [weakSelf setupAfterSchemaLoad];
+                        
+                        if (callback) {
+                            callback();
+                        }
+                    });
+                }
+                
                 weakSelf.internalRealmForSync = realm;
                 weakSelf.notificationToken = [realm addNotificationBlock:^(NSString * _Nonnull notification,
                                                                            RLMRealm * _Nonnull realm) {
@@ -148,6 +161,16 @@ void RLMClearRealmCache();
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             if (!weakSelf.didInitialRefresh) {
                 [weakSelf registerChangeNotification:NO schemaLoadedCallBack:nil error:nil];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSAlert *alert = [NSAlert alertWithMessageText:@"Failed To Connect To Sync Server"
+                                                     defaultButton:@"OK"
+                                                   alternateButton:nil
+                                                       otherButton:nil
+                                         informativeTextWithFormat:@"The URL for the sync server is either not available or not responding. Please verify the server is accessible and try again."];
+                    
+                    [alert runModal];
+                });
             }
         });
     }

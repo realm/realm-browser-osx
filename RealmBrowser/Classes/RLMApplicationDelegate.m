@@ -408,6 +408,12 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     openPanel.canChooseDirectories = NO;
     openPanel.allowsMultipleSelection = NO;
     openPanel.accessoryView = accessoryView;
+    
+    // Force the options to be displayed (only available in El Cap)
+    // Not sure if older versions default to displaying?
+    if ([openPanel respondsToSelector:@selector(isAccessoryViewDisclosed)]) {
+        openPanel.accessoryViewDisclosed = YES;
+    }
 
     if ([openPanel runModal] == NSFileHandlingPanelCancelButton) {
         return;
@@ -420,6 +426,21 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     
     NSString *syncServerURL = accessoryView.syncServerURLField.stringValue;
     NSString *syncServerSignedUserToken = accessoryView.syncSignedUserTokenField.stringValue;
+    
+    if (!syncServerURL ||
+        !syncServerSignedUserToken ||
+        [syncServerURL isEqualToString:@""] ||
+        [syncServerSignedUserToken isEqualToString:@""] ||
+        ![syncServerURL hasPrefix:@"realm://"]) {
+        NSAlert *alert = [NSAlert alertWithMessageText:@"Failed To Enter Valid Sync Credentials"
+                                         defaultButton:@"OK"
+                                       alternateButton:nil
+                                           otherButton:nil
+                             informativeTextWithFormat:@"To open a Realm file with sync, you must enter a valid sync server URL and sync user token. If you don't see these fields in the 'Open' dialog box, click 'Options' in the lower left corner. Please try again."];
+        
+        [alert runModal];
+        return;
+    }
     
     NSAlert *alert = [NSAlert alertWithMessageText:@"Make a copy of this Realm file?"
                                      defaultButton:@"No"
