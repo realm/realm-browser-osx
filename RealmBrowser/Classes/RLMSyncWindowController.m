@@ -141,16 +141,15 @@ NSString * const kSyncSignedUserTokenKey = @"SyncSignedUserToken";
     configuration.syncUserToken = token;
     
     NSError *error = nil;
-    RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:&error];
+    @autoreleasepool {
+        [RLMRealm realmWithConfiguration:configuration error:&error];
+    }
     
     if (error != nil) {
         return NO;
     }
     
     [RLMRealmConfiguration setDefaultConfiguration:configuration];
-    
-    //Hold on to this reference to ensure we don't kill the sync conenction
-    [[RLMRealmFileManager sharedManager] addRealm:realm];
     
     return (error == nil);
 }
