@@ -54,8 +54,10 @@ typedef NS_ENUM(int32_t, RLMPropertyType) {
 
     /** Object type. See [Realm Models](https://realm.io/docs/objc/latest/#models) */
     RLMPropertyTypeObject = 12,
-    /** Array type. See [Realm Models](http://realms.io/docs/objc/latest/#models) */
+    /** Array type. See [Realm Models](https://realm.io/docs/objc/latest/#models) */
     RLMPropertyTypeArray  = 13,
+    /** Linking objects. See [Realm Models](https://realm.io/docs/objc/latest/#models) */
+    RLMPropertyTypeLinkingObjects = 14,
 };
 
 /**
@@ -81,6 +83,8 @@ typedef NS_ENUM(NSInteger, RLMError) {
         process which cannot share with the current process due to an
         architecture mismatch. */
     RLMErrorIncompatibleLockFile  = 8,
+    /** Returned by RLMRealm if there is insufficient available address space. */
+    RLMErrorAddressSpaceExhausted = 9,
 };
 
 #pragma mark - Constants

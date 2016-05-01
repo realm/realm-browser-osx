@@ -2,9 +2,9 @@ PODS:
   - AppSandboxFileAccess (1.0.14)
   - CSwiftV (0.0.3)
   - PathKit (0.6.0)
-  - Realm (0.98.6):
-    - Realm/Headers (= 0.98.6)
-  - Realm/Headers (0.98.6)
+  - Realm (0.100.0):
+    - Realm/Headers (= 0.100.0)
+  - Realm/Headers (0.100.0)
   - RealmConverter (0.1):
     - CSwiftV
     - PathKit
@@ -23,7 +23,7 @@ SPEC CHECKSUMS:
   AppSandboxFileAccess: f3e10b0ba10bbaa6dc6996639ff47836050329c5
   CSwiftV: 93e3d4e1501f2a9b1eac3ae51d53a5edf41beb5b
   PathKit: b224b6d2c4e75b87f08f45e1c0c610a3195c94e5
-  Realm: 44803f35418c5d89b27825a564247fcd190de37e
+  Realm: b13b548e712d28a66678970c45cd245ebb94ba3b
   RealmConverter: 1f687f9df48efe5828bdcc1d0ab5c459768c2ee2
   SSZipArchive: de3d215ab73f87db627f81f2ce24f1731e3886c3
   TGSpreadsheetWriter: 09bbb2c18a111a11c94ff9c1af2320e2530c958e

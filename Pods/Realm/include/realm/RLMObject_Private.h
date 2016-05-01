@@ -29,17 +29,28 @@
 }
 
 // standalone initializer
-- (instancetype)initWithValue:(id)value schema:(RLMSchema *)schema;
+- (instancetype)initWithValue:(id)value schema:(RLMSchema *)schema NS_DESIGNATED_INITIALIZER;
 
 // live accessor initializer
 - (instancetype)initWithRealm:(__unsafe_unretained RLMRealm *const)realm
-                       schema:(__unsafe_unretained RLMObjectSchema *const)schema;
+                       schema:(__unsafe_unretained RLMObjectSchema *const)schema NS_DESIGNATED_INITIALIZER;
 
 // shared schema for this class
 + (RLMObjectSchema *)sharedSchema;
 
 // provide injection point for alternative Swift object util class
 + (Class)objectUtilClass:(BOOL)isSwift;
+
+@end
+
+@interface RLMObject ()
+
+// standalone initializer
+- (instancetype)initWithValue:(id)value schema:(RLMSchema *)schema NS_DESIGNATED_INITIALIZER;
+
+// live accessor initializer
+- (instancetype)initWithRealm:(__unsafe_unretained RLMRealm *const)realm
+                       schema:(__unsafe_unretained RLMObjectSchema *const)schema NS_DESIGNATED_INITIALIZER;
 
 @end
 
@@ -78,10 +89,14 @@ FOUNDATION_EXTERN const NSUInteger RLMDescriptionMaxDepth;
 
 + (NSArray RLM_GENERIC(NSString *) *)ignoredPropertiesForClass:(Class)cls;
 + (NSArray RLM_GENERIC(NSString *) *)indexedPropertiesForClass:(Class)cls;
++ (NSDictionary RLM_GENERIC(NSString *, NSDictionary RLM_GENERIC(NSString *, NSString *)*)*)linkingObjectsPropertiesForClass:(Class)cls;
 
 + (NSArray RLM_GENERIC(NSString *) *)getGenericListPropertyNames:(id)obj;
++ (NSDictionary RLM_GENERIC(NSString *, NSString *)*)getLinkingObjectsProperties:(id)object;
+
 + (void)initializeListProperty:(RLMObjectBase *)object property:(RLMProperty *)property array:(RLMArray *)array;
 + (void)initializeOptionalProperty:(RLMObjectBase *)object property:(RLMProperty *)property;
++ (void)initializeLinkingObjectsProperty:(RLMObjectBase *)object property:(RLMProperty *)property results:(RLMResults *)results;
 
 + (NSDictionary RLM_GENERIC(NSString *, NSNumber *) *)getOptionalProperties:(id)obj;
 + (NSArray RLM_GENERIC(NSString *) *)requiredPropertiesForClass:(Class)cls;

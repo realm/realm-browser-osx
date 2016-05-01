@@ -32,7 +32,6 @@ namespace realm {
 
 @class RLMObjectSchema;
 @class RLMProperty;
-@protocol RLMFastEnumerable;
 
 namespace realm {
     class RealmFileException;
@@ -57,11 +56,8 @@ BOOL RLMIsObjectValidForProperty(id obj, RLMProperty *prop);
 // merges with native property defaults if Swift class
 NSDictionary *RLMDefaultValuesForObjectSchema(RLMObjectSchema *objectSchema);
 
-NSArray *RLMCollectionValueForKey(id<RLMFastEnumerable> collection, NSString *key);
-
-void RLMCollectionSetValueForKey(id<RLMFastEnumerable> collection, NSString *key, id value);
-
 BOOL RLMIsDebuggerAttached();
+BOOL RLMIsRunningInPlayground();
 
 // C version of isKindOfClass
 static inline BOOL RLMIsKindOfClass(Class class1, Class class2) {
@@ -71,6 +67,9 @@ static inline BOOL RLMIsKindOfClass(Class class1, Class class2) {
     }
     return NO;
 }
+
+// Returns whether the class is a descendent of RLMObjectBase
+BOOL RLMIsObjectOrSubclass(Class klass);
 
 // Returns whether the class is an indirect descendant of RLMObjectBase
 BOOL RLMIsObjectSubclass(Class klass);
@@ -117,6 +116,8 @@ static inline NSString *RLMTypeToString(RLMPropertyType type) {
             return @"object";
         case RLMPropertyTypeArray:
             return @"array";
+        case RLMPropertyTypeLinkingObjects:
+            return @"linking objects";
     }
     return @"Unknown";
 }
@@ -171,3 +172,7 @@ static inline NSUInteger RLMConvertNotFound(size_t index) {
 }
 
 id RLMMixedToObjc(realm::Mixed const& value);
+
+// For unit testing purposes, allow an Objective-C class named FakeObject to also be used
+// as the base class of persisted objects. This allows for testing invalid schemas.
+void RLMSetTreatFakeObjectAsRLMObject(BOOL flag);

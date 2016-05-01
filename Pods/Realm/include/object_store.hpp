@@ -140,6 +140,8 @@ namespace realm {
     class DuplicatePrimaryKeyValueException : public MigrationException {
       public:
         DuplicatePrimaryKeyValueException(std::string const& object_type, Property const& property);
+        DuplicatePrimaryKeyValueException(std::string const& object_type, Property const& property, const std::string message);
+
         std::string object_type() const { return m_object_type; }
         Property const& property() const { return m_property; }
       private:
@@ -237,6 +239,16 @@ namespace realm {
         std::string primary_key() const { return m_primary_key; }
       private:
         std::string m_primary_key;
+    };
+
+    class InvalidLinkingObjectsPropertyException : public ObjectSchemaPropertyException {
+    public:
+        enum class Type {
+            OriginPropertyDoesNotExist,
+            OriginPropertyIsNotALink,
+            OriginPropertyInvalidLinkTarget,
+        };
+        InvalidLinkingObjectsPropertyException(Type error_type, std::string const& object_type, Property const& property);
     };
 }
 
