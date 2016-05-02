@@ -49,14 +49,14 @@
 
 - (BOOL)connect:(NSError **)error
 {
+    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+    configuration.fileURL = [NSURL fileURLWithPath:_url];
+    configuration.encryptionKey = self.encryptionKey;
+    configuration.dynamic = YES;
+    configuration.customSchema = nil;
+    
     NSError *localError;
-    _realm = [RLMRealm realmWithPath:_url
-                                 key:self.encryptionKey
-                            readOnly:NO
-                            inMemory:NO
-                             dynamic:YES
-                              schema:nil
-                               error:&localError];
+    _realm = [RLMRealm realmWithConfiguration:configuration error:&localError];
 
     if (localError) {
         NSLog(@"Realm was opened with error: %@", localError);

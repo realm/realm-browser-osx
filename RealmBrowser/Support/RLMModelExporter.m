@@ -323,6 +323,8 @@
             return [NSString stringWithFormat:@"RLMArray<%@ *><%@> *", property.objectClassName, property.objectClassName];
         case RLMPropertyTypeObject:
             return [NSString stringWithFormat:@"%@ *", property.objectClassName];
+        case RLMPropertyTypeLinkingObjects:
+            return @"RLMLinkingObjects *";
     }
 }
 
@@ -340,6 +342,7 @@
         case RLMPropertyTypeAny:
         case RLMPropertyTypeDate:
         case RLMPropertyTypeObject:
+        case RLMPropertyTypeLinkingObjects:
             return YES;
     }
     

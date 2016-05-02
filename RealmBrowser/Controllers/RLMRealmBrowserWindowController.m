@@ -92,7 +92,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     
     [self updateNavigationButtons];
 
-    NSString *realmPath = self.modelDocument.presentedRealm.realm.path;
+    NSString *realmPath = self.modelDocument.presentedRealm.realm.configuration.fileURL.path;
     [self setWindowFrameAutosaveName:[NSString stringWithFormat:kRealmKeyWindowFrameForRealm, realmPath]];
     [self.splitView setAutosaveName:[NSString stringWithFormat:kRealmKeyOutlineWidthForRealm, realmPath]];
     
@@ -236,7 +236,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     //Perform the export/compact operations on a background thread as they can potentially be time-consuming
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSError *error = nil;
-        [self.modelDocument.presentedRealm.realm writeCopyToPath:realmFileURL.path error:&error];
+        [self.modelDocument.presentedRealm.realm writeCopyToURL:realmFileURL encryptionKey:nil error:&error];
         if (error) {
             dispatch_sync(dispatch_get_main_queue(), ^{
                 [self.window endSheet:self.exportWindowController.window];
@@ -246,7 +246,12 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
         }
         
         @autoreleasepool {
-            RLMRealm *newRealm = [RLMRealm realmWithPath:realmFileURL.path key:nil readOnly:NO inMemory:NO dynamic:YES schema:nil error:&error];
+            RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+            configuration.fileURL = realmFileURL;
+            configuration.dynamic = YES;
+            configuration.customSchema = nil;
+            
+            RLMRealm *newRealm = [RLMRealm realmWithConfiguration:configuration error:&error];
             if (error) {
                 dispatch_sync(dispatch_get_main_queue(), ^{
                     [self.window endSheet:self.exportWindowController.window];
