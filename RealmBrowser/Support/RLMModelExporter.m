@@ -206,6 +206,8 @@
             return [NSString stringWithFormat:@"RealmList<%@>", property.objectClassName];
         case RLMPropertyTypeObject:
             return property.objectClassName;
+        case RLMPropertyTypeLinkingObjects:
+            return @"RealmList";
     }
     
     return nil;
@@ -225,6 +227,7 @@
         case RLMPropertyTypeData:
         case RLMPropertyTypeAny:
         case RLMPropertyTypeDate:
+        case RLMPropertyTypeLinkingObjects:
             return YES;
     }
     
@@ -323,6 +326,8 @@
             return [NSString stringWithFormat:@"RLMArray<%@ *><%@> *", property.objectClassName, property.objectClassName];
         case RLMPropertyTypeObject:
             return [NSString stringWithFormat:@"%@ *", property.objectClassName];
+        case RLMPropertyTypeLinkingObjects:
+            return @"RLMLinkingObjects *";
     }
 }
 
@@ -340,6 +345,7 @@
         case RLMPropertyTypeAny:
         case RLMPropertyTypeDate:
         case RLMPropertyTypeObject:
+        case RLMPropertyTypeLinkingObjects:
             return YES;
     }
     
@@ -418,6 +424,8 @@
                 return @"/* Error! 'List' properties should never be optional. Please report this by emailing help@realm.io. */";
             case RLMPropertyTypeObject:
                 return objectClassProperty(@"dynamic var %@: %@?");
+            case RLMPropertyTypeLinkingObjects:
+                return @"";
         }
     }
 
@@ -442,6 +450,8 @@
             return objectClassProperty(@"let %@ = List<%@>()");
         case RLMPropertyTypeObject:
             return @"/* Error! 'Object' properties should always be optional. Please report this by emailing help@realm.io. */";
+        case RLMPropertyTypeLinkingObjects:
+            return @"";
     }
     
     return nil;

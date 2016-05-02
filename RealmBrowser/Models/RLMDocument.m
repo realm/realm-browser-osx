@@ -132,7 +132,7 @@
 
 - (void)dealloc
 {
-    [self.presentedRealm.realm removeNotification:self.changeNotificationToken];
+    [self.changeNotificationToken stop];
     
     //In certain instances, RLMRealm's C++ destructor method will attempt to clean up
     //specific auxiliary files belonging to this realm file.

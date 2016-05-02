@@ -16,15 +16,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef REALM_CACHED_REALM_HPP
-#define REALM_CACHED_REALM_HPP
+#import <Realm/RLMProperty_Private.h>
 
-#include <realm/util/features.h>
+#import "property.hpp"
 
-#if REALM_PLATFORM_APPLE
-#include "impl/apple/cached_realm.hpp"
-#else
-#include "impl/generic/cached_realm.hpp"
-#endif
+@interface RLMProperty ()
 
-#endif // REALM_CACHED_REALM_HPP
++ (instancetype)propertyForObjectStoreProperty:(const realm::Property&)property;
+
+- (realm::Property)objectStoreCopy;
+
+@end

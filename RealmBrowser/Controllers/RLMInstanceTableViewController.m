@@ -393,6 +393,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             break;
         }
             // Intentional fallthrough
+        case RLMPropertyTypeLinkingObjects:
         case RLMPropertyTypeData:
         case RLMPropertyTypeAny:
         case RLMPropertyTypeDate:
@@ -656,9 +657,11 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         case RLMPropertyTypeAny:
             return @"<Any>";
             
-        case RLMPropertyTypeObject: {
+        case RLMPropertyTypeObject:
             return [NSNull null];
-        }
+            
+        case RLMPropertyTypeLinkingObjects:
+            return [NSNull null];
     }
 }
 
@@ -961,7 +964,8 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         case RLMPropertyTypeDate:
             result = [dateFormatter dateFromString:sender.stringValue];
             break;
-            
+        
+        case RLMPropertyTypeLinkingObjects:
         case RLMPropertyTypeAny:
         case RLMPropertyTypeArray:
         case RLMPropertyTypeBool:
@@ -1135,6 +1139,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         case RLMPropertyTypeBool:
         case RLMPropertyTypeData:
         case RLMPropertyTypeObject:
+        case RLMPropertyTypeLinkingObjects:
             // Do nothing
             break;
     }

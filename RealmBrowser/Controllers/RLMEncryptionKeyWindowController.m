@@ -80,7 +80,7 @@
         configuration.disableFormatUpgrade = YES;
         configuration.dynamic = YES;
         configuration.encryptionKey = keyData;
-        configuration.path = self.realmFilePath.path;
+        configuration.fileURL = self.realmFilePath;
         [RLMRealm realmWithConfiguration:configuration error:&error];
     }
     

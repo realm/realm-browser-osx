@@ -133,6 +133,9 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
             
         case RLMPropertyTypeAny:
             return @"<Any>";
+        
+        case RLMPropertyTypeLinkingObjects:
+            return @"<LinkingObjects>";
             
         case RLMPropertyTypeObject: {
             RLMObject *referredObject = (RLMObject *)propertyValue;
@@ -188,6 +191,8 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
             return @"Data";
         case RLMPropertyTypeAny:
             return @"Any";
+        case RLMPropertyTypeLinkingObjects:
+            return @"LinkingObjects";
         case RLMPropertyTypeArray:
             return [NSString stringWithFormat:@"[%@]", property.objectClassName];
         case RLMPropertyTypeObject:
@@ -216,7 +221,8 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
             
         case RLMPropertyTypeArray:
             return [self tooltipForArray:(RLMArray *)propertyValue];
-            
+        
+        case RLMPropertyTypeLinkingObjects:
         case RLMPropertyTypeAny:
         case RLMPropertyTypeBool:
         case RLMPropertyTypeData:

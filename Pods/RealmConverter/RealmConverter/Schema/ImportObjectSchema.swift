@@ -101,6 +101,8 @@ extension RLMPropertyType : CustomStringConvertible, CustomDebugStringConvertibl
             return "object"
         case .Array:
             return "array"
+        case .LinkingObjects:
+            return "linkingobjects"
         }
     }
     
