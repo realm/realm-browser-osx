@@ -96,7 +96,7 @@
     configuration.disableFormatUpgrade = YES;
     configuration.dynamic = YES;
     configuration.encryptionKey = self.encryptionKey;
-    configuration.path = _url;
+    configuration.fileURL = [NSURL fileURLWithPath:_url];
     [RLMRealm realmWithConfiguration:configuration error:&localError];
     
     if (localError && localError.code == RLMErrorFileFormatUpgradeRequired) {
