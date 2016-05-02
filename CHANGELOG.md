@@ -5,6 +5,7 @@ x.x.x Release notes (yyyy-MM-dd)
 =============================================================
 * Updated to Realm Objective-C 0.100.0
 * Fixed a crash in OS X Mavericks
+* Fixed a corruption bug when saving encrypted copies of Realm files
 
 0.98.6 Release notes (2016-03-29)
 =============================================================
