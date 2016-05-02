@@ -191,12 +191,12 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
             return @"Data";
         case RLMPropertyTypeAny:
             return @"Any";
+        case RLMPropertyTypeLinkingObjects:
+            return @"LinkingObjects";
         case RLMPropertyTypeArray:
             return [NSString stringWithFormat:@"[%@]", property.objectClassName];
         case RLMPropertyTypeObject:
             return [NSString stringWithFormat:@"<%@>", property.objectClassName];
-        case RLMPropertyTypeLinkingObjects:
-            return @"LinkingObjects";
     }
 }
 

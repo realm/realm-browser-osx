@@ -1,5 +1,9 @@
 x.x.x Release notes (yyyy-MM-dd)
 =============================================================
+
+0.100.0 Release notes (2016-05-02)
+=============================================================
+* Updated to Realm Objective-C 0.100.0
 * Fixed a crash in OS X Mavericks
 
 0.98.6 Release notes (2016-03-29)

@@ -207,7 +207,7 @@
         case RLMPropertyTypeObject:
             return property.objectClassName;
         case RLMPropertyTypeLinkingObjects:
-            return @"Any";
+            return @"RealmList";
     }
     
     return nil;
