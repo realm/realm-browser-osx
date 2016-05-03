@@ -4,8 +4,8 @@ x.x.x Release notes (yyyy-MM-dd)
 0.100.0 Release notes (2016-05-02)
 =============================================================
 * Updated to Realm Objective-C 0.100.0
+  * (This fixes a bug where encrypted Realm files opened in the Browser would sometimes become corrupted.)
 * Fixed a crash in OS X Mavericks
-* Fixed a corruption bug when saving encrypted copies of Realm files
 
 0.98.6 Release notes (2016-03-29)
 =============================================================
