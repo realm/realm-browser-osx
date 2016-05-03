@@ -112,7 +112,7 @@ First note that at array level, nulls are distinguished between non-null in diff
 String:
     m_data == 0 && m_size == 0
 
-Integer, Bool, DateTime stored in ArrayIntNull:
+Integer, Bool, OldDateTime stored in ArrayIntNull:
     value == get(0) (entry 0 determins a magic value that represents nulls)
 
 Float/double:
@@ -154,7 +154,7 @@ T minimum(T a, T b)
 // FIXME, this needs to exist elsewhere
 typedef int64_t             Int;
 typedef bool                Bool;
-typedef realm::DateTime   DateTime;
+typedef realm::OldDateTime   OldDateTime;
 typedef float               Float;
 typedef double              Double;
 typedef realm::StringData String;
@@ -194,6 +194,20 @@ StringData only_string(StringData in)
 {
     return in;
 }
+
+template<class T, class U>
+T no_timestamp(U in)
+{
+    return static_cast<T>(util::unwrap(in));
+}
+
+template<class T>
+int no_timestamp(const Timestamp&)
+{
+    REALM_ASSERT(false);
+    return 0;
+}
+
 
 } // anonymous namespace
 
@@ -275,6 +289,7 @@ struct ValueBase
 {
     static const size_t default_size = 8;
     virtual void export_bool(ValueBase& destination) const = 0;
+    virtual void export_Timestamp(ValueBase& destination) const = 0;
     virtual void export_int(ValueBase& destination) const = 0;
     virtual void export_float(ValueBase& destination) const = 0;
     virtual void export_int64_t(ValueBase& destination) const = 0;
@@ -324,8 +339,8 @@ public:
     // When the user constructs a query, it always "belongs" to one single base/parent table (regardless of
     // any links or not and regardless of any queries assembled with || or &&). When you do a Query::find(),
     // then Query::m_table is set to this table, and set_base_table() is called on all Columns and LinkMaps in
-    // the query expression tree so that they can set/update their internals as required. 
-    // 
+    // the query expression tree so that they can set/update their internals as required.
+    //
     // During thread-handover of a Query, set_base_table() is also called to make objects point at the new table
     // instead of the old one from the old thread.
     virtual void set_base_table(const Table*) {}
@@ -381,6 +396,7 @@ Query create(L left, const Subexpr2<R>& right)
         ((std::numeric_limits<L>::is_integer && std::numeric_limits<L>::is_integer) ||
         (std::is_same<L, double>::value && std::is_same<R, double>::value) ||
         (std::is_same<L, float>::value && std::is_same<R, float>::value) ||
+        (std::is_same<L, Timestamp>::value && std::is_same<R, Timestamp>::value) ||
         (std::is_same<L, StringData>::value && std::is_same<R, StringData>::value) ||
         (std::is_same<L, BinaryData>::value && std::is_same<R, BinaryData>::value))
         &&
@@ -440,7 +456,7 @@ Query create(L left, const Subexpr2<R>& right)
 // left-hand-side       operator                              right-hand-side
 // Subexpr2<L>          +, -, *, /, <, >, ==, !=, <=, >=      R, Subexpr2<R>
 //
-// For L = R = {int, int64_t, float, double, StringData}:
+// For L = R = {int, int64_t, float, double, StringData, Timestamp}:
 template<class L, class R>
 class Overloads
 {
@@ -530,12 +546,12 @@ public:
 
         // query_engine supports 'T-column <op> <T-column>' for T = {int64_t, float, double}, op = {<, >, ==, !=, <=, >=},
         // but only if both columns are non-nullable, and aren't in linked tables.
-        if (left_col && right_col && std::is_same<L, R>::value && !left_col->m_nullable && !right_col->m_nullable
-            && !left_col->links_exist() && !right_col->links_exist()) {
+        if (left_col && right_col && std::is_same<L, R>::value && !left_col->is_nullable() && !right_col->is_nullable()
+            && !left_col->links_exist() && !right_col->links_exist() && !std::is_same<L, Timestamp>::value) {
             const Table* t = left_col->get_base_table();
             Query q = Query(*t);
 
-            if (std::numeric_limits<L>::is_integer || std::is_same<L, DateTime>::value) {
+            if (std::numeric_limits<L>::is_integer || std::is_same<L, OldDateTime>::value) {
                 if (std::is_same<Cond, Less>::value)
                     q.less_int(left_col->m_column, right_col->m_column);
                 else if (std::is_same<Cond, Greater>::value)
@@ -632,13 +648,13 @@ public:
 template<class T>
 class Subexpr2 : public Subexpr, public Overloads<T, const char*>, public Overloads<T, int>, public
 Overloads<T, float>, public Overloads<T, double>, public Overloads<T, int64_t>, public Overloads<T, StringData>,
-public Overloads<T, bool>, public Overloads<T, DateTime>, public Overloads<T, null>
+public Overloads<T, bool>, public Overloads<T, Timestamp>, public Overloads<T, OldDateTime>, public Overloads<T, null>
 {
 public:
     virtual ~Subexpr2() {};
 
 #define RLM_U2(t, o) using Overloads<T, t>::operator o;
-#define RLM_U(o) RLM_U2(int, o) RLM_U2(float, o) RLM_U2(double, o) RLM_U2(int64_t, o) RLM_U2(StringData, o) RLM_U2(bool, o) RLM_U2(DateTime, o) RLM_U2(null, o)
+#define RLM_U(o) RLM_U2(int, o) RLM_U2(float, o) RLM_U2(double, o) RLM_U2(int64_t, o) RLM_U2(StringData, o) RLM_U2(bool, o) RLM_U2(OldDateTime, o) RLM_U2(Timestamp, o) RLM_U2(null, o)
     RLM_U(+) RLM_U(-) RLM_U(*) RLM_U(/ ) RLM_U(> ) RLM_U(< ) RLM_U(== ) RLM_U(!= ) RLM_U(>= ) RLM_U(<= )
 };
 
@@ -650,7 +666,7 @@ class Subexpr2<Link> : public Subexpr
 
 
 /*
-This class is used to store N values of type T = {int64_t, bool, DateTime or StringData}, and allows an entry
+This class is used to store N values of type T = {int64_t, bool, OldDateTime or StringData}, and allows an entry
 to be null too. It's used by the Value class for internal storage.
 
 To indicate nulls, we could have chosen a separate bool vector or some other bitmask construction. But for
@@ -727,7 +743,9 @@ struct NullableVector
         m_first[index] = m_null;
     }
 
-    inline void set(size_t index, t_storage value)
+    template <typename Type = t_storage>
+    typename std::enable_if<std::is_same<Type, int64_t>::value, void>::type
+    set(size_t index, t_storage value)
     {
         REALM_ASSERT((std::is_same<t_storage, int64_t>::value));
 
@@ -742,6 +760,14 @@ struct NullableVector
         m_first[index] = value;
     }
 
+    template <typename Type = T>
+    typename std::enable_if<realm::is_any<Type, float, double, OldDateTime, BinaryData, StringData, RowIndex, Timestamp, null>::value,
+                            void>::type
+    set(size_t index, t_storage value) {
+        m_first[index] = value;
+    }
+
+
     inline util::Optional<T> get(size_t index) const
     {
         if (is_null(index))
@@ -752,10 +778,13 @@ struct NullableVector
 
     inline void set(size_t index, util::Optional<Underlying> value)
     {
-        if (value)
-            set(index, *value);
-        else
+        if (value) {
+            Underlying v = *value;
+            set(index, v);
+        }
+        else {
             set_null(index);
+        }
     }
 
     void fill(T value)
@@ -808,12 +837,6 @@ struct NullableVector
 // Double
 // NOTE: fails in gcc 4.8 without `inline`. Do not remove. Same applies for all methods below.
 template<>
-inline void NullableVector<double>::set(size_t index, double value)
-{
-    m_first[index] = value;
-}
-
-template<>
 inline bool NullableVector<double>::is_null(size_t index) const
 {
     return null::is_null_float(m_first[index]);
@@ -838,11 +861,6 @@ inline void NullableVector<float>::set_null(size_t index)
     m_first[index] = null::get_null_float<float>();
 }
 
-template<>
-inline void NullableVector<float>::set(size_t index, float value)
-{
-    m_first[index] = value;
-}
 
 // Null
 template<>
@@ -855,36 +873,24 @@ inline bool NullableVector<null>::is_null(size_t) const
 {
     return true;
 }
+
+
+// OldDateTime
 template<>
-inline void NullableVector<null>::set(size_t, null)
+inline bool NullableVector<OldDateTime>::is_null(size_t index) const
 {
+    return m_first[index].get_olddatetime() == m_null;
 }
 
-// DateTime
-template<>
-inline bool NullableVector<DateTime>::is_null(size_t index) const
-{
-    return m_first[index].get_datetime() == m_null;
-}
 
 template<>
-inline void NullableVector<DateTime>::set(size_t index, DateTime value)
-{
-    m_first[index] = value;
-}
-
-template<>
-inline void NullableVector<DateTime>::set_null(size_t index)
+inline void NullableVector<OldDateTime>::set_null(size_t index)
 {
     m_first[index] = m_null;
 }
 
 // StringData
-template<>
-inline void NullableVector<StringData>::set(size_t index, StringData value)
-{
-    m_first[index] = value;
-}
+
 template<>
 inline bool NullableVector<StringData>::is_null(size_t index) const
 {
@@ -898,11 +904,7 @@ inline void NullableVector<StringData>::set_null(size_t index)
 }
 
 // BinaryData
-template<>
-inline void NullableVector<BinaryData>::set(size_t index, BinaryData value)
-{
-    m_first[index] = value;
-}
+
 template<>
 inline bool NullableVector<BinaryData>::is_null(size_t index) const
 {
@@ -917,12 +919,6 @@ inline void NullableVector<BinaryData>::set_null(size_t index)
 
 // RowIndex
 template<>
-inline void NullableVector<RowIndex>::set(size_t index, RowIndex value)
-{
-    m_first[index] = value;
-}
-
-template<>
 inline bool NullableVector<RowIndex>::is_null(size_t index) const
 {
     return m_first[index].is_null();
@@ -931,6 +927,21 @@ template<>
 inline void NullableVector<RowIndex>::set_null(size_t index)
 {
     m_first[index] = RowIndex();
+}
+
+
+// Timestamp
+
+template<>
+inline bool NullableVector<Timestamp>::is_null(size_t index) const
+{
+    return m_first[index].is_null();
+}
+
+template<>
+inline void NullableVector<Timestamp>::set_null(size_t index)
+{
+    m_first[index] = Timestamp(null{});
 }
 
 
@@ -1075,6 +1086,11 @@ public:
         REALM_ASSERT_DEBUG(false);
     }
 
+    REALM_FORCEINLINE void export_Timestamp(ValueBase& destination) const override
+    {
+        export2<Timestamp>(destination);
+    }
+
     REALM_FORCEINLINE void export_bool(ValueBase& destination) const override
     {
         export2<bool>(destination);
@@ -1121,13 +1137,15 @@ public:
     {
         if (std::is_same<T, int>::value)
             source.export_int(*this);
+        else if (std::is_same<T, Timestamp>::value)
+            source.export_Timestamp(*this);
         else if (std::is_same<T, bool>::value)
             source.export_bool(*this);
         else if (std::is_same<T, float>::value)
             source.export_float(*this);
         else if (std::is_same<T, double>::value)
             source.export_double(*this);
-        else if (std::is_same<T, int64_t>::value || std::is_same<T, bool>::value ||  std::is_same<T, DateTime>::value)
+        else if (std::is_same<T, int64_t>::value || std::is_same<T, bool>::value ||  std::is_same<T, OldDateTime>::value)
             source.export_int64_t(*this);
         else if (std::is_same<T, StringData>::value)
             source.export_StringData(*this);
@@ -1217,7 +1235,7 @@ private:
 // left-hand-side       operator                              right-hand-side
 // L                    +, -, *, /, <, >, ==, !=, <=, >=      Subexpr2<R>
 //
-// For L = R = {int, int64_t, float, double}:
+// For L = R = {int, int64_t, float, double, Timestamp}:
 // Compare numeric values
 template<class R>
 Query operator > (double left, const Subexpr2<R>& right) {
@@ -1236,6 +1254,11 @@ Query operator > (int64_t left, const Subexpr2<R>& right) {
     return create<int64_t, Greater, R>(left, right);
 }
 template<class R>
+Query operator > (Timestamp left, const Subexpr2<R>& right) {
+    return create<Timestamp, Greater, R>(left, right);
+}
+
+template<class R>
 Query operator < (double left, const Subexpr2<R>& right) {
     return create<float, Less, R>(left, right);
 }
@@ -1250,6 +1273,10 @@ Query operator < (int left, const Subexpr2<R>& right) {
 template<class R>
 Query operator < (int64_t left, const Subexpr2<R>& right) {
     return create<int64_t, Less, R>(left, right);
+}
+template<class R>
+Query operator < (Timestamp left, const Subexpr2<R>& right) {
+    return create<Timestamp, Less, R>(left, right);
 }
 template<class R>
 Query operator == (double left, const Subexpr2<R>& right) {
@@ -1268,6 +1295,10 @@ Query operator == (int64_t left, const Subexpr2<R>& right) {
     return create<int64_t, Equal, R>(left, right);
 }
 template<class R>
+Query operator == (Timestamp left, const Subexpr2<R>& right) {
+    return create<Timestamp, Equal, R>(left, right);
+}
+template<class R>
 Query operator >= (double left, const Subexpr2<R>& right) {
     return create<double, GreaterEqual, R>(left, right);
 }
@@ -1282,6 +1313,10 @@ Query operator >= (int left, const Subexpr2<R>& right) {
 template<class R>
 Query operator >= (int64_t left, const Subexpr2<R>& right) {
     return create<int64_t, GreaterEqual, R>(left, right);
+}
+template<class R>
+Query operator >= (Timestamp left, const Subexpr2<R>& right) {
+    return create<Timestamp, GreaterEqual, R>(left, right);
 }
 template<class R>
 Query operator <= (double left, const Subexpr2<R>& right) {
@@ -1300,6 +1335,10 @@ Query operator <= (int64_t left, const Subexpr2<R>& right) {
     return create<int64_t, LessEqual, R>(left, right);
 }
 template<class R>
+Query operator <= (Timestamp left, const Subexpr2<R>& right) {
+    return create<Timestamp, LessEqual, R>(left, right);
+}
+template<class R>
 Query operator != (double left, const Subexpr2<R>& right) {
     return create<double, NotEqual, R>(left, right);
 }
@@ -1314,6 +1353,10 @@ Query operator != (int left, const Subexpr2<R>& right) {
 template<class R>
 Query operator != (int64_t left, const Subexpr2<R>& right) {
     return create<int64_t, NotEqual, R>(left, right);
+}
+template<class R>
+Query operator != (Timestamp left, const Subexpr2<R>& right) {
+    return create<Timestamp, NotEqual, R>(left, right);
 }
 
 // Arithmetic
@@ -1623,24 +1666,25 @@ Value<T> make_value_for_link(bool only_unary_links, size_t size)
     return value;
 }
 
-// Handling of String columns. These support only == and != compare operators. No 'arithmetic' operators (+, etc).
-template <> class Columns<StringData> : public Subexpr2<StringData>
-{
+
+// If we add a new Realm type T and quickly want Query support for it, then simply inherit from it like
+// `template <> class Columns<T> : public SimpleQuerySupport<T>` and you're done. Any operators of the set
+// { ==, >=, <=, !=, >, < } that are supported by T will be supported by the "query expression syntax"
+// automatically. NOTE: This method of Query support will be slow because it goes through Table::get<T>.
+// To get faster Query support, either add SequentialGetter support (faster) or create a query_engine.hpp
+// node for it (super fast).
+
+template <class T>
+class SimpleQuerySupport : public Subexpr2<T> {
 public:
-    Columns(size_t column, const Table* table, const std::vector<size_t>& links={}):
-        m_link_map(table, links), m_column(column)
+    SimpleQuerySupport(size_t column, const Table* table, const std::vector<size_t>& links = {}) :
+        m_column(column), m_link_map(table, links)
     {
-        REALM_ASSERT_3(m_link_map.target_table()->get_column_type(column), ==, type_String);
     }
 
-    void set_base_table(const Table* table) override
+    bool is_nullable() const noexcept
     {
-        m_link_map.set_base_table(table);
-    }
-
-    std::unique_ptr<Subexpr> clone(QueryNodeHandoverPatches* = nullptr) const override
-    {
-        return make_subexpr<Columns<StringData>>(*this);
+        return m_link_map.base_table()->is_nullable(m_column);
     }
 
     const Table* get_base_table() const override
@@ -1648,17 +1692,22 @@ public:
         return m_link_map.base_table();
     }
 
+    void set_base_table(const Table* table) override
+    {
+        m_link_map.set_base_table(table);
+    }
+
     void evaluate(size_t index, ValueBase& destination) override
     {
-        Value<StringData>& d = static_cast<Value<StringData>&>(destination);
+        Value<T>& d = static_cast<Value<T>&>(destination);
 
         if (links_exist()) {
             std::vector<size_t> links = m_link_map.get_links(index);
-            Value<StringData> v = make_value_for_link<StringData>(m_link_map.only_unary_links(), links.size());
+            Value<T> v = make_value_for_link<T>(m_link_map.only_unary_links(), links.size());
 
             for (size_t t = 0; t < links.size(); t++) {
                 size_t link_to = links[t];
-                v.m_storage.set(t, m_link_map.target_table()->get_string(m_column, link_to));
+                v.m_storage.set(t, m_link_map.target_table()->template get<T>(m_column, link_to));
             }
             destination.import(v);
         }
@@ -1666,9 +1715,48 @@ public:
             // Not a link column
             const Table* target_table = m_link_map.target_table();
             for (size_t t = 0; t < destination.m_values && index + t < target_table->size(); t++) {
-                d.m_storage.set(t, target_table->get_string(m_column, index + t));
+                d.m_storage.set(t, target_table->get<T>(m_column, index + t));
             }
         }
+    }
+
+    bool links_exist() const
+    {
+        return m_link_map.m_link_columns.size() > 0;
+    }
+
+    // Column index of payload column of m_table
+    size_t m_column;
+    LinkMap m_link_map;
+};
+
+
+template <>
+class Columns<Timestamp> : public SimpleQuerySupport<Timestamp> {
+    using SimpleQuerySupport::SimpleQuerySupport;
+    std::unique_ptr<Subexpr> clone(QueryNodeHandoverPatches*) const override
+    {
+        return make_subexpr<Columns<Timestamp>>(*this);
+    }
+};
+
+template <>
+class Columns<BinaryData> : public SimpleQuerySupport<BinaryData> {
+    using SimpleQuerySupport::SimpleQuerySupport;
+    std::unique_ptr<Subexpr> clone(QueryNodeHandoverPatches*) const override
+    {
+        return make_subexpr<Columns<BinaryData>>(*this);
+    }
+};
+
+
+template <>
+class Columns<StringData> : public SimpleQuerySupport<StringData> {
+public:
+    using SimpleQuerySupport::SimpleQuerySupport;
+    std::unique_ptr<Subexpr> clone(QueryNodeHandoverPatches* = nullptr) const override
+    {
+        return make_subexpr<Columns<StringData>>(*this);
     }
 
     Query equal(StringData sd, bool case_sensitive = true)
@@ -1720,16 +1808,6 @@ public:
     {
         return string_compare<Contains, ContainsIns>(*this, col, case_sensitive);
     }
-
-    bool links_exist() const
-    {
-        return m_link_map.m_link_columns.size() > 0;
-    }
-
-    LinkMap m_link_map;
-
-    // Column index of payload column of m_table
-    size_t m_column;
 };
 
 
@@ -1787,66 +1865,6 @@ Query operator != (const Columns<StringData>& left, T right) {
 }
 
 
-// Handling of BinaryData columns. These support only == and != compare operators. No 'arithmetic' operators (+, etc).
-//
-// FIXME: See if we can merge it with Columns<StringData> because they are very similiar
-template <> class Columns<BinaryData> : public Subexpr2<BinaryData>
-{
-public:
-    Columns(size_t column, const Table* table, const std::vector<size_t>& links={}) :
-        m_column(column), m_link_map(table, links)
-    {
-        REALM_ASSERT_3(m_link_map.target_table()->get_column_type(column), == , type_Binary);
-    }
-
-    std::unique_ptr<Subexpr> clone(QueryNodeHandoverPatches*) const override
-    {
-        return make_subexpr<Columns<BinaryData>>(*this);
-    }
-
-    const Table* get_base_table() const override
-    {
-        return m_link_map.base_table();
-    }
-
-    void set_base_table(const Table* table) override
-    {
-        m_link_map.set_base_table(table);
-    }
-
-    virtual void evaluate(size_t index, ValueBase& destination) override
-    {
-        Value<BinaryData>& d = static_cast<Value<BinaryData>&>(destination);
-
-        if (links_exist()) {
-            std::vector<size_t> links = m_link_map.get_links(index);
-            Value<BinaryData> v = make_value_for_link<BinaryData>(m_link_map.only_unary_links(), links.size());
-
-            for (size_t t = 0; t < links.size(); t++) {
-                size_t link_to = links[t];
-                v.m_storage.set(t, m_link_map.target_table()->get_binary(m_column, link_to));
-            }
-            destination.import(v);
-        }
-        else {
-            // Not a link column
-            const Table* target_table = m_link_map.target_table();
-            for (size_t t = 0; t < destination.m_values && index + t < target_table->size(); t++) {
-                d.m_storage.set(t, target_table->get_binary(m_column, index + t));
-            }
-        }
-    }
-
-    bool links_exist() const
-    {
-        return m_link_map.m_link_columns.size() > 0;
-    }
-
-    // Column index of payload column of m_table
-    size_t m_column;
-
-    LinkMap m_link_map;
-};
 
 inline Query operator==(const Columns<BinaryData>& left, BinaryData right) {
     return create<BinaryData, Equal, BinaryData>(right, left);
@@ -2255,6 +2273,11 @@ public:
         return m_link_map.m_link_columns.size() > 0;
     }
 
+    bool is_nullable() const
+    {
+        return m_nullable;
+    }
+
     LinkMap m_link_map;
 
     // Fast (leaf caching) value getter for payload column (column in table on which query condition is executed)
@@ -2263,6 +2286,7 @@ public:
     // Column index of payload column of m_table
     size_t m_column;
 
+private:
     // set to false by default for stand-alone Columns declaration that are not yet associated with any table
     // or oclumn. Call init() to update it or use a constructor that takes table + column index as argument.
     bool m_nullable = false;

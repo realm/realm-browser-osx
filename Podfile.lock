@@ -16,8 +16,18 @@ PODS:
 
 DEPENDENCIES:
   - AppSandboxFileAccess
-  - Realm
+  - Realm (from `https://github.com/realm/realm-cocoa.git`, branch `tg/timestamp`)
   - RealmConverter
+
+EXTERNAL SOURCES:
+  Realm:
+    :branch: tg/timestamp
+    :git: https://github.com/realm/realm-cocoa.git
+
+CHECKOUT OPTIONS:
+  Realm:
+    :commit: 7ba5f3563492579f3df871ce5423f5336214c596
+    :git: https://github.com/realm/realm-cocoa.git
 
 SPEC CHECKSUMS:
   AppSandboxFileAccess: f3e10b0ba10bbaa6dc6996639ff47836050329c5

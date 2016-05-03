@@ -181,7 +181,7 @@ public:
 
     // Tells if the table that this TableView points at still exists or has been deleted.
     bool is_attached() const noexcept;
-    
+
     bool is_row_attached(size_t row_ndx) const noexcept;
     size_t size() const noexcept;
     size_t num_attached_rows() const noexcept;
@@ -202,14 +202,15 @@ public:
     // Getting values
     int64_t     get_int(size_t column_ndx, size_t row_ndx) const noexcept;
     bool        get_bool(size_t column_ndx, size_t row_ndx) const noexcept;
-    DateTime    get_datetime(size_t column_ndx, size_t row_ndx) const noexcept;
+    OldDateTime get_olddatetime(size_t column_ndx, size_t row_ndx) const noexcept;
+    Timestamp   get_timestamp(size_t column_ndx, size_t row_ndx) const noexcept;
     float       get_float(size_t column_ndx, size_t row_ndx) const noexcept;
     double      get_double(size_t column_ndx, size_t row_ndx) const noexcept;
     StringData  get_string(size_t column_ndx, size_t row_ndx) const noexcept;
     BinaryData  get_binary(size_t column_ndx, size_t row_ndx) const noexcept;
     Mixed       get_mixed(size_t column_ndx, size_t row_ndx) const noexcept;
     DataType    get_mixed_type(size_t column_ndx, size_t row_ndx) const noexcept;
-    size_t get_link(size_t column_ndx, size_t row_ndx) const noexcept;
+    size_t      get_link(size_t column_ndx, size_t row_ndx) const noexcept;
 
     // Links
     bool is_null_link(size_t column_ndx, size_t row_ndx) const noexcept;
@@ -220,7 +221,7 @@ public:
     // Searching (Int and String)
     size_t find_first_int(size_t column_ndx, int64_t value) const;
     size_t find_first_bool(size_t column_ndx, bool value) const;
-    size_t find_first_datetime(size_t column_ndx, DateTime value) const;
+    size_t find_first_olddatetime(size_t column_ndx, OldDateTime value) const;
     size_t find_first_float(size_t column_ndx, float value) const;
     size_t find_first_double(size_t column_ndx, double value) const;
     size_t find_first_string(size_t column_ndx, StringData value) const;
@@ -251,8 +252,12 @@ public:
     double average_double(size_t column_ndx, size_t* value_count = nullptr) const;
     size_t count_double(size_t column_ndx, double target) const;
 
-    DateTime maximum_datetime(size_t column_ndx, size_t* return_ndx = nullptr) const;
-    DateTime minimum_datetime(size_t column_ndx, size_t* return_ndx = nullptr) const;
+    OldDateTime maximum_olddatetime(size_t column_ndx, size_t* return_ndx = nullptr) const;
+    OldDateTime minimum_olddatetime(size_t column_ndx, size_t* return_ndx = nullptr) const;
+
+    Timestamp minimum_timestamp(size_t column_ndx, size_t* return_ndx = nullptr) const;
+    Timestamp maximum_timestamp(size_t column_ndx, size_t* return_ndx = nullptr) const;
+    size_t count_timestamp(size_t column_ndx, Timestamp target) const;
 
     void apply_same_order(TableViewBase& order);
 
@@ -311,7 +316,7 @@ public:
     // Sort m_row_indexes according to multiple columns
     void sort(std::vector<size_t> columns, std::vector<bool> ascending);
 
-    // Remove rows that are duplicated with respect to the column set passed as argument. 
+    // Remove rows that are duplicated with respect to the column set passed as argument.
     // distinct() will preserve the original order of the row pointers, also if the order is a result of sort()
     // If two rows are indentical (for the given set of distinct-columns), then the last row is removed.
     // You can call sync_if_needed() to update the distinct view, just like you can for a sorted view.
@@ -450,6 +455,9 @@ protected:
 private:
     void detach() const noexcept; // may have to remove const
     size_t find_first_integer(size_t column_ndx, int64_t value) const;
+    template<class oper>
+    Timestamp minmax_timestamp(size_t column_ndx, size_t* return_ndx) const;
+
     friend class Table;
     friend class Query;
     friend class SharedGroup;
@@ -512,7 +520,8 @@ public:
     // Setting values
     void set_int(size_t column_ndx, size_t row_ndx, int64_t value);
     void set_bool(size_t column_ndx, size_t row_ndx, bool value);
-    void set_datetime(size_t column_ndx, size_t row_ndx, DateTime value);
+    void set_olddatetime(size_t column_ndx, size_t row_ndx, OldDateTime value);
+    void set_timestamp(size_t column_ndx, size_t row_ndx, Timestamp value);
     template<class E>
     void set_enum(size_t column_ndx, size_t row_ndx, E value);
     void set_float(size_t column_ndx, size_t row_ndx, float value);
@@ -567,8 +576,8 @@ public:
     ConstTableView  find_all_int(size_t column_ndx, int64_t value) const;
     TableView       find_all_bool(size_t column_ndx, bool value);
     ConstTableView  find_all_bool(size_t column_ndx, bool value) const;
-    TableView       find_all_datetime(size_t column_ndx, DateTime value);
-    ConstTableView  find_all_datetime(size_t column_ndx, DateTime value) const;
+    TableView       find_all_olddatetime(size_t column_ndx, OldDateTime value);
+    ConstTableView  find_all_olddatetime(size_t column_ndx, OldDateTime value) const;
     TableView       find_all_float(size_t column_ndx, float value);
     ConstTableView  find_all_float(size_t column_ndx, float value) const;
     TableView       find_all_double(size_t column_ndx, double value);
@@ -689,7 +698,7 @@ public:
     // Searching (Int and String)
     ConstTableView find_all_int(size_t column_ndx, int64_t value) const;
     ConstTableView find_all_bool(size_t column_ndx, bool value) const;
-    ConstTableView find_all_datetime(size_t column_ndx, DateTime value) const;
+    ConstTableView find_all_olddatetime(size_t column_ndx, OldDateTime value) const;
     ConstTableView find_all_float(size_t column_ndx, float value) const;
     ConstTableView find_all_double(size_t column_ndx, double value) const;
     ConstTableView find_all_string(size_t column_ndx, StringData value) const;
@@ -890,8 +899,8 @@ inline TableViewBase::TableViewBase(const TableViewBase& tv):
 
 inline TableViewBase::TableViewBase(TableViewBase&& tv) noexcept:
     RowIndexes(std::move(tv.m_row_indexes)),
-    m_table(move(tv.m_table)),
-    m_linked_table(move(tv.m_linked_table)),
+    m_table(std::move(tv.m_table)),
+    m_linked_table(std::move(tv.m_linked_table)),
     m_linked_column(tv.m_linked_column),
     m_linked_row(tv.m_linked_row),
     m_linkview_source(std::move(tv.m_linkview_source)),
@@ -925,7 +934,7 @@ inline TableViewBase& TableViewBase::operator=(TableViewBase&& tv) noexcept
 {
     if (m_table)
         m_table->unregister_view(this);
-    m_table = move(tv.m_table);
+    m_table = std::move(tv.m_table);
     if (m_table)
         m_table->move_registered_view(&tv, this);
 
@@ -950,30 +959,36 @@ inline TableViewBase& TableViewBase::operator=(TableViewBase&& tv) noexcept
 
 #define REALM_ASSERT_COLUMN(column_ndx)                                   \
     REALM_ASSERT(m_table);                                                \
-    REALM_ASSERT(column_ndx < m_table->get_column_count());
+    REALM_ASSERT(column_ndx < m_table->get_column_count())
 
 #define REALM_ASSERT_ROW(row_ndx)                                         \
     REALM_ASSERT(m_table);                                                \
-    REALM_ASSERT(row_ndx < m_row_indexes.size());
+    REALM_ASSERT(row_ndx < m_row_indexes.size())
 
 #define REALM_ASSERT_COLUMN_AND_TYPE(column_ndx, column_type)             \
-    REALM_ASSERT_COLUMN(column_ndx)                                       \
+    REALM_ASSERT_COLUMN(column_ndx);                                      \
+    REALM_DIAG_PUSH();                                                    \
+    REALM_DIAG_IGNORE_TAUTOLOGICAL_COMPARE();                             \
     REALM_ASSERT(m_table->get_column_type(column_ndx) == column_type ||   \
-                  (m_table->get_column_type(column_ndx) == type_DateTime && column_type == type_Int));
+                  (m_table->get_column_type(column_ndx) == type_OldDateTime && column_type == type_Int)); \
+    REALM_DIAG_POP()
 
 #define REALM_ASSERT_INDEX(column_ndx, row_ndx)                           \
-    REALM_ASSERT_COLUMN(column_ndx)                                       \
-    REALM_ASSERT(row_ndx < m_row_indexes.size());
+    REALM_ASSERT_COLUMN(column_ndx);                                       \
+    REALM_ASSERT(row_ndx < m_row_indexes.size())
 
 #define REALM_ASSERT_INDEX_AND_TYPE(column_ndx, row_ndx, column_type)     \
-    REALM_ASSERT_COLUMN_AND_TYPE(column_ndx, column_type)                 \
-    REALM_ASSERT(row_ndx < m_row_indexes.size());
+    REALM_ASSERT_COLUMN_AND_TYPE(column_ndx, column_type);                 \
+    REALM_ASSERT(row_ndx < m_row_indexes.size())
 
 #define REALM_ASSERT_INDEX_AND_TYPE_TABLE_OR_MIXED(column_ndx, row_ndx)   \
-    REALM_ASSERT_COLUMN(column_ndx)                                       \
+    REALM_ASSERT_COLUMN(column_ndx);                                      \
+    REALM_DIAG_PUSH();                                                    \
+    REALM_DIAG_IGNORE_TAUTOLOGICAL_COMPARE();                             \
     REALM_ASSERT(m_table->get_column_type(column_ndx) == type_Table ||    \
-                   (m_table->get_column_type(column_ndx) == type_Mixed));   \
-    REALM_ASSERT(row_ndx < m_row_indexes.size());
+                   (m_table->get_column_type(column_ndx) == type_Mixed)); \
+    REALM_DIAG_POP();                                                     \
+    REALM_ASSERT(row_ndx < m_row_indexes.size())
 
 // Column information
 
@@ -1028,13 +1043,22 @@ inline bool TableViewBase::get_bool(size_t column_ndx, size_t row_ndx) const noe
     return m_table->get_bool(column_ndx, real_ndx);
 }
 
-inline DateTime TableViewBase::get_datetime(size_t column_ndx, size_t row_ndx) const noexcept
+inline OldDateTime TableViewBase::get_olddatetime(size_t column_ndx, size_t row_ndx) const noexcept
 {
-    REALM_ASSERT_INDEX_AND_TYPE(column_ndx, row_ndx, type_DateTime);
+    REALM_ASSERT_INDEX_AND_TYPE(column_ndx, row_ndx, type_OldDateTime);
 
     const size_t real_ndx = size_t(m_row_indexes.get(row_ndx));
     REALM_ASSERT(real_ndx != detached_ref);
-    return m_table->get_datetime(column_ndx, real_ndx);
+    return m_table->get_olddatetime(column_ndx, real_ndx);
+}
+
+inline Timestamp TableViewBase::get_timestamp(size_t column_ndx, size_t row_ndx) const noexcept
+{
+    REALM_ASSERT_INDEX_AND_TYPE(column_ndx, row_ndx, type_Timestamp);
+
+    const size_t real_ndx = size_t(m_row_indexes.get(row_ndx));
+    REALM_ASSERT(real_ndx != detached_ref);
+    return m_table->get_timestamp(column_ndx, real_ndx);
 }
 
 inline float TableViewBase::get_float(size_t column_ndx, size_t row_ndx) const noexcept
@@ -1149,10 +1173,10 @@ inline size_t TableViewBase::find_first_bool(size_t column_ndx, bool value) cons
     return find_first_integer(column_ndx, value ? 1 : 0);
 }
 
-inline size_t TableViewBase::find_first_datetime(size_t column_ndx, DateTime value) const
+inline size_t TableViewBase::find_first_olddatetime(size_t column_ndx, OldDateTime value) const
 {
-    REALM_ASSERT_COLUMN_AND_TYPE(column_ndx, type_DateTime);
-    return find_first_integer(column_ndx, int64_t(value.get_datetime()));
+    REALM_ASSERT_COLUMN_AND_TYPE(column_ndx, type_OldDateTime);
+    return find_first_integer(column_ndx, int64_t(value.get_olddatetime()));
 }
 
 
@@ -1346,10 +1370,10 @@ inline TableView TableView::find_all_bool(size_t column_ndx, bool value)
     return find_all_integer(column_ndx, value ? 1 : 0);
 }
 
-inline TableView TableView::find_all_datetime(size_t column_ndx, DateTime value)
+inline TableView TableView::find_all_olddatetime(size_t column_ndx, OldDateTime value)
 {
-    REALM_ASSERT_COLUMN_AND_TYPE(column_ndx, type_DateTime);
-    return find_all_integer(column_ndx, int64_t(value.get_datetime()));
+    REALM_ASSERT_COLUMN_AND_TYPE(column_ndx, type_OldDateTime);
+    return find_all_integer(column_ndx, int64_t(value.get_olddatetime()));
 }
 
 
@@ -1365,10 +1389,10 @@ inline ConstTableView TableView::find_all_bool(size_t column_ndx, bool value) co
     return find_all_integer(column_ndx, value ? 1 : 0);
 }
 
-inline ConstTableView TableView::find_all_datetime(size_t column_ndx, DateTime value) const
+inline ConstTableView TableView::find_all_olddatetime(size_t column_ndx, OldDateTime value) const
 {
-    REALM_ASSERT_COLUMN_AND_TYPE(column_ndx, type_DateTime);
-    return find_all_integer(column_ndx, int64_t(value.get_datetime()));
+    REALM_ASSERT_COLUMN_AND_TYPE(column_ndx, type_OldDateTime);
+    return find_all_integer(column_ndx, int64_t(value.get_olddatetime()));
 }
 
 
@@ -1384,10 +1408,10 @@ inline ConstTableView ConstTableView::find_all_bool(size_t column_ndx, bool valu
     return find_all_integer(column_ndx, value ? 1 : 0);
 }
 
-inline ConstTableView ConstTableView::find_all_datetime(size_t column_ndx, DateTime value) const
+inline ConstTableView ConstTableView::find_all_olddatetime(size_t column_ndx, OldDateTime value) const
 {
-    REALM_ASSERT_COLUMN_AND_TYPE(column_ndx, type_DateTime);
-    return find_all_integer(column_ndx, int64_t(value.get_datetime()));
+    REALM_ASSERT_COLUMN_AND_TYPE(column_ndx, type_OldDateTime);
+    return find_all_integer(column_ndx, int64_t(value.get_olddatetime()));
 }
 
 
@@ -1529,13 +1553,22 @@ inline void TableView::set_bool(size_t column_ndx, size_t row_ndx, bool value)
     m_table->set_bool(column_ndx, real_ndx, value);
 }
 
-inline void TableView::set_datetime(size_t column_ndx, size_t row_ndx, DateTime value)
+inline void TableView::set_olddatetime(size_t column_ndx, size_t row_ndx, OldDateTime value)
 {
-    REALM_ASSERT_INDEX_AND_TYPE(column_ndx, row_ndx, type_DateTime);
+    REALM_ASSERT_INDEX_AND_TYPE(column_ndx, row_ndx, type_OldDateTime);
 
     const size_t real_ndx = size_t(m_row_indexes.get(row_ndx));
     REALM_ASSERT(real_ndx != detached_ref);
-    m_table->set_datetime(column_ndx, real_ndx, value);
+    m_table->set_olddatetime(column_ndx, real_ndx, value);
+}
+
+inline void TableView::set_timestamp(size_t column_ndx, size_t row_ndx, Timestamp value)
+{
+    REALM_ASSERT_INDEX_AND_TYPE(column_ndx, row_ndx, type_Timestamp);
+
+    const size_t real_ndx = size_t(m_row_indexes.get(row_ndx));
+    REALM_ASSERT(real_ndx != detached_ref);
+    m_table->set_timestamp(column_ndx, real_ndx, value);
 }
 
 inline void TableView::set_float(size_t column_ndx, size_t row_ndx, float value)
