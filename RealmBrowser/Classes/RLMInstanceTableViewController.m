@@ -412,6 +412,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         case RLMPropertyTypeData:
         case RLMPropertyTypeAny:
         case RLMPropertyTypeDate:
+        case RLMPropertyTypeLinkingObjects:
         case RLMPropertyTypeString: {
             RLMBasicTableCellView *basicCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!basicCellView) {
@@ -675,6 +676,9 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         case RLMPropertyTypeObject: {
             return [NSNull null];
         }
+        
+        case RLMPropertyTypeLinkingObjects:
+            return [NSNull null];
     }
 }
 
@@ -983,6 +987,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         case RLMPropertyTypeBool:
         case RLMPropertyTypeData:
         case RLMPropertyTypeObject:
+        case RLMPropertyTypeLinkingObjects:
             break;
     }
     
@@ -1151,6 +1156,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         case RLMPropertyTypeBool:
         case RLMPropertyTypeData:
         case RLMPropertyTypeObject:
+        case RLMPropertyTypeLinkingObjects:
             // Do nothing
             break;
     }

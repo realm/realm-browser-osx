@@ -224,7 +224,7 @@ void RLMClearRealmCache();
     configuration.disableFormatUpgrade = YES;
     configuration.dynamic = YES;
     configuration.encryptionKey = self.encryptionKey;
-    configuration.path = _url;
+    configuration.fileURL = [NSURL fileURLWithPath:_url];
     [RLMRealm realmWithConfiguration:configuration error:&localError];
     
     if (localError && localError.code == RLMErrorFileFormatUpgradeRequired) {
@@ -240,7 +240,7 @@ void RLMClearRealmCache();
 {
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
     configuration.encryptionKey = self.encryptionKey;
-    configuration.path = _url;
+    configuration.fileURL = [NSURL fileURLWithPath:_url];
     configuration.dynamic = YES;
     configuration.customSchema = nil;
     

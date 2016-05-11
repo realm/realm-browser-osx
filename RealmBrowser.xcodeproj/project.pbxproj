@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		22013F731CCA1955000F79B5 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22FB99091CC8CB4F00411106 /* Realm.framework */; };
-		22013F741CCA1955000F79B5 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22FB99091CC8CB4F00411106 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22013F781CCA35D2000F79B5 /* RLMRealmFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 22013F771CCA35D2000F79B5 /* RLMRealmFileManager.m */; };
 		22068CFC1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 22068CFB1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m */; };
 		22096B2719911F7300233D77 /* RLMBadgeTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */; };
@@ -20,6 +18,8 @@
 		2223E65E1C0DBB5400C0B936 /* RLMSyncWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2223E65D1C0DBB5400C0B936 /* RLMSyncWindowController.m */; };
 		22265F261C6C493D00BE57FB /* SyncCredentialsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22265F241C6C493D00BE57FB /* SyncCredentialsView.xib */; };
 		22265F291C6C497600BE57FB /* RLMSyncCredentialsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22265F281C6C497600BE57FB /* RLMSyncCredentialsView.m */; };
+		2232C0DC1CE31625003C75A0 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2232C0DB1CE31625003C75A0 /* Realm.framework */; };
+		2232C0E01CE31B57003C75A0 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2232C0DB1CE31625003C75A0 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2249D9B219A62EBD00A31104 /* RLMTableColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 2249D9B119A62EBD00A31104 /* RLMTableColumn.m */; };
 		225443F519E3E6360045996B /* RLMTableHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 225443F419E3E6360045996B /* RLMTableHeaderCell.m */; };
 		22565D6719C1BCF400C8C8EC /* RLMLinkTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22565D6619C1BCF400C8C8EC /* RLMLinkTableCellView.m */; };
@@ -42,7 +42,6 @@
 		22DC87E81B9808790024BA34 /* RLMExportIndicatorWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22DC87E71B9808790024BA34 /* RLMExportIndicatorWindowController.xib */; };
 		22E4737219924CF700EEF7C9 /* RLMBasicTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E4737119924CF700EEF7C9 /* RLMBasicTableCellView.m */; };
 		22E473791992562400EEF7C9 /* RLMBoolTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E473781992562400EEF7C9 /* RLMBoolTableCellView.m */; };
-		22FB990A1CC8CB4F00411106 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22FB99091CC8CB4F00411106 /* Realm.framework */; };
 		22FB990D1CC8CB7100411106 /* realm-server-dbg-noinst in Resources */ = {isa = PBXBuildFile; fileRef = 22FB990B1CC8CB7100411106 /* realm-server-dbg-noinst */; };
 		22FB99151CC8CC4000411106 /* librealm-dbg.9.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 22FB990F1CC8CC4000411106 /* librealm-dbg.9.dylib */; };
 		22FB99161CC8CC4000411106 /* librealm-server-dbg.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 22FB99101CC8CC4000411106 /* librealm-server-dbg.1.dylib */; };
@@ -106,13 +105,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		22013F751CCA1956000F79B5 /* Embed Frameworks */ = {
+		2232C0E11CE31B57003C75A0 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				22013F741CCA1955000F79B5 /* Realm.framework in Embed Frameworks */,
+				2232C0E01CE31B57003C75A0 /* Realm.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -139,6 +138,7 @@
 		22265F251C6C493D00BE57FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SyncCredentialsView.xib; sourceTree = "<group>"; };
 		22265F271C6C497600BE57FB /* RLMSyncCredentialsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMSyncCredentialsView.h; path = Classes/RLMSyncCredentialsView.h; sourceTree = "<group>"; };
 		22265F281C6C497600BE57FB /* RLMSyncCredentialsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMSyncCredentialsView.m; path = Classes/RLMSyncCredentialsView.m; sourceTree = "<group>"; };
+		2232C0DB1CE31625003C75A0 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		2249D9B019A62EBD00A31104 /* RLMTableColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMTableColumn.h; path = Classes/RLMTableColumn.h; sourceTree = "<group>"; };
 		2249D9B119A62EBD00A31104 /* RLMTableColumn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMTableColumn.m; path = Classes/RLMTableColumn.m; sourceTree = "<group>"; };
 		225443F319E3E6360045996B /* RLMTableHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMTableHeaderCell.h; path = Classes/RLMTableHeaderCell.h; sourceTree = "<group>"; };
@@ -179,7 +179,6 @@
 		22E4737119924CF700EEF7C9 /* RLMBasicTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMBasicTableCellView.m; path = Classes/RLMBasicTableCellView.m; sourceTree = "<group>"; };
 		22E473771992562400EEF7C9 /* RLMBoolTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMBoolTableCellView.h; path = Classes/RLMBoolTableCellView.h; sourceTree = "<group>"; };
 		22E473781992562400EEF7C9 /* RLMBoolTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RLMBoolTableCellView.m; path = Classes/RLMBoolTableCellView.m; sourceTree = "<group>"; };
-		22FB99091CC8CB4F00411106 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		22FB990B1CC8CB7100411106 /* realm-server-dbg-noinst */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "realm-server-dbg-noinst"; sourceTree = "<group>"; };
 		22FB990F1CC8CC4000411106 /* librealm-dbg.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "librealm-dbg.9.dylib"; sourceTree = "<group>"; };
 		22FB99101CC8CC4000411106 /* librealm-server-dbg.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "librealm-server-dbg.1.dylib"; sourceTree = "<group>"; };
@@ -257,11 +256,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22FB990A1CC8CB4F00411106 /* Realm.framework in Frameworks */,
 				220A4F131C05A85D00A32787 /* libc++.tbd in Frameworks */,
 				84E0F9501921F3B900D6CA14 /* Cocoa.framework in Frameworks */,
 				97A7B4BEE251DA782A9A95BE /* Pods.framework in Frameworks */,
-				22013F731CCA1955000F79B5 /* Realm.framework in Frameworks */,
+				2232C0DC1CE31625003C75A0 /* Realm.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -509,7 +507,7 @@
 			children = (
 				22023AC31CBFE6FD00F469EE /* Sync */,
 				220A4F121C05A85D00A32787 /* libc++.tbd */,
-				22FB99091CC8CB4F00411106 /* Realm.framework */,
+				2232C0DB1CE31625003C75A0 /* Realm.framework */,
 				84E0F94F1921F3B900D6CA14 /* Cocoa.framework */,
 				84E0F9521921F3B900D6CA14 /* AppKit.framework */,
 				84E0F9541921F3B900D6CA14 /* Foundation.framework */,
@@ -596,7 +594,7 @@
 				84E0F9491921F3B900D6CA14 /* Frameworks */,
 				B470C1B2CD85792E8F9B1979 /* Embed Pods Frameworks */,
 				22013F711CCA1230000F79B5 /* CopyFiles */,
-				22013F751CCA1956000F79B5 /* Embed Frameworks */,
+				2232C0E11CE31B57003C75A0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -984,7 +982,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1030,7 +1028,6 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CFLAGS = "$(inherited)";
-				OTHER_CODE_SIGN_FLAGS = "--deep";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = io.realm.realmbrowser;
 				PRODUCT_NAME = "Realm Browser";
@@ -1067,7 +1064,6 @@
 					"$(PROJECT_DIR)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_CODE_SIGN_FLAGS = "--deep";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = io.realm.realmbrowser;
 				PRODUCT_NAME = "Realm Browser";

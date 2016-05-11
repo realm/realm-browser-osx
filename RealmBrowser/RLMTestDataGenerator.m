@@ -43,7 +43,7 @@ const NSUInteger kMaxItemsInTestArray = 12;
 {
     NSError *error;
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-    configuration.path = url.path;
+    configuration.fileURL = url;
     configuration.readOnly = NO;
     if (encryptionKey) {
         configuration.encryptionKey = encryptionKey;
@@ -163,6 +163,9 @@ const NSUInteger kMaxItemsInTestArray = 12;
             case RLMPropertyTypeObject:
                 propertyValue = [self randomObjectOfClass:NSClassFromString(property.objectClassName) inRealm:realm tryToReuse:YES];
                 break;
+                
+            case RLMPropertyTypeLinkingObjects:
+                propertyValue = nil;
         }
         
         [propertyValues addObject:propertyValue];

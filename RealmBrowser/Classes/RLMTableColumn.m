@@ -32,6 +32,7 @@ const CGFloat kMaxColumnWidth = 200.0;
         case RLMPropertyTypeBool:
         case RLMPropertyTypeData:
         case RLMPropertyTypeAny:
+        case RLMPropertyTypeLinkingObjects:
             rowsToConsider = 1;
             break;
             

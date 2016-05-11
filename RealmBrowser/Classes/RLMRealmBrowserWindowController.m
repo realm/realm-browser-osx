@@ -96,7 +96,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     
     [self updateNavigationButtons];
 
-    NSString *realmPath = self.modelDocument.presentedRealm.realm.path;
+    NSString *realmPath = self.modelDocument.presentedRealm.realm.configuration.fileURL.path;
     [self setWindowFrameAutosaveName:[NSString stringWithFormat:kRealmKeyWindowFrameForRealm, realmPath]];
     [self.splitView setAutosaveName:[NSString stringWithFormat:kRealmKeyOutlineWidthForRealm, realmPath]];
     
@@ -167,7 +167,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
 - (IBAction)saveCopy:(id)sender
 {
-    NSString *fileName = [self.modelDocument.presentedRealm.realm.path lastPathComponent];
+    NSString *fileName = [self.modelDocument.presentedRealm.realm.configuration.fileURL.path lastPathComponent];
     NSSavePanel *panel = [NSSavePanel savePanel];
     panel.canCreateDirectories = YES;
     panel.nameFieldStringValue = fileName;
@@ -187,7 +187,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     NSError *error = nil;
     
     //Check that this won't end up overwriting the original file
-    if ([realmFileURL.path.lowercaseString isEqualToString:self.modelDocument.presentedRealm.realm.path.lowercaseString]) {
+    if ([realmFileURL.path.lowercaseString isEqualToString:self.modelDocument.presentedRealm.realm.configuration.fileURL.path.lowercaseString]) {
         NSAlert *alert = [[NSAlert alloc] init];
         alert.messageText = @"You cannot overwrite the original Realm file.";
         alert.informativeText = @"Please choose a different location in which to save this Realm file.";
@@ -213,7 +213,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     //Perform the export/compact operations on a background thread as they can potentially be time-consuming
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSError *error = nil;
-        [self.modelDocument.presentedRealm.realm writeCopyToPath:realmFileURL.path error:&error];
+        [self.modelDocument.presentedRealm.realm writeCopyToURL:realmFileURL encryptionKey:nil error:&error];
         if (error) {
             dispatch_sync(dispatch_get_main_queue(), ^{
                 [self.window endSheet:self.exportWindowController.window];
@@ -223,7 +223,12 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
         }
         
         @autoreleasepool {
-            RLMRealm *newRealm = [RLMRealm realmWithPath:realmFileURL.path key:nil readOnly:NO inMemory:NO dynamic:YES schema:nil error:&error];
+            RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+            configuration.fileURL = realmFileURL;
+            configuration.dynamic = YES;
+            configuration.customSchema = nil;
+            
+            RLMRealm *newRealm = [RLMRealm realmWithConfiguration:configuration error:&error];
             if (error) {
                 dispatch_sync(dispatch_get_main_queue(), ^{
                     [self.window endSheet:self.exportWindowController.window];
@@ -255,7 +260,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 {
     [self.outlineViewController.tableView reloadData];
     
-    NSString *realmPath = self.modelDocument.presentedRealm.realm.path;
+    NSString *realmPath = self.modelDocument.presentedRealm.realm.configuration.fileURL.path;
     NSString *key = [NSString stringWithFormat:kRealmKeyIsLockedForRealm, realmPath];
     
     BOOL realmIsLocked = [[NSUserDefaults standardUserDefaults] boolForKey:key];
@@ -376,7 +381,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
 - (IBAction)userClickedLockRealm:(id)sender
 {
-    NSString *realmPath = self.modelDocument.presentedRealm.realm.path;
+    NSString *realmPath = self.modelDocument.presentedRealm.realm.configuration.fileURL.path;
     NSString *key = [NSString stringWithFormat:kRealmKeyIsLockedForRealm, realmPath];
 
     BOOL currentlyLocked = [[NSUserDefaults standardUserDefaults] boolForKey:key];
@@ -385,7 +390,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
 -(void)setRealmLocked:(BOOL)locked
 {
-    NSString *realmPath = self.modelDocument.presentedRealm.realm.path;
+    NSString *realmPath = self.modelDocument.presentedRealm.realm.configuration.fileURL.path;
     NSString *key = [NSString stringWithFormat:kRealmKeyIsLockedForRealm, realmPath];
     [[NSUserDefaults standardUserDefaults] setBool:locked forKey:key];
     [[NSUserDefaults standardUserDefaults] synchronize];
