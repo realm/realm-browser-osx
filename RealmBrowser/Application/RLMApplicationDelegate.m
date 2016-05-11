@@ -336,8 +336,6 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     // Prompt the user for location af new realm file.
     [self showSavePanelStringFromDirectory:url completionHandler:^(BOOL userSelectedFile, NSURL *selectedFile) {
         
-        NSURL *directoryURL = [selectedFile URLByDeletingLastPathComponent];
-            
         // If the user has selected a file url for storing the demo database, we first check if the
         // file already exists (and is actually a file) we delete the old file before creating the
         // new demo file.
@@ -536,7 +534,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     //(This NEEDS to be done since RLMDocument requires a file on disk to open)
     @autoreleasepool {
         RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-        configuration.path = filePath;
+        configuration.fileURL = [NSURL fileURLWithPath:filePath];
         configuration.dynamic = YES;
         configuration.customSchema = nil;
         
@@ -550,7 +548,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
         
         [RLMRealmConfiguration setDefaultConfiguration:configuration];
         RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:nil];
-        //[[RLMRealmFileManager sharedManager] addRealm:realm];
+        [[RLMRealmFileManager sharedManager] addRealm:realm];
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{

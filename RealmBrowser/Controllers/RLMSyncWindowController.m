@@ -134,7 +134,7 @@ NSString * const kSyncSignedUserTokenKey = @"SyncSignedUserToken";
 - (BOOL)testSyncCredentialsWithURL:(NSString *)url token:(NSString *)token
 {
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-    configuration.path = self.realmFilePath;
+    configuration.fileURL = [NSURL fileURLWithPath:self.realmFilePath];
     configuration.dynamic = YES;
     configuration.customSchema = nil;
     configuration.syncServerURL = [NSURL URLWithString:url];

@@ -44,7 +44,7 @@
         return;
     }
     
-    self.realms[realm.configuration.path] = realm;
+    self.realms[realm.configuration.fileURL] = realm;
 }
 
 - (RLMRealm *)realmForPath:(NSString *)path
@@ -62,7 +62,7 @@
         return;
     }
     
-    [self.realms removeObjectForKey:realm.configuration.path];
+    [self.realms removeObjectForKey:realm.configuration.fileURL];
 }
 
 @end
