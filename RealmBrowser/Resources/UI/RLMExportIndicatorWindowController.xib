@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="RLMExportIndicatorWindowController">
@@ -17,13 +17,14 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="310" height="120"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1577"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="-1" width="310" height="120"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="KjN-Ba-3Ww">
                         <rect key="frame" x="139" y="29" width="32" height="32"/>
+                        <animations/>
                     </progressIndicator>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yOQ-4Q-IJN">
                         <rect key="frame" x="34" y="78" width="242" height="17"/>
@@ -31,6 +32,7 @@
                             <constraint firstAttribute="height" constant="17" id="IXn-QO-QTp"/>
                             <constraint firstAttribute="width" constant="238" id="LrK-Ql-GaA"/>
                         </constraints>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Exporting copy of Realm file..." id="k8g-HB-gsv">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -45,6 +47,7 @@
                     <constraint firstItem="yOQ-4Q-IJN" firstAttribute="top" secondItem="KjN-Ba-3Ww" secondAttribute="top" constant="-34" id="az6-1a-7JT"/>
                     <constraint firstAttribute="centerX" secondItem="KjN-Ba-3Ww" secondAttribute="centerX" constant="0.5" id="yK7-DQ-ITu"/>
                 </constraints>
+                <animations/>
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>

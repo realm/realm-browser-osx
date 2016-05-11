@@ -20,77 +20,82 @@
 
 @implementation RLMBadgeTableCellView
 
-+ (instancetype)makeWithIdentifier:(NSString *)identifier
+- (instancetype)initWithFrame:(NSRect)frameRect
 {
-    RLMBadgeTableCellView *cellView = [[RLMBadgeTableCellView alloc] initWithFrame:NSZeroRect];
-    cellView.identifier = identifier;
-    NSTextField *textField = [[NSTextField alloc] initWithFrame:[cellView frame]];
-    [textField setBordered:NO];
-    [textField setDrawsBackground:NO];
-    [textField setTextColor:[NSColor selectedMenuItemTextColor]];
-    cellView.textField = textField;
-    [cellView addSubview:textField];
-    NSButton *button = [[NSButton alloc] initWithFrame:NSZeroRect];
-    [button setButtonType:NSMomentaryPushInButton];
-    [button setBezelStyle:NSInlineBezelStyle];
-    cellView.badge = button;
-    [cellView addSubview:button];
+    self = [super initWithFrame:frameRect];
     
-    [textField setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [button setTranslatesAutoresizingMaskIntoConstraints:NO];
+    if (self == nil) {
+        return nil;
+    }
 
-    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
-                                                         attribute:NSLayoutAttributeLeading
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:cellView
-                                                         attribute:NSLayoutAttributeLeading
-                                                        multiplier:1.0
-                                                          constant:0.0]];
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:textField
-                                                                 attribute:NSLayoutAttributeTrailing
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:button
-                                                                 attribute:NSLayoutAttributeLeading
-                                                                multiplier:1.0
-                                                                  constant:20.0];
-    [constraint setPriority:NSLayoutPriorityRequired];
-    [cellView addConstraint:constraint];
-    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:button
-                                                         attribute:NSLayoutAttributeTrailing
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:cellView
-                                                         attribute:NSLayoutAttributeTrailing
-                                                        multiplier:1.0
-                                                          constant:-3.0]];
+    NSButton *button = [[NSButton alloc] initWithFrame:NSZeroRect];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    button.buttonType = NSMomentaryPushInButton;
+    button.bezelStyle = NSInlineBezelStyle;
     
+    self.badge = button;
+    [self addSubview:button];
     
-    constraint = [NSLayoutConstraint constraintWithItem:button
-                                                                  attribute:NSLayoutAttributeWidth
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:nil
-                                                                  attribute:0
-                                                                 multiplier:1.0
-                                                                   constant:20.0];
-    [constraint setPriority:NSLayoutPriorityRequired];
-    [cellView addConstraint:constraint];
+    // Remove all constraints from RLMLinkTableCellView
+    [self removeConstraints:self.constraints];
+
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.textField
+                                                     attribute:NSLayoutAttributeLeading
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeLeading
+                                                    multiplier:1.0
+                                                      constant:0.0]];
     
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.textField
+                                                     attribute:NSLayoutAttributeTop
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeTop
+                                                    multiplier:1.0
+                                                      constant:0.0]];
     
-    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:button
-                                                         attribute:NSLayoutAttributeCenterY
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:cellView
-                                                         attribute:NSLayoutAttributeCenterY
-                                                        multiplier:1.0
-                                                          constant:0.0]];
-    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
-                                                         attribute:NSLayoutAttributeCenterY
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:cellView
-                                                         attribute:NSLayoutAttributeCenterY
-                                                        multiplier:1.0
-                                                          constant:0.0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.textField
+                                                     attribute:NSLayoutAttributeBottom
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeBottom
+                                                    multiplier:1.0
+                                                      constant:0.0]];
     
-    return cellView;
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.textField
+                                                     attribute:NSLayoutAttributeTrailing
+                                                     relatedBy:NSLayoutRelationLessThanOrEqual
+                                                        toItem:self.badge
+                                                     attribute:NSLayoutAttributeLeading
+                                                    multiplier:1.0
+                                                      constant:-3.0]];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.badge
+                                                     attribute:NSLayoutAttributeTrailing
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeTrailing
+                                                    multiplier:1.0
+                                                      constant:-3.0]];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.badge
+                                                     attribute:NSLayoutAttributeWidth
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:nil
+                                                     attribute:0
+                                                    multiplier:1.0
+                                                      constant:20.0]];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.badge
+                                                     attribute:NSLayoutAttributeCenterY
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterY
+                                                    multiplier:1.0
+                                                      constant:0.0]];
+    
+    return self;
 }
 
 @end

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15F31a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="RLMEncryptionKeyWindowController">
@@ -20,13 +20,14 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="564" y="438" width="422" height="230"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1577"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="1" width="422" height="230"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FwU-VW-Atp">
                         <rect key="frame" x="18" y="185" width="368" height="25"/>
+                        <animations/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Please enter the encryption key for this Realm file." id="fT6-nk-ebe">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -35,6 +36,7 @@
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DKP-My-LLz">
                         <rect key="frame" x="18" y="154" width="386" height="28"/>
+                        <animations/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="The encryption key must be entered as a 128-character string of hexadecimal values." id="s3g-jW-WhF">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -43,6 +45,7 @@
                     </textField>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="767-HS-feX">
                         <rect key="frame" x="251" y="13" width="83" height="32"/>
+                        <animations/>
                         <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="RUG-OT-Xjr">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -55,6 +58,7 @@
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="McO-QZ-coV">
                         <rect key="frame" x="334" y="13" width="74" height="32"/>
+                        <animations/>
                         <buttonCell key="cell" type="push" title="Open" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ha8-hF-EnU">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -68,6 +72,7 @@ DQ
                     </button>
                     <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ujX-cG-WGk">
                         <rect key="frame" x="18" y="21" width="219" height="17"/>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Decryption failed. Please try again." id="62r-2E-3vf">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" red="0.53217516450000002" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -76,6 +81,7 @@ DQ
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YEA-96-Ofv">
                         <rect key="frame" x="20" y="55" width="382" height="88"/>
+                        <animations/>
                         <textFieldCell key="cell" lineBreakMode="charWrapping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="efa373ad146cd28f..." drawsBackground="YES" id="IIl-JF-ZUE">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -86,6 +92,7 @@ DQ
                         </connections>
                     </textField>
                 </subviews>
+                <animations/>
             </view>
             <point key="canvasLocation" x="59" y="195"/>
         </window>

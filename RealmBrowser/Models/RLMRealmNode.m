@@ -299,15 +299,14 @@ void RLMClearRealmCache();
 
 - (NSArray *)constructTopLevelClasses
 {
-    RLMRealm *realm = self.realm;
-    RLMSchema *realmSchema = realm.schema;
+    RLMSchema *realmSchema = _realm.schema;
     NSArray *objectSchemas = realmSchema.objectSchema;
 
     NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:objectSchemas.count];
     
     for (RLMObjectSchema *objectSchema in objectSchemas) {
         if (objectSchema.properties.count > 0) {
-            RLMClassNode *tableNode = [[RLMClassNode alloc] initWithSchema:objectSchema inRealm:realm];
+            RLMClassNode *tableNode = [[RLMClassNode alloc] initWithSchema:objectSchema inRealm:_realm];
             [result addObject:tableNode];
         }
     }

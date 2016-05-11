@@ -28,7 +28,6 @@
 #import "RLMResultsNode.h"
 #import "RLMRealmNode.h"
 
-#import "RLMTableRowView.h"
 #import "RLMBadgeTableCellView.h"
 #import "RLMBasicTableCellView.h"
 #import "RLMBoolTableCellView.h"
@@ -294,21 +293,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     }
 }
 
-- (NSTableRowView *)tableView:(NSTableView *)tableView rowViewForRow:(NSInteger)row
-{
-    RLMTableRowView *rowView;
-    
-    rowView = [tableView makeViewWithIdentifier:@"row" owner:self];
-    
-    if (!rowView) {
-        rowView = [[RLMTableRowView alloc] initWithFrame:NSZeroRect];
-        rowView.identifier = @"row";
-        rowView.canDrawSubviewsIntoLayer = YES;
-    }
-    
-    return rowView;
-}
-
 -(NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)rowIndex
 {
     if (tableView != self.tableView) {
@@ -331,14 +315,14 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     RLMObject *selectedInstance = [self.displayedType instanceAtIndex:rowIndex];
     id propertyValue = selectedInstance[classProperty.name];
     RLMPropertyType type = classProperty.type;
-    NSString *reuseIdentifier = [@"property." stringByAppendingString:classProperty.name];
+    NSString *reuseIdentifier = [NSString stringWithFormat:@"Property.%@", [RLMDescriptions typeNameOfProperty:classProperty.property]];
     
     NSTableCellView *cellView;
     switch (type) {
         case RLMPropertyTypeArray: {
             RLMBadgeTableCellView *badgeCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!badgeCellView) {
-                badgeCellView = [RLMBadgeTableCellView makeWithIdentifier:reuseIdentifier];
+                badgeCellView = [RLMBadgeTableCellView viewWithIdentifier:reuseIdentifier];
             }
             NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             NSDictionary *attr = @{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)};
@@ -358,7 +342,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         case RLMPropertyTypeBool: {
             RLMBoolTableCellView *boolCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!boolCellView) {
-                boolCellView = [RLMBoolTableCellView makeWithIdentifier:reuseIdentifier];
+                boolCellView = [RLMBoolTableCellView viewWithIdentifier:reuseIdentifier];
                 boolCellView.checkBox.target = self;
                 boolCellView.checkBox.action = @selector(editedCheckBox:);
             }
@@ -375,7 +359,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         case RLMPropertyTypeDouble: {
             RLMNumberTableCellView *numberCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!numberCellView) {
-                numberCellView = [RLMNumberTableCellView makeWithIdentifier:reuseIdentifier];
+                numberCellView = [RLMNumberTableCellView viewWithIdentifier:reuseIdentifier];
                 numberCellView.textField.delegate = self;
                 numberCellView.textField.target = self;
                 numberCellView.textField.action = @selector(editedTextField:);
@@ -394,7 +378,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         case RLMPropertyTypeObject: {
             RLMLinkTableCellView *linkCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!linkCellView) {
-                linkCellView = [RLMLinkTableCellView makeWithIdentifier:reuseIdentifier];
+                linkCellView = [RLMLinkTableCellView viewWithIdentifier:reuseIdentifier];
                 linkCellView.textField.target = self;
                 linkCellView.textField.action = @selector(editedTextField:);
             }
@@ -409,13 +393,14 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             break;
         }
             // Intentional fallthrough
+        case RLMPropertyTypeLinkingObjects:
         case RLMPropertyTypeData:
         case RLMPropertyTypeAny:
         case RLMPropertyTypeDate:
         case RLMPropertyTypeString: {
             RLMBasicTableCellView *basicCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!basicCellView) {
-                basicCellView = [RLMBasicTableCellView makeWithIdentifier:reuseIdentifier];
+                basicCellView = [RLMBasicTableCellView viewWithIdentifier:reuseIdentifier];
                 basicCellView.textField.delegate = self;
                 basicCellView.textField.target = self;
                 basicCellView.textField.action = @selector(editedTextField:);
@@ -674,9 +659,9 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             
         case RLMPropertyTypeObject:
             return [NSNull null];
-
+            
         case RLMPropertyTypeLinkingObjects:
-            return nil;
+            return [NSNull null];
     }
 }
 
@@ -979,7 +964,8 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         case RLMPropertyTypeDate:
             result = [dateFormatter dateFromString:sender.stringValue];
             break;
-            
+        
+        case RLMPropertyTypeLinkingObjects:
         case RLMPropertyTypeAny:
         case RLMPropertyTypeArray:
         case RLMPropertyTypeBool:
@@ -1153,6 +1139,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         case RLMPropertyTypeBool:
         case RLMPropertyTypeData:
         case RLMPropertyTypeObject:
+        case RLMPropertyTypeLinkingObjects:
             // Do nothing
             break;
     }

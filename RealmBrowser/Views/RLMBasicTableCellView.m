@@ -20,49 +20,63 @@
 
 @implementation RLMBasicTableCellView
 
-+ (instancetype)makeWithIdentifier:(NSString *)identifier
+- (instancetype)initWithFrame:(NSRect)frameRect
 {
-    RLMBasicTableCellView *cellView = [[RLMBasicTableCellView alloc] initWithFrame:NSZeroRect];
-    cellView.identifier = identifier;
-    NSTextField *textField = [[NSTextField alloc] initWithFrame:[cellView frame]];
-    [textField setBordered:NO];
-    [textField setDrawsBackground:NO];
-    cellView.textField = textField;
-    [cellView addSubview:textField];
+    self = [super initWithFrame:frameRect];
     
-    [textField setTranslatesAutoresizingMaskIntoConstraints:NO];
+    if (self == nil) {
+        return nil;
+    }
     
-    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
-                                                         attribute:NSLayoutAttributeLeading
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:cellView
-                                                         attribute:NSLayoutAttributeLeading
-                                                        multiplier:1.0
-                                                          constant:0.0]];
-    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
-                                                         attribute:NSLayoutAttributeTrailing
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:cellView
-                                                         attribute:NSLayoutAttributeTrailing
-                                                        multiplier:1.0
-                                                          constant:0.0]];
+    NSTextField *textField = [[NSTextField alloc] initWithFrame:self.bounds];
+    textField.translatesAutoresizingMaskIntoConstraints = NO;
+    textField.bordered = NO;
+    textField.drawsBackground = NO;
     
-    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
-                                                         attribute:NSLayoutAttributeTop
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:cellView
-                                                         attribute:NSLayoutAttributeTop
-                                                        multiplier:1.0
-                                                          constant:0.0]];
-    [cellView addConstraint:[NSLayoutConstraint constraintWithItem:textField
-                                                         attribute:NSLayoutAttributeBottom
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:cellView
-                                                         attribute:NSLayoutAttributeBottom
-                                                        multiplier:1.0
-                                                          constant:0.0]];
+    if ([textField respondsToSelector:@selector(setUsesSingleLineMode:)]) {
+        textField.usesSingleLineMode = YES;
+    }
     
-    return cellView;
+    if ([textField respondsToSelector:@selector(setLineBreakMode:)]) {
+        textField.lineBreakMode = NSLineBreakByTruncatingTail;
+    }
+        
+    self.textField = textField;
+    [self addSubview:textField];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.textField
+                                                     attribute:NSLayoutAttributeLeading
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeLeading
+                                                    multiplier:1.0
+                                                      constant:0.0]];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.textField
+                                                     attribute:NSLayoutAttributeTrailing
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeTrailing
+                                                    multiplier:1.0
+                                                      constant:0.0]];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.textField
+                                                     attribute:NSLayoutAttributeTop
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeTop
+                                                    multiplier:1.0
+                                                      constant:0.0]];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.textField
+                                                     attribute:NSLayoutAttributeBottom
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeBottom
+                                                    multiplier:1.0
+                                                      constant:0.0]];
+    
+    return self;
 }
 
 @end

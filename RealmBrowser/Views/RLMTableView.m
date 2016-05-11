@@ -464,6 +464,7 @@ const NSInteger NOT_A_COLUMN = -1;
         headerCell.firstLine = propertyColumn.name;
         headerCell.secondLine = [RLMDescriptions typeNameOfProperty:propertyColumn.property];
         tableColumn.headerCell = headerCell;
+        tableColumn.minWidth = 26.0;
         
         tableColumn.headerToolTip = [self.realmDataSource headerToolTipForColumn:propertyColumn];
         [self addTableColumn:tableColumn];
