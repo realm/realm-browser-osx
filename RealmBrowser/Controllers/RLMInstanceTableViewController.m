@@ -672,9 +672,11 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         case RLMPropertyTypeAny:
             return @"<Any>";
             
-        case RLMPropertyTypeObject: {
+        case RLMPropertyTypeObject:
             return [NSNull null];
-        }
+
+        case RLMPropertyTypeLinkingObjects:
+            return nil;
     }
 }
 

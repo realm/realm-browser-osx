@@ -213,7 +213,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     //Perform the export/compact operations on a background thread as they can potentially be time-consuming
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSError *error = nil;
-        [self.modelDocument.presentedRealm.realm writeCopyToPath:realmFileURL.path error:&error];
+        [self.modelDocument.presentedRealm.realm writeCopyToURL:realmFileURL encryptionKey:nil error:&error];
         if (error) {
             dispatch_sync(dispatch_get_main_queue(), ^{
                 [self.window endSheet:self.exportWindowController.window];
@@ -223,7 +223,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
         }
         
         @autoreleasepool {
-            RLMRealm *newRealm = [RLMRealm realmWithPath:realmFileURL.path key:nil readOnly:NO inMemory:NO dynamic:YES schema:nil error:&error];
+            RLMRealm *newRealm = [RLMRealm realmWithURL:realmFileURL key:nil readOnly:NO inMemory:NO dynamic:YES schema:nil error:&error];
             if (error) {
                 dispatch_sync(dispatch_get_main_queue(), ^{
                     [self.window endSheet:self.exportWindowController.window];
