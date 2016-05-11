@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "63FACFCA9BF3966876D74E0847F48D094FBCF1A0",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "9FB1FDDBA011002795A1FF5BD3CABFA2F79E6A59" : 0,
+    "63FACFCA9BF3966876D74E0847F48D094FBCF1A0" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "1DFFA4D8-E3AB-446D-9CE8-40F422CEE222",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "9FB1FDDBA011002795A1FF5BD3CABFA2F79E6A59" : "..",
+    "63FACFCA9BF3966876D74E0847F48D094FBCF1A0" : "realm-browser-osx-private\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "RealmBrowser",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "RealmBrowser.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:realm\/realm-browser-osx-private.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "63FACFCA9BF3966876D74E0847F48D094FBCF1A0"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:realm\/realm-cocoa",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9FB1FDDBA011002795A1FF5BD3CABFA2F79E6A59"
+    }
+  ]
+}

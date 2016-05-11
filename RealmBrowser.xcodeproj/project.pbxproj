@@ -10,19 +10,35 @@
 	<string>46</string>
 	<key>objects</key>
 	<dict>
-		<key>17582A9BE4B744A7D5E95E2C</key>
+		<key>17CC9F943AA7B78135142B59</key>
 		<dict>
-			<key>children</key>
-			<array>
-				<string>B51A4BD145D0D9F754D79180</string>
-				<string>FAEA987928106BDF689AFA01</string>
-			</array>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
 			<key>isa</key>
-			<string>PBXGroup</string>
+			<string>PBXShellScriptBuildPhase</string>
 			<key>name</key>
-			<string>Pods</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
+			<string>Check Pods Manifest.lock</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
+if [[ $? != 0 ]] ; then
+    cat &lt;&lt; EOM
+error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
+EOM
+    exit 1
+fi
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
 		</dict>
 		<key>22013F711CCA1230000F79B5</key>
 		<dict>
@@ -36,47 +52,6 @@
 			<array/>
 			<key>isa</key>
 			<string>PBXCopyFilesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>22013F731CCA1955000F79B5</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22FB99091CC8CB4F00411106</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22013F741CCA1955000F79B5</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22FB99091CC8CB4F00411106</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>ATTRIBUTES</key>
-				<array>
-					<string>CodeSignOnCopy</string>
-					<string>RemoveHeadersOnCopy</string>
-				</array>
-			</dict>
-		</dict>
-		<key>22013F751CCA1956000F79B5</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>dstPath</key>
-			<string></string>
-			<key>dstSubfolderSpec</key>
-			<string>10</string>
-			<key>files</key>
-			<array>
-				<string>22013F741CCA1955000F79B5</string>
-			</array>
-			<key>isa</key>
-			<string>PBXCopyFilesBuildPhase</string>
-			<key>name</key>
-			<string>Embed Frameworks</string>
 			<key>runOnlyForDeploymentPostprocessing</key>
 			<string>0</string>
 		</dict>
@@ -892,8 +867,6 @@
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
 			<string>text.xml</string>
-			<key>name</key>
-			<string>Realm Browser.entitlements</string>
 			<key>path</key>
 			<string>Realm Browser.entitlements</string>
 			<key>sourceTree</key>
@@ -1151,24 +1124,6 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>22FB99091CC8CB4F00411106</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>path</key>
-			<string>Realm.framework</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22FB990A1CC8CB4F00411106</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22FB99091CC8CB4F00411106</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
 		<key>22FB990B1CC8CB7100411106</key>
 		<dict>
 			<key>isa</key>
@@ -1238,6 +1193,13 @@
 		<dict>
 			<key>fileRef</key>
 			<string>22FB99121CC8CC4000411106</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>30E72D9B76C81692F4BE3C78</key>
+		<dict>
+			<key>fileRef</key>
+			<string>55F44390BB635DB33565030A</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
@@ -1327,20 +1289,6 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>36C3D1FFA6C372B1485F381A</key>
-		<dict>
-			<key>fileRef</key>
-			<string>B4DD42CE427D384E8A7351A0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>ATTRIBUTES</key>
-				<array>
-					<string>Required</string>
-				</array>
-			</dict>
-		</dict>
 		<key>420696B21BDE95190000B74A</key>
 		<dict>
 			<key>fileEncoding</key>
@@ -1374,37 +1322,20 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>5E20F1CC39E81B5C5A7BC33C</key>
+		<key>55F44390BB635DB33565030A</key>
 		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
+			<key>explicitFileType</key>
+			<string>wrapper.framework</string>
+			<key>includeInIndex</key>
+			<string>0</string>
 			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Check Pods Manifest.lock</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
-if [[ $? != 0 ]] ; then
-    cat &lt;&lt; EOM
-error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
-EOM
-    exit 1
-fi
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>Pods_RealmBrowser.framework</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
 		</dict>
-		<key>609EC8B714E37A0A818F7069</key>
+		<key>80BC74929BDA9119CED5DB2C</key>
 		<dict>
 			<key>buildActionMask</key>
 			<string>2147483647</string>
@@ -1415,7 +1346,7 @@ fi
 			<key>isa</key>
 			<string>PBXShellScriptBuildPhase</string>
 			<key>name</key>
-			<string>Check Pods Manifest.lock</string>
+			<string>Embed Pods Frameworks</string>
 			<key>outputPaths</key>
 			<array/>
 			<key>runOnlyForDeploymentPostprocessing</key>
@@ -1423,37 +1354,7 @@ fi
 			<key>shellPath</key>
 			<string>/bin/sh</string>
 			<key>shellScript</key>
-			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
-if [[ $? != 0 ]] ; then
-    cat &lt;&lt; EOM
-error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
-EOM
-    exit 1
-fi
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>7234279BF303AA42F7370A91</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Copy Pods Resources</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh"
+			<string>"${SRCROOT}/Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser-frameworks.sh"
 </string>
 			<key>showEnvVarsInLog</key>
 			<string>0</string>
@@ -1987,10 +1888,10 @@ fi
 			<key>children</key>
 			<array>
 				<string>84E0F94E1921F3B900D6CA14</string>
-				<string>17582A9BE4B744A7D5E95E2C</string>
 				<string>84E0F94D1921F3B900D6CA14</string>
 				<string>84E0F9551921F3B900D6CA14</string>
 				<string>84E0F9761921F3B900D6CA14</string>
+				<string>D8A99DA87499CAE94C4E03F3</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -2011,8 +1912,6 @@ fi
 				<dict>
 					<key>84E0F94B1921F3B900D6CA14</key>
 					<dict>
-						<key>DevelopmentTeam</key>
-						<string>QX5CR2FTN2</string>
 						<key>SystemCapabilities</key>
 						<dict>
 							<key>com.apple.Sandbox</key>
@@ -2139,11 +2038,9 @@ fi
 			<string>2147483647</string>
 			<key>files</key>
 			<array>
-				<string>22FB990A1CC8CB4F00411106</string>
 				<string>220A4F131C05A85D00A32787</string>
 				<string>84E0F9501921F3B900D6CA14</string>
-				<string>97A7B4BEE251DA782A9A95BE</string>
-				<string>22013F731CCA1955000F79B5</string>
+				<string>30E72D9B76C81692F4BE3C78</string>
 			</array>
 			<key>isa</key>
 			<string>PBXFrameworksBuildPhase</string>
@@ -2185,13 +2082,13 @@ fi
 			<string>84E0F9801921F3B900D6CA14</string>
 			<key>buildPhases</key>
 			<array>
-				<string>609EC8B714E37A0A818F7069</string>
+				<string>17CC9F943AA7B78135142B59</string>
 				<string>84E0F9481921F3B900D6CA14</string>
 				<string>84E0F94A1921F3B900D6CA14</string>
 				<string>84E0F9491921F3B900D6CA14</string>
-				<string>B470C1B2CD85792E8F9B1979</string>
 				<string>22013F711CCA1230000F79B5</string>
-				<string>22013F751CCA1956000F79B5</string>
+				<string>80BC74929BDA9119CED5DB2C</string>
+				<string>CF510FD7F1B25DC5B4018953</string>
 			</array>
 			<key>buildRules</key>
 			<array/>
@@ -2241,12 +2138,12 @@ fi
 			<array>
 				<string>22023AC31CBFE6FD00F469EE</string>
 				<string>220A4F121C05A85D00A32787</string>
-				<string>22FB99091CC8CB4F00411106</string>
 				<string>84E0F94F1921F3B900D6CA14</string>
 				<string>84E0F9521921F3B900D6CA14</string>
 				<string>84E0F9541921F3B900D6CA14</string>
 				<string>84E0F9711921F3B900D6CA14</string>
 				<string>B4DD42CE427D384E8A7351A0</string>
+				<string>55F44390BB635DB33565030A</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -2345,8 +2242,6 @@ fi
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
 			<string>text.plist.xml</string>
-			<key>name</key>
-			<string>RealmBrowser-Info.plist</string>
 			<key>path</key>
 			<string>RealmBrowser-Info.plist</string>
 			<key>sourceTree</key>
@@ -2411,8 +2306,6 @@ fi
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>RealmBrowser-Prefix.pch</string>
 			<key>path</key>
 			<string>RealmBrowser-Prefix.pch</string>
 			<key>sourceTree</key>
@@ -2564,7 +2457,6 @@ fi
 				<string>84E0F9731921F3B900D6CA14</string>
 				<string>84E0F9721921F3B900D6CA14</string>
 				<string>ADBD77D758972C8C68C6F371</string>
-				<string>36C3D1FFA6C372B1485F381A</string>
 			</array>
 			<key>isa</key>
 			<string>PBXFrameworksBuildPhase</string>
@@ -2590,12 +2482,9 @@ fi
 			<string>84E0F9831921F3B900D6CA14</string>
 			<key>buildPhases</key>
 			<array>
-				<string>5E20F1CC39E81B5C5A7BC33C</string>
 				<string>84E0F96C1921F3B900D6CA14</string>
 				<string>84E0F96D1921F3B900D6CA14</string>
 				<string>84E0F96E1921F3B900D6CA14</string>
-				<string>7234279BF303AA42F7370A91</string>
-				<string>F7AD625B0808F1F1A27D2D87</string>
 			</array>
 			<key>buildRules</key>
 			<array/>
@@ -2912,33 +2801,32 @@ fi
 		<key>84E0F9811921F3B900D6CA14</key>
 		<dict>
 			<key>baseConfigurationReference</key>
-			<string>B51A4BD145D0D9F754D79180</string>
+			<string>D4FB6D183A9E1E91C0DD8DEC</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
 				<string>AppIcon</string>
 				<key>CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES</key>
 				<string>NO</string>
+				<key>CODE_SIGN_IDENTITY</key>
+				<string></string>
 				<key>COMBINE_HIDPI_IMAGES</key>
 				<string>YES</string>
 				<key>CURRENT_PROJECT_VERSION</key>
 				<string>50</string>
 				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>$(PROJECT_DIR)</string>
-				</array>
+				<string>$(inherited)</string>
 				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
 				<string>YES</string>
 				<key>GCC_PREFIX_HEADER</key>
-				<string>RealmBrowser/Resources/RealmBrowser-Prefix.pch</string>
+				<string>RealmBrowser/Supporting Files/RealmBrowser-Prefix.pch</string>
 				<key>HEADER_SEARCH_PATHS</key>
 				<array>
 					<string>$(inherited)</string>
 					<string>/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include</string>
 				</array>
 				<key>INFOPLIST_FILE</key>
-				<string>RealmBrowser/Resources/RealmBrowser-Info.plist</string>
+				<string>$(SRCROOT)/RealmBrowser/Supporting Files/RealmBrowser-Info.plist</string>
 				<key>LD_RUNPATH_SEARCH_PATHS</key>
 				<string>$(inherited) @executable_path/../Frameworks</string>
 				<key>LIBRARY_SEARCH_PATHS</key>
@@ -2974,33 +2862,32 @@ fi
 		<key>84E0F9821921F3B900D6CA14</key>
 		<dict>
 			<key>baseConfigurationReference</key>
-			<string>FAEA987928106BDF689AFA01</string>
+			<string>A90A38725BC1739E4F47D0B4</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
 				<string>AppIcon</string>
 				<key>CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES</key>
 				<string>NO</string>
+				<key>CODE_SIGN_IDENTITY</key>
+				<string></string>
 				<key>COMBINE_HIDPI_IMAGES</key>
 				<string>YES</string>
 				<key>CURRENT_PROJECT_VERSION</key>
 				<string>50</string>
 				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>$(PROJECT_DIR)</string>
-				</array>
+				<string>$(inherited)</string>
 				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
 				<string>YES</string>
 				<key>GCC_PREFIX_HEADER</key>
-				<string>RealmBrowser/Resources/RealmBrowser-Prefix.pch</string>
+				<string>RealmBrowser/Supporting Files/RealmBrowser-Prefix.pch</string>
 				<key>HEADER_SEARCH_PATHS</key>
 				<array>
 					<string>$(inherited)</string>
 					<string>/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include</string>
 				</array>
 				<key>INFOPLIST_FILE</key>
-				<string>RealmBrowser/Resources/RealmBrowser-Info.plist</string>
+				<string>$(SRCROOT)/RealmBrowser/Supporting Files/RealmBrowser-Info.plist</string>
 				<key>LD_RUNPATH_SEARCH_PATHS</key>
 				<string>$(inherited) @executable_path/../Frameworks</string>
 				<key>LIBRARY_SEARCH_PATHS</key>
@@ -3047,8 +2934,6 @@ fi
 		</dict>
 		<key>84E0F9841921F3B900D6CA14</key>
 		<dict>
-			<key>baseConfigurationReference</key>
-			<string>B51A4BD145D0D9F754D79180</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>BUNDLE_LOADER</key>
@@ -3084,8 +2969,6 @@ fi
 		</dict>
 		<key>84E0F9851921F3B900D6CA14</key>
 		<dict>
-			<key>baseConfigurationReference</key>
-			<string>FAEA987928106BDF689AFA01</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>BUNDLE_LOADER</key>
@@ -3218,48 +3101,25 @@ fi
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>97A7B4BEE251DA782A9A95BE</key>
+		<key>A90A38725BC1739E4F47D0B4</key>
 		<dict>
-			<key>fileRef</key>
-			<string>B4DD42CE427D384E8A7351A0</string>
+			<key>includeInIndex</key>
+			<string>1</string>
 			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>ATTRIBUTES</key>
-				<array>
-					<string>Required</string>
-				</array>
-			</dict>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods-RealmBrowser.release.xcconfig</string>
+			<key>path</key>
+			<string>Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.release.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
 		</dict>
 		<key>ADBD77D758972C8C68C6F371</key>
 		<dict>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
-		</dict>
-		<key>B470C1B2CD85792E8F9B1979</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Embed Pods Frameworks</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh"
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
 		</dict>
 		<key>B4DD42CE427D384E8A7351A0</key>
 		<dict>
@@ -3274,7 +3134,31 @@ fi
 			<key>sourceTree</key>
 			<string>BUILT_PRODUCTS_DIR</string>
 		</dict>
-		<key>B51A4BD145D0D9F754D79180</key>
+		<key>CF510FD7F1B25DC5B4018953</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>Copy Pods Resources</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>"${SRCROOT}/Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser-resources.sh"
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
+		</dict>
+		<key>D4FB6D183A9E1E91C0DD8DEC</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -3283,9 +3167,23 @@ fi
 			<key>lastKnownFileType</key>
 			<string>text.xcconfig</string>
 			<key>name</key>
-			<string>Pods.debug.xcconfig</string>
+			<string>Pods-RealmBrowser.debug.xcconfig</string>
 			<key>path</key>
-			<string>Pods/Target Support Files/Pods/Pods.debug.xcconfig</string>
+			<string>Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.debug.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>D8A99DA87499CAE94C4E03F3</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>D4FB6D183A9E1E91C0DD8DEC</string>
+				<string>A90A38725BC1739E4F47D0B4</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Pods</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -3523,8 +3421,6 @@ fi
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Icons</string>
 			<key>path</key>
 			<string>Icons</string>
 			<key>sourceTree</key>
@@ -3538,49 +3434,8 @@ fi
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Documents</string>
 			<key>path</key>
 			<string>Documents</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F7AD625B0808F1F1A27D2D87</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Embed Pods Frameworks</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh"
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>FAEA987928106BDF689AFA01</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods.release.xcconfig</string>
-			<key>path</key>
-			<string>Pods/Target Support Files/Pods/Pods.release.xcconfig</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
