@@ -18,9 +18,8 @@
 
 @import Cocoa;
 #import "RLMTableCellView.h"
-#import "RLMTextField.h"
 
-@interface RLMNumberTextField : RLMTextField
+@interface RLMNumberTextField : NSTextField
 
 @property (nonatomic) NSNumber *number;
 

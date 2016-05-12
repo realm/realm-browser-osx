@@ -151,13 +151,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     }
 }
 
-#pragma mark - RLMTextField Delegate
-
--(void)textFieldCancelledEditing:(RLMTextField *)textField
-{
-    [self.tableView reloadData];
-}
-
 #pragma mark - NSTableView Data Source
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
@@ -360,7 +353,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             RLMNumberTableCellView *numberCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!numberCellView) {
                 numberCellView = [RLMNumberTableCellView viewWithIdentifier:reuseIdentifier];
-                numberCellView.textField.delegate = self;
                 numberCellView.textField.target = self;
                 numberCellView.textField.action = @selector(editedTextField:);
             }
@@ -401,7 +393,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             RLMBasicTableCellView *basicCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!basicCellView) {
                 basicCellView = [RLMBasicTableCellView viewWithIdentifier:reuseIdentifier];
-                basicCellView.textField.delegate = self;
                 basicCellView.textField.target = self;
                 basicCellView.textField.action = @selector(editedTextField:);
             }
