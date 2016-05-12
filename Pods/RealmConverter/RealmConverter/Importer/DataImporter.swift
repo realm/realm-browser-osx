@@ -108,7 +108,7 @@ public class DataImporter: NSObject {
                 let imp = imp_implementationWithBlock(unsafeBitCast({ () -> Bool in
                     return true
                     } as @convention(block) () -> (Bool), AnyObject.self))
-                class_addMethod(cls, "respondsToSelector:", imp, "b@::")
+                class_addMethod(cls, #selector(NSObjectProtocol.respondsToSelector(_:)), imp, "b@::")
             }
             
             objc_registerClassPair(cls);
@@ -116,13 +116,13 @@ public class DataImporter: NSObject {
             let imp = imp_implementationWithBlock(unsafeBitCast({ () -> NSArray in
                 return schema.properties.filter { !$0.optional }.map { $0.originalName }
                 } as @convention(block) () -> (NSArray), AnyObject.self))
-            class_addMethod(objc_getMetaClass(className) as! AnyClass, "requiredProperties", imp, "@16@0:8")
+            class_addMethod(objc_getMetaClass(className) as! AnyClass, #selector(RLMObject.requiredProperties), imp, "@16@0:8")
             
             generatedClasses.append(cls)
         }
         
         let configuration = RLMRealmConfiguration()
-        configuration.path = (output as NSString).stringByAppendingPathComponent("default.realm")
+        configuration.fileURL = NSURL(fileURLWithPath: (output as NSString).stringByAppendingPathComponent("default.realm"))
         configuration.objectClasses = generatedClasses
         let realm = try RLMRealm(configuration: configuration)
         

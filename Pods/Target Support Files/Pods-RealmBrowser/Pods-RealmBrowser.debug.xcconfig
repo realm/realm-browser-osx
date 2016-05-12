@@ -1,0 +1,11 @@
+CODE_SIGN_IDENTITY =
+EMBEDDED_CONTENT_CONTAINS_SWIFT = YES
+FRAMEWORK_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/AppSandboxFileAccess" "$PODS_CONFIGURATION_BUILD_DIR/CSwiftV" "$PODS_CONFIGURATION_BUILD_DIR/PathKit" "$PODS_CONFIGURATION_BUILD_DIR/Realm" "$PODS_CONFIGURATION_BUILD_DIR/RealmConverter" "$PODS_CONFIGURATION_BUILD_DIR/SSZipArchive" "$PODS_CONFIGURATION_BUILD_DIR/TGSpreadsheetWriter"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/../Frameworks' '@loader_path/Frameworks'
+OTHER_CFLAGS = $(inherited) -iquote "$PODS_CONFIGURATION_BUILD_DIR/AppSandboxFileAccess/AppSandboxFileAccess.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/CSwiftV/CSwiftV.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/PathKit/PathKit.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/Realm/Realm.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/RealmConverter/RealmConverter.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/SSZipArchive/SSZipArchive.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/TGSpreadsheetWriter/TGSpreadsheetWriter.framework/Headers"
+OTHER_LDFLAGS = $(inherited) -ObjC -framework "AppSandboxFileAccess" -framework "CSwiftV" -framework "PathKit" -framework "Realm" -framework "RealmConverter" -framework "SSZipArchive" -framework "TGSpreadsheetWriter"
+OTHER_SWIFT_FLAGS = $(inherited) "-D" "COCOAPODS"
+PODS_BUILD_DIR = $BUILD_DIR
+PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+PODS_ROOT = ${SRCROOT}/Pods
