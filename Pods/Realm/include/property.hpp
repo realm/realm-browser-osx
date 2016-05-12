@@ -23,47 +23,17 @@
 
 namespace realm {
     enum class PropertyType {
-        /** Integer type: NSInteger, int, long, Int (Swift) */
         Int    = 0,
-        /** Boolean type: BOOL, bool, Bool (Swift) */
         Bool   = 1,
-        /** Float type: float, Float (Swift) */
         Float  = 9,
-        /** Double type: double, Double (Swift) */
         Double = 10,
-        /** String type: NSString, String (Swift) */
         String = 2,
-        /** Data type: NSData */
         Data   = 4,
-        /** Any type: id, **not supported in Swift** */
-        Any    = 6,
-        /** Date type: NSDate */
-        Date   = 7,
-        /** Object type. See [Realm Models](https://realm.io/docs/objc/latest/#models) */
+        Any    = 6, // Deprecated and will be removed in the future
+        Date   = 8,
         Object = 12,
-        /** Array type. See [Realm Models](https://realm.io/docs/objc/latest/#models) */
         Array  = 13,
-        /** Linking objects type. See [Realm Models](https://realm.io/docs/objc/latest/#models) */
         LinkingObjects = 14,
-    };
-
-    struct Property {
-        std::string name;
-        PropertyType type;
-        std::string object_type;
-        std::string link_origin_property_name;
-        bool is_primary = false;
-        bool is_indexed = false;
-        bool is_nullable = false;
-
-        size_t table_column = -1;
-        bool requires_index() const { return is_primary || is_indexed; }
-        bool is_indexable() const {
-            return type == PropertyType::Int
-                || type == PropertyType::Bool
-                || type == PropertyType::String
-                || type == PropertyType::Date;
-        }
     };
 
     static inline const char *string_for_property_type(PropertyType type) {
@@ -92,6 +62,44 @@ namespace realm {
                 return "linking objects";
         }
     }
+
+    struct Property {
+        std::string name;
+        PropertyType type;
+        std::string object_type;
+        std::string link_origin_property_name;
+        bool is_primary = false;
+        bool is_indexed = false;
+        bool is_nullable = false;
+
+        size_t table_column = -1;
+        bool requires_index() const { return is_primary || is_indexed; }
+        bool is_indexable() const {
+            return type == PropertyType::Int
+                || type == PropertyType::Bool
+                || type == PropertyType::String
+                || type == PropertyType::Date;
+        }
+        std::string type_string() const {
+            switch(type) {
+                case PropertyType::String:
+                case PropertyType::Int:
+                case PropertyType::Bool:
+                case PropertyType::Date:
+                case PropertyType::Data:
+                case PropertyType::Double:
+                case PropertyType::Float:
+                case PropertyType::Any:
+                    return string_for_property_type(type);
+                case PropertyType::Object:
+                    return "<" + object_type + ">";
+                case PropertyType::Array:
+                    return "array<" + object_type + ">";
+                case PropertyType::LinkingObjects:
+                    return "linking objects<" + object_type + ">";
+            }
+        }
+    };
 }
 
 #endif /* REALM_PROPERTY_HPP */

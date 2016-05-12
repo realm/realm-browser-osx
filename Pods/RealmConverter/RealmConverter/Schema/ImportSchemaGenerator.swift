@@ -84,7 +84,7 @@ public class ImportSchemaGenerator : NSObject {
     private func generateForCSV() throws -> ImportSchema {
         let schemas = files.map { (file) -> ImportObjectSchema in
             let inputString = try! NSString(contentsOfFile: file, encoding: encoding.rawValue) as String
-            let csv = CSwiftV(String: inputString)
+            let csv = CSwiftV(string: inputString)
             
             let schema = ImportObjectSchema(objectClassName: Path(file).lastComponentWithoutExtension)
             
