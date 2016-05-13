@@ -30,7 +30,7 @@ const NSUInteger kTopTipDelay = 250;
 const NSUInteger kMaxFilesPerCategory = 7;
 const CGFloat kMenuImageSize = 16;
 
-NSString *const kRealmFileExension = @"realm";
+NSString *const kRealmFileExtension = @"realm";
 NSString *const kDeveloperFolder = @"/Developer";
 NSString *const kSimulatorFolder = @"/Library/Application Support/iPhone Simulator";
 NSString *const kDesktopFolder = @"/Desktop";
@@ -541,7 +541,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     NSSavePanel *savePanel = [NSSavePanel savePanel];
     
     // Restrict the file type to whatever you like
-    savePanel.allowedFileTypes = @[kRealmFileExension];
+    savePanel.allowedFileTypes = @[kRealmFileExtension];
     
     // Set the starting directory
     savePanel.directoryURL = directoryUrl;
