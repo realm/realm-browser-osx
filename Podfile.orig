@@ -1,0 +1,19 @@
+platform :osx, '10.9'
+use_frameworks!
+
+target 'RealmBrowser' do
+<<<<<<< HEAD
+  pod 'AppSandboxFileAccess'
+  pod 'RealmConverter'
+  pod 'Realm',
+  	  :git => 'https://github.com/realm/realm-cocoa-private.git',
+      :branch => 'jp-download-sync-binary' 
+end
+=======
+	pod 'AppSandboxFileAccess'
+	pod 'Realm'
+	pod 'RealmConverter'
+end
+
+
+>>>>>>> master

@@ -17,27 +17,20 @@
 ////////////////////////////////////////////////////////////////////////////
 
 @import Realm;
-@import Realm.Private;
 @import RealmConverter;
-
-#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
 
 #import "RLMApplicationDelegate.h"
 #import "RLMTestDataGenerator.h"
 #import "TestClasses.h"
-#import "RLMDocument.h"
-#import "RLMSyncCredentialsView.h"
-#import "RLMSyncWindowController.h"
-#import "NSURLComponents+FragmentItems.h"
-#import "RLMSyncAuthWindowController.h"
-#import "RLMRunSyncServerWindowController.h"
-#import "RLMRealmFileManager.h"
+
+#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
+#import <RealmConverter/RealmConverter.h>
 
 const NSUInteger kTopTipDelay = 250;
 const NSUInteger kMaxFilesPerCategory = 7;
 const CGFloat kMenuImageSize = 16;
 
-NSString *const kRealmFileExtension = @"realm";
+NSString *const kRealmFileExension = @"realm";
 NSString *const kDeveloperFolder = @"/Developer";
 NSString *const kSimulatorFolder = @"/Library/Application Support/iPhone Simulator";
 NSString *const kDesktopFolder = @"/Desktop";
@@ -50,7 +43,6 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
 
 @property (nonatomic, weak) IBOutlet NSMenu *fileMenu;
 @property (nonatomic, weak) IBOutlet NSMenuItem *openMenuItem;
-@property (nonatomic, weak) IBOutlet NSMenuItem *openSyncMenuItem;
 @property (nonatomic, weak) IBOutlet NSMenuItem *openEncryptedMenuItem;
 @property (nonatomic, weak) IBOutlet NSMenu *openAnyRealmMenu;
 
@@ -63,10 +55,6 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
 @property (nonatomic, strong) NSMetadataQuery *projQuery;
 @property (nonatomic, strong) NSArray *groupedFileItems;
 
-@property (nonatomic, strong) RLMSyncWindowController *syncWindowController;
-@property (nonatomic, strong) RLMRunSyncServerWindowController *runSyncWindowController;
-@property (nonatomic, strong) RLMSyncAuthWindowController *syncAuthWindowController;
-
 @end
 
 @implementation RLMApplicationDelegate
@@ -77,7 +65,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     if (!self.didLoadFile && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
-        //[NSApp sendAction:self.openMenuItem.action to:self.openMenuItem.target from:self];
+        [NSApp sendAction:self.openMenuItem.action to:self.openMenuItem.target from:self];
 
         self.realmQuery = [[NSMetadataQuery alloc] init];
         [self.realmQuery setSortDescriptors:@[[[NSSortDescriptor alloc] initWithKey:(id)kMDItemContentModificationDate ascending:NO]]];
@@ -339,234 +327,53 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     // Prompt the user for location af new realm file.
     [self showSavePanelStringFromDirectory:url completionHandler:^(BOOL userSelectedFile, NSURL *selectedFile) {
         
-        // If the user has selected a file url for storing the demo database, we first check if the
-        // file already exists (and is actually a file) we delete the old file before creating the
-        // new demo file.
-        if (userSelectedFile) {
-            NSString *path = selectedFile.path;
-            BOOL isDirectory = NO;
+        NSURL *directoryURL = [selectedFile URLByDeletingLastPathComponent];
+        
+        AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
+        [fileAccess requestAccessPermissionsForFileURL:directoryURL persistPermission:YES withBlock:^(NSURL *securelyScopedURL, NSData *bookmarkData) {
+            [securelyScopedURL startAccessingSecurityScopedResource];
             
-            if ([fileManager fileExistsAtPath:path isDirectory:&isDirectory]) {
-                if (!isDirectory) {
-                    NSError *error;
-                    [fileManager removeItemAtURL:selectedFile error:&error];
+            // If the user has selected a file url for storing the demo database, we first check if the
+            // file already exists (and is actually a file) we delete the old file before creating the
+            // new demo file.
+            if (userSelectedFile) {
+                NSString *path = selectedFile.path;
+                BOOL isDirectory = NO;
+                
+                if ([fileManager fileExistsAtPath:path isDirectory:&isDirectory]) {
+                    if (!isDirectory) {
+                        NSError *error;
+                        [fileManager removeItemAtURL:selectedFile error:&error];
+                    }
+                }
+                
+                NSArray *classNames = @[[RealmTestClass0 className], [RealmTestClass1 className], [RealmTestClass2 className]];
+                BOOL success = [RLMTestDataGenerator createRealmAtUrl:selectedFile withClassesNamed:classNames objectCount:1000];
+                
+                if (success) {
+                    NSAlert *alert = [[NSAlert alloc] init];
+                    
+                    alert.alertStyle = NSInformationalAlertStyle;
+                    alert.showsHelp = NO;
+                    alert.informativeText = @"A demo database has been generated. Would you like to open it?";
+                    alert.messageText = @"Open demo database?";
+                    [alert addButtonWithTitle:@"Open"];
+                    [alert addButtonWithTitle:@"Cancel"];
+                    
+                    NSUInteger response = [alert runModal];
+                    if (response == NSAlertFirstButtonReturn) {
+                        [self openFileAtURL:selectedFile];
+                    }
                 }
             }
             
-            NSArray *classNames = @[[RealmTestClass0 className], [RealmTestClass1 className], [RealmTestClass2 className]];
-            BOOL success = [RLMTestDataGenerator createRealmAtUrl:selectedFile withClassesNamed:classNames objectCount:1000];
-            
-            if (success) {
-                NSAlert *alert = [[NSAlert alloc] init];
-                
-                alert.alertStyle = NSInformationalAlertStyle;
-                alert.showsHelp = NO;
-                alert.informativeText = @"A demo database has been generated. Would you like to open it?";
-                alert.messageText = @"Open demo database?";
-                [alert addButtonWithTitle:@"Open"];
-                [alert addButtonWithTitle:@"Cancel"];
-                
-                NSUInteger response = [alert runModal];
-                if (response == NSAlertFirstButtonReturn) {
-                    [self openFileAtURL:selectedFile];
-                }
-            }
-        }
+            //As realm files perform some file-system level cleanup during their dealloc phase,
+            //make sure the sandbox access is removed in the next run loop to give it some time to finish.
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [securelyScopedURL stopAccessingSecurityScopedResource];
+            });
+        }];
     }];
-}
-
-#pragma mark - Private methods
-
--(void)openFileWithMenuItem:(NSMenuItem *)menuItem
-{
-    [self openFileAtURL:menuItem.representedObject];
-}
-
--(void)openFileAtURL:(NSURL *)url
-{
-    [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:url
-                                              display:YES
-                                    completionHandler:^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error){
-                                    }];
-}
-
-- (IBAction)openSyncRealmFileWithMenuItem:(NSMenuItem *)menuItem
-{
-    NSNib *accessoryViewNib = [[NSNib alloc] initWithNibNamed:@"SyncCredentialsView" bundle:nil];
-    NSArray *views = nil;
-    [accessoryViewNib instantiateWithOwner:self topLevelObjects:&views];
-    
-    RLMSyncCredentialsView *accessoryView = nil;
-    for (NSObject *view in views) {
-        if ([view isKindOfClass:[RLMSyncCredentialsView class]]) {
-            accessoryView = (RLMSyncCredentialsView *)view;
-            break;
-        }
-    }
-    
-    NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-    openPanel.allowedFileTypes = @[kRealmFileExtension];
-    openPanel.canChooseDirectories = NO;
-    openPanel.allowsMultipleSelection = NO;
-    openPanel.accessoryView = accessoryView;
-    
-    // Force the options to be displayed (only available in El Cap)
-    // Not sure if older versions default to displaying?
-    if ([openPanel respondsToSelector:@selector(isAccessoryViewDisclosed)]) {
-        openPanel.accessoryViewDisclosed = YES;
-    }
-
-    if ([openPanel runModal] == NSFileHandlingPanelCancelButton) {
-        return;
-    }
-    
-    NSURL *realmFileURL = [openPanel.URLs firstObject];
-    if (realmFileURL == nil) {
-        return;
-    }
-    
-    NSString *syncServerURL = accessoryView.syncServerURLField.stringValue;
-    NSString *syncServerSignedUserToken = accessoryView.syncSignedUserTokenField.stringValue;
-    
-    if (!syncServerURL ||
-        !syncServerSignedUserToken ||
-        [syncServerURL isEqualToString:@""] ||
-        [syncServerSignedUserToken isEqualToString:@""] ||
-        ![syncServerURL hasPrefix:@"realm://"]) {
-        NSAlert *alert = [NSAlert alertWithMessageText:@"Failed To Enter Valid Sync Credentials"
-                                         defaultButton:@"OK"
-                                       alternateButton:nil
-                                           otherButton:nil
-                             informativeTextWithFormat:@"To open a Realm file with sync, you must enter a valid sync server URL and sync user token. If you don't see these fields in the 'Open' dialog box, click 'Options' in the lower left corner. Please try again."];
-        
-        [alert runModal];
-        return;
-    }
-    
-    NSAlert *alert = [NSAlert alertWithMessageText:@"Make a copy of this Realm file?"
-                                     defaultButton:@"No"
-                                   alternateButton:@"Yes"
-                                       otherButton:nil
-                         informativeTextWithFormat:@"Making a copy of this file is necessary if it is going to be accessed from another process at the same time (eg, via iOS Simulator)."];
-    
-    NSModalResponse response = [alert runModal];
-    
-    //Deferred to the next run loop iteration to give the modal prompt
-    //time to dismiss before the sandboxing prompt appears.
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        NSMutableArray *fragmentItems = [NSMutableArray array];
-        
-        NSURLComponents *components = [NSURLComponents componentsWithURL:realmFileURL resolvingAgainstBaseURL:NO];
-        if (response != 0) {
-            [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"disableSyncFileCopy" value:@"1"]];
-        }
-        
-        NSURLQueryItem *syncURLItem = [NSURLQueryItem queryItemWithName:@"syncServerURL" value:syncServerURL];
-        [fragmentItems addObject:syncURLItem];
-        
-        NSURLQueryItem *syncSignedUserTokenItem = [NSURLQueryItem queryItemWithName:@"syncSignedUserToken" value:syncServerSignedUserToken];
-        [fragmentItems addObject:syncSignedUserTokenItem];
-        
-        components.fragmentItems = fragmentItems;
-        
-        [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:components.URL
-                                                                               display:YES
-                                                                     completionHandler:^(NSDocument * __nullable document, BOOL documentWasAlreadyOpen, NSError * __nullable error)
-         {
-             
-         }];
-    });
-}
-
-- (IBAction)connectToSyncRealmWithURL:(NSMenuItem *)item
-{
-    if (self.syncWindowController) {
-        return;
-    }
-    
-    self.syncWindowController = [[RLMSyncWindowController alloc] initWithTempRealmFile];
-    [self.syncWindowController showWindow:self];
-    
-    __weak typeof(self) weakSelf = self;
-    self.syncWindowController.OKButtonClickedHandler = ^{
-        NSURL *url = [NSURL fileURLWithPath:weakSelf.syncWindowController.realmFilePath];
-        NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-        NSURLQueryItem *syncURLItem = [NSURLQueryItem queryItemWithName:@"syncServerURL" value:weakSelf.syncWindowController.serverURL];
-        NSURLQueryItem *syncSignedUserTokenItem = [NSURLQueryItem queryItemWithName:@"syncSignedUserToken" value:weakSelf.syncWindowController.serverSignedUserToken];
-        components.fragmentItems = @[syncURLItem, syncSignedUserTokenItem];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:components.URL
-                                                                                   display:YES
-                                                                         completionHandler:^(NSDocument * __nullable document, BOOL documentWasAlreadyOpen, NSError * __nullable error){ }];
-        });
-    };
-    
-    self.syncWindowController.windowClosedHandler = ^{
-        weakSelf.syncWindowController = nil;
-    };
-}
-
-- (IBAction)createNewRealmFileAndOpenWithSyncURL:(NSMenuItem *)item
-{
-    NSNib *accessoryViewNib = [[NSNib alloc] initWithNibNamed:@"SyncCredentialsView" bundle:nil];
-    NSArray *views = nil;
-    [accessoryViewNib instantiateWithOwner:self topLevelObjects:&views];
-    
-    RLMSyncCredentialsView *accessoryView = nil;
-    for (NSObject *view in views) {
-        if ([view isKindOfClass:[RLMSyncCredentialsView class]]) {
-            accessoryView = (RLMSyncCredentialsView *)view;
-            break;
-        }
-    }
-    
-    NSSavePanel *savePanel = [NSSavePanel savePanel];
-    savePanel.allowedFileTypes = @[kRealmFileExtension];
-    savePanel.accessoryView = accessoryView;
-    if ([savePanel runModal] != NSFileHandlingPanelOKButton) {
-        return;
-    }
-    
-    NSString *filePath = savePanel.URL.path;
-    NSString *syncServerURL = accessoryView.syncServerURLField.stringValue;
-    NSString *syncServerSignedUserToken = accessoryView.syncSignedUserTokenField.stringValue;
-    
-    //Create a new Realm instance to create the file on disk
-    //(This NEEDS to be done since RLMDocument requires a file on disk to open)
-    @autoreleasepool {
-        RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-        configuration.fileURL = [NSURL fileURLWithPath:filePath];
-        configuration.dynamic = YES;
-        configuration.customSchema = nil;
-        
-        if (syncServerURL.length > 0) {
-            configuration.syncServerURL = [NSURL URLWithString:syncServerURL];
-        }
-        
-        if (syncServerSignedUserToken.length > 0) {
-            configuration.syncUserToken = syncServerSignedUserToken;
-        }
-        
-        [RLMRealmConfiguration setDefaultConfiguration:configuration];
-        RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:nil];
-        [[RLMRealmFileManager sharedManager] addRealm:realm];
-    }
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSURLComponents *components = [NSURLComponents componentsWithURL:[NSURL fileURLWithPath:filePath] resolvingAgainstBaseURL:NO];
-        NSURLQueryItem *syncURLItem = [NSURLQueryItem queryItemWithName:@"syncServerURL" value:syncServerURL];
-        NSURLQueryItem *syncSignedUserTokenItem = [NSURLQueryItem queryItemWithName:@"syncSignedUserToken" value:syncServerSignedUserToken];
-        components.fragmentItems = @[syncURLItem, syncSignedUserTokenItem];
-        
-        [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:components.URL
-                                                                               display:YES
-                                                                     completionHandler:^(NSDocument * __nullable document, BOOL documentWasAlreadyOpen, NSError * __nullable error)
-         {
-             
-         }];
-    });
 }
 
 #pragma mark - Import Methods -
@@ -580,7 +387,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     openPanel.allowsMultipleSelection = NO;
     openPanel.message = @"Please choose the XLSX file you wish to import.";
     openPanel.allowedFileTypes = @[@"xlsx"];
-    
+
     NSInteger result = [openPanel runModal];
     if (result != NSFileHandlingPanelOKButton) {
         return;
@@ -614,14 +421,14 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
         if (result > 0) {
             return;
         }
-        
+    
         [[NSFileManager defaultManager] removeItemAtPath:realmFilePath error:nil];
     }
     
     AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
     [fileAccess requestAccessPermissionsForFileURL:targetDirectoryURL persistPermission:YES withBlock:^(NSURL *securelyScopedURL, NSData *bookmarkData) {
         [securelyScopedURL startAccessingSecurityScopedResource];
-        
+    
         @autoreleasepool {
             RLMImportSchemaGenerator *schemaGenerator = [[RLMImportSchemaGenerator alloc] initWithFile:targetFileURL.path encoding:EncodingUTF8];
             RLMImportSchema *schema = [schemaGenerator generatedSchemaWithError:nil];
@@ -694,7 +501,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
     [fileAccess requestAccessPermissionsForFileURL:targetDirectoryURL persistPermission:YES withBlock:^(NSURL *securelyScopedURL, NSData *bookmarkData) {
         [securelyScopedURL startAccessingSecurityScopedResource];
-        
+    
         @autoreleasepool {
             RLMImportSchemaGenerator *schemaGenerator = [[RLMImportSchemaGenerator alloc] initWithFiles:filePaths encoding:EncodingUTF8];
             RLMImportSchema *schema = [schemaGenerator generatedSchemaWithError:nil];
@@ -713,12 +520,28 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     }];
 }
 
+#pragma mark - Private methods
+
+-(void)openFileWithMenuItem:(NSMenuItem *)menuItem
+{
+    [self openFileAtURL:menuItem.representedObject];
+}
+
+-(void)openFileAtURL:(NSURL *)url
+{
+    NSDocumentController *documentController = [[NSDocumentController alloc] init];
+    [documentController openDocumentWithContentsOfURL:url
+                                              display:YES
+                                    completionHandler:^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error){
+                                    }];
+}
+
 - (void)showSavePanelStringFromDirectory:(NSURL *)directoryUrl completionHandler:(void(^)(BOOL userSelectesFile, NSURL *selectedFile))completion
 {
     NSSavePanel *savePanel = [NSSavePanel savePanel];
     
     // Restrict the file type to whatever you like
-    savePanel.allowedFileTypes = @[kRealmFileExtension];
+    savePanel.allowedFileTypes = @[kRealmFileExension];
     
     // Set the starting directory
     savePanel.directoryURL = directoryUrl;
@@ -743,30 +566,6 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
             completion(NO, nil);
         }
     }];
-}
-
-- (IBAction)generateAuthCredentials:(id)sender
-{
-    if (self.syncAuthWindowController) {
-        return;
-    }
-    
-    __weak typeof(self) weakSelf = self;
-    self.syncAuthWindowController = [[RLMSyncAuthWindowController alloc] init];
-    self.syncAuthWindowController.closedHandler = ^{ weakSelf.syncAuthWindowController = nil; };
-    [self.syncAuthWindowController showWindow:nil];
-}
-
-- (IBAction)runSyncServer:(id)sender
-{
-    if (self.runSyncWindowController) {
-        return;
-    }
-    
-    __weak typeof(self) weakSelf = self;
-    self.runSyncWindowController = [[RLMRunSyncServerWindowController alloc] init];
-    self.runSyncWindowController.closedHandler = ^{ weakSelf.runSyncWindowController = nil; };
-    [self.runSyncWindowController showWindow:nil];
 }
 
 @end
