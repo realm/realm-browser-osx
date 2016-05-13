@@ -165,7 +165,6 @@ const NSUInteger kMaxItemsInTestArray = 12;
                 break;
             
             case RLMPropertyTypeLinkingObjects:
-                propertyValue = nil;
                 break;
         }
         
