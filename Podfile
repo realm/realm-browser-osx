@@ -5,7 +5,7 @@ use_frameworks!
 target 'RealmBrowser' do
 	pod 'AppSandboxFileAccess'
 	pod 'Realm'
-	pod 'RealmConverter'
+	pod 'RealmConverter', :head
 end
 
 

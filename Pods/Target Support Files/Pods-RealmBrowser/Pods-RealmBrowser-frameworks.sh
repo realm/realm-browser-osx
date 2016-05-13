@@ -16,7 +16,7 @@ install_framework()
     local source="$1"
   fi
 
-  local destination="${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}"
+  local destination="${CONFIGURATION_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}"
 
   if [ -L "${source}" ]; then
       echo "Symlinked..."
@@ -59,8 +59,8 @@ code_sign_if_enabled() {
   if [ -n "${EXPANDED_CODE_SIGN_IDENTITY}" -a "${CODE_SIGNING_REQUIRED}" != "NO" -a "${CODE_SIGNING_ALLOWED}" != "NO" ]; then
     # Use the current code_sign_identitiy
     echo "Code Signing $1 with Identity ${EXPANDED_CODE_SIGN_IDENTITY_NAME}"
-    echo "/usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} ${OTHER_CODE_SIGN_FLAGS} --preserve-metadata=identifier,entitlements \"$1\""
-    /usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} ${OTHER_CODE_SIGN_FLAGS} --preserve-metadata=identifier,entitlements "$1"
+    echo "/usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements \"$1\""
+    /usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements "$1"
   fi
 }
 
@@ -84,20 +84,20 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "$BUILT_PRODUCTS_DIR/AppSandboxFileAccess/AppSandboxFileAccess.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/CSwiftV/CSwiftV.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/PathKit/PathKit.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/Realm/Realm.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/RealmConverter/RealmConverter.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/SSZipArchive/SSZipArchive.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/TGSpreadsheetWriter/TGSpreadsheetWriter.framework"
+  install_framework "Pods-RealmBrowser/AppSandboxFileAccess.framework"
+  install_framework "Pods-RealmBrowser/CSwiftV.framework"
+  install_framework "Pods-RealmBrowser/PathKit.framework"
+  install_framework "Pods-RealmBrowser/Realm.framework"
+  install_framework "Pods-RealmBrowser/RealmConverter.framework"
+  install_framework "Pods-RealmBrowser/SSZipArchive.framework"
+  install_framework "Pods-RealmBrowser/TGSpreadsheetWriter.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "$BUILT_PRODUCTS_DIR/AppSandboxFileAccess/AppSandboxFileAccess.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/CSwiftV/CSwiftV.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/PathKit/PathKit.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/Realm/Realm.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/RealmConverter/RealmConverter.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/SSZipArchive/SSZipArchive.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/TGSpreadsheetWriter/TGSpreadsheetWriter.framework"
+  install_framework "Pods-RealmBrowser/AppSandboxFileAccess.framework"
+  install_framework "Pods-RealmBrowser/CSwiftV.framework"
+  install_framework "Pods-RealmBrowser/PathKit.framework"
+  install_framework "Pods-RealmBrowser/Realm.framework"
+  install_framework "Pods-RealmBrowser/RealmConverter.framework"
+  install_framework "Pods-RealmBrowser/SSZipArchive.framework"
+  install_framework "Pods-RealmBrowser/TGSpreadsheetWriter.framework"
 fi
