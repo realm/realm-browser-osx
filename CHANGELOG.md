@@ -1,10 +1,36 @@
 x.x.x Release notes (yyyy-MM-dd)
 =============================================================
+
+0.102.0 Release notes (2016-05-12)
+=============================================================
+* Updated to Realm Objective-C 0.102.0
+
+0.100.0 Release notes (2016-05-02)
+=============================================================
+* Updated to Realm Objective-C 0.100.0
+  * *(This fixes a bug where encrypted Realm files opened in the Browser would sometimes become corrupted.)*
+* Fixed a crash in OS X Mavericks
+
+0.98.6 Release notes (2016-03-29)
+=============================================================
+* Updated to Realm 0.98.6
+
+0.98.5 Release notes (2016-03-15)
+=============================================================
+* Updated to Realm 0.98.5
+* Added the ability to generate Swift model classes from a Realm file.
+* Improvements to the Objective-C model generation, including generics and Realm's latest features.
+* Improvements to the Java model generation, handling primary, indexed and required fields.
+* Fixed a rendering issue involving properties in different objects that had the same name.
+
+0.97.0 Release notes (2016-01-14)
+=============================================================
 * Updated to Realm to Objective-C 0.97.0.
 * Improvements to the scrolling performance of the main table view in Realm documents.
 * String-based searches in Realm files made non-case sensitive.
 * Added 'Cut', 'Copy', 'Paste' and 'Select All' menu options, initially to make editing text values easier.
 * Fixed an issue where editing properties in Realm objects weren't properly saving to disk.
+* Added tooltip for boolean valued columns.
 * Improved user experience when opening Ream files.
 
 0.96.2 Release notes (2015-10-12)

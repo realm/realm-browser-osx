@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="RLMExportIndicatorWindowController">
+            <connections>
+                <outlet property="progressIndicator" destination="KjN-Ba-3Ww" id="Awi-LW-H59"/>
+                <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="F0z-JX-Cv5">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="240" width="310" height="120"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <view key="contentView" id="se5-gp-TjO">
+                <rect key="frame" x="0.0" y="-1" width="310" height="120"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="KjN-Ba-3Ww">
+                        <rect key="frame" x="139" y="29" width="32" height="32"/>
+                    </progressIndicator>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yOQ-4Q-IJN">
+                        <rect key="frame" x="34" y="78" width="242" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="17" id="IXn-QO-QTp"/>
+                            <constraint firstAttribute="width" constant="238" id="LrK-Ql-GaA"/>
+                        </constraints>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Exporting copy of Realm file..." id="k8g-HB-gsv">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="centerY" secondItem="yOQ-4Q-IJN" secondAttribute="centerY" constant="26.5" id="B8Z-pR-vnQ"/>
+                    <constraint firstItem="yOQ-4Q-IJN" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" constant="25" id="G4G-eC-hEa"/>
+                    <constraint firstAttribute="centerX" secondItem="yOQ-4Q-IJN" secondAttribute="centerX" constant="0.5" id="ZvA-N5-HOU"/>
+                    <constraint firstItem="yOQ-4Q-IJN" firstAttribute="top" secondItem="KjN-Ba-3Ww" secondAttribute="top" constant="-34" id="az6-1a-7JT"/>
+                    <constraint firstAttribute="centerX" secondItem="KjN-Ba-3Ww" secondAttribute="centerX" constant="0.5" id="yK7-DQ-ITu"/>
+                </constraints>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
+            </connections>
+            <point key="canvasLocation" x="256" y="282"/>
+        </window>
+    </objects>
+</document>

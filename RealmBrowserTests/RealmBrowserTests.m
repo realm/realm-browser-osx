@@ -46,15 +46,14 @@
 {
     NSURL *fileURL = [self urlForGeneratedTestRealmWithClassNames:@[[RealmObject1 className]] count:10 encryptionKey:nil];
     XCTAssertNotNil(fileURL);
-                      
+    
+    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+    configuration.fileURL = fileURL;
+    configuration.dynamic = YES;
+    configuration.customSchema = nil;
+    
     NSError *error = nil;
-    RLMRealm *realm = [RLMRealm realmWithPath:fileURL.path
-                                          key:nil
-                                     readOnly:NO
-                                     inMemory:NO
-                                      dynamic:YES
-                                       schema:nil
-                                        error:&error];
+    RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:&error];
     XCTAssertNil(error);
     XCTAssertNotNil(realm);
     XCTAssertEqual(10, [[realm allObjects:[RealmObject1 className]] count]);
@@ -98,6 +97,5 @@
     NSLog(@"Classes %@",testNode.topLevelClasses);
     XCTAssertNotNil(testNode.topLevelClasses);
 }
-
 
 @end
