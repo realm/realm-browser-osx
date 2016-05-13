@@ -81,6 +81,7 @@
     textField.bordered = NO;
     textField.drawsBackground = NO;
     textField.alignment = NSRightTextAlignment;
+    textField.font = [NSFont monospacedDigitSystemFontOfSize:12.0 weight:NSFontWeightRegular];
     textField.cell.sendsActionOnEndEditing = YES;
 
     if ([textField respondsToSelector:@selector(setUsesSingleLineMode:)]) {

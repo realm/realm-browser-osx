@@ -32,6 +32,7 @@
     textField.translatesAutoresizingMaskIntoConstraints = NO;
     textField.bordered = NO;
     textField.drawsBackground = NO;
+    textField.font = [NSFont monospacedDigitSystemFontOfSize:12.0 weight:NSFontWeightRegular];
     
     if ([textField respondsToSelector:@selector(setUsesSingleLineMode:)]) {
         textField.usesSingleLineMode = YES;
