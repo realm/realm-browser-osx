@@ -19,13 +19,6 @@
 @import Cocoa;
 #import "RLMTableCellView.h"
 
-@interface RLMNumberTextField : NSTextField
-
-@property (nonatomic) NSNumber *number;
-
-@end
-
-
 @interface RLMNumberTableCellView : RLMTableCellView
 
 @end
