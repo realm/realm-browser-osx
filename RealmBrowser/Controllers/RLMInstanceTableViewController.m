@@ -357,10 +357,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
                 numberCellView.textField.action = @selector(editedTextField:);
             }
 
-            // Lets move all formatting stuff to cell itself
-            // numberCellView.textField.stringValue = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
-            numberCellView.textField.objectValue = propertyValue;
-            
+            numberCellView.textField.objectValue = propertyValue;            
             numberCellView.textField.editable = !self.realmIsLocked;
 
             cellView = numberCellView;
