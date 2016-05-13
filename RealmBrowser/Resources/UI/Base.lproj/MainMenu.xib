@@ -139,48 +139,43 @@
                                                 <action selector="saveObjcModels:" target="-1" id="6Rj-7H-W6J"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Save Swift definitions..." id="Nxi-3A-mZH">
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="bxr-oh-YCp"/>
+                            <menuItem title="Import From" id="FOU-ci-V7s">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Import From" id="PpI-yh-cnF">
+                                    <items>
+                                        <menuItem title="CSV..." id="A9m-X0-dOk">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="saveSwiftModels:" target="-1" id="7le-yg-BNa"/>
+                                                <action selector="importFileFromCSV:" target="PLw-ns-0qo" id="q1p-Qo-4mD"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="XLSX..." id="Vxd-0J-rYO">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="importFileFromXLSX:" target="PLw-ns-0qo" id="sCm-bZ-sKp"/>
                                             </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="ttc-0V-wuk"/>
-                            <menuItem title="Import From" id="Oxm-sa-Vwc">
+                            <menuItem title="Export To" id="TWJ-hi-1Pk">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Import From" id="bDd-8m-aT5">
+                                <menu key="submenu" title="Export To" id="beL-5Y-Bnw">
                                     <items>
-                                        <menuItem title="CSV..." id="xX6-Jo-Xnr">
+                                        <menuItem title="Compressed Realm..." id="omx-2F-H3R">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="importFileFromCSV:" target="PLw-ns-0qo" id="K9H-ZF-cLu"/>
+                                                <action selector="saveCopy:" target="-1" id="gWL-IC-Jqe"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="XLSX..." id="rzP-vT-bQx">
-                                            <connections>
-                                                <action selector="saveCopy:" target="-1" id="nGj-bK-5Sr"/>
-                                            </connections>
-                                        </menuItem>
-                                    </items>
-                                </menu>
-                            </menuItem>
-                            <menuItem title="Export To" id="yWr-qU-lWA">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Export To" id="KHC-xM-yfH">
-                                    <items>
-                                        <menuItem title="Compressed Realm..." id="pNK-cr-EuG">
+                                        <menuItem title="CSV..." id="EHj-7P-5cu">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="saveCopy:" target="-1" id="o1I-h3-Hhd"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="CSV..." id="r4f-YM-16u">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="exportToCSV:" target="-1" id="iMl-yy-kcK"/>
+                                                <action selector="exportToCSV:" target="-1" id="457-Xo-qgA"/>
                                             </connections>
                                         </menuItem>
                                     </items>
