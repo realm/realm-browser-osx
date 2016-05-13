@@ -5,7 +5,7 @@ PODS:
   - Realm (0.102.0):
     - Realm/Headers (= 0.102.0)
   - Realm/Headers (0.102.0)
-  - RealmConverter (0.1.1):
+  - RealmConverter (HEAD based on 0.1.1):
     - CSwiftV
     - PathKit
     - Realm
@@ -17,7 +17,7 @@ PODS:
 DEPENDENCIES:
   - AppSandboxFileAccess
   - Realm
-  - RealmConverter
+  - RealmConverter (HEAD)
 
 SPEC CHECKSUMS:
   AppSandboxFileAccess: f3e10b0ba10bbaa6dc6996639ff47836050329c5
