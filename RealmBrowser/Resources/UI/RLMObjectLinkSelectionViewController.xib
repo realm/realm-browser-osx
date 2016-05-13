@@ -13,11 +13,11 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView id="flu-HD-CAe" userLabel="MainTableView" propertyAccessControl="none">
+        <customView appearanceType="aqua" id="flu-HD-CAe" userLabel="MainTableView" propertyAccessControl="none">
             <rect key="frame" x="0.0" y="0.0" width="475" height="445"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y4e-Rd-QZZ" userLabel="MainScroll">
+                <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="10" translatesAutoresizingMaskIntoConstraints="NO" id="Y4e-Rd-QZZ" userLabel="MainScroll">
                     <rect key="frame" x="0.0" y="0.0" width="475" height="445"/>
                     <clipView key="contentView" focusRingType="none" id="goJ-S0-94I">
                         <rect key="frame" x="0.0" y="0.0" width="475" height="445"/>
