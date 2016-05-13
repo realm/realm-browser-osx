@@ -26,6 +26,9 @@
 @import Realm;
 @import Realm.Private;
 @import Realm.Dynamic;
+@import RealmConverter;
+
+#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
 
 NSString * const kRealmLockedImage = @"RealmLocked";
 NSString * const kRealmUnlockedImage = @"RealmUnlocked";
@@ -165,6 +168,12 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     [RLMModelExporter saveModelsForSchemas:objectSchemas inLanguage:RLMModelExporterLanguageObjectiveC];
 }
 
+- (IBAction)saveSwiftModels:(id)sender
+{
+    NSArray *objectSchemas = self.modelDocument.presentedRealm.realm.schema.objectSchema;
+    [RLMModelExporter saveModelsForSchemas:objectSchemas inLanguage:RLMModelExporterLanguageSwift];
+}
+
 - (IBAction)saveCopy:(id)sender
 {
     NSString *fileName = [self.modelDocument.presentedRealm.realm.configuration.fileURL.path lastPathComponent];
@@ -177,8 +186,45 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
         
         dispatch_async(dispatch_get_main_queue(), ^{
             NSURL *fileURL = [panel URL];
+            
+            AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
+            [fileAccess requestAccessPermissionsForFileURL:panel.URL persistPermission:YES withBlock:^(NSURL *securelyScopedURL, NSData *bookmarkData) {
+                [securelyScopedURL startAccessingSecurityScopedResource];
             [self exportAndCompactCopyOfRealmFileAtURL:fileURL];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [securelyScopedURL stopAccessingSecurityScopedResource];
+                }); 
+            }];
         });
+    }];
+}
+
+- (IBAction)exportToCSV:(id)sender
+{
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+    panel.canCreateDirectories = YES;
+    panel.canChooseDirectories = YES;
+    panel.canChooseFiles = NO;
+    panel.message = @"Choose the directory in which to save the CSV files generated from this Realm file.";
+    [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
+        if (result != NSFileHandlingPanelOKButton) {
+            return;
+        }
+    
+        AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
+        [fileAccess requestAccessPermissionsForFileURL:panel.URL persistPermission:YES withBlock:^(NSURL *securelyScopedURL, NSData *bookmarkData) {
+            [securelyScopedURL startAccessingSecurityScopedResource];
+            
+            NSString *folderPath = panel.URL.path;
+            NSString *realmFolderPath = self.modelDocument.presentedRealm.realm.configuration.fileURL.path;
+            RLMCSVDataExporter *exporter = [[RLMCSVDataExporter alloc] initWithRealmFileAtPath:realmFolderPath];
+            NSError *error = nil;
+            [exporter exportToFolderAtPath:folderPath withError:&error];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [securelyScopedURL stopAccessingSecurityScopedResource];
+            });
+        }];
     }];
 }
 

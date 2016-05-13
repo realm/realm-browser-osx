@@ -163,7 +163,7 @@ const NSUInteger kMaxItemsInTestArray = 12;
             case RLMPropertyTypeObject:
                 propertyValue = [self randomObjectOfClass:NSClassFromString(property.objectClassName) inRealm:realm tryToReuse:YES];
                 break;
-                
+            
             case RLMPropertyTypeLinkingObjects:
                 propertyValue = nil;
         }

@@ -108,8 +108,8 @@
 		1D09E8ADC51A1F6D9592D207 /* Pods-RealmBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.debug.xcconfig"; sourceTree = "<group>"; };
 		22013F761CCA35D2000F79B5 /* RLMRealmFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMRealmFileManager.h; sourceTree = "<group>"; };
 		22013F771CCA35D2000F79B5 /* RLMRealmFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMRealmFileManager.m; sourceTree = "<group>"; };
-		22068CFA1C6E298C008C0BFA /* NSURLComponents+FragmentItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLComponents+FragmentItems.h"; sourceTree = "<group>"; };
-		22068CFB1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLComponents+FragmentItems.m"; sourceTree = "<group>"; };
+		22068CFA1C6E298C008C0BFA /* NSURLComponents+FragmentItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSURLComponents+FragmentItems.h"; path = "../NSURLComponents+FragmentItems.h"; sourceTree = "<group>"; };
+		22068CFB1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSURLComponents+FragmentItems.m"; path = "../NSURLComponents+FragmentItems.m"; sourceTree = "<group>"; };
 		22096B2519911F7300233D77 /* RLMBadgeTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMBadgeTableCellView.h; sourceTree = "<group>"; };
 		22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMBadgeTableCellView.m; sourceTree = "<group>"; };
 		220A4F121C05A85D00A32787 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -338,8 +338,6 @@
 				E83626C71CE35C7C00E9493D /* Support */,
 				84E0F9561921F3B900D6CA14 /* Supporting Files */,
 				E83626C81CE35C8200E9493D /* Views */,
-				22068CFA1C6E298C008C0BFA /* NSURLComponents+FragmentItems.h */,
-				22068CFB1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m */,
 			);
 			path = RealmBrowser;
 			sourceTree = "<group>";
@@ -454,6 +452,8 @@
 				2249D9B119A62EBD00A31104 /* RLMTableColumn.m */,
 				84AA41A71949C99800A50F03 /* RLMTypeNode.h */,
 				84AA41A81949C99800A50F03 /* RLMTypeNode.m */,
+				22068CFA1C6E298C008C0BFA /* NSURLComponents+FragmentItems.h */,
+				22068CFB1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -139,13 +139,52 @@
                                                 <action selector="saveObjcModels:" target="-1" id="6Rj-7H-W6J"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Save Swift definitions..." id="Nxi-3A-mZH">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="saveSwiftModels:" target="-1" id="7le-yg-BNa"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Export Copy..." keyEquivalent="S" id="hoM-YX-5ZD">
-                                <connections>
-                                    <action selector="saveCopy:" target="-1" id="nGj-bK-5Sr"/>
-                                </connections>
+                            <menuItem isSeparatorItem="YES" id="ttc-0V-wuk"/>
+                            <menuItem title="Import From" id="Oxm-sa-Vwc">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Import From" id="bDd-8m-aT5">
+                                    <items>
+                                        <menuItem title="CSV..." id="xX6-Jo-Xnr">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="importFileFromCSV:" target="PLw-ns-0qo" id="K9H-ZF-cLu"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="XLSX..." id="rzP-vT-bQx">
+                                            <connections>
+                                                <action selector="saveCopy:" target="-1" id="nGj-bK-5Sr"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="Export To" id="yWr-qU-lWA">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Export To" id="KHC-xM-yfH">
+                                    <items>
+                                        <menuItem title="Compressed Realm..." id="pNK-cr-EuG">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="saveCopy:" target="-1" id="o1I-h3-Hhd"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="CSV..." id="r4f-YM-16u">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="exportToCSV:" target="-1" id="iMl-yy-kcK"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
                             </menuItem>
                         </items>
                     </menu>

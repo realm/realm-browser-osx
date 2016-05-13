@@ -135,7 +135,7 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
             return @"<Any>";
         
         case RLMPropertyTypeLinkingObjects:
-            return @"LinkingObjects";
+            return @"<LinkingObjects>";
             
         case RLMPropertyTypeObject: {
             RLMObject *referredObject = (RLMObject *)propertyValue;

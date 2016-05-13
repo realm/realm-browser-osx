@@ -18,6 +18,9 @@
 
 @import Realm;
 @import Realm.Private;
+@import RealmConverter;
+
+#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
 
 #import "RLMApplicationDelegate.h"
 #import "RLMTestDataGenerator.h"
@@ -564,6 +567,150 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
              
          }];
     });
+}
+
+#pragma mark - Import Methods -
+- (IBAction)importFileFromXLSX:(id)sender
+{
+    // Get the file to import
+    NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+    openPanel.canChooseDirectories = NO;
+    openPanel.canChooseFiles = YES;
+    openPanel.canCreateDirectories = YES;
+    openPanel.allowsMultipleSelection = NO;
+    openPanel.message = @"Please choose the XLSX file you wish to import.";
+    openPanel.allowedFileTypes = @[@"xlsx"];
+    
+    NSInteger result = [openPanel runModal];
+    if (result != NSFileHandlingPanelOKButton) {
+        return;
+    }
+    
+    NSURL *targetFileURL = openPanel.URL;
+    
+    // Get the destination folder to save the Realm file
+    NSOpenPanel *savePanel = [NSOpenPanel openPanel];
+    savePanel.canChooseDirectories = YES;
+    savePanel.canChooseFiles = NO;
+    savePanel.canCreateDirectories = YES;
+    savePanel.allowsMultipleSelection = NO;
+    savePanel.message = @"Please choose the destination folder for the new Realm file.";
+    
+    result = [savePanel runModal];
+    if (result != NSFileHandlingPanelOKButton) {
+        return;
+    }
+    
+    NSURL *targetDirectoryURL = savePanel.URL;
+    NSString *realmFilePath = [targetDirectoryURL.path stringByAppendingPathComponent:@"default.realm"];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:realmFilePath]) {
+        NSAlert *alert = [NSAlert alertWithMessageText:@"A Realm file named \"default.realm\" already exists in that location. Do you wish to proceed?"
+                                         defaultButton:@"Cancel"
+                                       alternateButton:@"OK"
+                                           otherButton:nil
+                             informativeTextWithFormat:@"The existing file will be deleted and replaced with a new one. This operation cannot be undone."];
+        NSInteger result = [alert runModal];
+        if (result > 0) {
+            return;
+        }
+        
+        [[NSFileManager defaultManager] removeItemAtPath:realmFilePath error:nil];
+    }
+    
+    AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
+    [fileAccess requestAccessPermissionsForFileURL:targetDirectoryURL persistPermission:YES withBlock:^(NSURL *securelyScopedURL, NSData *bookmarkData) {
+        [securelyScopedURL startAccessingSecurityScopedResource];
+        
+        @autoreleasepool {
+            RLMImportSchemaGenerator *schemaGenerator = [[RLMImportSchemaGenerator alloc] initWithFile:targetFileURL.path encoding:EncodingUTF8];
+            RLMImportSchema *schema = [schemaGenerator generatedSchemaWithError:nil];
+            
+            if (schema == nil) {
+                NSAlert *alert = [NSAlert alertWithMessageText:@"Unable to Generate Schema" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"Please check the file is in the correct format and try again."];
+                [alert runModal];
+                return;
+            }
+            
+            RLMXLSXDataImporter *importer = [[RLMXLSXDataImporter alloc] initWithFile:targetFileURL.path encoding:EncodingUTF8];
+            [importer importToPath:targetDirectoryURL.path withSchema:schema error:nil];
+        }
+        
+        [securelyScopedURL stopAccessingSecurityScopedResource];
+    }];
+}
+
+- (IBAction)importFileFromCSV:(id)sender
+{
+    NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+    openPanel.canChooseDirectories = NO;
+    openPanel.canChooseFiles = YES;
+    openPanel.canCreateDirectories = YES;
+    openPanel.allowsMultipleSelection = NO;
+    openPanel.message   = @"Please choose the CSV files you wish to import.";
+    openPanel.allowedFileTypes = @[@"csv"];
+    
+    NSInteger result = [openPanel runModal];
+    if (result != NSFileHandlingPanelOKButton) {
+        return;
+    }
+    
+    NSArray *fileURLs = openPanel.URLs;
+    NSMutableArray *filePaths = [NSMutableArray array];
+    for (NSURL *url in fileURLs) {
+        [filePaths addObject:url.path];
+    }
+    
+    NSOpenPanel *savePanel = [NSOpenPanel openPanel];
+    savePanel.canChooseDirectories = YES;
+    savePanel.canChooseFiles = NO;
+    savePanel.canCreateDirectories = YES;
+    savePanel.allowsMultipleSelection = NO;
+    savePanel.message = @"Please choose the destination folder for the new Realm file.";
+    
+    result = [savePanel runModal];
+    if (result != NSFileHandlingPanelOKButton) {
+        return;
+    }
+    
+    NSURL *targetDirectoryURL = savePanel.URL;
+    NSString *realmFilePath = [targetDirectoryURL.path stringByAppendingPathComponent:@"default.realm"];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:realmFilePath]) {
+        NSAlert *alert = [NSAlert alertWithMessageText:@"A Realm file named \"default.realm\" already exists in that location. Do you wish to proceed?"
+                                         defaultButton:@"Cancel"
+                                       alternateButton:@"OK"
+                                           otherButton:nil
+                             informativeTextWithFormat:@"The existing file will be deleted and replaced with a new one. This operation cannot be undone."];
+        
+        NSInteger result = [alert runModal];
+        if (result > 0) {
+            return;
+        }
+        
+        [[NSFileManager defaultManager] removeItemAtPath:realmFilePath error:nil];
+    }
+    
+    AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
+    [fileAccess requestAccessPermissionsForFileURL:targetDirectoryURL persistPermission:YES withBlock:^(NSURL *securelyScopedURL, NSData *bookmarkData) {
+        [securelyScopedURL startAccessingSecurityScopedResource];
+        
+        @autoreleasepool {
+            RLMImportSchemaGenerator *schemaGenerator = [[RLMImportSchemaGenerator alloc] initWithFiles:filePaths encoding:EncodingUTF8];
+            RLMImportSchema *schema = [schemaGenerator generatedSchemaWithError:nil];
+            
+            if (schema == nil) {
+                NSAlert *alert = [NSAlert alertWithMessageText:@"Unable to Generate Schema" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"Please check the files are in the correct format and try again."];
+                [alert runModal];
+                return;
+            }
+            
+            RLMCSVDataImporter *importer = [[RLMCSVDataImporter alloc] initWithFiles:filePaths encoding:EncodingUTF8];
+            [importer importToPath:targetDirectoryURL.path withSchema:schema error:nil];
+        }
+        
+        [securelyScopedURL stopAccessingSecurityScopedResource];
+    }];
 }
 
 - (void)showSavePanelStringFromDirectory:(NSURL *)directoryUrl completionHandler:(void(^)(BOOL userSelectesFile, NSURL *selectedFile))completion
