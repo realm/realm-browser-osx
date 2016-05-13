@@ -42,7 +42,7 @@ public class CSVDataImporter: DataImporter {
             let schema = schema.schemas[index]
 
             let inputString = try! NSString(contentsOfFile: file, encoding: encoding.rawValue) as String
-            let csv = CSwiftV(String: inputString)
+            let csv = CSwiftV(string: inputString)
 
             var generator = csv.rows.generate()
             transactionLoop: while true {

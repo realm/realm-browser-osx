@@ -54,7 +54,7 @@ public class CSVDataExporter: DataExporter {
     public override func exportToFolderAtPath(outputFolderPath: String) throws {
         
         let realmConfiguration = RLMRealmConfiguration.defaultConfiguration()
-        realmConfiguration.path = realmFilePath
+        realmConfiguration.fileURL = NSURL(fileURLWithPath: realmFilePath)
         realmConfiguration.dynamic = true
         
         let realm = try RLMRealm(configuration: realmConfiguration)

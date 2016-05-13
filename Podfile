@@ -1,12 +1,11 @@
-source 'https://github.com/CocoaPods/Specs.git'
-
 platform :osx, '10.9'
 
 use_frameworks!
 
-xcodeproj 'RealmBrowser'
-link_with 'RealmBrowser', 'RealmBrowserTests'
+target 'RealmBrowser' do
+	pod 'AppSandboxFileAccess'
+	pod 'Realm'
+	pod 'RealmConverter'
+end
 
-pod 'AppSandboxFileAccess'
-pod 'Realm'
-pod 'RealmConverter'
+
