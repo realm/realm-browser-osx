@@ -27,7 +27,11 @@ FOUNDATION_EXTERN BOOL RLMPropertyTypeIsNumeric(RLMPropertyType propertyType);
 BOOL RLMPropertyTypeIsComputed(RLMPropertyType propertyType);
 
 // private property interface
-@interface RLMProperty ()
+@interface RLMProperty () {
+@public
+    RLMPropertyType _type;
+    Ivar _swiftIvar;
+}
 
 - (instancetype)initWithName:(NSString *)name
                      indexed:(BOOL)indexed
@@ -36,6 +40,7 @@ BOOL RLMPropertyTypeIsComputed(RLMPropertyType propertyType);
 
 - (instancetype)initSwiftPropertyWithName:(NSString *)name
                                   indexed:(BOOL)indexed
+                   linkPropertyDescriptor:(RLMPropertyDescriptor *)linkPropertyDescriptor
                                  property:(objc_property_t)property
                                  instance:(RLMObjectBase *)objectInstance;
 
