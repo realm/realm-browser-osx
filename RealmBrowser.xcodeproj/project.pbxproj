@@ -478,7 +478,6 @@
 				22FAADC51C7C553200832102 /* Embed Frameworks */,
 				AE0E96A94AA45BFF82A11A2B /* 📦 Embed Pods Frameworks */,
 				FD7AC8A901FDDC003C169A7A /* 📦 Copy Pods Resources */,
-				30593256C45997662366F6B1 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -590,21 +589,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		30593256C45997662366F6B1 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AE0E96A94AA45BFF82A11A2B /* 📦 Embed Pods Frameworks */ = {
