@@ -20,12 +20,11 @@
 
 #import "RLMViewController.h"
 #import "RLMTableView.h"
-#import "RLMTextField.h"
 
 @class RLMRealmBrowserWindowController;
 @class RLMArrayNode;
 
-@interface RLMInstanceTableViewController : RLMViewController <RLMTextFieldDelegate, RLMTableViewDelegate, RLMTableViewDataSource>
+@interface RLMInstanceTableViewController : RLMViewController <RLMTableViewDelegate, RLMTableViewDataSource>
 
 @property (nonatomic, readonly) RLMTableView *realmTableView;
 

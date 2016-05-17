@@ -18,12 +18,11 @@
 
 #import "RLMNumberTableCellView.h"
 
-@interface RLMNumberTextField()
+@interface RLMNumberTextField : NSTextField
 
-@property (nonatomic) NSNumberFormatter *numberFormatter;
+@property (nonatomic, strong) NSNumberFormatter *numberFormatter;
 
 @end
-
 
 @implementation RLMNumberTextField
 
@@ -35,7 +34,6 @@
     return self;
 }
 
-
 - (instancetype)initWithCoder:(NSCoder *)coder {
     if (self = [super initWithCoder:coder]) {
         [self setupNumberFormatter];
@@ -46,25 +44,27 @@
 
 - (void)setupNumberFormatter {
     [super awakeFromNib];
+    
     self.numberFormatter = [[NSNumberFormatter alloc] init];
-    self.numberFormatter.hasThousandSeparators = NO;
     self.numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
     self.numberFormatter.maximumFractionDigits = UINT16_MAX;
+    
+    self.formatter = self.numberFormatter;
 }
 
 -(BOOL)becomeFirstResponder {
-    if (self.number) {
-        self.stringValue = [self.numberFormatter stringFromNumber:self.number];
-    }
-    else {
-        self.stringValue = @"";
-    }
+    self.numberFormatter.hasThousandSeparators = NO;
     
     return [super becomeFirstResponder];
 }
 
-@end
+- (BOOL)resignFirstResponder {
+    self.numberFormatter.hasThousandSeparators = YES;
+    
+    return [super resignFirstResponder];
+}
 
+@end
 
 @implementation RLMNumberTableCellView
 
@@ -81,6 +81,11 @@
     textField.bordered = NO;
     textField.drawsBackground = NO;
     textField.alignment = NSRightTextAlignment;
+    textField.cell.sendsActionOnEndEditing = YES;
+    
+    if ([NSFont respondsToSelector:@selector(monospacedDigitSystemFontOfSize:weight:)]) {
+        textField.font = [NSFont monospacedDigitSystemFontOfSize:12.0 weight:NSFontWeightRegular];
+    }
 
     if ([textField respondsToSelector:@selector(setUsesSingleLineMode:)]) {
         textField.usesSingleLineMode = YES;
