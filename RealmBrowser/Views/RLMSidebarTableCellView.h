@@ -20,7 +20,7 @@
 
 @interface RLMSidebarTableCellView : NSTableCellView
 
-@property(strong) IBOutlet NSButton *button;
+@property (weak) IBOutlet NSButton *button;
 
 @end
 
