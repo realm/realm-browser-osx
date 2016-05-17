@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2014 Realm Inc.
+// Copyright 2015 Realm Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,20 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#if TARGET_OS_IPHONE
-#error Attempting to use Realm's OSX framework in an iOS project.
+#ifdef __OBJC__
+#import <Foundation/Foundation.h>
 #endif
 
+#ifdef __cplusplus
+#import <functional>
+#import <map>
+#import <memory>
+#import <string>
+#import <vector>
+
+#import <realm/group.hpp>
+#import <realm/link_view.hpp>
+#import <realm/row.hpp>
+#import <realm/table.hpp>
+#import <realm/table_view.hpp>
+#endif

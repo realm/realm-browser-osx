@@ -17,26 +17,10 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #import <Foundation/Foundation.h>
-#import <memory>
-#import <string>
 
-@class RLMRealm;
+@interface RLMSwiftSupport : NSObject
 
-namespace realm {
-    class BindingContext;
-}
++ (BOOL)isSwiftClassName:(NSString *)className;
++ (NSString *)demangleClassName:(NSString *)className;
 
-// Add a Realm to the weak cache
-void RLMCacheRealm(std::string const& path, RLMRealm *realm);
-// Get a Realm for the given path which can be used on the current thread
-RLMRealm *RLMGetThreadLocalCachedRealmForPath(std::string const& path);
-// Get a Realm for the given path
-RLMRealm *RLMGetAnyCachedRealmForPath(std::string const& path);
-// Clear the weak cache of Realms
-void RLMClearRealmCache();
-
-// Install an uncaught exception handler that cancels write transactions
-// for all cached realms on the current thread
-void RLMInstallUncaughtExceptionHandler();
-
-std::unique_ptr<realm::BindingContext> RLMCreateBindingContext(RLMRealm *realm);
+@end

@@ -6,5 +6,5 @@ target 'RealmBrowser' do
   pod 'RealmConverter'
   pod 'Realm',
   	  :git => 'https://github.com/realm/realm-cocoa-private.git',
-      :branch => 'jp-download-sync-binary' 
+      :branch => 'jp-download-sync-binary'
 end
