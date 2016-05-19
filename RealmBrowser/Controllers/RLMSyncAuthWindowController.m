@@ -111,6 +111,7 @@
     }
     
     NSMutableDictionary *jsonDict = [NSMutableDictionary dictionary];
+    jsonDict[@"identity"] = [[NSUUID UUID] UUIDString];
     jsonDict[@"auth_method"] = @"none";
     jsonDict[@"access"] = accesses;
     jsonDict[@"app_id"] = self.appBundleTextField.stringValue ? self.appBundleTextField.stringValue : self.appBundleTextField.placeholderString;
