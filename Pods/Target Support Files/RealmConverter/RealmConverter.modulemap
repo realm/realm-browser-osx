@@ -1,6 +1,0 @@
-framework module RealmConverter {
-  umbrella header "RealmConverter-umbrella.h"
-
-  export *
-  module * { export * }
-}

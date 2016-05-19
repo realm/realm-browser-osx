@@ -1,6 +1,0 @@
-framework module TGSpreadsheetWriter {
-  umbrella header "TGSpreadsheetWriter-umbrella.h"
-
-  export *
-  module * { export * }
-}
