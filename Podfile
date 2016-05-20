@@ -8,10 +8,8 @@ target 'RealmBrowser' do
   pod 'AppSandboxFileAccess'
   pod 'Realm', '0.102.0-1'
   pod 'RealmConverter'
+end
 
-  post_install do |installer|
-    installer.pods_project.build_configuration_list.build_configurations.each do |configuration|
-      configuration.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
-    end
-  end
+post_install do |installer|
+  `rm -rf Pods/Headers/Public/Realm`
 end
