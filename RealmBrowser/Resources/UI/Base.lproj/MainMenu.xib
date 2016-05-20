@@ -75,25 +75,6 @@
                                     <action selector="openDocument:" target="-1" id="bVn-NM-KNZ"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
-                            <menuItem title="Open Sync URL..." keyEquivalent="O" id="qa5-9s-ojq">
-                                <modifierMask key="keyEquivalentModifierMask" shift="YES" control="YES" command="YES"/>
-                                <connections>
-                                    <action selector="connectToSyncRealmWithURL:" target="PLw-ns-0qo" id="Se4-SN-HVD"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Open File With Sync..." keyEquivalent="O" id="Jwe-jQ-6st">
-                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
-                                <connections>
-                                    <action selector="openSyncRealmFileWithMenuItem:" target="PLw-ns-0qo" id="DUj-lv-XRd"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="New Sync Realm File..." keyEquivalent="n" id="dF2-8a-Fa3">
-                                <connections>
-                                    <action selector="createNewRealmFileAndOpenWithSyncURL:" target="PLw-ns-0qo" id="daO-af-oJG"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" id="Vpq-6Q-Py8"/>
                             <menuItem title="Open Recent" id="tXI-mr-wws">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Open Recent" systemMenu="recentDocuments" id="oas-Oc-fiZ">
@@ -115,7 +96,7 @@
                                     </connections>
                                 </menu>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="H8M-jM-a9g"/>
+                            <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
                             <menuItem title="Close" keyEquivalent="w" id="DVo-aG-piG">
                                 <connections>
                                     <action selector="performClose:" target="-1" id="HmO-Ls-i7Q"/>
@@ -126,7 +107,7 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Save Model Definitions" id="YSO-b8-a2a">
                                     <items>
-                                        <menuItem title="Save Java definitions..." tag="101" id="kuf-fu-JL0">
+                                        <menuItem title="Save Java definitions..." id="kuf-fu-JL0">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="saveJavaModels:" target="-1" id="6op-mb-kj6"/>
@@ -138,43 +119,49 @@
                                                 <action selector="saveObjcModels:" target="-1" id="6Rj-7H-W6J"/>
                                             </connections>
                                         </menuItem>
-                                    </items>
-                                </menu>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" id="bxr-oh-YCp"/>
-                            <menuItem title="Import From" id="FOU-ci-V7s">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Import From" id="PpI-yh-cnF">
-                                    <items>
-                                        <menuItem title="CSV..." id="A9m-X0-dOk">
+                                        <menuItem title="Save Swift definitions..." id="Nxi-3A-mZH">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="importFileFromCSV:" target="PLw-ns-0qo" id="q1p-Qo-4mD"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="XLSX..." id="Vxd-0J-rYO">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="importFileFromXLSX:" target="PLw-ns-0qo" id="sCm-bZ-sKp"/>
+                                                <action selector="saveSwiftModels:" target="-1" id="7le-yg-BNa"/>
                                             </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Export To" id="TWJ-hi-1Pk">
+                            <menuItem isSeparatorItem="YES" id="H9W-ez-O6J"/>
+                            <menuItem title="Import From" id="Oxm-sa-Vwc">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Export To" id="beL-5Y-Bnw">
+                                <menu key="submenu" title="Import From" id="bDd-8m-aT5">
                                     <items>
-                                        <menuItem title="Compressed Realm..." id="omx-2F-H3R">
+                                        <menuItem title="CSV..." id="xX6-Jo-Xnr">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="saveCopy:" target="-1" id="gWL-IC-Jqe"/>
+                                                <action selector="importFileFromCSV:" target="PLw-ns-0qo" id="K9H-ZF-cLu"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="CSV..." id="EHj-7P-5cu">
+                                        <menuItem title="XLSX..." id="rzP-vT-bQx">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="exportToCSV:" target="-1" id="457-Xo-qgA"/>
+                                                <action selector="importFileFromXLSX:" target="PLw-ns-0qo" id="JkU-oL-OKa"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="Export To" id="yWr-qU-lWA">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Export To" id="KHC-xM-yfH">
+                                    <items>
+                                        <menuItem title="Compressed Realm..." id="pNK-cr-EuG">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="saveCopy:" target="-1" id="o1I-h3-Hhd"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="CSV..." id="r4f-YM-16u">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="exportToCSV:" target="-1" id="iMl-yy-kcK"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -259,19 +246,6 @@ CA
                                     <action selector="generatedDemoDatabase:" target="-1" id="jBw-mZ-hAB"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="S7S-kD-YoS"/>
-                            <menuItem title="Run Sync Server..." id="wNt-To-CtP">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="runSyncServer:" target="PLw-ns-0qo" id="B5t-uv-a6k"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Generate Sync Auth Credentials..." id="LYR-EO-Y8x">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="generateAuthCredentials:" target="PLw-ns-0qo" id="elT-7B-yPS"/>
-                                </connections>
-                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
@@ -333,5 +307,8 @@ CA
                 </menuItem>
             </items>
         </menu>
+        <menuItem title="Item" id="FTR-b1-6Fe">
+            <modifierMask key="keyEquivalentModifierMask"/>
+        </menuItem>
     </objects>
 </document>
