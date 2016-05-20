@@ -8,7 +8,7 @@ This version has been modified to provide access and introspection to .realm fil
 ## Installing
 
 ### Manual Build
-Download the project from this repo. To install all of the external dependencies, install CocoaPods and call the command `pod install` in the project directory. To install Realm with Sync, please [visit the sync releases](https://github.com/realm/realm-sync-kp/releases) and download the Realm Cocoa framework for OS X.
+Download the project from this repo. To install all of the external dependencies, install CocoaPods and call the command `pod install` in the project directory.
 
 ## License
 The public source code to Realm Browser is licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).

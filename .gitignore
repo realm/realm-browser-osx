@@ -2,10 +2,6 @@
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
-## Realm Sync specific
-Realm.framework
-RealmBrowserSync/Binaries/*
-
 ## Build generated
 build/
 DerivedData/
