@@ -1,6 +1,11 @@
 x.x.x Release notes (yyyy-MM-dd)
 =============================================================
 
+0.103.1 Release notes (2016-05-20)
+=============================================================
+* Updated to Realm Objective-C 0.103.1
+* UI layout and performance enhancements
+
 0.102.1 Release notes (2016-05-17)
 =============================================================
 * Updated to Realm Objective-C 0.102.1
