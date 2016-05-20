@@ -18,7 +18,6 @@
 
 @import Realm;
 @import Realm.Private;
-
 @import RealmConverter;
 
 #import "RLMApplicationDelegate.h"
@@ -31,7 +30,6 @@
 #import "RLMSyncAuthWindowController.h"
 
 #import <AppSandboxFileAccess/AppSandboxFileAccess.h>
-#import <RealmConverter/RealmConverter.h>
 
 #import "NSURLComponents+FragmentItems.h"
 
@@ -77,6 +75,8 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     [[NSUserDefaults standardUserDefaults] setObject:@(kTopTipDelay) forKey:@"NSInitialToolTipDelay"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
+    [self configureMainMenuWithSyncItems];
+    
     if (!self.didLoadFile && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
         [NSApp sendAction:self.openMenuItem.action to:self.openMenuItem.target from:self];
 
@@ -582,6 +582,53 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
 }
 
 #pragma mark - Sync -
+- (void)configureMainMenuWithSyncItems
+{
+    NSMenu *mainMenu = [NSApp mainMenu];
+    
+    // Get the 'File' and 'Tools' menu items
+    NSMenuItem *fileMenu, *toolsMenu = nil;
+    for (NSMenuItem *subMenu in mainMenu.itemArray) {
+        if ([subMenu.title isEqualToString:@"File"]) {
+            fileMenu = subMenu;
+        }
+        else if ([subMenu.title isEqualToString:@"Tools"]) {
+            toolsMenu = subMenu;
+        }
+    }
+    
+    // ---
+    
+    //Create and insert the menu items for the 'File' item
+    NSMenuItem *openSyncURLItem  = [[NSMenuItem alloc] initWithTitle:@"Open Sync URL..." action:@selector(connectToSyncRealmWithURL:) keyEquivalent:@"o"];
+    openSyncURLItem.keyEquivalentModifierMask = (NSShiftKeyMask | NSControlKeyMask | NSCommandKeyMask);
+    
+    NSMenuItem *openSyncFileItem = [[NSMenuItem alloc] initWithTitle:@"Open File with Sync..." action:@selector(openSyncRealmFileWithMenuItem:) keyEquivalent:@"o"];
+    openSyncFileItem.keyEquivalentModifierMask = (NSShiftKeyMask | NSCommandKeyMask);
+    
+    NSMenuItem *newSyncFileItem  = [[NSMenuItem alloc] initWithTitle:@"New Sync File with URL..." action:@selector(createNewRealmFileAndOpenWithSyncURL:) keyEquivalent:@"n"];
+    newSyncFileItem.keyEquivalentModifierMask = (NSCommandKeyMask);
+    
+    NSMenuItem *separator = [NSMenuItem separatorItem];
+    
+    NSArray *items = @[separator,newSyncFileItem,openSyncFileItem,openSyncURLItem];
+    for (NSMenuItem *item in items) {
+        [fileMenu.submenu insertItem:item atIndex:4];
+    }
+    
+    // ---
+    
+    // Create and insert the menu items for the 'Tools' item
+    NSMenuItem *runSyncServerItem  = [[NSMenuItem alloc] initWithTitle:@"Run Sync Server..." action:@selector(runSyncServer:) keyEquivalent:@""];
+    NSMenuItem *createCredsItem = [[NSMenuItem alloc] initWithTitle:@"Generate Sync Auth Crendentials..." action:@selector(generateAuthCredentials:) keyEquivalent:@""];
+    separator = [NSMenuItem separatorItem];
+    items = @[createCredsItem, runSyncServerItem, separator];
+    
+    for (NSMenuItem *item in items) {
+        [toolsMenu.submenu insertItem:item atIndex:1];
+    }
+}
+
 - (IBAction)openSyncRealmFileWithMenuItem:(NSMenuItem *)menuItem
 {
     NSNib *accessoryViewNib = [[NSNib alloc] initWithNibNamed:@"SyncCredentialsView" bundle:nil];
