@@ -1,10 +1,15 @@
+source 'https://github.com/realm/Specs.git'
+source 'https://github.com/CocoaPods/Specs.git'
+
 platform :osx, '10.9'
 use_frameworks!
 
 target 'RealmBrowser' do
   pod 'AppSandboxFileAccess'
+  pod 'Realm', '0.102.0-1'
   pod 'RealmConverter'
-  pod 'Realm',
-  	  :git => 'https://github.com/realm/realm-cocoa-private.git',
-      :branch => 'jp-download-sync-binary'
+end
+
+post_install do |installer|
+  `rm -rf Pods/Headers/Public/Realm`
 end

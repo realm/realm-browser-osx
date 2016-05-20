@@ -10,35 +10,18 @@
 	<string>46</string>
 	<key>objects</key>
 	<dict>
-		<key>179CA373A78EC9D02472FE98</key>
+		<key>1B36A032C4471C7ECBA3D0A2</key>
 		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
+			<key>explicitFileType</key>
+			<string>wrapper.framework</string>
+			<key>includeInIndex</key>
+			<string>0</string>
 			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Check Pods Manifest.lock</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
-if [[ $? != 0 ]] ; then
-    cat &lt;&lt; EOM
-error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
-EOM
-    exit 1
-fi
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>Pods_RealmBrowser.framework</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
 		</dict>
 		<key>22013F711CCA1230000F79B5</key>
 		<dict>
@@ -87,22 +70,6 @@ fi
 			<string>22013F771CCA35D2000F79B5</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
-		</dict>
-		<key>22023AC31CBFE6FD00F469EE</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>22FB990F1CC8CC4000411106</string>
-				<string>22FB99101CC8CC4000411106</string>
-				<string>22FB99121CC8CC4000411106</string>
-				<string>22FB990B1CC8CB7100411106</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Sync</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
 		</dict>
 		<key>22068CFA1C6E298C008C0BFA</key>
 		<dict>
@@ -193,6 +160,453 @@ fi
 			<string>220A4F121C05A85D00A32787</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
+		</dict>
+		<key>220BCC431CED6134006432ED</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>220BCC441CED6134006432ED</string>
+				<string>220BCC491CED6134006432ED</string>
+				<string>220BCC501CED6134006432ED</string>
+				<string>220BCC531CED6134006432ED</string>
+				<string>220BCC581CED6134006432ED</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>RealmBrowserSync</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC441CED6134006432ED</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>220BCC451CED6134006432ED</string>
+				<string>220BCC461CED6134006432ED</string>
+				<string>220BCC471CED6134006432ED</string>
+				<string>220BCC481CED6134006432ED</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Binaries</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC451CED6134006432ED</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>compiled.mach-o.dylib</string>
+			<key>path</key>
+			<string>librealm-dbg.9.dylib</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC461CED6134006432ED</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>compiled.mach-o.dylib</string>
+			<key>path</key>
+			<string>librealm-server-dbg.1.dylib</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC471CED6134006432ED</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>compiled.mach-o.dylib</string>
+			<key>path</key>
+			<string>librealm-sync-dbg.1.dylib</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC481CED6134006432ED</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>compiled.mach-o.executable</string>
+			<key>path</key>
+			<string>realm-server-dbg-noinst</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC491CED6134006432ED</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>220BCC4A1CED6134006432ED</string>
+				<string>220BCC4B1CED6134006432ED</string>
+				<string>220BCC4C1CED6134006432ED</string>
+				<string>220BCC4D1CED6134006432ED</string>
+				<string>220BCC4E1CED6134006432ED</string>
+				<string>220BCC4F1CED6134006432ED</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Controllers</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC4A1CED6134006432ED</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>RLMRunSyncServerWindowController.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC4B1CED6134006432ED</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>RLMRunSyncServerWindowController.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC4C1CED6134006432ED</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>RLMSyncAuthWindowController.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC4D1CED6134006432ED</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>RLMSyncAuthWindowController.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC4E1CED6134006432ED</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>RLMSyncWindowController.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC4F1CED6134006432ED</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>RLMSyncWindowController.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC501CED6134006432ED</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>220BCC511CED6134006432ED</string>
+				<string>220BCC521CED6134006432ED</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Models</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC511CED6134006432ED</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>RLMSyncServer.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC521CED6134006432ED</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>RLMSyncServer.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC531CED6134006432ED</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>220BCC7C1CED9928006432ED</string>
+				<string>220BCC551CED6134006432ED</string>
+				<string>220BCC561CED6134006432ED</string>
+				<string>220BCC571CED6134006432ED</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Resources</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC551CED6134006432ED</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>file.xib</string>
+			<key>path</key>
+			<string>SyncCredentialsView.xib</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC561CED6134006432ED</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>file.xib</string>
+			<key>path</key>
+			<string>SyncServerWindow.xib</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC571CED6134006432ED</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>file.xib</string>
+			<key>path</key>
+			<string>SyncWindow.xib</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC581CED6134006432ED</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>220BCC791CED960A006432ED</string>
+				<string>220BCC7A1CED960A006432ED</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Views</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC5E1CED6134006432ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>220BCC481CED6134006432ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>220BCC5F1CED6134006432ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>220BCC4B1CED6134006432ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>220BCC601CED6134006432ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>220BCC4D1CED6134006432ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>220BCC611CED6134006432ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>220BCC4F1CED6134006432ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>220BCC621CED6134006432ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>220BCC521CED6134006432ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>220BCC641CED6134006432ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>220BCC551CED6134006432ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>220BCC651CED6134006432ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>220BCC561CED6134006432ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>220BCC661CED6134006432ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>220BCC571CED6134006432ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>220BCC681CED89B2006432ED</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>path</key>
+			<string>Realm.framework</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC691CED89B2006432ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>220BCC681CED89B2006432ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>220BCC791CED960A006432ED</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>RLMSyncCredentialsView.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC7A1CED960A006432ED</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>RLMSyncCredentialsView.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC7B1CED960A006432ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>220BCC7A1CED960A006432ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>220BCC7C1CED9928006432ED</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>file.xib</string>
+			<key>path</key>
+			<string>RLMSyncAuthWindowController.xib</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>220BCC7D1CED9928006432ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>220BCC7C1CED9928006432ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>220BCC7E1CED99D8006432ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>220BCC451CED6134006432ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>220BCC7F1CED99DA006432ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>220BCC461CED6134006432ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>220BCC801CED99DB006432ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>220BCC471CED6134006432ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>220BCC831CED9A01006432ED</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>dstPath</key>
+			<string></string>
+			<key>dstSubfolderSpec</key>
+			<string>10</string>
+			<key>files</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXCopyFilesBuildPhase</string>
+			<key>name</key>
+			<string>Embed Frameworks</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
 		</dict>
 		<key>220D382619B639D700F79496</key>
 		<dict>
@@ -290,142 +704,6 @@ fi
 		<dict>
 			<key>fileRef</key>
 			<string>221322FC19954B0A00D25737</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>2223E6591C0DA3C300C0B936</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>2223E65A1C0DA3C300C0B936</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>SyncWindow.xib</string>
-			<key>path</key>
-			<string>.</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>2223E65A1C0DA3C300C0B936</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.xib</string>
-			<key>name</key>
-			<string>Base</string>
-			<key>path</key>
-			<string>Base.lproj/SyncWindow.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>2223E65B1C0DA3C300C0B936</key>
-		<dict>
-			<key>fileRef</key>
-			<string>2223E6591C0DA3C300C0B936</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>2223E65C1C0DBB5400C0B936</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMSyncWindowController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>2223E65D1C0DBB5400C0B936</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMSyncWindowController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>2223E65E1C0DBB5400C0B936</key>
-		<dict>
-			<key>fileRef</key>
-			<string>2223E65D1C0DBB5400C0B936</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22265F241C6C493D00BE57FB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>22265F251C6C493D00BE57FB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>SyncCredentialsView.xib</string>
-			<key>path</key>
-			<string>.</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22265F251C6C493D00BE57FB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.xib</string>
-			<key>name</key>
-			<string>Base</string>
-			<key>path</key>
-			<string>Base.lproj/SyncCredentialsView.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22265F261C6C493D00BE57FB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22265F241C6C493D00BE57FB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22265F271C6C497600BE57FB</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMSyncCredentialsView.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22265F281C6C497600BE57FB</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMSyncCredentialsView.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22265F291C6C497600BE57FB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22265F281C6C497600BE57FB</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
@@ -626,59 +904,6 @@ fi
 		<dict>
 			<key>fileRef</key>
 			<string>225AAFEB19C09E520023B595</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>2289367A1CABD2F80015B3C1</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMSyncAuthWindowController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>2289367B1CABD2F80015B3C1</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMSyncAuthWindowController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>2289367C1CABD2F80015B3C1</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.xib</string>
-			<key>path</key>
-			<string>RLMSyncAuthWindowController.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>2289367D1CABD2F80015B3C1</key>
-		<dict>
-			<key>fileRef</key>
-			<string>2289367B1CABD2F80015B3C1</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>2289367E1CABD2F80015B3C1</key>
-		<dict>
-			<key>fileRef</key>
-			<string>2289367C1CABD2F80015B3C1</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
@@ -909,124 +1134,6 @@ fi
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>22D956221CE47B240022C402</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>path</key>
-			<string>Realm.framework</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22D956231CE47B240022C402</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22D956221CE47B240022C402</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22D9B8161CA1303A006C0399</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.xib</string>
-			<key>path</key>
-			<string>SyncServerWindow.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22D9B8171CA1303A006C0399</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22D9B8161CA1303A006C0399</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22DB7A2B1CA28A6400DF4AE5</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMRunSyncServerWindowController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22DB7A2C1CA28A6400DF4AE5</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMRunSyncServerWindowController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22DB7A2D1CA28A6400DF4AE5</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22DB7A2C1CA28A6400DF4AE5</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22DB7A2E1CA2B99800DF4AE5</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>22DB7A301CA2B9C100DF4AE5</string>
-				<string>22DB7A311CA2B9C100DF4AE5</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>SyncServer</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22DB7A301CA2B9C100DF4AE5</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMSyncServer.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22DB7A311CA2B9C100DF4AE5</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMSyncServer.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22DB7A321CA2B9C100DF4AE5</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22DB7A311CA2B9C100DF4AE5</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
 		<key>22DC87E41B98086D0024BA34</key>
 		<dict>
 			<key>fileEncoding</key>
@@ -1146,147 +1253,6 @@ fi
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>22FB990B1CC8CB7100411106</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>compiled.mach-o.executable</string>
-			<key>path</key>
-			<string>realm-server-dbg-noinst</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22FB990D1CC8CB7100411106</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22FB990B1CC8CB7100411106</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22FB990F1CC8CC4000411106</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>compiled.mach-o.dylib</string>
-			<key>path</key>
-			<string>librealm-dbg.9.dylib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22FB99101CC8CC4000411106</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>compiled.mach-o.dylib</string>
-			<key>path</key>
-			<string>librealm-server-dbg.1.dylib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22FB99121CC8CC4000411106</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>compiled.mach-o.dylib</string>
-			<key>path</key>
-			<string>librealm-sync-dbg.1.dylib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22FB99151CC8CC4000411106</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22FB990F1CC8CC4000411106</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22FB99161CC8CC4000411106</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22FB99101CC8CC4000411106</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22FB99181CC8CC4000411106</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22FB99121CC8CC4000411106</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>24FE9B1C6769A20F7BABFC7E</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Copy Pods Resources</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>"${SRCROOT}/Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser-resources.sh"
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>2730936B75D1418B7454B853</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>969D28133D182E2AAFA477E7</string>
-				<string>7760BA4060B256A7F3B74730</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Pods</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>27F71F009572148FE2ABC7E8</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Embed Pods Frameworks</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>"${SRCROOT}/Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser-frameworks.sh"
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>3597AE05CF44EC30C75BA5B3</key>
-		<dict>
-			<key>fileRef</key>
-			<string>5BEA6858598911B8AF81B76B</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
 		<key>3615BDB5196FA8BF00E1AE3F</key>
 		<dict>
 			<key>fileEncoding</key>
@@ -1373,33 +1339,35 @@ fi
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>5BEA6858598911B8AF81B76B</key>
+		<key>6B3C606C9FFDBB259E01EAA7</key>
 		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.framework</string>
-			<key>includeInIndex</key>
-			<string>0</string>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
 			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Pods_RealmBrowser.framework</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>7760BA4060B256A7F3B74730</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
+			<string>PBXShellScriptBuildPhase</string>
 			<key>name</key>
-			<string>Pods-RealmBrowser.release.xcconfig</string>
-			<key>path</key>
-			<string>Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.release.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
+			<string>Check Pods Manifest.lock</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
+if [[ $? != 0 ]] ; then
+    cat &lt;&lt; EOM
+error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
+EOM
+    exit 1
+fi
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
 		</dict>
 		<key>840F97BE192B7DCE006B591E</key>
 		<dict>
@@ -1813,6 +1781,20 @@ fi
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
+		<key>84C5A1AA857EF2F6F001E1D3</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>BDF6250849D46F6574497388</string>
+				<string>CA474127E67BC00EC1BC9986</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
 		<key>84D7990419388E8900FC76A0</key>
 		<dict>
 			<key>fileEncoding</key>
@@ -1930,10 +1912,11 @@ fi
 			<key>children</key>
 			<array>
 				<string>84E0F9551921F3B900D6CA14</string>
+				<string>220BCC431CED6134006432ED</string>
 				<string>84E0F9761921F3B900D6CA14</string>
 				<string>84E0F94E1921F3B900D6CA14</string>
 				<string>84E0F94D1921F3B900D6CA14</string>
-				<string>2730936B75D1418B7454B853</string>
+				<string>84C5A1AA857EF2F6F001E1D3</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -2031,9 +2014,10 @@ fi
 				<string>84754ABE193CA4600093604E</string>
 				<string>225443F519E3E6360045996B</string>
 				<string>22D3AC8A19CC5D710042C1B2</string>
+				<string>220BCC601CED6134006432ED</string>
 				<string>84E0F95C1921F3B900D6CA14</string>
+				<string>220BCC611CED6134006432ED</string>
 				<string>84925C61195AD5B000EE27B1</string>
-				<string>2289367D1CABD2F80015B3C1</string>
 				<string>844C34E3194859080027E902</string>
 				<string>22068CFC1C6E298C008C0BFA</string>
 				<string>84E35A4D196B021B007F0344</string>
@@ -2050,23 +2034,22 @@ fi
 				<string>36B669CE1B8B096A00F04AE1</string>
 				<string>84925C67195AE9AD00EE27B1</string>
 				<string>84D7990B19388E8900FC76A0</string>
-				<string>22DB7A2D1CA28A6400DF4AE5</string>
 				<string>84AA41A91949C99800A50F03</string>
+				<string>220BCC7B1CED960A006432ED</string>
 				<string>22D28EA71993AAAB00497FD3</string>
-				<string>2223E65E1C0DBB5400C0B936</string>
 				<string>3615BDB6196FA8BF00E1AE3F</string>
-				<string>22DB7A321CA2B9C100DF4AE5</string>
 				<string>84A34A4F192E19C5005D6CC4</string>
 				<string>8474E2B419544D8000BCA755</string>
 				<string>2249D9B219A62EBD00A31104</string>
 				<string>220D382819B639D700F79496</string>
+				<string>220BCC5F1CED6134006432ED</string>
 				<string>84E35A42196A9F3B007F0344</string>
 				<string>84D7990D19388E8900FC76A0</string>
 				<string>22013F781CCA35D2000F79B5</string>
 				<string>22DC87E61B98086D0024BA34</string>
 				<string>22565D6719C1BCF400C8C8EC</string>
-				<string>22265F291C6C497600BE57FB</string>
 				<string>221322FA19954AB100D25737</string>
+				<string>220BCC621CED6134006432ED</string>
 			</array>
 			<key>isa</key>
 			<string>PBXSourcesBuildPhase</string>
@@ -2079,10 +2062,10 @@ fi
 			<string>2147483647</string>
 			<key>files</key>
 			<array>
-				<string>22D956231CE47B240022C402</string>
 				<string>220A4F131C05A85D00A32787</string>
 				<string>84E0F9501921F3B900D6CA14</string>
-				<string>3597AE05CF44EC30C75BA5B3</string>
+				<string>220BCC691CED89B2006432ED</string>
+				<string>BE1B845E8A1FFEF254762D39</string>
 			</array>
 			<key>isa</key>
 			<string>PBXFrameworksBuildPhase</string>
@@ -2096,22 +2079,22 @@ fi
 			<key>files</key>
 			<array>
 				<string>84E0F95A1921F3B900D6CA14</string>
-				<string>22D9B8171CA1303A006C0399</string>
 				<string>84E0F96B1921F3B900D6CA14</string>
-				<string>2289367E1CABD2F80015B3C1</string>
 				<string>22D2863B1B6BE6BA0078D07D</string>
 				<string>225786A11BD564F40012436A</string>
 				<string>84E0F9601921F3B900D6CA14</string>
+				<string>220BCC641CED6134006432ED</string>
+				<string>220BCC5E1CED6134006432ED</string>
 				<string>84E0F9661921F3B900D6CA14</string>
+				<string>220BCC7D1CED9928006432ED</string>
 				<string>84E0F9691921F3B900D6CA14</string>
-				<string>22265F261C6C493D00BE57FB</string>
 				<string>22DC87E81B9808790024BA34</string>
-				<string>22FB99151CC8CC4000411106</string>
-				<string>22FB99161CC8CC4000411106</string>
-				<string>22FB99181CC8CC4000411106</string>
-				<string>2223E65B1C0DA3C300C0B936</string>
-				<string>22FB990D1CC8CB7100411106</string>
 				<string>36B669CB1B8B057F00F04AE1</string>
+				<string>220BCC661CED6134006432ED</string>
+				<string>220BCC801CED99DB006432ED</string>
+				<string>220BCC7F1CED99DA006432ED</string>
+				<string>220BCC7E1CED99D8006432ED</string>
+				<string>220BCC651CED6134006432ED</string>
 			</array>
 			<key>isa</key>
 			<string>PBXResourcesBuildPhase</string>
@@ -2124,13 +2107,14 @@ fi
 			<string>84E0F9801921F3B900D6CA14</string>
 			<key>buildPhases</key>
 			<array>
-				<string>179CA373A78EC9D02472FE98</string>
+				<string>6B3C606C9FFDBB259E01EAA7</string>
 				<string>84E0F9481921F3B900D6CA14</string>
 				<string>84E0F94A1921F3B900D6CA14</string>
 				<string>84E0F9491921F3B900D6CA14</string>
 				<string>22013F711CCA1230000F79B5</string>
-				<string>27F71F009572148FE2ABC7E8</string>
-				<string>24FE9B1C6769A20F7BABFC7E</string>
+				<string>220BCC831CED9A01006432ED</string>
+				<string>D5EE3596D241A5A2DC2DE356</string>
+				<string>E828CD2F8EE9DBBCC5B1589B</string>
 			</array>
 			<key>buildRules</key>
 			<array/>
@@ -2178,15 +2162,14 @@ fi
 		<dict>
 			<key>children</key>
 			<array>
-				<string>22D956221CE47B240022C402</string>
-				<string>22023AC31CBFE6FD00F469EE</string>
+				<string>220BCC681CED89B2006432ED</string>
 				<string>220A4F121C05A85D00A32787</string>
 				<string>84E0F94F1921F3B900D6CA14</string>
 				<string>84E0F9521921F3B900D6CA14</string>
 				<string>84E0F9541921F3B900D6CA14</string>
 				<string>84E0F9711921F3B900D6CA14</string>
 				<string>B4DD42CE427D384E8A7351A0</string>
-				<string>5BEA6858598911B8AF81B76B</string>
+				<string>1B36A032C4471C7ECBA3D0A2</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -2842,13 +2825,13 @@ fi
 		<key>84E0F9811921F3B900D6CA14</key>
 		<dict>
 			<key>baseConfigurationReference</key>
-			<string>969D28133D182E2AAFA477E7</string>
+			<string>BDF6250849D46F6574497388</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
 				<string>AppIcon</string>
 				<key>CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES</key>
-				<string>NO</string>
+				<string>YES</string>
 				<key>CODE_SIGN_IDENTITY</key>
 				<string></string>
 				<key>COMBINE_HIDPI_IMAGES</key>
@@ -2878,6 +2861,7 @@ fi
 					<string>$(inherited)</string>
 					<string>$(PROJECT_DIR)/RealmBrowser</string>
 					<string>$(PROJECT_DIR)</string>
+					<string>$(PROJECT_DIR)/RealmBrowserSync/Binaries</string>
 				</array>
 				<key>MACOSX_DEPLOYMENT_TARGET</key>
 				<string>10.9</string>
@@ -2906,13 +2890,13 @@ fi
 		<key>84E0F9821921F3B900D6CA14</key>
 		<dict>
 			<key>baseConfigurationReference</key>
-			<string>7760BA4060B256A7F3B74730</string>
+			<string>CA474127E67BC00EC1BC9986</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
 				<string>AppIcon</string>
 				<key>CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES</key>
-				<string>NO</string>
+				<string>YES</string>
 				<key>CODE_SIGN_IDENTITY</key>
 				<string></string>
 				<key>COMBINE_HIDPI_IMAGES</key>
@@ -2942,6 +2926,7 @@ fi
 					<string>$(inherited)</string>
 					<string>$(PROJECT_DIR)/RealmBrowser</string>
 					<string>$(PROJECT_DIR)</string>
+					<string>$(PROJECT_DIR)/RealmBrowserSync/Binaries</string>
 				</array>
 				<key>MACOSX_DEPLOYMENT_TARGET</key>
 				<string>10.9</string>
@@ -3148,21 +3133,6 @@ fi
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>969D28133D182E2AAFA477E7</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods-RealmBrowser.debug.xcconfig</string>
-			<key>path</key>
-			<string>Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.debug.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
 		<key>ADBD77D758972C8C68C6F371</key>
 		<dict>
 			<key>isa</key>
@@ -3180,6 +3150,91 @@ fi
 			<string>Pods.framework</string>
 			<key>sourceTree</key>
 			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>BDF6250849D46F6574497388</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods-RealmBrowser.debug.xcconfig</string>
+			<key>path</key>
+			<string>Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.debug.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>BE1B845E8A1FFEF254762D39</key>
+		<dict>
+			<key>fileRef</key>
+			<string>1B36A032C4471C7ECBA3D0A2</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>CA474127E67BC00EC1BC9986</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods-RealmBrowser.release.xcconfig</string>
+			<key>path</key>
+			<string>Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.release.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>D5EE3596D241A5A2DC2DE356</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>Embed Pods Frameworks</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>"${SRCROOT}/Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser-frameworks.sh"
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
+		</dict>
+		<key>E828CD2F8EE9DBBCC5B1589B</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>Copy Pods Resources</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>"${SRCROOT}/Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser-resources.sh"
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
 		</dict>
 		<key>E83626C41CE35C4300E9493D</key>
 		<dict>
@@ -3209,12 +3264,6 @@ fi
 				<string>36B669CD1B8B096A00F04AE1</string>
 				<string>84754ABC193CA4600093604E</string>
 				<string>84754ABD193CA4600093604E</string>
-				<string>22DB7A2B1CA28A6400DF4AE5</string>
-				<string>22DB7A2C1CA28A6400DF4AE5</string>
-				<string>2289367A1CABD2F80015B3C1</string>
-				<string>2289367B1CABD2F80015B3C1</string>
-				<string>2223E65C1C0DBB5400C0B936</string>
-				<string>2223E65D1C0DBB5400C0B936</string>
 				<string>8474E2B219544D8000BCA755</string>
 				<string>8474E2B319544D8000BCA755</string>
 				<string>84446532195891AA00CEEA5B</string>
@@ -3231,7 +3280,6 @@ fi
 		<dict>
 			<key>children</key>
 			<array>
-				<string>22DB7A2E1CA2B99800DF4AE5</string>
 				<string>84E35A4B196B021B007F0344</string>
 				<string>84E35A4C196B021B007F0344</string>
 				<string>84AA41AE1949CD7700A50F03</string>
@@ -3313,8 +3361,6 @@ fi
 				<string>22D28EA61993AAAB00497FD3</string>
 				<string>84925C65195AE9AD00EE27B1</string>
 				<string>84925C66195AE9AD00EE27B1</string>
-				<string>22265F271C6C497600BE57FB</string>
-				<string>22265F281C6C497600BE57FB</string>
 				<string>221322FB19954B0A00D25737</string>
 				<string>221322FC19954B0A00D25737</string>
 				<string>225443F319E3E6360045996B</string>
@@ -3340,10 +3386,6 @@ fi
 				<string>84E0F9641921F3B900D6CA14</string>
 				<string>22DC87E71B9808790024BA34</string>
 				<string>36B669CA1B8B057F00F04AE1</string>
-				<string>2289367C1CABD2F80015B3C1</string>
-				<string>22265F241C6C493D00BE57FB</string>
-				<string>22D9B8161CA1303A006C0399</string>
-				<string>2223E6591C0DA3C300C0B936</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
