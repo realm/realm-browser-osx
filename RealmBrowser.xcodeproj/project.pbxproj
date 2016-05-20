@@ -10,29 +10,18 @@
 	<string>46</string>
 	<key>objects</key>
 	<dict>
-		<key>16ABC7B89B14291B54AFEB02</key>
+		<key>1B36A032C4471C7ECBA3D0A2</key>
 		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
+			<key>explicitFileType</key>
+			<string>wrapper.framework</string>
+			<key>includeInIndex</key>
+			<string>0</string>
 			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Embed Pods Frameworks</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>"${SRCROOT}/Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser-frameworks.sh"
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>Pods_RealmBrowser.framework</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
 		</dict>
 		<key>22013F711CCA1230000F79B5</key>
 		<dict>
@@ -1264,33 +1253,6 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>27895A36F0DFEB8FAF48A88E</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.framework</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Pods_RealmBrowser.framework</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>33FCDAE6ED025B25215EB123</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>8E0E97F9E9C9373353171114</string>
-				<string>CED1A9E4DDEAA5FC5B8985E6</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Pods</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
 		<key>3615BDB5196FA8BF00E1AE3F</key>
 		<dict>
 			<key>fileEncoding</key>
@@ -1377,7 +1339,7 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>550E560E5E613688D53BFAA5</key>
+		<key>6B3C606C9FFDBB259E01EAA7</key>
 		<dict>
 			<key>buildActionMask</key>
 			<string>2147483647</string>
@@ -1819,6 +1781,20 @@ fi
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
+		<key>84C5A1AA857EF2F6F001E1D3</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>BDF6250849D46F6574497388</string>
+				<string>CA474127E67BC00EC1BC9986</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
 		<key>84D7990419388E8900FC76A0</key>
 		<dict>
 			<key>fileEncoding</key>
@@ -1940,7 +1916,7 @@ fi
 				<string>84E0F9761921F3B900D6CA14</string>
 				<string>84E0F94E1921F3B900D6CA14</string>
 				<string>84E0F94D1921F3B900D6CA14</string>
-				<string>33FCDAE6ED025B25215EB123</string>
+				<string>84C5A1AA857EF2F6F001E1D3</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -2089,7 +2065,7 @@ fi
 				<string>220A4F131C05A85D00A32787</string>
 				<string>84E0F9501921F3B900D6CA14</string>
 				<string>220BCC691CED89B2006432ED</string>
-				<string>F23F46CE25A63D056F68FB5E</string>
+				<string>BE1B845E8A1FFEF254762D39</string>
 			</array>
 			<key>isa</key>
 			<string>PBXFrameworksBuildPhase</string>
@@ -2131,14 +2107,14 @@ fi
 			<string>84E0F9801921F3B900D6CA14</string>
 			<key>buildPhases</key>
 			<array>
-				<string>550E560E5E613688D53BFAA5</string>
+				<string>6B3C606C9FFDBB259E01EAA7</string>
 				<string>84E0F9481921F3B900D6CA14</string>
 				<string>84E0F94A1921F3B900D6CA14</string>
 				<string>84E0F9491921F3B900D6CA14</string>
 				<string>22013F711CCA1230000F79B5</string>
 				<string>220BCC831CED9A01006432ED</string>
-				<string>16ABC7B89B14291B54AFEB02</string>
-				<string>CF3494800185C39C7425CC98</string>
+				<string>D5EE3596D241A5A2DC2DE356</string>
+				<string>E828CD2F8EE9DBBCC5B1589B</string>
 			</array>
 			<key>buildRules</key>
 			<array/>
@@ -2193,7 +2169,7 @@ fi
 				<string>84E0F9541921F3B900D6CA14</string>
 				<string>84E0F9711921F3B900D6CA14</string>
 				<string>B4DD42CE427D384E8A7351A0</string>
-				<string>27895A36F0DFEB8FAF48A88E</string>
+				<string>1B36A032C4471C7ECBA3D0A2</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -2849,13 +2825,13 @@ fi
 		<key>84E0F9811921F3B900D6CA14</key>
 		<dict>
 			<key>baseConfigurationReference</key>
-			<string>8E0E97F9E9C9373353171114</string>
+			<string>BDF6250849D46F6574497388</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
 				<string>AppIcon</string>
 				<key>CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES</key>
-				<string>NO</string>
+				<string>YES</string>
 				<key>CODE_SIGN_IDENTITY</key>
 				<string></string>
 				<key>COMBINE_HIDPI_IMAGES</key>
@@ -2914,13 +2890,13 @@ fi
 		<key>84E0F9821921F3B900D6CA14</key>
 		<dict>
 			<key>baseConfigurationReference</key>
-			<string>CED1A9E4DDEAA5FC5B8985E6</string>
+			<string>CA474127E67BC00EC1BC9986</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
 				<string>AppIcon</string>
 				<key>CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES</key>
-				<string>NO</string>
+				<string>YES</string>
 				<key>CODE_SIGN_IDENTITY</key>
 				<string></string>
 				<key>COMBINE_HIDPI_IMAGES</key>
@@ -3157,21 +3133,6 @@ fi
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>8E0E97F9E9C9373353171114</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods-RealmBrowser.debug.xcconfig</string>
-			<key>path</key>
-			<string>Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.debug.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
 		<key>ADBD77D758972C8C68C6F371</key>
 		<dict>
 			<key>isa</key>
@@ -3190,7 +3151,29 @@ fi
 			<key>sourceTree</key>
 			<string>BUILT_PRODUCTS_DIR</string>
 		</dict>
-		<key>CED1A9E4DDEAA5FC5B8985E6</key>
+		<key>BDF6250849D46F6574497388</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods-RealmBrowser.debug.xcconfig</string>
+			<key>path</key>
+			<string>Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.debug.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>BE1B845E8A1FFEF254762D39</key>
+		<dict>
+			<key>fileRef</key>
+			<string>1B36A032C4471C7ECBA3D0A2</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>CA474127E67BC00EC1BC9986</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -3205,7 +3188,31 @@ fi
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>CF3494800185C39C7425CC98</key>
+		<key>D5EE3596D241A5A2DC2DE356</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>Embed Pods Frameworks</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>"${SRCROOT}/Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser-frameworks.sh"
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
+		</dict>
+		<key>E828CD2F8EE9DBBCC5B1589B</key>
 		<dict>
 			<key>buildActionMask</key>
 			<string>2147483647</string>
@@ -3467,13 +3474,6 @@ fi
 			<string>Documents</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F23F46CE25A63D056F68FB5E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>27895A36F0DFEB8FAF48A88E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
 		</dict>
 	</dict>
 	<key>rootObject</key>
