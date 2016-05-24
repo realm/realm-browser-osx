@@ -1,3482 +1,1086 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>archiveVersion</key>
-	<string>1</string>
-	<key>classes</key>
-	<dict/>
-	<key>objectVersion</key>
-	<string>46</string>
-	<key>objects</key>
-	<dict>
-		<key>1B36A032C4471C7ECBA3D0A2</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.framework</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Pods_RealmBrowser.framework</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>22013F711CCA1230000F79B5</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>dstPath</key>
-			<string></string>
-			<key>dstSubfolderSpec</key>
-			<string>7</string>
-			<key>files</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXCopyFilesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>22013F761CCA35D2000F79B5</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMRealmFileManager.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22013F771CCA35D2000F79B5</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMRealmFileManager.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22013F781CCA35D2000F79B5</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22013F771CCA35D2000F79B5</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22068CFA1C6E298C008C0BFA</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>NSURLComponents+FragmentItems.h</string>
-			<key>path</key>
-			<string>../NSURLComponents+FragmentItems.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22068CFB1C6E298C008C0BFA</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>NSURLComponents+FragmentItems.m</string>
-			<key>path</key>
-			<string>../NSURLComponents+FragmentItems.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22068CFC1C6E298C008C0BFA</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22068CFB1C6E298C008C0BFA</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22096B2519911F7300233D77</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMBadgeTableCellView.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22096B2619911F7300233D77</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMBadgeTableCellView.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22096B2719911F7300233D77</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22096B2619911F7300233D77</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>220A4F121C05A85D00A32787</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.text-based-dylib-definition</string>
-			<key>name</key>
-			<string>libc++.tbd</string>
-			<key>path</key>
-			<string>usr/lib/libc++.tbd</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>220A4F131C05A85D00A32787</key>
-		<dict>
-			<key>fileRef</key>
-			<string>220A4F121C05A85D00A32787</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>220BCC431CED6134006432ED</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>220BCC441CED6134006432ED</string>
-				<string>220BCC491CED6134006432ED</string>
-				<string>220BCC501CED6134006432ED</string>
-				<string>220BCC531CED6134006432ED</string>
-				<string>220BCC581CED6134006432ED</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>RealmBrowserSync</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC441CED6134006432ED</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>220BCC451CED6134006432ED</string>
-				<string>220BCC461CED6134006432ED</string>
-				<string>220BCC471CED6134006432ED</string>
-				<string>220BCC481CED6134006432ED</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Binaries</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC451CED6134006432ED</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>compiled.mach-o.dylib</string>
-			<key>path</key>
-			<string>librealm-dbg.9.dylib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC461CED6134006432ED</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>compiled.mach-o.dylib</string>
-			<key>path</key>
-			<string>librealm-server-dbg.1.dylib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC471CED6134006432ED</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>compiled.mach-o.dylib</string>
-			<key>path</key>
-			<string>librealm-sync-dbg.1.dylib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC481CED6134006432ED</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>compiled.mach-o.executable</string>
-			<key>path</key>
-			<string>realm-server-dbg-noinst</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC491CED6134006432ED</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>220BCC4A1CED6134006432ED</string>
-				<string>220BCC4B1CED6134006432ED</string>
-				<string>220BCC4C1CED6134006432ED</string>
-				<string>220BCC4D1CED6134006432ED</string>
-				<string>220BCC4E1CED6134006432ED</string>
-				<string>220BCC4F1CED6134006432ED</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Controllers</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC4A1CED6134006432ED</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMRunSyncServerWindowController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC4B1CED6134006432ED</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMRunSyncServerWindowController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC4C1CED6134006432ED</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMSyncAuthWindowController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC4D1CED6134006432ED</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMSyncAuthWindowController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC4E1CED6134006432ED</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMSyncWindowController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC4F1CED6134006432ED</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMSyncWindowController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC501CED6134006432ED</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>220BCC511CED6134006432ED</string>
-				<string>220BCC521CED6134006432ED</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Models</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC511CED6134006432ED</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMSyncServer.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC521CED6134006432ED</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMSyncServer.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC531CED6134006432ED</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>220BCC7C1CED9928006432ED</string>
-				<string>220BCC551CED6134006432ED</string>
-				<string>220BCC561CED6134006432ED</string>
-				<string>220BCC571CED6134006432ED</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Resources</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC551CED6134006432ED</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.xib</string>
-			<key>path</key>
-			<string>SyncCredentialsView.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC561CED6134006432ED</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.xib</string>
-			<key>path</key>
-			<string>SyncServerWindow.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC571CED6134006432ED</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.xib</string>
-			<key>path</key>
-			<string>SyncWindow.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC581CED6134006432ED</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>220BCC791CED960A006432ED</string>
-				<string>220BCC7A1CED960A006432ED</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Views</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC5E1CED6134006432ED</key>
-		<dict>
-			<key>fileRef</key>
-			<string>220BCC481CED6134006432ED</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>220BCC5F1CED6134006432ED</key>
-		<dict>
-			<key>fileRef</key>
-			<string>220BCC4B1CED6134006432ED</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>220BCC601CED6134006432ED</key>
-		<dict>
-			<key>fileRef</key>
-			<string>220BCC4D1CED6134006432ED</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>220BCC611CED6134006432ED</key>
-		<dict>
-			<key>fileRef</key>
-			<string>220BCC4F1CED6134006432ED</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>220BCC621CED6134006432ED</key>
-		<dict>
-			<key>fileRef</key>
-			<string>220BCC521CED6134006432ED</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>220BCC641CED6134006432ED</key>
-		<dict>
-			<key>fileRef</key>
-			<string>220BCC551CED6134006432ED</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>220BCC651CED6134006432ED</key>
-		<dict>
-			<key>fileRef</key>
-			<string>220BCC561CED6134006432ED</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>220BCC661CED6134006432ED</key>
-		<dict>
-			<key>fileRef</key>
-			<string>220BCC571CED6134006432ED</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>220BCC681CED89B2006432ED</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>path</key>
-			<string>Realm.framework</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC691CED89B2006432ED</key>
-		<dict>
-			<key>fileRef</key>
-			<string>220BCC681CED89B2006432ED</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>220BCC791CED960A006432ED</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMSyncCredentialsView.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC7A1CED960A006432ED</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMSyncCredentialsView.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC7B1CED960A006432ED</key>
-		<dict>
-			<key>fileRef</key>
-			<string>220BCC7A1CED960A006432ED</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>220BCC7C1CED9928006432ED</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.xib</string>
-			<key>path</key>
-			<string>RLMSyncAuthWindowController.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220BCC7D1CED9928006432ED</key>
-		<dict>
-			<key>fileRef</key>
-			<string>220BCC7C1CED9928006432ED</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>220BCC7E1CED99D8006432ED</key>
-		<dict>
-			<key>fileRef</key>
-			<string>220BCC451CED6134006432ED</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>220BCC7F1CED99DA006432ED</key>
-		<dict>
-			<key>fileRef</key>
-			<string>220BCC461CED6134006432ED</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>220BCC801CED99DB006432ED</key>
-		<dict>
-			<key>fileRef</key>
-			<string>220BCC471CED6134006432ED</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>220BCC831CED9A01006432ED</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>dstPath</key>
-			<string></string>
-			<key>dstSubfolderSpec</key>
-			<string>10</string>
-			<key>files</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXCopyFilesBuildPhase</string>
-			<key>name</key>
-			<string>Embed Frameworks</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>220D382619B639D700F79496</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMTestDataGenerator.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220D382719B639D700F79496</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMTestDataGenerator.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>220D382819B639D700F79496</key>
-		<dict>
-			<key>fileRef</key>
-			<string>220D382719B639D700F79496</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>221322F819954AB100D25737</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMImageTableCellView.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>221322F919954AB100D25737</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMImageTableCellView.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>221322FA19954AB100D25737</key>
-		<dict>
-			<key>fileRef</key>
-			<string>221322F919954AB100D25737</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>221322FB19954B0A00D25737</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMTableCellView.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>221322FC19954B0A00D25737</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMTableCellView.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>221322FD19954B0A00D25737</key>
-		<dict>
-			<key>fileRef</key>
-			<string>221322FC19954B0A00D25737</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>2249D9B019A62EBD00A31104</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMTableColumn.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>2249D9B119A62EBD00A31104</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMTableColumn.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>2249D9B219A62EBD00A31104</key>
-		<dict>
-			<key>fileRef</key>
-			<string>2249D9B119A62EBD00A31104</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>225443F319E3E6360045996B</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMTableHeaderCell.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>225443F419E3E6360045996B</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMTableHeaderCell.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>225443F519E3E6360045996B</key>
-		<dict>
-			<key>fileRef</key>
-			<string>225443F419E3E6360045996B</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22565D6519C1BCF400C8C8EC</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMLinkTableCellView.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22565D6619C1BCF400C8C8EC</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMLinkTableCellView.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22565D6719C1BCF400C8C8EC</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22565D6619C1BCF400C8C8EC</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>2257869C1BD563A00012436A</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMEncryptionKeyWindowController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>2257869D1BD563A00012436A</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMEncryptionKeyWindowController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>2257869E1BD563A00012436A</key>
-		<dict>
-			<key>fileRef</key>
-			<string>2257869D1BD563A00012436A</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>2257869F1BD564F40012436A</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>225786A01BD564F40012436A</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>EncryptionKeyWindow.xib</string>
-			<key>path</key>
-			<string>.</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>225786A01BD564F40012436A</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.xib</string>
-			<key>name</key>
-			<string>Base</string>
-			<key>path</key>
-			<string>Base.lproj/EncryptionKeyWindow.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>225786A11BD564F40012436A</key>
-		<dict>
-			<key>fileRef</key>
-			<string>2257869F1BD564F40012436A</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>225AAFEA19C09E520023B595</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMTextField.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>225AAFEB19C09E520023B595</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMTextField.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>225AAFEC19C09E520023B595</key>
-		<dict>
-			<key>fileRef</key>
-			<string>225AAFEB19C09E520023B595</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>228D1F851A1CAD660028562A</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMResultsNode.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>228D1F861A1CAD660028562A</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMResultsNode.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>228D1F871A1CAD660028562A</key>
-		<dict>
-			<key>fileRef</key>
-			<string>228D1F861A1CAD660028562A</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22A55FE919D18BA8009178BC</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMObjectNode.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22A55FEA19D18BA8009178BC</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMObjectNode.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22A55FEB19D18BA8009178BC</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22A55FEA19D18BA8009178BC</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22A55FEF19D19842009178BC</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMDescriptions.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22A55FF019D19842009178BC</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMDescriptions.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22A55FF119D19842009178BC</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22A55FF019D19842009178BC</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22D2863A1B6BE6BA0078D07D</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>image.icns</string>
-			<key>path</key>
-			<string>FormatIcon.icns</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22D2863B1B6BE6BA0078D07D</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22D2863A1B6BE6BA0078D07D</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22D28EA51993AAAB00497FD3</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMNumberTableCellView.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22D28EA61993AAAB00497FD3</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMNumberTableCellView.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22D28EA71993AAAB00497FD3</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22D28EA61993AAAB00497FD3</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22D3AC8819CC5D710042C1B2</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMModelExporter.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22D3AC8919CC5D710042C1B2</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMModelExporter.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22D3AC8A19CC5D710042C1B2</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22D3AC8919CC5D710042C1B2</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22D5FF911B0DBCC30090CFE6</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xml</string>
-			<key>path</key>
-			<string>Realm Browser.entitlements</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22D9367B1BDC64CD0032DFFE</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMAlert.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22D9367C1BDC64CD0032DFFE</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMAlert.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22D9367D1BDC64CD0032DFFE</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22D9367C1BDC64CD0032DFFE</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22DC87E41B98086D0024BA34</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMExportIndicatorWindowController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22DC87E51B98086D0024BA34</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMExportIndicatorWindowController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22DC87E61B98086D0024BA34</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22DC87E51B98086D0024BA34</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22DC87E71B9808790024BA34</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.xib</string>
-			<key>path</key>
-			<string>RLMExportIndicatorWindowController.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22DC87E81B9808790024BA34</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22DC87E71B9808790024BA34</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22E4737019924CF700EEF7C9</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMBasicTableCellView.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22E4737119924CF700EEF7C9</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMBasicTableCellView.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22E4737219924CF700EEF7C9</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22E4737119924CF700EEF7C9</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>22E473771992562400EEF7C9</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMBoolTableCellView.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22E473781992562400EEF7C9</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMBoolTableCellView.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22E473791992562400EEF7C9</key>
-		<dict>
-			<key>fileRef</key>
-			<string>22E473781992562400EEF7C9</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>3615BDB5196FA8BF00E1AE3F</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMQueryNavigationState.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>3615BDB6196FA8BF00E1AE3F</key>
-		<dict>
-			<key>fileRef</key>
-			<string>3615BDB5196FA8BF00E1AE3F</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>3615BDB7196FA8E500E1AE3F</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMQueryNavigationState.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>36B669CA1B8B057F00F04AE1</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.xib</string>
-			<key>path</key>
-			<string>RLMObjectLinkSelectionViewController.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>36B669CB1B8B057F00F04AE1</key>
-		<dict>
-			<key>fileRef</key>
-			<string>36B669CA1B8B057F00F04AE1</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>36B669CC1B8B096A00F04AE1</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMObjectLinkSelectionViewController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>36B669CD1B8B096A00F04AE1</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMObjectLinkSelectionViewController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>36B669CE1B8B096A00F04AE1</key>
-		<dict>
-			<key>fileRef</key>
-			<string>36B669CD1B8B096A00F04AE1</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>6B3C606C9FFDBB259E01EAA7</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Check Pods Manifest.lock</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
-if [[ $? != 0 ]] ; then
-    cat &lt;&lt; EOM
-error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
-EOM
-    exit 1
-fi
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>840F97BE192B7DCE006B591E</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMDocument.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>840F97BF192B7DCE006B591E</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMDocument.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>840F97C0192B7DCE006B591E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>840F97BF192B7DCE006B591E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84446532195891AA00CEEA5B</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMViewController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84446533195891AA00CEEA5B</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMViewController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84446534195891AA00CEEA5B</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84446533195891AA00CEEA5B</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>844C34E1194859080027E902</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>TestClasses.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>844C34E2194859080027E902</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>TestClasses.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>844C34E3194859080027E902</key>
-		<dict>
-			<key>fileRef</key>
-			<string>844C34E2194859080027E902</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>8457294B1962E3860076D4F1</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMTableView.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>8457294C1962E3860076D4F1</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMTableView.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>8457294D1962E3860076D4F1</key>
-		<dict>
-			<key>fileRef</key>
-			<string>8457294C1962E3860076D4F1</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>8474E2B219544D8000BCA755</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMTypeOutlineViewController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>8474E2B319544D8000BCA755</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMTypeOutlineViewController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>8474E2B419544D8000BCA755</key>
-		<dict>
-			<key>fileRef</key>
-			<string>8474E2B319544D8000BCA755</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>8474E2BB195452BE00BCA755</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMInstanceTableViewController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>8474E2BC195452BE00BCA755</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMInstanceTableViewController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>8474E2BD195452BE00BCA755</key>
-		<dict>
-			<key>fileRef</key>
-			<string>8474E2BC195452BE00BCA755</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84754ABC193CA4600093604E</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMRealmBrowserWindowController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84754ABD193CA4600093604E</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMRealmBrowserWindowController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84754ABE193CA4600093604E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84754ABD193CA4600093604E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84925C5F195AD5B000EE27B1</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>NSColor+ByteSizeFactory.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84925C60195AD5B000EE27B1</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>NSColor+ByteSizeFactory.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84925C61195AD5B000EE27B1</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84925C60195AD5B000EE27B1</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84925C65195AE9AD00EE27B1</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMSidebarTableCellView.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84925C66195AE9AD00EE27B1</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMSidebarTableCellView.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84925C67195AE9AD00EE27B1</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84925C66195AE9AD00EE27B1</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84A34A4D192E19C5005D6CC4</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMApplicationDelegate.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84A34A4E192E19C5005D6CC4</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMApplicationDelegate.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84A34A4F192E19C5005D6CC4</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84A34A4E192E19C5005D6CC4</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84AA41A71949C99800A50F03</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMTypeNode.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84AA41A81949C99800A50F03</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMTypeNode.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84AA41A91949C99800A50F03</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84AA41A81949C99800A50F03</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84AA41AE1949CD7700A50F03</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMArrayNode.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84AA41AF1949CD7700A50F03</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMArrayNode.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84AA41B01949CD7700A50F03</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84AA41AF1949CD7700A50F03</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84BCA5FE1951BC99008FC850</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>E876142C1CE36003000095CF</string>
-				<string>E876142B1CE35FFD000095CF</string>
-				<string>E8413F2C1CE35E8700B2EBCB</string>
-				<string>84E0F96A1921F3B900D6CA14</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Resources</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84C5A1AA857EF2F6F001E1D3</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>BDF6250849D46F6574497388</string>
-				<string>CA474127E67BC00EC1BC9986</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Pods</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84D7990419388E8900FC76A0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMClassNode.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84D7990519388E8900FC76A0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMClassNode.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84D7990619388E8900FC76A0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMClassProperty.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84D7990719388E8900FC76A0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMClassProperty.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84D7990819388E8900FC76A0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMRealmNode.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84D7990919388E8900FC76A0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMRealmNode.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84D7990A19388E8900FC76A0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMRealmOutlineNode.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84D7990B19388E8900FC76A0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84D7990519388E8900FC76A0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84D7990C19388E8900FC76A0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84D7990719388E8900FC76A0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84D7990D19388E8900FC76A0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84D7990919388E8900FC76A0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84E0F9431921F3B900D6CA14</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>84E0F9551921F3B900D6CA14</string>
-				<string>220BCC431CED6134006432ED</string>
-				<string>84E0F9761921F3B900D6CA14</string>
-				<string>84E0F94E1921F3B900D6CA14</string>
-				<string>84E0F94D1921F3B900D6CA14</string>
-				<string>84C5A1AA857EF2F6F001E1D3</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F9441921F3B900D6CA14</key>
-		<dict>
-			<key>attributes</key>
-			<dict>
-				<key>CLASSPREFIX</key>
-				<string>RLM</string>
-				<key>LastUpgradeCheck</key>
-				<string>0700</string>
-				<key>ORGANIZATIONNAME</key>
-				<string>Realm inc.</string>
-				<key>TargetAttributes</key>
-				<dict>
-					<key>84E0F94B1921F3B900D6CA14</key>
-					<dict>
-						<key>SystemCapabilities</key>
-						<dict>
-							<key>com.apple.Sandbox</key>
-							<dict>
-								<key>enabled</key>
-								<string>0</string>
-							</dict>
-						</dict>
-					</dict>
-					<key>84E0F96F1921F3B900D6CA14</key>
-					<dict>
-						<key>TestTargetID</key>
-						<string>84E0F94B1921F3B900D6CA14</string>
-					</dict>
-				</dict>
-			</dict>
-			<key>buildConfigurationList</key>
-			<string>84E0F9471921F3B900D6CA14</string>
-			<key>compatibilityVersion</key>
-			<string>Xcode 3.2</string>
-			<key>developmentRegion</key>
-			<string>English</string>
-			<key>hasScannedForEncodings</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXProject</string>
-			<key>knownRegions</key>
-			<array>
-				<string>en</string>
-				<string>Base</string>
-			</array>
-			<key>mainGroup</key>
-			<string>84E0F9431921F3B900D6CA14</string>
-			<key>productRefGroup</key>
-			<string>84E0F94D1921F3B900D6CA14</string>
-			<key>projectDirPath</key>
-			<string></string>
-			<key>projectReferences</key>
-			<array/>
-			<key>projectRoot</key>
-			<string></string>
-			<key>targets</key>
-			<array>
-				<string>84E0F94B1921F3B900D6CA14</string>
-				<string>84E0F96F1921F3B900D6CA14</string>
-			</array>
-		</dict>
-		<key>84E0F9471921F3B900D6CA14</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>84E0F97E1921F3B900D6CA14</string>
-				<string>84E0F97F1921F3B900D6CA14</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>84E0F9481921F3B900D6CA14</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>22A55FEB19D18BA8009178BC</string>
-				<string>840F97C0192B7DCE006B591E</string>
-				<string>84AA41B01949CD7700A50F03</string>
-				<string>22E4737219924CF700EEF7C9</string>
-				<string>2257869E1BD563A00012436A</string>
-				<string>22E473791992562400EEF7C9</string>
-				<string>8474E2BD195452BE00BCA755</string>
-				<string>84754ABE193CA4600093604E</string>
-				<string>225443F519E3E6360045996B</string>
-				<string>22D3AC8A19CC5D710042C1B2</string>
-				<string>220BCC601CED6134006432ED</string>
-				<string>84E0F95C1921F3B900D6CA14</string>
-				<string>220BCC611CED6134006432ED</string>
-				<string>84925C61195AD5B000EE27B1</string>
-				<string>844C34E3194859080027E902</string>
-				<string>22068CFC1C6E298C008C0BFA</string>
-				<string>84E35A4D196B021B007F0344</string>
-				<string>84446534195891AA00CEEA5B</string>
-				<string>225AAFEC19C09E520023B595</string>
-				<string>84D7990C19388E8900FC76A0</string>
-				<string>221322FD19954B0A00D25737</string>
-				<string>22096B2719911F7300233D77</string>
-				<string>228D1F871A1CAD660028562A</string>
-				<string>8457294D1962E3860076D4F1</string>
-				<string>22D9367D1BDC64CD0032DFFE</string>
-				<string>22A55FF119D19842009178BC</string>
-				<string>84E35A49196AD991007F0344</string>
-				<string>36B669CE1B8B096A00F04AE1</string>
-				<string>84925C67195AE9AD00EE27B1</string>
-				<string>84D7990B19388E8900FC76A0</string>
-				<string>84AA41A91949C99800A50F03</string>
-				<string>220BCC7B1CED960A006432ED</string>
-				<string>22D28EA71993AAAB00497FD3</string>
-				<string>3615BDB6196FA8BF00E1AE3F</string>
-				<string>84A34A4F192E19C5005D6CC4</string>
-				<string>8474E2B419544D8000BCA755</string>
-				<string>2249D9B219A62EBD00A31104</string>
-				<string>220D382819B639D700F79496</string>
-				<string>220BCC5F1CED6134006432ED</string>
-				<string>84E35A42196A9F3B007F0344</string>
-				<string>84D7990D19388E8900FC76A0</string>
-				<string>22013F781CCA35D2000F79B5</string>
-				<string>22DC87E61B98086D0024BA34</string>
-				<string>22565D6719C1BCF400C8C8EC</string>
-				<string>221322FA19954AB100D25737</string>
-				<string>220BCC621CED6134006432ED</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>84E0F9491921F3B900D6CA14</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>220A4F131C05A85D00A32787</string>
-				<string>84E0F9501921F3B900D6CA14</string>
-				<string>220BCC691CED89B2006432ED</string>
-				<string>BE1B845E8A1FFEF254762D39</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>84E0F94A1921F3B900D6CA14</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>84E0F95A1921F3B900D6CA14</string>
-				<string>84E0F96B1921F3B900D6CA14</string>
-				<string>22D2863B1B6BE6BA0078D07D</string>
-				<string>225786A11BD564F40012436A</string>
-				<string>84E0F9601921F3B900D6CA14</string>
-				<string>220BCC641CED6134006432ED</string>
-				<string>220BCC5E1CED6134006432ED</string>
-				<string>84E0F9661921F3B900D6CA14</string>
-				<string>220BCC7D1CED9928006432ED</string>
-				<string>84E0F9691921F3B900D6CA14</string>
-				<string>22DC87E81B9808790024BA34</string>
-				<string>36B669CB1B8B057F00F04AE1</string>
-				<string>220BCC661CED6134006432ED</string>
-				<string>220BCC801CED99DB006432ED</string>
-				<string>220BCC7F1CED99DA006432ED</string>
-				<string>220BCC7E1CED99D8006432ED</string>
-				<string>220BCC651CED6134006432ED</string>
-			</array>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>84E0F94B1921F3B900D6CA14</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>84E0F9801921F3B900D6CA14</string>
-			<key>buildPhases</key>
-			<array>
-				<string>6B3C606C9FFDBB259E01EAA7</string>
-				<string>84E0F9481921F3B900D6CA14</string>
-				<string>84E0F94A1921F3B900D6CA14</string>
-				<string>84E0F9491921F3B900D6CA14</string>
-				<string>22013F711CCA1230000F79B5</string>
-				<string>220BCC831CED9A01006432ED</string>
-				<string>D5EE3596D241A5A2DC2DE356</string>
-				<string>E828CD2F8EE9DBBCC5B1589B</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>RealmBrowser</string>
-			<key>productName</key>
-			<string>RealmVisualEditor</string>
-			<key>productReference</key>
-			<string>84E0F94C1921F3B900D6CA14</string>
-			<key>productType</key>
-			<string>com.apple.product-type.application</string>
-		</dict>
-		<key>84E0F94C1921F3B900D6CA14</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.application</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Realm Browser.app</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>84E0F94D1921F3B900D6CA14</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>84E0F94C1921F3B900D6CA14</string>
-				<string>84E0F9701921F3B900D6CA14</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Products</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F94E1921F3B900D6CA14</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>220BCC681CED89B2006432ED</string>
-				<string>220A4F121C05A85D00A32787</string>
-				<string>84E0F94F1921F3B900D6CA14</string>
-				<string>84E0F9521921F3B900D6CA14</string>
-				<string>84E0F9541921F3B900D6CA14</string>
-				<string>84E0F9711921F3B900D6CA14</string>
-				<string>B4DD42CE427D384E8A7351A0</string>
-				<string>1B36A032C4471C7ECBA3D0A2</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Frameworks</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F94F1921F3B900D6CA14</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>Cocoa.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/Cocoa.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>84E0F9501921F3B900D6CA14</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84E0F94F1921F3B900D6CA14</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84E0F9521921F3B900D6CA14</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>AppKit.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/AppKit.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>84E0F9541921F3B900D6CA14</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>Foundation.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/Foundation.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>84E0F9551921F3B900D6CA14</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>E83626C41CE35C4300E9493D</string>
-				<string>E83626C51CE35C6200E9493D</string>
-				<string>E83626C61CE35C7300E9493D</string>
-				<string>84BCA5FE1951BC99008FC850</string>
-				<string>E83626C71CE35C7C00E9493D</string>
-				<string>84E0F9561921F3B900D6CA14</string>
-				<string>E83626C81CE35C8200E9493D</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>RealmBrowser</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F9561921F3B900D6CA14</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>84E0F9581921F3B900D6CA14</string>
-				<string>22D5FF911B0DBCC30090CFE6</string>
-				<string>84E0F9571921F3B900D6CA14</string>
-				<string>84E0F95D1921F3B900D6CA14</string>
-				<string>84E0F95B1921F3B900D6CA14</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Supporting Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F9571921F3B900D6CA14</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>RealmBrowser-Info.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F9581921F3B900D6CA14</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>84E0F9591921F3B900D6CA14</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>InfoPlist.strings</string>
-			<key>path</key>
-			<string>.</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F9591921F3B900D6CA14</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.strings</string>
-			<key>name</key>
-			<string>en</string>
-			<key>path</key>
-			<string>en.lproj/InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F95A1921F3B900D6CA14</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84E0F9581921F3B900D6CA14</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84E0F95B1921F3B900D6CA14</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>main.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F95C1921F3B900D6CA14</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84E0F95B1921F3B900D6CA14</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84E0F95D1921F3B900D6CA14</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RealmBrowser-Prefix.pch</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F95E1921F3B900D6CA14</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>84E0F95F1921F3B900D6CA14</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>Credits.rtf</string>
-			<key>path</key>
-			<string>.</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F95F1921F3B900D6CA14</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.rtf</string>
-			<key>name</key>
-			<string>en</string>
-			<key>path</key>
-			<string>en.lproj/Credits.rtf</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F9601921F3B900D6CA14</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84E0F95E1921F3B900D6CA14</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84E0F9641921F3B900D6CA14</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>84E0F9651921F3B900D6CA14</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>RLMDocument.xib</string>
-			<key>path</key>
-			<string>.</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F9651921F3B900D6CA14</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.xib</string>
-			<key>name</key>
-			<string>Base</string>
-			<key>path</key>
-			<string>Base.lproj/RLMDocument.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F9661921F3B900D6CA14</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84E0F9641921F3B900D6CA14</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84E0F9671921F3B900D6CA14</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>84E0F9681921F3B900D6CA14</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>MainMenu.xib</string>
-			<key>path</key>
-			<string>.</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F9681921F3B900D6CA14</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.xib</string>
-			<key>name</key>
-			<string>Base</string>
-			<key>path</key>
-			<string>Base.lproj/MainMenu.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F9691921F3B900D6CA14</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84E0F9671921F3B900D6CA14</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84E0F96A1921F3B900D6CA14</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>folder.assetcatalog</string>
-			<key>path</key>
-			<string>Images.xcassets</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F96B1921F3B900D6CA14</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84E0F96A1921F3B900D6CA14</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84E0F96C1921F3B900D6CA14</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>E84EB8291A2FC38C00EB780E</string>
-				<string>84E0F97D1921F3B900D6CA14</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>84E0F96D1921F3B900D6CA14</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>84E0F9731921F3B900D6CA14</string>
-				<string>84E0F9721921F3B900D6CA14</string>
-				<string>ADBD77D758972C8C68C6F371</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>84E0F96E1921F3B900D6CA14</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>84E0F97B1921F3B900D6CA14</string>
-			</array>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>84E0F96F1921F3B900D6CA14</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>84E0F9831921F3B900D6CA14</string>
-			<key>buildPhases</key>
-			<array>
-				<string>84E0F96C1921F3B900D6CA14</string>
-				<string>84E0F96D1921F3B900D6CA14</string>
-				<string>84E0F96E1921F3B900D6CA14</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array>
-				<string>E84EB8231A2FB94E00EB780E</string>
-			</array>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>RealmBrowserTests</string>
-			<key>productName</key>
-			<string>RealmVisualEditorTests</string>
-			<key>productReference</key>
-			<string>84E0F9701921F3B900D6CA14</string>
-			<key>productType</key>
-			<string>com.apple.product-type.bundle.unit-test</string>
-		</dict>
-		<key>84E0F9701921F3B900D6CA14</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.cfbundle</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>RealmBrowserTests.xctest</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>84E0F9711921F3B900D6CA14</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>XCTest.framework</string>
-			<key>path</key>
-			<string>Library/Frameworks/XCTest.framework</string>
-			<key>sourceTree</key>
-			<string>DEVELOPER_DIR</string>
-		</dict>
-		<key>84E0F9721921F3B900D6CA14</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84E0F9711921F3B900D6CA14</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84E0F9731921F3B900D6CA14</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84E0F94F1921F3B900D6CA14</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84E0F9761921F3B900D6CA14</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>84E0F9771921F3B900D6CA14</string>
-				<string>E84EB8271A2FC38C00EB780E</string>
-				<string>E84EB8281A2FC38C00EB780E</string>
-				<string>84E0F97C1921F3B900D6CA14</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>RealmBrowserTests</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F9771921F3B900D6CA14</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>84E0F9791921F3B900D6CA14</string>
-				<string>84E0F9781921F3B900D6CA14</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Supporting Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F9781921F3B900D6CA14</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>RealmBrowserTests-Info.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F9791921F3B900D6CA14</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>84E0F97A1921F3B900D6CA14</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>InfoPlist.strings</string>
-			<key>path</key>
-			<string>.</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F97A1921F3B900D6CA14</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.strings</string>
-			<key>name</key>
-			<string>en</string>
-			<key>path</key>
-			<string>en.lproj/InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F97B1921F3B900D6CA14</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84E0F9791921F3B900D6CA14</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84E0F97C1921F3B900D6CA14</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RealmBrowserTests.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E0F97D1921F3B900D6CA14</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84E0F97C1921F3B900D6CA14</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84E0F97E1921F3B900D6CA14</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES</key>
-				<string>NO</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>CODE_SIGN_IDENTITY</key>
-				<string>Mac Developer</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>NO</string>
-				<key>ENABLE_TESTABILITY</key>
-				<string>YES</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_DYNAMIC_NO_PIC</key>
-				<string>NO</string>
-				<key>GCC_ENABLE_OBJC_EXCEPTIONS</key>
-				<string>YES</string>
-				<key>GCC_OPTIMIZATION_LEVEL</key>
-				<string>0</string>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
-				<string>NO</string>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES_ERROR</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES_AGGRESSIVE</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>MACOSX_DEPLOYMENT_TARGET</key>
-				<string>10.9</string>
-				<key>ONLY_ACTIVE_ARCH</key>
-				<string>YES</string>
-				<key>OTHER_CODE_SIGN_FLAGS</key>
-				<string>--deep</string>
-				<key>SDKROOT</key>
-				<string>macosx</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>84E0F97F1921F3B900D6CA14</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES</key>
-				<string>NO</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>CODE_SIGN_IDENTITY</key>
-				<string>3rd Party Mac Developer Application</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>YES</string>
-				<key>DEBUG_INFORMATION_FORMAT</key>
-				<string>dwarf-with-dsym</string>
-				<key>ENABLE_NS_ASSERTIONS</key>
-				<string>NO</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_ENABLE_OBJC_EXCEPTIONS</key>
-				<string>YES</string>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES_ERROR</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES_AGGRESSIVE</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>MACOSX_DEPLOYMENT_TARGET</key>
-				<string>10.9</string>
-				<key>OTHER_CODE_SIGN_FLAGS</key>
-				<string>--deep</string>
-				<key>SDKROOT</key>
-				<string>macosx</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>84E0F9801921F3B900D6CA14</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>84E0F9811921F3B900D6CA14</string>
-				<string>84E0F9821921F3B900D6CA14</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>84E0F9811921F3B900D6CA14</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>BDF6250849D46F6574497388</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
-				<string>AppIcon</string>
-				<key>CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES</key>
-				<string>YES</string>
-				<key>CODE_SIGN_IDENTITY</key>
-				<string></string>
-				<key>COMBINE_HIDPI_IMAGES</key>
-				<string>YES</string>
-				<key>CURRENT_PROJECT_VERSION</key>
-				<string>50</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>$(PROJECT_DIR)</string>
-				</array>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>RealmBrowser/Supporting Files/RealmBrowser-Prefix.pch</string>
-				<key>HEADER_SEARCH_PATHS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include</string>
-				</array>
-				<key>INFOPLIST_FILE</key>
-				<string>$(SRCROOT)/RealmBrowser/Supporting Files/RealmBrowser-Info.plist</string>
-				<key>LD_RUNPATH_SEARCH_PATHS</key>
-				<string>$(inherited) @executable_path/../Frameworks</string>
-				<key>LIBRARY_SEARCH_PATHS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>$(PROJECT_DIR)/RealmBrowser</string>
-					<string>$(PROJECT_DIR)</string>
-					<string>$(PROJECT_DIR)/RealmBrowserSync/Binaries</string>
-				</array>
-				<key>MACOSX_DEPLOYMENT_TARGET</key>
-				<string>10.9</string>
-				<key>OTHER_CFLAGS</key>
-				<string>$(inherited)</string>
-				<key>OTHER_CODE_SIGN_FLAGS</key>
-				<string>--deep</string>
-				<key>OTHER_LDFLAGS</key>
-				<string>$(inherited)</string>
-				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>io.realm.realmbrowser</string>
-				<key>PRODUCT_NAME</key>
-				<string>Realm Browser</string>
-				<key>PROVISIONING_PROFILE</key>
-				<string></string>
-				<key>VERSIONING_SYSTEM</key>
-				<string>apple-generic</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>app</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>84E0F9821921F3B900D6CA14</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>CA474127E67BC00EC1BC9986</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
-				<string>AppIcon</string>
-				<key>CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES</key>
-				<string>YES</string>
-				<key>CODE_SIGN_IDENTITY</key>
-				<string></string>
-				<key>COMBINE_HIDPI_IMAGES</key>
-				<string>YES</string>
-				<key>CURRENT_PROJECT_VERSION</key>
-				<string>50</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>$(PROJECT_DIR)</string>
-				</array>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>RealmBrowser/Supporting Files/RealmBrowser-Prefix.pch</string>
-				<key>HEADER_SEARCH_PATHS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include</string>
-				</array>
-				<key>INFOPLIST_FILE</key>
-				<string>$(SRCROOT)/RealmBrowser/Supporting Files/RealmBrowser-Info.plist</string>
-				<key>LD_RUNPATH_SEARCH_PATHS</key>
-				<string>$(inherited) @executable_path/../Frameworks</string>
-				<key>LIBRARY_SEARCH_PATHS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>$(PROJECT_DIR)/RealmBrowser</string>
-					<string>$(PROJECT_DIR)</string>
-					<string>$(PROJECT_DIR)/RealmBrowserSync/Binaries</string>
-				</array>
-				<key>MACOSX_DEPLOYMENT_TARGET</key>
-				<string>10.9</string>
-				<key>OTHER_CODE_SIGN_FLAGS</key>
-				<string>--deep</string>
-				<key>OTHER_LDFLAGS</key>
-				<string>$(inherited)</string>
-				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>io.realm.realmbrowser</string>
-				<key>PRODUCT_NAME</key>
-				<string>Realm Browser</string>
-				<key>PROVISIONING_PROFILE</key>
-				<string></string>
-				<key>VERSIONING_SYSTEM</key>
-				<string>apple-generic</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>app</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>84E0F9831921F3B900D6CA14</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>84E0F9841921F3B900D6CA14</string>
-				<string>84E0F9851921F3B900D6CA14</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>84E0F9841921F3B900D6CA14</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>BUNDLE_LOADER</key>
-				<string>$(BUILT_PRODUCTS_DIR)/Realm Browser.app/Contents/MacOS/Realm Browser</string>
-				<key>COMBINE_HIDPI_IMAGES</key>
-				<string>YES</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>$(PROJECT_DIR)</string>
-				</array>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string></string>
-				<key>INFOPLIST_FILE</key>
-				<string>RealmBrowserTests/Supporting Files/RealmBrowserTests-Info.plist</string>
-				<key>LIBRARY_SEARCH_PATHS</key>
-				<string>$(inherited)</string>
-				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>io.realm.${PRODUCT_NAME:rfc1034identifier}</string>
-				<key>PRODUCT_NAME</key>
-				<string>RealmBrowserTests</string>
-				<key>TEST_HOST</key>
-				<string>$(BUNDLE_LOADER)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>xctest</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>84E0F9851921F3B900D6CA14</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>BUNDLE_LOADER</key>
-				<string>$(BUILT_PRODUCTS_DIR)/Realm Browser.app/Contents/MacOS/Realm Browser</string>
-				<key>COMBINE_HIDPI_IMAGES</key>
-				<string>YES</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>$(PROJECT_DIR)</string>
-				</array>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string></string>
-				<key>INFOPLIST_FILE</key>
-				<string>RealmBrowserTests/Supporting Files/RealmBrowserTests-Info.plist</string>
-				<key>LIBRARY_SEARCH_PATHS</key>
-				<string>$(inherited)</string>
-				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>io.realm.${PRODUCT_NAME:rfc1034identifier}</string>
-				<key>PRODUCT_NAME</key>
-				<string>RealmBrowserTests</string>
-				<key>TEST_HOST</key>
-				<string>$(BUNDLE_LOADER)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>xctest</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>84E35A40196A9F3B007F0344</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMNavigationState.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E35A41196A9F3B007F0344</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMNavigationState.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E35A42196A9F3B007F0344</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84E35A41196A9F3B007F0344</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84E35A47196AD991007F0344</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMNavigationStack.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E35A48196AD991007F0344</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMNavigationStack.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E35A49196AD991007F0344</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84E35A48196AD991007F0344</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>84E35A4B196B021B007F0344</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMArrayNavigationState.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E35A4C196B021B007F0344</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMArrayNavigationState.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E35A4D196B021B007F0344</key>
-		<dict>
-			<key>fileRef</key>
-			<string>84E35A4C196B021B007F0344</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>ADBD77D758972C8C68C6F371</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>B4DD42CE427D384E8A7351A0</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.framework</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Pods.framework</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>BDF6250849D46F6574497388</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods-RealmBrowser.debug.xcconfig</string>
-			<key>path</key>
-			<string>Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.debug.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>BE1B845E8A1FFEF254762D39</key>
-		<dict>
-			<key>fileRef</key>
-			<string>1B36A032C4471C7ECBA3D0A2</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>CA474127E67BC00EC1BC9986</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods-RealmBrowser.release.xcconfig</string>
-			<key>path</key>
-			<string>Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.release.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>D5EE3596D241A5A2DC2DE356</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Embed Pods Frameworks</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>"${SRCROOT}/Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser-frameworks.sh"
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>E828CD2F8EE9DBBCC5B1589B</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Copy Pods Resources</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>"${SRCROOT}/Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser-resources.sh"
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>E83626C41CE35C4300E9493D</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>84A34A4D192E19C5005D6CC4</string>
-				<string>84A34A4E192E19C5005D6CC4</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Application</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>E83626C51CE35C6200E9493D</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>2257869C1BD563A00012436A</string>
-				<string>2257869D1BD563A00012436A</string>
-				<string>22DC87E41B98086D0024BA34</string>
-				<string>22DC87E51B98086D0024BA34</string>
-				<string>8474E2BB195452BE00BCA755</string>
-				<string>8474E2BC195452BE00BCA755</string>
-				<string>36B669CC1B8B096A00F04AE1</string>
-				<string>36B669CD1B8B096A00F04AE1</string>
-				<string>84754ABC193CA4600093604E</string>
-				<string>84754ABD193CA4600093604E</string>
-				<string>8474E2B219544D8000BCA755</string>
-				<string>8474E2B319544D8000BCA755</string>
-				<string>84446532195891AA00CEEA5B</string>
-				<string>84446533195891AA00CEEA5B</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Controllers</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>E83626C61CE35C7300E9493D</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>84E35A4B196B021B007F0344</string>
-				<string>84E35A4C196B021B007F0344</string>
-				<string>84AA41AE1949CD7700A50F03</string>
-				<string>84AA41AF1949CD7700A50F03</string>
-				<string>84D7990419388E8900FC76A0</string>
-				<string>84D7990519388E8900FC76A0</string>
-				<string>84D7990619388E8900FC76A0</string>
-				<string>84D7990719388E8900FC76A0</string>
-				<string>840F97BE192B7DCE006B591E</string>
-				<string>840F97BF192B7DCE006B591E</string>
-				<string>84E35A47196AD991007F0344</string>
-				<string>84E35A48196AD991007F0344</string>
-				<string>84E35A40196A9F3B007F0344</string>
-				<string>84E35A41196A9F3B007F0344</string>
-				<string>22A55FE919D18BA8009178BC</string>
-				<string>22A55FEA19D18BA8009178BC</string>
-				<string>3615BDB7196FA8E500E1AE3F</string>
-				<string>3615BDB5196FA8BF00E1AE3F</string>
-				<string>22013F761CCA35D2000F79B5</string>
-				<string>22013F771CCA35D2000F79B5</string>
-				<string>84D7990819388E8900FC76A0</string>
-				<string>84D7990919388E8900FC76A0</string>
-				<string>84D7990A19388E8900FC76A0</string>
-				<string>228D1F851A1CAD660028562A</string>
-				<string>228D1F861A1CAD660028562A</string>
-				<string>2249D9B019A62EBD00A31104</string>
-				<string>2249D9B119A62EBD00A31104</string>
-				<string>84AA41A71949C99800A50F03</string>
-				<string>84AA41A81949C99800A50F03</string>
-				<string>22068CFA1C6E298C008C0BFA</string>
-				<string>22068CFB1C6E298C008C0BFA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Models</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>E83626C71CE35C7C00E9493D</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>84925C5F195AD5B000EE27B1</string>
-				<string>84925C60195AD5B000EE27B1</string>
-				<string>22D9367B1BDC64CD0032DFFE</string>
-				<string>22D9367C1BDC64CD0032DFFE</string>
-				<string>22A55FEF19D19842009178BC</string>
-				<string>22A55FF019D19842009178BC</string>
-				<string>22D3AC8819CC5D710042C1B2</string>
-				<string>22D3AC8919CC5D710042C1B2</string>
-				<string>220D382619B639D700F79496</string>
-				<string>220D382719B639D700F79496</string>
-				<string>844C34E1194859080027E902</string>
-				<string>844C34E2194859080027E902</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Support</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>E83626C81CE35C8200E9493D</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>22096B2519911F7300233D77</string>
-				<string>22096B2619911F7300233D77</string>
-				<string>22E4737019924CF700EEF7C9</string>
-				<string>22E4737119924CF700EEF7C9</string>
-				<string>22E473771992562400EEF7C9</string>
-				<string>22E473781992562400EEF7C9</string>
-				<string>221322F819954AB100D25737</string>
-				<string>221322F919954AB100D25737</string>
-				<string>22565D6519C1BCF400C8C8EC</string>
-				<string>22565D6619C1BCF400C8C8EC</string>
-				<string>22D28EA51993AAAB00497FD3</string>
-				<string>22D28EA61993AAAB00497FD3</string>
-				<string>84925C65195AE9AD00EE27B1</string>
-				<string>84925C66195AE9AD00EE27B1</string>
-				<string>221322FB19954B0A00D25737</string>
-				<string>221322FC19954B0A00D25737</string>
-				<string>225443F319E3E6360045996B</string>
-				<string>225443F419E3E6360045996B</string>
-				<string>8457294B1962E3860076D4F1</string>
-				<string>8457294C1962E3860076D4F1</string>
-				<string>225AAFEA19C09E520023B595</string>
-				<string>225AAFEB19C09E520023B595</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Views</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>E8413F2C1CE35E8700B2EBCB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>2257869F1BD564F40012436A</string>
-				<string>84E0F9671921F3B900D6CA14</string>
-				<string>84E0F9641921F3B900D6CA14</string>
-				<string>22DC87E71B9808790024BA34</string>
-				<string>36B669CA1B8B057F00F04AE1</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>UI</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>E84EB8221A2FB94E00EB780E</key>
-		<dict>
-			<key>containerPortal</key>
-			<string>84E0F9441921F3B900D6CA14</string>
-			<key>isa</key>
-			<string>PBXContainerItemProxy</string>
-			<key>proxyType</key>
-			<string>1</string>
-			<key>remoteGlobalIDString</key>
-			<string>84E0F94B1921F3B900D6CA14</string>
-			<key>remoteInfo</key>
-			<string>RealmBrowser</string>
-		</dict>
-		<key>E84EB8231A2FB94E00EB780E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXTargetDependency</string>
-			<key>target</key>
-			<string>84E0F94B1921F3B900D6CA14</string>
-			<key>targetProxy</key>
-			<string>E84EB8221A2FB94E00EB780E</string>
-		</dict>
-		<key>E84EB8271A2FC38C00EB780E</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>RLMTestObjects.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>E84EB8281A2FC38C00EB780E</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>RLMTestObjects.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>E84EB8291A2FC38C00EB780E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>E84EB8281A2FC38C00EB780E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>E876142B1CE35FFD000095CF</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>22D2863A1B6BE6BA0078D07D</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Icons</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>E876142C1CE36003000095CF</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>84E0F95E1921F3B900D6CA14</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Documents</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-	</dict>
-	<key>rootObject</key>
-	<string>84E0F9441921F3B900D6CA14</string>
-</dict>
-</plist>
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		22013F781CCA35D2000F79B5 /* RLMRealmFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 22013F771CCA35D2000F79B5 /* RLMRealmFileManager.m */; };
+		22068CFC1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 22068CFB1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m */; };
+		22096B2719911F7300233D77 /* RLMBadgeTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */; };
+		220A4F131C05A85D00A32787 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 220A4F121C05A85D00A32787 /* libc++.tbd */; };
+		220BCC5F1CED6134006432ED /* RLMRunSyncServerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 220BCC4B1CED6134006432ED /* RLMRunSyncServerWindowController.m */; };
+		220BCC601CED6134006432ED /* RLMSyncAuthWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 220BCC4D1CED6134006432ED /* RLMSyncAuthWindowController.m */; };
+		220BCC611CED6134006432ED /* RLMSyncWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 220BCC4F1CED6134006432ED /* RLMSyncWindowController.m */; };
+		220BCC621CED6134006432ED /* RLMSyncServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 220BCC521CED6134006432ED /* RLMSyncServer.m */; };
+		220BCC641CED6134006432ED /* SyncCredentialsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220BCC551CED6134006432ED /* SyncCredentialsView.xib */; };
+		220BCC651CED6134006432ED /* SyncServerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220BCC561CED6134006432ED /* SyncServerWindow.xib */; };
+		220BCC661CED6134006432ED /* SyncWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220BCC571CED6134006432ED /* SyncWindow.xib */; };
+		220BCC691CED89B2006432ED /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 220BCC681CED89B2006432ED /* Realm.framework */; };
+		220BCC7B1CED960A006432ED /* RLMSyncCredentialsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 220BCC7A1CED960A006432ED /* RLMSyncCredentialsView.m */; };
+		220BCC7D1CED9928006432ED /* RLMSyncAuthWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220BCC7C1CED9928006432ED /* RLMSyncAuthWindowController.xib */; };
+		220D382819B639D700F79496 /* RLMTestDataGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 220D382719B639D700F79496 /* RLMTestDataGenerator.m */; };
+		221322FA19954AB100D25737 /* RLMImageTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221322F919954AB100D25737 /* RLMImageTableCellView.m */; };
+		221322FD19954B0A00D25737 /* RLMTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221322FC19954B0A00D25737 /* RLMTableCellView.m */; };
+		2249D9B219A62EBD00A31104 /* RLMTableColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 2249D9B119A62EBD00A31104 /* RLMTableColumn.m */; };
+		225443F519E3E6360045996B /* RLMTableHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 225443F419E3E6360045996B /* RLMTableHeaderCell.m */; };
+		22565D6719C1BCF400C8C8EC /* RLMLinkTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22565D6619C1BCF400C8C8EC /* RLMLinkTableCellView.m */; };
+		2257869E1BD563A00012436A /* RLMEncryptionKeyWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2257869D1BD563A00012436A /* RLMEncryptionKeyWindowController.m */; };
+		225786A11BD564F40012436A /* EncryptionKeyWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2257869F1BD564F40012436A /* EncryptionKeyWindow.xib */; };
+		225AAFEC19C09E520023B595 /* RLMTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 225AAFEB19C09E520023B595 /* RLMTextField.m */; };
+		228D1F871A1CAD660028562A /* RLMResultsNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 228D1F861A1CAD660028562A /* RLMResultsNode.m */; };
+		22A55FEB19D18BA8009178BC /* RLMObjectNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A55FEA19D18BA8009178BC /* RLMObjectNode.m */; };
+		22A55FF119D19842009178BC /* RLMDescriptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A55FF019D19842009178BC /* RLMDescriptions.m */; };
+		22D2863B1B6BE6BA0078D07D /* FormatIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 22D2863A1B6BE6BA0078D07D /* FormatIcon.icns */; };
+		22D28EA71993AAAB00497FD3 /* RLMNumberTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D28EA61993AAAB00497FD3 /* RLMNumberTableCellView.m */; };
+		22D3AC8A19CC5D710042C1B2 /* RLMModelExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D3AC8919CC5D710042C1B2 /* RLMModelExporter.m */; };
+		22D9367D1BDC64CD0032DFFE /* RLMAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D9367C1BDC64CD0032DFFE /* RLMAlert.m */; };
+		22DC87E61B98086D0024BA34 /* RLMExportIndicatorWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22DC87E51B98086D0024BA34 /* RLMExportIndicatorWindowController.m */; };
+		22DC87E81B9808790024BA34 /* RLMExportIndicatorWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22DC87E71B9808790024BA34 /* RLMExportIndicatorWindowController.xib */; };
+		22E4737219924CF700EEF7C9 /* RLMBasicTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E4737119924CF700EEF7C9 /* RLMBasicTableCellView.m */; };
+		22E473791992562400EEF7C9 /* RLMBoolTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E473781992562400EEF7C9 /* RLMBoolTableCellView.m */; };
+		3615BDB6196FA8BF00E1AE3F /* RLMQueryNavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = 3615BDB5196FA8BF00E1AE3F /* RLMQueryNavigationState.m */; };
+		36B669CB1B8B057F00F04AE1 /* RLMObjectLinkSelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36B669CA1B8B057F00F04AE1 /* RLMObjectLinkSelectionViewController.xib */; };
+		36B669CE1B8B096A00F04AE1 /* RLMObjectLinkSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 36B669CD1B8B096A00F04AE1 /* RLMObjectLinkSelectionViewController.m */; };
+		840F97C0192B7DCE006B591E /* RLMDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 840F97BF192B7DCE006B591E /* RLMDocument.m */; };
+		84446534195891AA00CEEA5B /* RLMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84446533195891AA00CEEA5B /* RLMViewController.m */; };
+		844C34E3194859080027E902 /* TestClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 844C34E2194859080027E902 /* TestClasses.m */; };
+		8457294D1962E3860076D4F1 /* RLMTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8457294C1962E3860076D4F1 /* RLMTableView.m */; };
+		8474E2B419544D8000BCA755 /* RLMTypeOutlineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8474E2B319544D8000BCA755 /* RLMTypeOutlineViewController.m */; };
+		8474E2BD195452BE00BCA755 /* RLMInstanceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8474E2BC195452BE00BCA755 /* RLMInstanceTableViewController.m */; };
+		84754ABE193CA4600093604E /* RLMRealmBrowserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84754ABD193CA4600093604E /* RLMRealmBrowserWindowController.m */; };
+		84925C61195AD5B000EE27B1 /* NSColor+ByteSizeFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 84925C60195AD5B000EE27B1 /* NSColor+ByteSizeFactory.m */; };
+		84925C67195AE9AD00EE27B1 /* RLMSidebarTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84925C66195AE9AD00EE27B1 /* RLMSidebarTableCellView.m */; };
+		84A34A4F192E19C5005D6CC4 /* RLMApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A34A4E192E19C5005D6CC4 /* RLMApplicationDelegate.m */; };
+		84AA41A91949C99800A50F03 /* RLMTypeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AA41A81949C99800A50F03 /* RLMTypeNode.m */; };
+		84AA41B01949CD7700A50F03 /* RLMArrayNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AA41AF1949CD7700A50F03 /* RLMArrayNode.m */; };
+		84D7990B19388E8900FC76A0 /* RLMClassNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D7990519388E8900FC76A0 /* RLMClassNode.m */; };
+		84D7990C19388E8900FC76A0 /* RLMClassProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D7990719388E8900FC76A0 /* RLMClassProperty.m */; };
+		84D7990D19388E8900FC76A0 /* RLMRealmNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D7990919388E8900FC76A0 /* RLMRealmNode.m */; };
+		84E0F9501921F3B900D6CA14 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E0F94F1921F3B900D6CA14 /* Cocoa.framework */; };
+		84E0F95A1921F3B900D6CA14 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84E0F9581921F3B900D6CA14 /* InfoPlist.strings */; };
+		84E0F95C1921F3B900D6CA14 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E0F95B1921F3B900D6CA14 /* main.m */; };
+		84E0F9601921F3B900D6CA14 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 84E0F95E1921F3B900D6CA14 /* Credits.rtf */; };
+		84E0F9661921F3B900D6CA14 /* RLMDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84E0F9641921F3B900D6CA14 /* RLMDocument.xib */; };
+		84E0F9691921F3B900D6CA14 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84E0F9671921F3B900D6CA14 /* MainMenu.xib */; };
+		84E0F96B1921F3B900D6CA14 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84E0F96A1921F3B900D6CA14 /* Images.xcassets */; };
+		84E0F9721921F3B900D6CA14 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E0F9711921F3B900D6CA14 /* XCTest.framework */; };
+		84E0F9731921F3B900D6CA14 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E0F94F1921F3B900D6CA14 /* Cocoa.framework */; };
+		84E0F97B1921F3B900D6CA14 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84E0F9791921F3B900D6CA14 /* InfoPlist.strings */; };
+		84E0F97D1921F3B900D6CA14 /* RealmBrowserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E0F97C1921F3B900D6CA14 /* RealmBrowserTests.m */; };
+		84E35A42196A9F3B007F0344 /* RLMNavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E35A41196A9F3B007F0344 /* RLMNavigationState.m */; };
+		84E35A49196AD991007F0344 /* RLMNavigationStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E35A48196AD991007F0344 /* RLMNavigationStack.m */; };
+		84E35A4D196B021B007F0344 /* RLMArrayNavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E35A4C196B021B007F0344 /* RLMArrayNavigationState.m */; };
+		ADBD77D758972C8C68C6F371 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		BE1B845E8A1FFEF254762D39 /* Pods_RealmBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B36A032C4471C7ECBA3D0A2 /* Pods_RealmBrowser.framework */; };
+		E84EB8291A2FC38C00EB780E /* RLMTestObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = E84EB8281A2FC38C00EB780E /* RLMTestObjects.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E84EB8221A2FB94E00EB780E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 84E0F9441921F3B900D6CA14 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 84E0F94B1921F3B900D6CA14;
+			remoteInfo = RealmBrowser;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		22013F711CCA1230000F79B5 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		220BCC831CED9A01006432ED /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1B36A032C4471C7ECBA3D0A2 /* Pods_RealmBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RealmBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		22013F761CCA35D2000F79B5 /* RLMRealmFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMRealmFileManager.h; sourceTree = "<group>"; };
+		22013F771CCA35D2000F79B5 /* RLMRealmFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMRealmFileManager.m; sourceTree = "<group>"; };
+		22068CFA1C6E298C008C0BFA /* NSURLComponents+FragmentItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSURLComponents+FragmentItems.h"; path = "../NSURLComponents+FragmentItems.h"; sourceTree = "<group>"; };
+		22068CFB1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSURLComponents+FragmentItems.m"; path = "../NSURLComponents+FragmentItems.m"; sourceTree = "<group>"; };
+		22096B2519911F7300233D77 /* RLMBadgeTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMBadgeTableCellView.h; sourceTree = "<group>"; };
+		22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMBadgeTableCellView.m; sourceTree = "<group>"; };
+		220A4F121C05A85D00A32787 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		220BCC4A1CED6134006432ED /* RLMRunSyncServerWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMRunSyncServerWindowController.h; sourceTree = "<group>"; };
+		220BCC4B1CED6134006432ED /* RLMRunSyncServerWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMRunSyncServerWindowController.m; sourceTree = "<group>"; };
+		220BCC4C1CED6134006432ED /* RLMSyncAuthWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMSyncAuthWindowController.h; sourceTree = "<group>"; };
+		220BCC4D1CED6134006432ED /* RLMSyncAuthWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMSyncAuthWindowController.m; sourceTree = "<group>"; };
+		220BCC4E1CED6134006432ED /* RLMSyncWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMSyncWindowController.h; sourceTree = "<group>"; };
+		220BCC4F1CED6134006432ED /* RLMSyncWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMSyncWindowController.m; sourceTree = "<group>"; };
+		220BCC511CED6134006432ED /* RLMSyncServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMSyncServer.h; sourceTree = "<group>"; };
+		220BCC521CED6134006432ED /* RLMSyncServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMSyncServer.m; sourceTree = "<group>"; };
+		220BCC551CED6134006432ED /* SyncCredentialsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncCredentialsView.xib; sourceTree = "<group>"; };
+		220BCC561CED6134006432ED /* SyncServerWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncServerWindow.xib; sourceTree = "<group>"; };
+		220BCC571CED6134006432ED /* SyncWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncWindow.xib; sourceTree = "<group>"; };
+		220BCC681CED89B2006432ED /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
+		220BCC791CED960A006432ED /* RLMSyncCredentialsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMSyncCredentialsView.h; sourceTree = "<group>"; };
+		220BCC7A1CED960A006432ED /* RLMSyncCredentialsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMSyncCredentialsView.m; sourceTree = "<group>"; };
+		220BCC7C1CED9928006432ED /* RLMSyncAuthWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RLMSyncAuthWindowController.xib; sourceTree = "<group>"; };
+		220D382619B639D700F79496 /* RLMTestDataGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTestDataGenerator.h; sourceTree = "<group>"; };
+		220D382719B639D700F79496 /* RLMTestDataGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTestDataGenerator.m; sourceTree = "<group>"; };
+		221322F819954AB100D25737 /* RLMImageTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMImageTableCellView.h; sourceTree = "<group>"; };
+		221322F919954AB100D25737 /* RLMImageTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMImageTableCellView.m; sourceTree = "<group>"; };
+		221322FB19954B0A00D25737 /* RLMTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTableCellView.h; sourceTree = "<group>"; };
+		221322FC19954B0A00D25737 /* RLMTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTableCellView.m; sourceTree = "<group>"; };
+		2249D9B019A62EBD00A31104 /* RLMTableColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTableColumn.h; sourceTree = "<group>"; };
+		2249D9B119A62EBD00A31104 /* RLMTableColumn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTableColumn.m; sourceTree = "<group>"; };
+		225443F319E3E6360045996B /* RLMTableHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTableHeaderCell.h; sourceTree = "<group>"; };
+		225443F419E3E6360045996B /* RLMTableHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTableHeaderCell.m; sourceTree = "<group>"; };
+		22565D6519C1BCF400C8C8EC /* RLMLinkTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMLinkTableCellView.h; sourceTree = "<group>"; };
+		22565D6619C1BCF400C8C8EC /* RLMLinkTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMLinkTableCellView.m; sourceTree = "<group>"; };
+		2257869C1BD563A00012436A /* RLMEncryptionKeyWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMEncryptionKeyWindowController.h; sourceTree = "<group>"; };
+		2257869D1BD563A00012436A /* RLMEncryptionKeyWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMEncryptionKeyWindowController.m; sourceTree = "<group>"; };
+		225786A01BD564F40012436A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EncryptionKeyWindow.xib; sourceTree = "<group>"; };
+		225AAFEA19C09E520023B595 /* RLMTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTextField.h; sourceTree = "<group>"; };
+		225AAFEB19C09E520023B595 /* RLMTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTextField.m; sourceTree = "<group>"; };
+		228D1F851A1CAD660028562A /* RLMResultsNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMResultsNode.h; sourceTree = "<group>"; };
+		228D1F861A1CAD660028562A /* RLMResultsNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMResultsNode.m; sourceTree = "<group>"; };
+		22A55FE919D18BA8009178BC /* RLMObjectNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMObjectNode.h; sourceTree = "<group>"; };
+		22A55FEA19D18BA8009178BC /* RLMObjectNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMObjectNode.m; sourceTree = "<group>"; };
+		22A55FEF19D19842009178BC /* RLMDescriptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMDescriptions.h; sourceTree = "<group>"; };
+		22A55FF019D19842009178BC /* RLMDescriptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMDescriptions.m; sourceTree = "<group>"; };
+		22D2863A1B6BE6BA0078D07D /* FormatIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = FormatIcon.icns; sourceTree = "<group>"; };
+		22D28EA51993AAAB00497FD3 /* RLMNumberTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMNumberTableCellView.h; sourceTree = "<group>"; };
+		22D28EA61993AAAB00497FD3 /* RLMNumberTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMNumberTableCellView.m; sourceTree = "<group>"; };
+		22D3AC8819CC5D710042C1B2 /* RLMModelExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMModelExporter.h; sourceTree = "<group>"; };
+		22D3AC8919CC5D710042C1B2 /* RLMModelExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMModelExporter.m; sourceTree = "<group>"; };
+		22D5FF911B0DBCC30090CFE6 /* Realm Browser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Realm Browser.entitlements"; sourceTree = "<group>"; };
+		22D9367B1BDC64CD0032DFFE /* RLMAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMAlert.h; sourceTree = "<group>"; };
+		22D9367C1BDC64CD0032DFFE /* RLMAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMAlert.m; sourceTree = "<group>"; };
+		22DC87E41B98086D0024BA34 /* RLMExportIndicatorWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMExportIndicatorWindowController.h; sourceTree = "<group>"; };
+		22DC87E51B98086D0024BA34 /* RLMExportIndicatorWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMExportIndicatorWindowController.m; sourceTree = "<group>"; };
+		22DC87E71B9808790024BA34 /* RLMExportIndicatorWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RLMExportIndicatorWindowController.xib; sourceTree = "<group>"; };
+		22E4737019924CF700EEF7C9 /* RLMBasicTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMBasicTableCellView.h; sourceTree = "<group>"; };
+		22E4737119924CF700EEF7C9 /* RLMBasicTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMBasicTableCellView.m; sourceTree = "<group>"; };
+		22E473771992562400EEF7C9 /* RLMBoolTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMBoolTableCellView.h; sourceTree = "<group>"; };
+		22E473781992562400EEF7C9 /* RLMBoolTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMBoolTableCellView.m; sourceTree = "<group>"; };
+		3615BDB5196FA8BF00E1AE3F /* RLMQueryNavigationState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMQueryNavigationState.m; sourceTree = "<group>"; };
+		3615BDB7196FA8E500E1AE3F /* RLMQueryNavigationState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMQueryNavigationState.h; sourceTree = "<group>"; };
+		36B669CA1B8B057F00F04AE1 /* RLMObjectLinkSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RLMObjectLinkSelectionViewController.xib; sourceTree = "<group>"; };
+		36B669CC1B8B096A00F04AE1 /* RLMObjectLinkSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMObjectLinkSelectionViewController.h; sourceTree = "<group>"; };
+		36B669CD1B8B096A00F04AE1 /* RLMObjectLinkSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMObjectLinkSelectionViewController.m; sourceTree = "<group>"; };
+		840F97BE192B7DCE006B591E /* RLMDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMDocument.h; sourceTree = "<group>"; };
+		840F97BF192B7DCE006B591E /* RLMDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMDocument.m; sourceTree = "<group>"; };
+		84446532195891AA00CEEA5B /* RLMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMViewController.h; sourceTree = "<group>"; };
+		84446533195891AA00CEEA5B /* RLMViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMViewController.m; sourceTree = "<group>"; };
+		844C34E1194859080027E902 /* TestClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestClasses.h; sourceTree = "<group>"; };
+		844C34E2194859080027E902 /* TestClasses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestClasses.m; sourceTree = "<group>"; };
+		8457294B1962E3860076D4F1 /* RLMTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTableView.h; sourceTree = "<group>"; };
+		8457294C1962E3860076D4F1 /* RLMTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTableView.m; sourceTree = "<group>"; };
+		8474E2B219544D8000BCA755 /* RLMTypeOutlineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTypeOutlineViewController.h; sourceTree = "<group>"; };
+		8474E2B319544D8000BCA755 /* RLMTypeOutlineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTypeOutlineViewController.m; sourceTree = "<group>"; };
+		8474E2BB195452BE00BCA755 /* RLMInstanceTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMInstanceTableViewController.h; sourceTree = "<group>"; };
+		8474E2BC195452BE00BCA755 /* RLMInstanceTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMInstanceTableViewController.m; sourceTree = "<group>"; };
+		84754ABC193CA4600093604E /* RLMRealmBrowserWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMRealmBrowserWindowController.h; sourceTree = "<group>"; };
+		84754ABD193CA4600093604E /* RLMRealmBrowserWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMRealmBrowserWindowController.m; sourceTree = "<group>"; };
+		84925C5F195AD5B000EE27B1 /* NSColor+ByteSizeFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+ByteSizeFactory.h"; sourceTree = "<group>"; };
+		84925C60195AD5B000EE27B1 /* NSColor+ByteSizeFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+ByteSizeFactory.m"; sourceTree = "<group>"; };
+		84925C65195AE9AD00EE27B1 /* RLMSidebarTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMSidebarTableCellView.h; sourceTree = "<group>"; };
+		84925C66195AE9AD00EE27B1 /* RLMSidebarTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMSidebarTableCellView.m; sourceTree = "<group>"; };
+		84A34A4D192E19C5005D6CC4 /* RLMApplicationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMApplicationDelegate.h; sourceTree = "<group>"; };
+		84A34A4E192E19C5005D6CC4 /* RLMApplicationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMApplicationDelegate.m; sourceTree = "<group>"; };
+		84AA41A71949C99800A50F03 /* RLMTypeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTypeNode.h; sourceTree = "<group>"; };
+		84AA41A81949C99800A50F03 /* RLMTypeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTypeNode.m; sourceTree = "<group>"; };
+		84AA41AE1949CD7700A50F03 /* RLMArrayNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMArrayNode.h; sourceTree = "<group>"; };
+		84AA41AF1949CD7700A50F03 /* RLMArrayNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMArrayNode.m; sourceTree = "<group>"; };
+		84D7990419388E8900FC76A0 /* RLMClassNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMClassNode.h; sourceTree = "<group>"; };
+		84D7990519388E8900FC76A0 /* RLMClassNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMClassNode.m; sourceTree = "<group>"; };
+		84D7990619388E8900FC76A0 /* RLMClassProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMClassProperty.h; sourceTree = "<group>"; };
+		84D7990719388E8900FC76A0 /* RLMClassProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMClassProperty.m; sourceTree = "<group>"; };
+		84D7990819388E8900FC76A0 /* RLMRealmNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMRealmNode.h; sourceTree = "<group>"; };
+		84D7990919388E8900FC76A0 /* RLMRealmNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMRealmNode.m; sourceTree = "<group>"; };
+		84D7990A19388E8900FC76A0 /* RLMRealmOutlineNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMRealmOutlineNode.h; sourceTree = "<group>"; };
+		84E0F94C1921F3B900D6CA14 /* Realm Browser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Realm Browser.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		84E0F94F1921F3B900D6CA14 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		84E0F9521921F3B900D6CA14 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		84E0F9541921F3B900D6CA14 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		84E0F9571921F3B900D6CA14 /* RealmBrowser-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RealmBrowser-Info.plist"; sourceTree = "<group>"; };
+		84E0F9591921F3B900D6CA14 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		84E0F95B1921F3B900D6CA14 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		84E0F95D1921F3B900D6CA14 /* RealmBrowser-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RealmBrowser-Prefix.pch"; sourceTree = "<group>"; };
+		84E0F95F1921F3B900D6CA14 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		84E0F9651921F3B900D6CA14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/RLMDocument.xib; sourceTree = "<group>"; };
+		84E0F9681921F3B900D6CA14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		84E0F96A1921F3B900D6CA14 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		84E0F9701921F3B900D6CA14 /* RealmBrowserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RealmBrowserTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		84E0F9711921F3B900D6CA14 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		84E0F9781921F3B900D6CA14 /* RealmBrowserTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RealmBrowserTests-Info.plist"; sourceTree = "<group>"; };
+		84E0F97A1921F3B900D6CA14 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		84E0F97C1921F3B900D6CA14 /* RealmBrowserTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RealmBrowserTests.m; sourceTree = "<group>"; };
+		84E35A40196A9F3B007F0344 /* RLMNavigationState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMNavigationState.h; sourceTree = "<group>"; };
+		84E35A41196A9F3B007F0344 /* RLMNavigationState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMNavigationState.m; sourceTree = "<group>"; };
+		84E35A47196AD991007F0344 /* RLMNavigationStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMNavigationStack.h; sourceTree = "<group>"; };
+		84E35A48196AD991007F0344 /* RLMNavigationStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMNavigationStack.m; sourceTree = "<group>"; };
+		84E35A4B196B021B007F0344 /* RLMArrayNavigationState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMArrayNavigationState.h; sourceTree = "<group>"; };
+		84E35A4C196B021B007F0344 /* RLMArrayNavigationState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMArrayNavigationState.m; sourceTree = "<group>"; };
+		B4DD42CE427D384E8A7351A0 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDF6250849D46F6574497388 /* Pods-RealmBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.debug.xcconfig"; sourceTree = "<group>"; };
+		CA474127E67BC00EC1BC9986 /* Pods-RealmBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.release.xcconfig"; sourceTree = "<group>"; };
+		E84EB8271A2FC38C00EB780E /* RLMTestObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTestObjects.h; sourceTree = "<group>"; };
+		E84EB8281A2FC38C00EB780E /* RLMTestObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTestObjects.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		84E0F9491921F3B900D6CA14 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				220A4F131C05A85D00A32787 /* libc++.tbd in Frameworks */,
+				84E0F9501921F3B900D6CA14 /* Cocoa.framework in Frameworks */,
+				220BCC691CED89B2006432ED /* Realm.framework in Frameworks */,
+				BE1B845E8A1FFEF254762D39 /* Pods_RealmBrowser.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84E0F96D1921F3B900D6CA14 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84E0F9731921F3B900D6CA14 /* Cocoa.framework in Frameworks */,
+				84E0F9721921F3B900D6CA14 /* XCTest.framework in Frameworks */,
+				ADBD77D758972C8C68C6F371 /* (null) in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		220BCC431CED6134006432ED /* RealmBrowserSync */ = {
+			isa = PBXGroup;
+			children = (
+				220BCC491CED6134006432ED /* Controllers */,
+				220BCC501CED6134006432ED /* Models */,
+				220BCC531CED6134006432ED /* Resources */,
+				220BCC581CED6134006432ED /* Views */,
+			);
+			path = RealmBrowserSync;
+			sourceTree = "<group>";
+		};
+		220BCC491CED6134006432ED /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				220BCC4A1CED6134006432ED /* RLMRunSyncServerWindowController.h */,
+				220BCC4B1CED6134006432ED /* RLMRunSyncServerWindowController.m */,
+				220BCC4C1CED6134006432ED /* RLMSyncAuthWindowController.h */,
+				220BCC4D1CED6134006432ED /* RLMSyncAuthWindowController.m */,
+				220BCC4E1CED6134006432ED /* RLMSyncWindowController.h */,
+				220BCC4F1CED6134006432ED /* RLMSyncWindowController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		220BCC501CED6134006432ED /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				220BCC511CED6134006432ED /* RLMSyncServer.h */,
+				220BCC521CED6134006432ED /* RLMSyncServer.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		220BCC531CED6134006432ED /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				220BCC7C1CED9928006432ED /* RLMSyncAuthWindowController.xib */,
+				220BCC551CED6134006432ED /* SyncCredentialsView.xib */,
+				220BCC561CED6134006432ED /* SyncServerWindow.xib */,
+				220BCC571CED6134006432ED /* SyncWindow.xib */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		220BCC581CED6134006432ED /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				220BCC791CED960A006432ED /* RLMSyncCredentialsView.h */,
+				220BCC7A1CED960A006432ED /* RLMSyncCredentialsView.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		84BCA5FE1951BC99008FC850 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E876142C1CE36003000095CF /* Documents */,
+				E876142B1CE35FFD000095CF /* Icons */,
+				E8413F2C1CE35E8700B2EBCB /* UI */,
+				84E0F96A1921F3B900D6CA14 /* Images.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		84C5A1AA857EF2F6F001E1D3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BDF6250849D46F6574497388 /* Pods-RealmBrowser.debug.xcconfig */,
+				CA474127E67BC00EC1BC9986 /* Pods-RealmBrowser.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		84E0F9431921F3B900D6CA14 = {
+			isa = PBXGroup;
+			children = (
+				84E0F9551921F3B900D6CA14 /* RealmBrowser */,
+				220BCC431CED6134006432ED /* RealmBrowserSync */,
+				84E0F9761921F3B900D6CA14 /* RealmBrowserTests */,
+				84E0F94E1921F3B900D6CA14 /* Frameworks */,
+				84E0F94D1921F3B900D6CA14 /* Products */,
+				84C5A1AA857EF2F6F001E1D3 /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		84E0F94D1921F3B900D6CA14 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				84E0F94C1921F3B900D6CA14 /* Realm Browser.app */,
+				84E0F9701921F3B900D6CA14 /* RealmBrowserTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		84E0F94E1921F3B900D6CA14 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				220BCC681CED89B2006432ED /* Realm.framework */,
+				220A4F121C05A85D00A32787 /* libc++.tbd */,
+				84E0F94F1921F3B900D6CA14 /* Cocoa.framework */,
+				84E0F9521921F3B900D6CA14 /* AppKit.framework */,
+				84E0F9541921F3B900D6CA14 /* Foundation.framework */,
+				84E0F9711921F3B900D6CA14 /* XCTest.framework */,
+				B4DD42CE427D384E8A7351A0 /* Pods.framework */,
+				1B36A032C4471C7ECBA3D0A2 /* Pods_RealmBrowser.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		84E0F9551921F3B900D6CA14 /* RealmBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				E83626C41CE35C4300E9493D /* Application */,
+				E83626C51CE35C6200E9493D /* Controllers */,
+				E83626C61CE35C7300E9493D /* Models */,
+				84BCA5FE1951BC99008FC850 /* Resources */,
+				E83626C71CE35C7C00E9493D /* Support */,
+				84E0F9561921F3B900D6CA14 /* Supporting Files */,
+				E83626C81CE35C8200E9493D /* Views */,
+			);
+			path = RealmBrowser;
+			sourceTree = "<group>";
+		};
+		84E0F9561921F3B900D6CA14 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				84E0F9581921F3B900D6CA14 /* InfoPlist.strings */,
+				22D5FF911B0DBCC30090CFE6 /* Realm Browser.entitlements */,
+				84E0F9571921F3B900D6CA14 /* RealmBrowser-Info.plist */,
+				84E0F95D1921F3B900D6CA14 /* RealmBrowser-Prefix.pch */,
+				84E0F95B1921F3B900D6CA14 /* main.m */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		84E0F9761921F3B900D6CA14 /* RealmBrowserTests */ = {
+			isa = PBXGroup;
+			children = (
+				84E0F9771921F3B900D6CA14 /* Supporting Files */,
+				E84EB8271A2FC38C00EB780E /* RLMTestObjects.h */,
+				E84EB8281A2FC38C00EB780E /* RLMTestObjects.m */,
+				84E0F97C1921F3B900D6CA14 /* RealmBrowserTests.m */,
+			);
+			path = RealmBrowserTests;
+			sourceTree = "<group>";
+		};
+		84E0F9771921F3B900D6CA14 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				84E0F9791921F3B900D6CA14 /* InfoPlist.strings */,
+				84E0F9781921F3B900D6CA14 /* RealmBrowserTests-Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E83626C41CE35C4300E9493D /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				84A34A4D192E19C5005D6CC4 /* RLMApplicationDelegate.h */,
+				84A34A4E192E19C5005D6CC4 /* RLMApplicationDelegate.m */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		E83626C51CE35C6200E9493D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				2257869C1BD563A00012436A /* RLMEncryptionKeyWindowController.h */,
+				2257869D1BD563A00012436A /* RLMEncryptionKeyWindowController.m */,
+				22DC87E41B98086D0024BA34 /* RLMExportIndicatorWindowController.h */,
+				22DC87E51B98086D0024BA34 /* RLMExportIndicatorWindowController.m */,
+				8474E2BB195452BE00BCA755 /* RLMInstanceTableViewController.h */,
+				8474E2BC195452BE00BCA755 /* RLMInstanceTableViewController.m */,
+				36B669CC1B8B096A00F04AE1 /* RLMObjectLinkSelectionViewController.h */,
+				36B669CD1B8B096A00F04AE1 /* RLMObjectLinkSelectionViewController.m */,
+				84754ABC193CA4600093604E /* RLMRealmBrowserWindowController.h */,
+				84754ABD193CA4600093604E /* RLMRealmBrowserWindowController.m */,
+				8474E2B219544D8000BCA755 /* RLMTypeOutlineViewController.h */,
+				8474E2B319544D8000BCA755 /* RLMTypeOutlineViewController.m */,
+				84446532195891AA00CEEA5B /* RLMViewController.h */,
+				84446533195891AA00CEEA5B /* RLMViewController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		E83626C61CE35C7300E9493D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				84E35A4B196B021B007F0344 /* RLMArrayNavigationState.h */,
+				84E35A4C196B021B007F0344 /* RLMArrayNavigationState.m */,
+				84AA41AE1949CD7700A50F03 /* RLMArrayNode.h */,
+				84AA41AF1949CD7700A50F03 /* RLMArrayNode.m */,
+				84D7990419388E8900FC76A0 /* RLMClassNode.h */,
+				84D7990519388E8900FC76A0 /* RLMClassNode.m */,
+				84D7990619388E8900FC76A0 /* RLMClassProperty.h */,
+				84D7990719388E8900FC76A0 /* RLMClassProperty.m */,
+				840F97BE192B7DCE006B591E /* RLMDocument.h */,
+				840F97BF192B7DCE006B591E /* RLMDocument.m */,
+				84E35A47196AD991007F0344 /* RLMNavigationStack.h */,
+				84E35A48196AD991007F0344 /* RLMNavigationStack.m */,
+				84E35A40196A9F3B007F0344 /* RLMNavigationState.h */,
+				84E35A41196A9F3B007F0344 /* RLMNavigationState.m */,
+				22A55FE919D18BA8009178BC /* RLMObjectNode.h */,
+				22A55FEA19D18BA8009178BC /* RLMObjectNode.m */,
+				3615BDB7196FA8E500E1AE3F /* RLMQueryNavigationState.h */,
+				3615BDB5196FA8BF00E1AE3F /* RLMQueryNavigationState.m */,
+				22013F761CCA35D2000F79B5 /* RLMRealmFileManager.h */,
+				22013F771CCA35D2000F79B5 /* RLMRealmFileManager.m */,
+				84D7990819388E8900FC76A0 /* RLMRealmNode.h */,
+				84D7990919388E8900FC76A0 /* RLMRealmNode.m */,
+				84D7990A19388E8900FC76A0 /* RLMRealmOutlineNode.h */,
+				228D1F851A1CAD660028562A /* RLMResultsNode.h */,
+				228D1F861A1CAD660028562A /* RLMResultsNode.m */,
+				2249D9B019A62EBD00A31104 /* RLMTableColumn.h */,
+				2249D9B119A62EBD00A31104 /* RLMTableColumn.m */,
+				84AA41A71949C99800A50F03 /* RLMTypeNode.h */,
+				84AA41A81949C99800A50F03 /* RLMTypeNode.m */,
+				22068CFA1C6E298C008C0BFA /* NSURLComponents+FragmentItems.h */,
+				22068CFB1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E83626C71CE35C7C00E9493D /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				84925C5F195AD5B000EE27B1 /* NSColor+ByteSizeFactory.h */,
+				84925C60195AD5B000EE27B1 /* NSColor+ByteSizeFactory.m */,
+				22D9367B1BDC64CD0032DFFE /* RLMAlert.h */,
+				22D9367C1BDC64CD0032DFFE /* RLMAlert.m */,
+				22A55FEF19D19842009178BC /* RLMDescriptions.h */,
+				22A55FF019D19842009178BC /* RLMDescriptions.m */,
+				22D3AC8819CC5D710042C1B2 /* RLMModelExporter.h */,
+				22D3AC8919CC5D710042C1B2 /* RLMModelExporter.m */,
+				220D382619B639D700F79496 /* RLMTestDataGenerator.h */,
+				220D382719B639D700F79496 /* RLMTestDataGenerator.m */,
+				844C34E1194859080027E902 /* TestClasses.h */,
+				844C34E2194859080027E902 /* TestClasses.m */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		E83626C81CE35C8200E9493D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				22096B2519911F7300233D77 /* RLMBadgeTableCellView.h */,
+				22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */,
+				22E4737019924CF700EEF7C9 /* RLMBasicTableCellView.h */,
+				22E4737119924CF700EEF7C9 /* RLMBasicTableCellView.m */,
+				22E473771992562400EEF7C9 /* RLMBoolTableCellView.h */,
+				22E473781992562400EEF7C9 /* RLMBoolTableCellView.m */,
+				221322F819954AB100D25737 /* RLMImageTableCellView.h */,
+				221322F919954AB100D25737 /* RLMImageTableCellView.m */,
+				22565D6519C1BCF400C8C8EC /* RLMLinkTableCellView.h */,
+				22565D6619C1BCF400C8C8EC /* RLMLinkTableCellView.m */,
+				22D28EA51993AAAB00497FD3 /* RLMNumberTableCellView.h */,
+				22D28EA61993AAAB00497FD3 /* RLMNumberTableCellView.m */,
+				84925C65195AE9AD00EE27B1 /* RLMSidebarTableCellView.h */,
+				84925C66195AE9AD00EE27B1 /* RLMSidebarTableCellView.m */,
+				221322FB19954B0A00D25737 /* RLMTableCellView.h */,
+				221322FC19954B0A00D25737 /* RLMTableCellView.m */,
+				225443F319E3E6360045996B /* RLMTableHeaderCell.h */,
+				225443F419E3E6360045996B /* RLMTableHeaderCell.m */,
+				8457294B1962E3860076D4F1 /* RLMTableView.h */,
+				8457294C1962E3860076D4F1 /* RLMTableView.m */,
+				225AAFEA19C09E520023B595 /* RLMTextField.h */,
+				225AAFEB19C09E520023B595 /* RLMTextField.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E8413F2C1CE35E8700B2EBCB /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				2257869F1BD564F40012436A /* EncryptionKeyWindow.xib */,
+				84E0F9671921F3B900D6CA14 /* MainMenu.xib */,
+				84E0F9641921F3B900D6CA14 /* RLMDocument.xib */,
+				22DC87E71B9808790024BA34 /* RLMExportIndicatorWindowController.xib */,
+				36B669CA1B8B057F00F04AE1 /* RLMObjectLinkSelectionViewController.xib */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		E876142B1CE35FFD000095CF /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				22D2863A1B6BE6BA0078D07D /* FormatIcon.icns */,
+			);
+			path = Icons;
+			sourceTree = "<group>";
+		};
+		E876142C1CE36003000095CF /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				84E0F95E1921F3B900D6CA14 /* Credits.rtf */,
+			);
+			path = Documents;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		84E0F94B1921F3B900D6CA14 /* RealmBrowser */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 84E0F9801921F3B900D6CA14 /* Build configuration list for PBXNativeTarget "RealmBrowser" */;
+			buildPhases = (
+				6B3C606C9FFDBB259E01EAA7 /* Check Pods Manifest.lock */,
+				84E0F9481921F3B900D6CA14 /* Sources */,
+				84E0F94A1921F3B900D6CA14 /* Resources */,
+				84E0F9491921F3B900D6CA14 /* Frameworks */,
+				22013F711CCA1230000F79B5 /* CopyFiles */,
+				220BCC831CED9A01006432ED /* Embed Frameworks */,
+				D5EE3596D241A5A2DC2DE356 /* Embed Pods Frameworks */,
+				E828CD2F8EE9DBBCC5B1589B /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RealmBrowser;
+			productName = RealmVisualEditor;
+			productReference = 84E0F94C1921F3B900D6CA14 /* Realm Browser.app */;
+			productType = "com.apple.product-type.application";
+		};
+		84E0F96F1921F3B900D6CA14 /* RealmBrowserTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 84E0F9831921F3B900D6CA14 /* Build configuration list for PBXNativeTarget "RealmBrowserTests" */;
+			buildPhases = (
+				84E0F96C1921F3B900D6CA14 /* Sources */,
+				84E0F96D1921F3B900D6CA14 /* Frameworks */,
+				84E0F96E1921F3B900D6CA14 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E84EB8231A2FB94E00EB780E /* PBXTargetDependency */,
+			);
+			name = RealmBrowserTests;
+			productName = RealmVisualEditorTests;
+			productReference = 84E0F9701921F3B900D6CA14 /* RealmBrowserTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		84E0F9441921F3B900D6CA14 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = RLM;
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = "Realm inc.";
+				TargetAttributes = {
+					84E0F94B1921F3B900D6CA14 = {
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
+					};
+					84E0F96F1921F3B900D6CA14 = {
+						TestTargetID = 84E0F94B1921F3B900D6CA14;
+					};
+				};
+			};
+			buildConfigurationList = 84E0F9471921F3B900D6CA14 /* Build configuration list for PBXProject "RealmBrowser" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 84E0F9431921F3B900D6CA14;
+			productRefGroup = 84E0F94D1921F3B900D6CA14 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				84E0F94B1921F3B900D6CA14 /* RealmBrowser */,
+				84E0F96F1921F3B900D6CA14 /* RealmBrowserTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		84E0F94A1921F3B900D6CA14 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84E0F95A1921F3B900D6CA14 /* InfoPlist.strings in Resources */,
+				84E0F96B1921F3B900D6CA14 /* Images.xcassets in Resources */,
+				22D2863B1B6BE6BA0078D07D /* FormatIcon.icns in Resources */,
+				225786A11BD564F40012436A /* EncryptionKeyWindow.xib in Resources */,
+				84E0F9601921F3B900D6CA14 /* Credits.rtf in Resources */,
+				220BCC641CED6134006432ED /* SyncCredentialsView.xib in Resources */,
+				84E0F9661921F3B900D6CA14 /* RLMDocument.xib in Resources */,
+				220BCC7D1CED9928006432ED /* RLMSyncAuthWindowController.xib in Resources */,
+				84E0F9691921F3B900D6CA14 /* MainMenu.xib in Resources */,
+				22DC87E81B9808790024BA34 /* RLMExportIndicatorWindowController.xib in Resources */,
+				36B669CB1B8B057F00F04AE1 /* RLMObjectLinkSelectionViewController.xib in Resources */,
+				220BCC661CED6134006432ED /* SyncWindow.xib in Resources */,
+				220BCC651CED6134006432ED /* SyncServerWindow.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84E0F96E1921F3B900D6CA14 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84E0F97B1921F3B900D6CA14 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6B3C606C9FFDBB259E01EAA7 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D5EE3596D241A5A2DC2DE356 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E828CD2F8EE9DBBCC5B1589B /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		84E0F9481921F3B900D6CA14 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22A55FEB19D18BA8009178BC /* RLMObjectNode.m in Sources */,
+				840F97C0192B7DCE006B591E /* RLMDocument.m in Sources */,
+				84AA41B01949CD7700A50F03 /* RLMArrayNode.m in Sources */,
+				22E4737219924CF700EEF7C9 /* RLMBasicTableCellView.m in Sources */,
+				2257869E1BD563A00012436A /* RLMEncryptionKeyWindowController.m in Sources */,
+				22E473791992562400EEF7C9 /* RLMBoolTableCellView.m in Sources */,
+				8474E2BD195452BE00BCA755 /* RLMInstanceTableViewController.m in Sources */,
+				84754ABE193CA4600093604E /* RLMRealmBrowserWindowController.m in Sources */,
+				225443F519E3E6360045996B /* RLMTableHeaderCell.m in Sources */,
+				22D3AC8A19CC5D710042C1B2 /* RLMModelExporter.m in Sources */,
+				220BCC601CED6134006432ED /* RLMSyncAuthWindowController.m in Sources */,
+				84E0F95C1921F3B900D6CA14 /* main.m in Sources */,
+				220BCC611CED6134006432ED /* RLMSyncWindowController.m in Sources */,
+				84925C61195AD5B000EE27B1 /* NSColor+ByteSizeFactory.m in Sources */,
+				844C34E3194859080027E902 /* TestClasses.m in Sources */,
+				22068CFC1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m in Sources */,
+				84E35A4D196B021B007F0344 /* RLMArrayNavigationState.m in Sources */,
+				84446534195891AA00CEEA5B /* RLMViewController.m in Sources */,
+				225AAFEC19C09E520023B595 /* RLMTextField.m in Sources */,
+				84D7990C19388E8900FC76A0 /* RLMClassProperty.m in Sources */,
+				221322FD19954B0A00D25737 /* RLMTableCellView.m in Sources */,
+				22096B2719911F7300233D77 /* RLMBadgeTableCellView.m in Sources */,
+				228D1F871A1CAD660028562A /* RLMResultsNode.m in Sources */,
+				8457294D1962E3860076D4F1 /* RLMTableView.m in Sources */,
+				22D9367D1BDC64CD0032DFFE /* RLMAlert.m in Sources */,
+				22A55FF119D19842009178BC /* RLMDescriptions.m in Sources */,
+				84E35A49196AD991007F0344 /* RLMNavigationStack.m in Sources */,
+				36B669CE1B8B096A00F04AE1 /* RLMObjectLinkSelectionViewController.m in Sources */,
+				84925C67195AE9AD00EE27B1 /* RLMSidebarTableCellView.m in Sources */,
+				84D7990B19388E8900FC76A0 /* RLMClassNode.m in Sources */,
+				84AA41A91949C99800A50F03 /* RLMTypeNode.m in Sources */,
+				220BCC7B1CED960A006432ED /* RLMSyncCredentialsView.m in Sources */,
+				22D28EA71993AAAB00497FD3 /* RLMNumberTableCellView.m in Sources */,
+				3615BDB6196FA8BF00E1AE3F /* RLMQueryNavigationState.m in Sources */,
+				84A34A4F192E19C5005D6CC4 /* RLMApplicationDelegate.m in Sources */,
+				8474E2B419544D8000BCA755 /* RLMTypeOutlineViewController.m in Sources */,
+				2249D9B219A62EBD00A31104 /* RLMTableColumn.m in Sources */,
+				220D382819B639D700F79496 /* RLMTestDataGenerator.m in Sources */,
+				220BCC5F1CED6134006432ED /* RLMRunSyncServerWindowController.m in Sources */,
+				84E35A42196A9F3B007F0344 /* RLMNavigationState.m in Sources */,
+				84D7990D19388E8900FC76A0 /* RLMRealmNode.m in Sources */,
+				22013F781CCA35D2000F79B5 /* RLMRealmFileManager.m in Sources */,
+				22DC87E61B98086D0024BA34 /* RLMExportIndicatorWindowController.m in Sources */,
+				22565D6719C1BCF400C8C8EC /* RLMLinkTableCellView.m in Sources */,
+				221322FA19954AB100D25737 /* RLMImageTableCellView.m in Sources */,
+				220BCC621CED6134006432ED /* RLMSyncServer.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84E0F96C1921F3B900D6CA14 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E84EB8291A2FC38C00EB780E /* RLMTestObjects.m in Sources */,
+				84E0F97D1921F3B900D6CA14 /* RealmBrowserTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E84EB8231A2FB94E00EB780E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 84E0F94B1921F3B900D6CA14 /* RealmBrowser */;
+			targetProxy = E84EB8221A2FB94E00EB780E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		2257869F1BD564F40012436A /* EncryptionKeyWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				225786A01BD564F40012436A /* Base */,
+			);
+			name = EncryptionKeyWindow.xib;
+			path = .;
+			sourceTree = "<group>";
+		};
+		84E0F9581921F3B900D6CA14 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				84E0F9591921F3B900D6CA14 /* en */,
+			);
+			name = InfoPlist.strings;
+			path = .;
+			sourceTree = "<group>";
+		};
+		84E0F95E1921F3B900D6CA14 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				84E0F95F1921F3B900D6CA14 /* en */,
+			);
+			name = Credits.rtf;
+			path = .;
+			sourceTree = "<group>";
+		};
+		84E0F9641921F3B900D6CA14 /* RLMDocument.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				84E0F9651921F3B900D6CA14 /* Base */,
+			);
+			name = RLMDocument.xib;
+			path = .;
+			sourceTree = "<group>";
+		};
+		84E0F9671921F3B900D6CA14 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				84E0F9681921F3B900D6CA14 /* Base */,
+			);
+			name = MainMenu.xib;
+			path = .;
+			sourceTree = "<group>";
+		};
+		84E0F9791921F3B900D6CA14 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				84E0F97A1921F3B900D6CA14 /* en */,
+			);
+			name = InfoPlist.strings;
+			path = .;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		84E0F97E1921F3B900D6CA14 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		84E0F97F1921F3B900D6CA14 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		84E0F9811921F3B900D6CA14 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BDF6250849D46F6574497388 /* Pods-RealmBrowser.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 50;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "RealmBrowser/Supporting Files/RealmBrowser-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/RealmBrowser/Supporting Files/RealmBrowser-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/RealmBrowser",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/RealmBrowserSync/Binaries",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_CODE_SIGN_FLAGS = "--deep";
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = io.realm.realmbrowser;
+				PRODUCT_NAME = "Realm Browser";
+				PROVISIONING_PROFILE = "";
+				VERSIONING_SYSTEM = "apple-generic";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		84E0F9821921F3B900D6CA14 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CA474127E67BC00EC1BC9986 /* Pods-RealmBrowser.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 50;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "RealmBrowser/Supporting Files/RealmBrowser-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/RealmBrowser/Supporting Files/RealmBrowser-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/RealmBrowser",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/RealmBrowserSync/Binaries",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = io.realm.realmbrowser;
+				PRODUCT_NAME = "Realm Browser";
+				PROVISIONING_PROFILE = "";
+				VERSIONING_SYSTEM = "apple-generic";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		84E0F9841921F3B900D6CA14 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Realm Browser.app/Contents/MacOS/Realm Browser";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = "RealmBrowserTests/Supporting Files/RealmBrowserTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.realm.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = RealmBrowserTests;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		84E0F9851921F3B900D6CA14 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Realm Browser.app/Contents/MacOS/Realm Browser";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = "RealmBrowserTests/Supporting Files/RealmBrowserTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.realm.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = RealmBrowserTests;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		84E0F9471921F3B900D6CA14 /* Build configuration list for PBXProject "RealmBrowser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84E0F97E1921F3B900D6CA14 /* Debug */,
+				84E0F97F1921F3B900D6CA14 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		84E0F9801921F3B900D6CA14 /* Build configuration list for PBXNativeTarget "RealmBrowser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84E0F9811921F3B900D6CA14 /* Debug */,
+				84E0F9821921F3B900D6CA14 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		84E0F9831921F3B900D6CA14 /* Build configuration list for PBXNativeTarget "RealmBrowserTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84E0F9841921F3B900D6CA14 /* Debug */,
+				84E0F9851921F3B900D6CA14 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 84E0F9441921F3B900D6CA14 /* Project object */;
+}

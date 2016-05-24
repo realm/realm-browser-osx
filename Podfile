@@ -8,6 +8,7 @@ target 'RealmBrowser' do
   pod 'AppSandboxFileAccess'
   pod 'Realm', '0.102.0-1'
   pod 'RealmConverter'
+  pod 'RealmSyncServerBinaries'
 end
 
 post_install do |installer|
