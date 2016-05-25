@@ -1,4 +1,4 @@
-source ‘git@github.com:realm/cocoapods-specs-private.git'
+source 'git@github.com:realm/cocoapods-specs-private.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 platform :osx, '10.9'
