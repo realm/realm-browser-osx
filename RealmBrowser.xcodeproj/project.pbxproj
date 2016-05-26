@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		22013F781CCA35D2000F79B5 /* RLMRealmFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 22013F771CCA35D2000F79B5 /* RLMRealmFileManager.m */; };
 		22068CFC1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 22068CFB1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m */; };
 		22096B2719911F7300233D77 /* RLMBadgeTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */; };
 		220A4F131C05A85D00A32787 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 220A4F121C05A85D00A32787 /* libc++.tbd */; };
@@ -112,8 +111,6 @@
 
 /* Begin PBXFileReference section */
 		1B36A032C4471C7ECBA3D0A2 /* Pods_RealmBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RealmBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		22013F761CCA35D2000F79B5 /* RLMRealmFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMRealmFileManager.h; sourceTree = "<group>"; };
-		22013F771CCA35D2000F79B5 /* RLMRealmFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMRealmFileManager.m; sourceTree = "<group>"; };
 		22068CFA1C6E298C008C0BFA /* NSURLComponents+FragmentItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSURLComponents+FragmentItems.h"; path = "../NSURLComponents+FragmentItems.h"; sourceTree = "<group>"; };
 		22068CFB1C6E298C008C0BFA /* NSURLComponents+FragmentItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSURLComponents+FragmentItems.m"; path = "../NSURLComponents+FragmentItems.m"; sourceTree = "<group>"; };
 		22096B2519911F7300233D77 /* RLMBadgeTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMBadgeTableCellView.h; sourceTree = "<group>"; };
@@ -469,8 +466,6 @@
 				22A55FEA19D18BA8009178BC /* RLMObjectNode.m */,
 				3615BDB7196FA8E500E1AE3F /* RLMQueryNavigationState.h */,
 				3615BDB5196FA8BF00E1AE3F /* RLMQueryNavigationState.m */,
-				22013F761CCA35D2000F79B5 /* RLMRealmFileManager.h */,
-				22013F771CCA35D2000F79B5 /* RLMRealmFileManager.m */,
 				84D7990819388E8900FC76A0 /* RLMRealmNode.h */,
 				84D7990919388E8900FC76A0 /* RLMRealmNode.m */,
 				84D7990A19388E8900FC76A0 /* RLMRealmOutlineNode.h */,
@@ -771,7 +766,6 @@
 				220BCC5F1CED6134006432ED /* RLMRunSyncServerWindowController.m in Sources */,
 				84E35A42196A9F3B007F0344 /* RLMNavigationState.m in Sources */,
 				84D7990D19388E8900FC76A0 /* RLMRealmNode.m in Sources */,
-				22013F781CCA35D2000F79B5 /* RLMRealmFileManager.m in Sources */,
 				22DC87E61B98086D0024BA34 /* RLMExportIndicatorWindowController.m in Sources */,
 				22565D6719C1BCF400C8C8EC /* RLMLinkTableCellView.m in Sources */,
 				221322FA19954AB100D25737 /* RLMImageTableCellView.m in Sources */,
