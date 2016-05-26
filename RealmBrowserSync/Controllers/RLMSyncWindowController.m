@@ -24,7 +24,6 @@ NSString * const kSyncServerURLKey = @"SyncServerURL";
 NSString * const kSyncSignedUserTokenKey = @"SyncSignedUserToken";
 
 #import "RLMSyncWindowController.h"
-#import "RLMRealmFileManager.h"
 
 @interface RLMSyncWindowController () <NSTextFieldDelegate>
 

@@ -789,8 +789,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
         }
         
         [RLMRealmConfiguration setDefaultConfiguration:configuration];
-        RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:nil];
-        //[[RLMRealmFileManager sharedManager] addRealm:realm];
+        [RLMRealm realmWithConfiguration:configuration error:nil];
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
