@@ -20,4 +20,5 @@
 
 @interface RLMApplicationDelegate : NSObject <NSApplicationDelegate>
 
+
 @end
