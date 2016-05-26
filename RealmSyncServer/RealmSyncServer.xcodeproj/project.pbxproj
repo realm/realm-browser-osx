@@ -9,11 +9,13 @@
 /* Begin PBXBuildFile section */
 		BC6981206064E47104CB7249 /* Pods_RealmSyncServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F9285A27E420F8A597AFCB8 /* Pods_RealmSyncServer.framework */; };
 		C22514331CF5A98D007E64EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514321CF5A98D007E64EB /* AppDelegate.swift */; };
-		C22514351CF5A98D007E64EB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514341CF5A98D007E64EB /* ViewController.swift */; };
+		C22514351CF5A98D007E64EB /* ServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514341CF5A98D007E64EB /* ServerViewController.swift */; };
 		C22514371CF5A98D007E64EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C22514361CF5A98D007E64EB /* Assets.xcassets */; };
 		C22514451CF5A98D007E64EB /* RealmSyncServerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514441CF5A98D007E64EB /* RealmSyncServerTests.swift */; };
 		C22514501CF5A98D007E64EB /* RealmSyncServerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C225144F1CF5A98D007E64EB /* RealmSyncServerUITests.swift */; };
 		C22514601CF5AA62007E64EB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C225145E1CF5AA62007E64EB /* Main.storyboard */; };
+		C22514641CF5BCA7007E64EB /* SyncServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514631CF5BCA7007E64EB /* SyncServer.swift */; };
+		C22514681CF74F5A007E64EB /* NSFileManager+CommonURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514671CF74F5A007E64EB /* NSFileManager+CommonURLs.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +40,7 @@
 		8F9285A27E420F8A597AFCB8 /* Pods_RealmSyncServer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RealmSyncServer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C225142F1CF5A98D007E64EB /* Realm Sync Server.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Realm Sync Server.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C22514321CF5A98D007E64EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C22514341CF5A98D007E64EB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C22514341CF5A98D007E64EB /* ServerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerViewController.swift; sourceTree = "<group>"; };
 		C22514361CF5A98D007E64EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C225143B1CF5A98D007E64EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C22514401CF5A98D007E64EB /* RealmSyncServerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RealmSyncServerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -48,6 +50,8 @@
 		C225144F1CF5A98D007E64EB /* RealmSyncServerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmSyncServerUITests.swift; sourceTree = "<group>"; };
 		C22514511CF5A98D007E64EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C225145F1CF5AA62007E64EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C22514631CF5BCA7007E64EB /* SyncServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SyncServer.swift; path = Library/SyncServer.swift; sourceTree = "<group>"; };
+		C22514671CF74F5A007E64EB /* NSFileManager+CommonURLs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSFileManager+CommonURLs.swift"; path = "Library/Extensions/NSFileManager+CommonURLs.swift"; sourceTree = "<group>"; };
 		FBFE0022B396C819784C8F48 /* Pods-RealmSyncServer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmSyncServer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-RealmSyncServer/Pods-RealmSyncServer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -112,8 +116,9 @@
 		C22514311CF5A98D007E64EB /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				C22514321CF5A98D007E64EB /* AppDelegate.swift */,
-				C22514341CF5A98D007E64EB /* ViewController.swift */,
+				C22514611CF5BC3E007E64EB /* Application */,
+				C22514621CF5BC4A007E64EB /* Library */,
+				C22514651CF5D28D007E64EB /* Controllers */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -144,6 +149,39 @@
 				C225143B1CF5A98D007E64EB /* Info.plist */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		C22514611CF5BC3E007E64EB /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				C22514321CF5A98D007E64EB /* AppDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		C22514621CF5BC4A007E64EB /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				C22514661CF74EF2007E64EB /* Extensions */,
+				C22514631CF5BCA7007E64EB /* SyncServer.swift */,
+			);
+			name = Library;
+			sourceTree = "<group>";
+		};
+		C22514651CF5D28D007E64EB /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C22514341CF5A98D007E64EB /* ServerViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		C22514661CF74EF2007E64EB /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C22514671CF74F5A007E64EB /* NSFileManager+CommonURLs.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 		D6862C982541E445A6A1E3E1 /* Frameworks */ = {
@@ -336,8 +374,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C22514351CF5A98D007E64EB /* ViewController.swift in Sources */,
+				C22514351CF5A98D007E64EB /* ServerViewController.swift in Sources */,
 				C22514331CF5A98D007E64EB /* AppDelegate.swift in Sources */,
+				C22514641CF5BCA7007E64EB /* SyncServer.swift in Sources */,
+				C22514681CF74F5A007E64EB /* NSFileManager+CommonURLs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
