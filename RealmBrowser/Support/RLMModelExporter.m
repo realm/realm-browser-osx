@@ -356,7 +356,7 @@
 
 + (NSArray *)swiftModelsOfSchemas:(NSArray *)schemas withFileName:(NSString *)fileName
 {
-    NSMutableString *contents = [NSMutableString stringWithString:@"import RealmSwift\n\n"];
+    NSMutableString *contents = [NSMutableString stringWithString:@"import Foundation\nimport RealmSwift\n\n"];
 
     for (RLMObjectSchema *schema in schemas) {
         [contents appendFormat:@"class %@: Object {\n", schema.className];
@@ -405,13 +405,13 @@
     if (property.optional) {
         switch (property.type) {
             case RLMPropertyTypeBool:
-                return namedProperty(@"let %@ = RealmOptional<Bool>())");
+                return namedProperty(@"let %@ = RealmOptional<Bool>()");
             case RLMPropertyTypeInt:
-                return namedProperty(@"let %@ = RealmOptional<Int>())");
+                return namedProperty(@"let %@ = RealmOptional<Int>()");
             case RLMPropertyTypeFloat:
-                return namedProperty(@"let %@ = RealmOptional<Float>())");
+                return namedProperty(@"let %@ = RealmOptional<Float>()");
             case RLMPropertyTypeDouble:
-                return namedProperty(@"let %@ = RealmOptional<Double>())");
+                return namedProperty(@"let %@ = RealmOptional<Double>()");
             case RLMPropertyTypeString:
                 return namedProperty(@"dynamic var %@: String?");
             case RLMPropertyTypeData:
