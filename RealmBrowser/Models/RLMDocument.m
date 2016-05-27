@@ -25,10 +25,12 @@
 #import "RLMRealmBrowserWindowController.h"
 #import "RLMAlert.h"
 
+#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
 #import "NSURLComponents+FragmentItems.h"
 
 @interface RLMDocument ()
 
+@property (nonatomic, strong) NSURL *securityScopedURL;
 @property (nonatomic, assign, readwrite) BOOL potentiallyEncrypted;
 @property (nonatomic, assign, readwrite) BOOL potentiallySync;
 
@@ -65,7 +67,7 @@
         //for the purpose of ensuring one sync agent per Realm file,
         //make a tmp copy of the Realm file and refer to that one for now
         if (showSyncRealmPrompt && !disableCopy) {
-            NSString *tempFilePath = NSTemporaryDirectory();
+            NSString *tempFilePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
             
             NSString *folderName = [NSString stringWithFormat:@"io.realm.sync.%lu", (unsigned long)[absoluteURL.absoluteString hash]];
             tempFilePath = [tempFilePath stringByAppendingPathComponent:folderName];
@@ -89,6 +91,14 @@
         if (([[NSFileManager defaultManager] fileExistsAtPath:folderURL.path isDirectory:&isDir] && isDir == NO)) {
             folderURL = [folderURL URLByDeletingLastPathComponent];
         }
+        
+        AppSandboxFileAccess *sandBoxAccess = [AppSandboxFileAccess fileAccess];
+        [sandBoxAccess requestAccessPermissionsForFileURL:folderURL persistPermission:YES withBlock:^(NSURL *securityScopedFileURL, NSData *bookmarkData){
+            self.securityScopedURL = securityScopedFileURL;
+        }];
+        
+        if (self.securityScopedURL == nil)
+            return nil;
         
         NSArray *fileNameComponents = [lastComponent componentsSeparatedByString:@"."];
         NSString *realmName = [fileNameComponents firstObject];
@@ -142,14 +152,11 @@
             
             if (didConnect || error.code == 2) {
                 if (showSyncRealmPrompt == NO && error) {
-                    RLMConfirmResults results = [RLMAlert showRealmOptionsConfirmationDialogWithFileName:realmName];
-                    if (results == RLMConfirmResultsCancel) {
+                    if (![RLMAlert showEncryptionConfirmationDialogWithFileName:realmName]) {
                         return;
                     }
                     
-                    if (results == RLMConfirmResultsEncryptionKey) {
-                        ws.potentiallyEncrypted = YES;
-                    }
+                    ws.potentiallyEncrypted = YES;
                 }
                 
                 success = YES;
@@ -178,20 +185,18 @@
 }
 
 - (void)dealloc
-{
-//    [self.changeNotificationToken stop];
-//    
-//    //In certain instances, RLMRealm's C++ destructor method will attempt to clean up
-//    //specific auxiliary files belonging to this realm file.
-//    //If the destructor call occurs after the access to the sandbox resource has been released here,
-//    //and it attempts to delete any files, RLMRealm will throw an exception.
-//    //Mac OS X apps only have a finite number of open sandbox resources at any given time, so while it's not necessary
-//    //to release them straight away, it is still good practice to do so eventually.
-//    //As such, this will release the handle a minute, after closing the document.
-//    NSURL *scopedURL = self.securityScopedURL;
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(60 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [scopedURL stopAccessingSecurityScopedResource];
-//    });
+{    
+    //In certain instances, RLMRealm's C++ destructor method will attempt to clean up
+    //specific auxiliary files belonging to this realm file.
+    //If the destructor call occurs after the access to the sandbox resource has been released here,
+    //and it attempts to delete any files, RLMRealm will throw an exception.
+    //Mac OS X apps only have a finite number of open sandbox resources at any given time, so while it's not necessary
+    //to release them straight away, it is still good practice to do so eventually.
+    //As such, this will release the handle a minute, after closing the document.
+    NSURL *scopedURL = self.securityScopedURL;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(60 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [scopedURL stopAccessingSecurityScopedResource];
+    });
 }
 
 #pragma mark - Public methods - NSDocument overrides - Creating and Managing Window Controllers

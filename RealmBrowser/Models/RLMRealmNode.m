@@ -22,7 +22,6 @@
 @import Realm.Private;
 @import Realm.Dynamic;
 
-#import "RLMRealmFileManager.h"
 #import "RLMSidebarTableCellView.h"
 #import "NSColor+ByteSizeFactory.h"
 

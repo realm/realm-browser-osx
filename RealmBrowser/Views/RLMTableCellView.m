@@ -59,9 +59,4 @@
     return size;
 }
 
-- (RLMTextField *)realmTextField
-{
-    return (RLMTextField *)self.textField;
-}
-
 @end

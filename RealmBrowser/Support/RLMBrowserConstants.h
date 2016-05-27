@@ -16,19 +16,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#import "RLMTextField.h"
+#import <Foundation/Foundation.h>
 
-@implementation RLMTextField
+extern const NSUInteger kTopTipDelay;
+extern const NSUInteger kMaxFilesPerCategory;
+extern const NSInteger kMaxNumberOfFilesAtOnce;
+extern const CGFloat kMenuImageSize ;
 
--(void)cancelOperation:(id)sender
-{
-    [self abortEditing];
-    [self.realmDelegate textFieldCancelledEditing:self];
-}
-
--(id<RLMTextFieldDelegate>)realmDelegate
-{
-    return (id<RLMTextFieldDelegate>)self.delegate;
-}
-
-@end
+extern NSString * const kRealmFileExtension;
+extern NSString * const kDeveloperFolder;
+extern NSString * const kSimulatorFolder;
+extern NSString * const kDesktopFolder;
+extern NSString * const kDownloadFolder;
+extern NSString * const kDocumentsFolder;

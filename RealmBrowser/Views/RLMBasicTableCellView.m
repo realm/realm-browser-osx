@@ -32,6 +32,11 @@
     textField.translatesAutoresizingMaskIntoConstraints = NO;
     textField.bordered = NO;
     textField.drawsBackground = NO;
+    textField.cell.sendsActionOnEndEditing = YES;
+    
+    if ([NSFont respondsToSelector:@selector(monospacedDigitSystemFontOfSize:weight:)]) {
+        textField.font = [NSFont monospacedDigitSystemFontOfSize:12.0 weight:NSFontWeightRegular];
+    }
     
     if ([textField respondsToSelector:@selector(setUsesSingleLineMode:)]) {
         textField.usesSingleLineMode = YES;
