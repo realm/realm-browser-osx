@@ -67,7 +67,7 @@
         //for the purpose of ensuring one sync agent per Realm file,
         //make a tmp copy of the Realm file and refer to that one for now
         if (showSyncRealmPrompt && !disableCopy) {
-            NSString *tempFilePath = NSTemporaryDirectory();
+            NSString *tempFilePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
             
             NSString *folderName = [NSString stringWithFormat:@"io.realm.sync.%lu", (unsigned long)[absoluteURL.absoluteString hash]];
             tempFilePath = [tempFilePath stringByAppendingPathComponent:folderName];
