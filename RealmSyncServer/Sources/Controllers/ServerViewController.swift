@@ -20,7 +20,7 @@ class ServerViewController: NSViewController {
     @IBOutlet weak var startServerButton: NSButton!
     @IBOutlet weak var stopServerButton: NSButton!
     
-    @IBOutlet weak var logOutputTextView: NSTextField!
+    @IBOutlet var logOutputTextView: NSTextView!
     
     let defaultHost = "127.0.0.1"
     let defaultPort = 7800
@@ -52,6 +52,9 @@ class ServerViewController: NSViewController {
         realmDirectoryPathTextField.placeholderString = defaultRealmDirectoryPath
         publicKeyPathTextField.placeholderString = "(Optional)"
         
+        logOutputTextView.font = NSFont(name: "Menlo", size: 11)
+        logOutputTextView.textContainerInset = NSSize(width: 4, height: 6)
+        
         server.delegate = self
         
         updateUI()
@@ -64,6 +67,11 @@ class ServerViewController: NSViewController {
         
         startServerButton.enabled = !server.running
         stopServerButton.enabled = server.running
+    }
+    
+    private func outputLog(message: String) {
+        logOutputTextView.string = logOutputTextView.string?.stringByAppendingString(message)
+        logOutputTextView.scrollToEndOfDocument(nil)
     }
 
 }
@@ -103,7 +111,7 @@ extension ServerViewController {
     }
     
     @IBAction func startServer(sender: AnyObject?) {
-        logOutputTextView.stringValue = ""
+        clearLog()
         
         server.host = host
         server.port = port
@@ -124,6 +132,10 @@ extension ServerViewController {
         updateUI()
     }
     
+    @IBAction func clearLog(sender: AnyObject? = nil) {
+        logOutputTextView.string = ""
+    }
+    
 }
 
 extension ServerViewController: SyncServerDelegate {
@@ -133,7 +145,7 @@ extension ServerViewController: SyncServerDelegate {
     }
     
     func serverDidOutputLog(server: SyncServer, message: String) {
-        logOutputTextView.stringValue = logOutputTextView.stringValue.stringByAppendingString(message)
+        outputLog(message)
     }
     
 }
