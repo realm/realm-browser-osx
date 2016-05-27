@@ -54,8 +54,6 @@
 @property (nonatomic, strong) RLMRunSyncServerWindowController *runSyncWindowController;
 @property (nonatomic, strong) RLMSyncAuthWindowController *syncAuthWindowController;
 
-- (void)configureMainMenuWithSyncItems;
-
 @end
 
 @implementation RLMApplicationDelegate
