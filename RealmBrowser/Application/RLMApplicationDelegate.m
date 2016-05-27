@@ -25,7 +25,6 @@
 #import "TestClasses.h"
 
 #import <AppSandboxFileAccess/AppSandboxFileAccess.h>
-#import <RealmConverter/RealmConverter.h>
 
 @interface RLMApplicationDelegate ()
 
