@@ -7,9 +7,8 @@
 //
 
 import Foundation
-import Cocoa
 
-enum ServerLogLevel: Int {
+enum SyncServerLogLevel: Int {
     case Nothing
     case Normal
     case Everything
@@ -30,17 +29,26 @@ class SyncServer {
     var port: Int!
     var realmDirectoryPath: String!
     var publicKeyPath: String?
-    var logLevel: ServerLogLevel = .Everything
+    var logLevel: SyncServerLogLevel = .Everything
     
     var running: Bool {
-        return serverTask?.running ?? false
+        return serverTask != nil
     }
     
     private var serverTask: NSTask?
+    private let serverTaskExecutableName = "realm-server-dbg-noinst"
     
-    func start() {
+    deinit {
+        stop()
+    }
+    
+    func start() throws {
         guard !running else {
             return
+        }
+        
+        if !NSFileManager.defaultManager().fileExistsAtPath(realmDirectoryPath) {
+            try NSFileManager.defaultManager().createDirectoryAtPath(realmDirectoryPath, withIntermediateDirectories: true, attributes: nil)
         }
         
         let outputPipe = NSPipe()
@@ -49,25 +57,12 @@ class SyncServer {
         let task = NSTask()
         
         task.launchPath = serverTaskLaunchPath()
-        task.environment = serverTaskEnvironment()
         task.arguments = serverTaskArguments()
         task.standardOutput = outputPipe
         task.standardError = errorPipe
         
-        if !NSFileManager.defaultManager().fileExistsAtPath(realmDirectoryPath) {
-            do {
-                try NSFileManager.defaultManager().createDirectoryAtPath(realmDirectoryPath, withIntermediateDirectories: true, attributes: nil)
-            } catch let error as NSError {
-                let alert = NSAlert(error: error)
-                alert.informativeText = realmDirectoryPath
-                alert.runModal()
-            }
-        }
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(taskDidTerminate), name: NSTaskDidTerminateNotification, object: task)
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(fileHandleDataAvailable), name: NSFileHandleDataAvailableNotification, object: outputPipe.fileHandleForReading)
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(fileHandleDataAvailable), name: NSFileHandleDataAvailableNotification, object: errorPipe.fileHandleForReading)
         
         outputPipe.fileHandleForReading.waitForDataInBackgroundAndNotify()
@@ -92,13 +87,7 @@ class SyncServer {
     }
     
     private func serverTaskLaunchPath() -> String {
-        let path = NSBundle.mainBundle().pathForResource("realm-server-dbg-noinst", ofType: nil)!
-        
-        return path
-    }
-    
-    private func serverTaskEnvironment() -> [String: String]? {
-        return ["DYLD_LIBRARY_PATH": NSBundle.mainBundle().resourcePath!]
+        return NSBundle.mainBundle().pathForResource(serverTaskExecutableName, ofType: nil)!
     }
     
     private func serverTaskArguments() -> [String] {
@@ -122,9 +111,11 @@ class SyncServer {
     }
     
     private dynamic func taskDidTerminate(notification: NSNotification) {
-        if let data = (serverTask?.standardError as? NSPipe)?.fileHandleForReading.readDataToEndOfFile() {
+        if let delegate = delegate, let fileHandle = (serverTask?.standardError as? NSPipe)?.fileHandleForReading {
+            let data = fileHandle.readDataToEndOfFile()
+            
             if let message = NSString(data: data, encoding: NSUTF8StringEncoding) as? String where data.length > 0 {
-                delegate?.serverDidOutputLog(self, message: message)
+                delegate.serverDidOutputLog(self, message: message)
             }
         }
         
@@ -134,14 +125,14 @@ class SyncServer {
     }
     
     private dynamic func fileHandleDataAvailable(notification: NSNotification) {
-        guard let fileHandle = notification.object as? NSFileHandle else {
+        guard let delegate = delegate, let fileHandle = notification.object as? NSFileHandle else {
             return
         }
         
         let data = fileHandle.availableData
         
         if let message = NSString(data: data, encoding: NSUTF8StringEncoding) as? String where data.length > 0 {
-            delegate?.serverDidOutputLog(self, message: message)
+            delegate.serverDidOutputLog(self, message: message)
         }
         
         fileHandle.waitForDataInBackgroundAndNotify()

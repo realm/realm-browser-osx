@@ -747,6 +747,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="selectRealmDirectoryPath:" target="XfG-lQ-9wD" id="Lem-aF-Z8o"/>
+                                </connections>
                             </button>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f2y-kA-Noi">
                                 <rect key="frame" x="129" y="413" width="448" height="22"/>
@@ -770,6 +773,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="selectPublicKeyPath:" target="XfG-lQ-9wD" id="aSw-fH-LDh"/>
+                                </connections>
                             </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="egf-0Q-xSq">
                                 <rect key="frame" x="127" y="385" width="134" height="18"/>
@@ -824,6 +830,8 @@
                         <outlet property="portTextField" destination="nfT-g2-DDw" id="L9c-27-AeX"/>
                         <outlet property="publicKeyPathTextField" destination="f2y-kA-Noi" id="xOL-GW-Ld2"/>
                         <outlet property="realmDirectoryPathTextField" destination="c7x-nf-NWc" id="YE4-5m-FxE"/>
+                        <outlet property="selectPublicKeyPathButton" destination="Zd2-at-N5k" id="kvM-rN-er4"/>
+                        <outlet property="selectRealmDirectoryPathButton" destination="aDX-oF-wZX" id="8TH-Wd-Xc0"/>
                         <outlet property="startServerButton" destination="Asm-0I-OSA" id="bWq-GL-3bH"/>
                         <outlet property="stopServerButton" destination="0Yy-Da-qSX" id="rmt-fy-v9w"/>
                     </connections>

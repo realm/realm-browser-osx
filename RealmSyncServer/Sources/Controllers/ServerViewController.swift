@@ -13,7 +13,9 @@ class ServerViewController: NSViewController {
     @IBOutlet weak var hostTextField: NSTextField!
     @IBOutlet weak var portTextField: NSTextField!
     @IBOutlet weak var realmDirectoryPathTextField: NSTextField!
+    @IBOutlet weak var selectRealmDirectoryPathButton: NSButton!
     @IBOutlet weak var publicKeyPathTextField: NSTextField!
+    @IBOutlet weak var selectPublicKeyPathButton: NSButton!
     
     @IBOutlet weak var startServerButton: NSButton!
     @IBOutlet weak var stopServerButton: NSButton!
@@ -56,7 +58,7 @@ class ServerViewController: NSViewController {
     }
     
     private func updateUI() {
-        for control in [hostTextField, portTextField, realmDirectoryPathTextField, publicKeyPathTextField] {
+        for control in [hostTextField, portTextField, realmDirectoryPathTextField, selectRealmDirectoryPathButton, publicKeyPathTextField, selectPublicKeyPathButton] {
             control.enabled = !server.running
         }
         
@@ -68,6 +70,38 @@ class ServerViewController: NSViewController {
 
 extension ServerViewController {
     
+    @IBAction func selectRealmDirectoryPath(sender: AnyObject?) {
+        let openPanel = NSOpenPanel()
+        
+        openPanel.canChooseFiles = false
+        openPanel.canChooseDirectories = true
+        openPanel.canCreateDirectories = true
+        openPanel.message = "Select a directory where Realm files will be stored"
+        openPanel.prompt = "Select"
+        
+        openPanel.beginSheetModalForWindow(view.window!) { result in
+            if let path = openPanel.URL?.path where result == NSFileHandlingPanelOKButton {
+                self.realmDirectoryPathTextField.stringValue = path
+            }
+        }
+    }
+    
+    @IBAction func selectPublicKeyPath(sender: AnyObject?) {
+        let openPanel = NSOpenPanel()
+        
+        openPanel.canChooseFiles = true
+        openPanel.allowedFileTypes = ["pem"]
+        openPanel.canChooseDirectories = false
+        openPanel.message = "Select a public key file"
+        openPanel.prompt = "Select"
+        
+        openPanel.beginSheetModalForWindow(view.window!) { result in
+            if let path = openPanel.URL?.path where result == NSFileHandlingPanelOKButton {
+                self.publicKeyPathTextField.stringValue = path
+            }
+        }
+    }
+    
     @IBAction func startServer(sender: AnyObject?) {
         logOutputTextView.stringValue = ""
         
@@ -76,7 +110,12 @@ extension ServerViewController {
         server.realmDirectoryPath = realmDirectoryPath
         server.publicKeyPath = publicKeyPath
         
-        server.start()
+        do {
+            try server.start()
+        } catch let error as NSError {
+            NSAlert(error: error).runModal()
+        }
+        
         updateUI()
     }
     

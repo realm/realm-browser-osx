@@ -9,13 +9,13 @@
 /* Begin PBXBuildFile section */
 		BC6981206064E47104CB7249 /* Pods_RealmSyncServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F9285A27E420F8A597AFCB8 /* Pods_RealmSyncServer.framework */; };
 		C22514331CF5A98D007E64EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514321CF5A98D007E64EB /* AppDelegate.swift */; };
-		C22514351CF5A98D007E64EB /* ServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514341CF5A98D007E64EB /* ServerViewController.swift */; };
 		C22514371CF5A98D007E64EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C22514361CF5A98D007E64EB /* Assets.xcassets */; };
 		C22514451CF5A98D007E64EB /* RealmSyncServerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514441CF5A98D007E64EB /* RealmSyncServerTests.swift */; };
 		C22514501CF5A98D007E64EB /* RealmSyncServerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C225144F1CF5A98D007E64EB /* RealmSyncServerUITests.swift */; };
 		C22514601CF5AA62007E64EB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C225145E1CF5AA62007E64EB /* Main.storyboard */; };
 		C22514641CF5BCA7007E64EB /* SyncServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514631CF5BCA7007E64EB /* SyncServer.swift */; };
 		C22514681CF74F5A007E64EB /* NSFileManager+CommonURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514671CF74F5A007E64EB /* NSFileManager+CommonURLs.swift */; };
+		C22514691CF87853007E64EB /* ServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514341CF5A98D007E64EB /* ServerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -374,10 +374,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C22514351CF5A98D007E64EB /* ServerViewController.swift in Sources */,
 				C22514331CF5A98D007E64EB /* AppDelegate.swift in Sources */,
 				C22514641CF5BCA7007E64EB /* SyncServer.swift in Sources */,
 				C22514681CF74F5A007E64EB /* NSFileManager+CommonURLs.swift in Sources */,
+				C22514691CF87853007E64EB /* ServerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
