@@ -54,6 +54,7 @@ class ServerViewController: NSViewController {
         
         logOutputTextView.font = NSFont(name: "Menlo", size: 11)
         logOutputTextView.textContainerInset = NSSize(width: 4, height: 6)
+        logOutputTextView.delegate = self
         
         server.delegate = self
         
@@ -146,6 +147,17 @@ extension ServerViewController: SyncServerDelegate {
     
     func serverDidOutputLog(server: SyncServer, message: String) {
         outputLog(message)
+    }
+    
+}
+
+extension ServerViewController: NSTextViewDelegate {
+    
+    func textView(view: NSTextView, menu: NSMenu, forEvent event: NSEvent, atIndex charIndex: Int) -> NSMenu? {
+        menu.insertItem(NSMenuItem.separatorItem(), atIndex: 0)
+        menu.insertItem(NSMenuItem(title: "Clear log", action: #selector(clearLog), keyEquivalent: ""), atIndex: 0)
+        
+        return menu
     }
     
 }

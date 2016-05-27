@@ -149,12 +149,6 @@
                                                 <action selector="paste:" target="Ady-hI-5gd" id="UvS-8e-Qdg"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Paste and Match Style" keyEquivalent="V" id="WeT-3V-zwk">
-                                            <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
-                                            <connections>
-                                                <action selector="pasteAsPlainText:" target="Ady-hI-5gd" id="cEh-KX-wJQ"/>
-                                            </connections>
-                                        </menuItem>
                                         <menuItem title="Delete" id="pa3-QI-u2k">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
@@ -167,6 +161,12 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="uyl-h8-XO2"/>
+                                        <menuItem title="Clear log" keyEquivalent="k" id="Oeq-cb-ul8">
+                                            <connections>
+                                                <action selector="clearLog:" target="Ady-hI-5gd" id="qpz-dL-2yg"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="8Vn-yt-boX"/>
                                         <menuItem title="Find" id="4EN-yA-p0u">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Find" id="1b7-l0-nxx">
@@ -791,12 +791,12 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="144" id="1Fv-8O-a3w"/>
                                 </constraints>
-                                <popUpButtonCell key="cell" type="push" title="0 - Nothing" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="pP3-jQ-4OF">
+                                <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="pP3-jQ-4OF">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
                                     <menu key="menu" id="QUy-dF-Yco">
                                         <items>
-                                            <menuItem title="0 - Nothing" state="on" id="lSq-Xh-d78"/>
+                                            <menuItem title="0 - Nothing" id="lSq-Xh-d78"/>
                                             <menuItem title="1 - Normal" id="wOe-Qy-prE">
                                                 <modifierMask key="keyEquivalentModifierMask"/>
                                             </menuItem>
