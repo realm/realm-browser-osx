@@ -21,7 +21,6 @@
 @import RealmConverter;
 
 #import "RLMBrowserConstants.h"
-
 #import "RLMApplicationDelegate.h"
 #import "RLMTestDataGenerator.h"
 #import "TestClasses.h"
@@ -65,7 +64,7 @@
 {
     [[NSUserDefaults standardUserDefaults] setObject:@(kTopTipDelay) forKey:@"NSInitialToolTipDelay"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
+
     if (!self.didLoadFile && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
         [NSApp sendAction:self.openMenuItem.action to:self.openMenuItem.target from:self];
 

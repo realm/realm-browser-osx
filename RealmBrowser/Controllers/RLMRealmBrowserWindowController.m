@@ -194,7 +194,6 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
             [fileAccess requestAccessPermissionsForFileURL:panel.URL persistPermission:YES withBlock:^(NSURL *securelyScopedURL, NSData *bookmarkData) {
                 [securelyScopedURL startAccessingSecurityScopedResource];
                 [self exportAndCompactCopyOfRealmFileAtURL:fileURL];
-
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [securelyScopedURL stopAccessingSecurityScopedResource];
                 }); 
