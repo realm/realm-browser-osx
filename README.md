@@ -28,5 +28,9 @@ The main design goals of Realm Browser are:
 ## Contributing
 See [CONTRIBUTING.md](CONTRIBUTING.md) for more details!
 
+This project adheres to the [Contributor Covenant Code of Conduct](https://realm.io/conduct).
+By participating, you are expected to uphold this code. Please report
+unacceptable behavior to [info@realm.io](mailto:info@realm.io).
+
 ## License
 The source code to Realm Browser is licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
