@@ -18,11 +18,8 @@
 
 @import Cocoa;
 
-@class RLMTextField;
 @interface RLMTableCellView : NSTableCellView
 
 + (instancetype)viewWithIdentifier:(NSString *)identifier;
-
-@property (nonatomic, readonly) RLMTextField *realmTextField;
 
 @end
