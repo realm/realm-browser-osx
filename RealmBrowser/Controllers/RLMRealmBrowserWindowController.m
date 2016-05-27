@@ -174,8 +174,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
 - (IBAction)saveSwiftModels:(id)sender
 {
-    NSArray *objectSchemas = self.modelDocument.presentedRealm.realm.schema.objectSchema;
-    [RLMModelExporter saveModelsForSchemas:objectSchemas inLanguage:RLMModelExporterLanguageSwift];
+    [self saveModelsForLanguage:RLMModelExporterLanguageSwift];
 }
 
 - (IBAction)saveCopy:(id)sender
