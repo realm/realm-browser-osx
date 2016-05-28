@@ -17,6 +17,7 @@
 		C22514681CF74F5A007E64EB /* NSFileManager+CommonURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514671CF74F5A007E64EB /* NSFileManager+CommonURLs.swift */; };
 		C22514691CF87853007E64EB /* ServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514341CF5A98D007E64EB /* ServerViewController.swift */; };
 		C225146D1CF88C8D007E64EB /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C225146C1CF88C8D007E64EB /* ColorView.swift */; };
+		C22514701CF99EDD007E64EB /* GenerateCredentialsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C225146E1CF99C74007E64EB /* GenerateCredentialsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		C22514631CF5BCA7007E64EB /* SyncServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SyncServer.swift; path = Library/SyncServer.swift; sourceTree = "<group>"; };
 		C22514671CF74F5A007E64EB /* NSFileManager+CommonURLs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSFileManager+CommonURLs.swift"; path = "Library/Extensions/NSFileManager+CommonURLs.swift"; sourceTree = "<group>"; };
 		C225146C1CF88C8D007E64EB /* ColorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorView.swift; path = Views/ColorView.swift; sourceTree = "<group>"; };
+		C225146E1CF99C74007E64EB /* GenerateCredentialsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenerateCredentialsViewController.swift; sourceTree = "<group>"; };
 		FBFE0022B396C819784C8F48 /* Pods-RealmSyncServer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmSyncServer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-RealmSyncServer/Pods-RealmSyncServer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -175,6 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				C22514341CF5A98D007E64EB /* ServerViewController.swift */,
+				C225146E1CF99C74007E64EB /* GenerateCredentialsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -387,6 +390,7 @@
 			files = (
 				C22514331CF5A98D007E64EB /* AppDelegate.swift in Sources */,
 				C22514641CF5BCA7007E64EB /* SyncServer.swift in Sources */,
+				C22514701CF99EDD007E64EB /* GenerateCredentialsViewController.swift in Sources */,
 				C22514681CF74F5A007E64EB /* NSFileManager+CommonURLs.swift in Sources */,
 				C22514691CF87853007E64EB /* ServerViewController.swift in Sources */,
 				C225146D1CF88C8D007E64EB /* ColorView.swift in Sources */,
