@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Cocoa
 
 enum SyncServerLogLevel: Int {
     case Nothing
@@ -61,9 +62,10 @@ class SyncServer {
         task.standardOutput = outputPipe
         task.standardError = errorPipe
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(taskDidTerminate), name: NSTaskDidTerminateNotification, object: task)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(fileHandleDataAvailable), name: NSFileHandleDataAvailableNotification, object: outputPipe.fileHandleForReading)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(fileHandleDataAvailable), name: NSFileHandleDataAvailableNotification, object: errorPipe.fileHandleForReading)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(taskDidTerminate), name: NSTaskDidTerminateNotification, object: task)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(stop), name: NSApplicationWillTerminateNotification, object: nil)
         
         outputPipe.fileHandleForReading.waitForDataInBackgroundAndNotify()
         errorPipe.fileHandleForReading.waitForDataInBackgroundAndNotify()
@@ -73,7 +75,7 @@ class SyncServer {
         serverTask = task
     }
     
-    func stop() {
+    dynamic func stop() {
         guard running else {
             return
         }
