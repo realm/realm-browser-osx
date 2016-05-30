@@ -630,16 +630,20 @@ Gw
                                 <constraints>
                                     <constraint firstAttribute="width" constant="144" id="1Fv-8O-a3w"/>
                                 </constraints>
-                                <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="pP3-jQ-4OF">
+                                <popUpButtonCell key="cell" type="push" title="Everything" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="xnw-7a-G0b" id="pP3-jQ-4OF">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
                                     <menu key="menu" id="QUy-dF-Yco">
                                         <items>
-                                            <menuItem title="0 - Nothing" id="lSq-Xh-d78"/>
-                                            <menuItem title="1 - Normal" id="wOe-Qy-prE">
+                                            <menuItem title="Nothing" id="lSq-Xh-d78">
                                                 <modifierMask key="keyEquivalentModifierMask"/>
                                             </menuItem>
-                                            <menuItem title="2 - Everything" id="xnw-7a-G0b"/>
+                                            <menuItem title="Normal" id="wOe-Qy-prE">
+                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                            </menuItem>
+                                            <menuItem title="Everything" state="on" id="xnw-7a-G0b">
+                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                            </menuItem>
                                         </items>
                                     </menu>
                                 </popUpButtonCell>
@@ -744,6 +748,7 @@ Gw
                     </view>
                     <connections>
                         <outlet property="hostTextField" destination="IQj-Tm-bA8" id="TOO-ql-eey"/>
+                        <outlet property="logLevelPopUpButton" destination="weH-4v-wFI" id="flm-V6-X4g"/>
                         <outlet property="logOutputTextView" destination="weH-He-Ekh" id="yr8-jz-5Jn"/>
                         <outlet property="portTextField" destination="nfT-g2-DDw" id="L9c-27-AeX"/>
                         <outlet property="publicKeyPathTextField" destination="f2y-kA-Noi" id="xOL-GW-Ld2"/>

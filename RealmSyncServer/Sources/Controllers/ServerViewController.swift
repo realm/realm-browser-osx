@@ -12,10 +12,14 @@ class ServerViewController: NSViewController {
     
     @IBOutlet weak var hostTextField: NSTextField!
     @IBOutlet weak var portTextField: NSTextField!
+    
     @IBOutlet weak var realmDirectoryPathTextField: NSTextField!
     @IBOutlet weak var selectRealmDirectoryPathButton: NSButton!
+    
     @IBOutlet weak var publicKeyPathTextField: NSTextField!
     @IBOutlet weak var selectPublicKeyPathButton: NSButton!
+    
+    @IBOutlet weak var logLevelPopUpButton: NSPopUpButton!
     
     @IBOutlet weak var startServerButton: NSButton!
     @IBOutlet weak var stopServerButton: NSButton!
@@ -25,6 +29,7 @@ class ServerViewController: NSViewController {
     let defaultHost = "127.0.0.1"
     let defaultPort = 7800
     let defaultRealmDirectoryPath = NSFileManager.defaultManager().URLForApplicationDataDirectory().path!
+    let defaultLogLevel: SyncServerLogLevel = .Normal
     
     var host: String {
         return hostTextField.stringValue.characters.count > 0 ? hostTextField.stringValue : defaultHost
@@ -42,6 +47,10 @@ class ServerViewController: NSViewController {
         return publicKeyPathTextField.stringValue.characters.count > 0 ? publicKeyPathTextField.stringValue : nil
     }
     
+    var logLevel: SyncServerLogLevel {
+        return SyncServerLogLevel(rawValue: logLevelPopUpButton.indexOfSelectedItem) ?? defaultLogLevel
+    }
+    
     let server = SyncServer()
 
     override func viewDidLoad() {
@@ -51,6 +60,7 @@ class ServerViewController: NSViewController {
         portTextField.placeholderString = String(defaultPort)
         realmDirectoryPathTextField.placeholderString = defaultRealmDirectoryPath
         publicKeyPathTextField.placeholderString = "(Optional)"
+        logLevelPopUpButton.selectItemAtIndex(defaultLogLevel.rawValue)
         
         logOutputTextView.font = NSFont(name: "Menlo", size: 11)
         logOutputTextView.textContainerInset = NSSize(width: 4, height: 6)
@@ -62,7 +72,7 @@ class ServerViewController: NSViewController {
     }
     
     private func updateUI() {
-        for control in [hostTextField, portTextField, realmDirectoryPathTextField, selectRealmDirectoryPathButton, publicKeyPathTextField, selectPublicKeyPathButton] {
+        for control in [hostTextField, portTextField, realmDirectoryPathTextField, selectRealmDirectoryPathButton, publicKeyPathTextField, selectPublicKeyPathButton, logLevelPopUpButton] {
             control.enabled = !server.running
         }
         
@@ -118,6 +128,7 @@ extension ServerViewController {
         server.port = port
         server.realmDirectoryPath = realmDirectoryPath
         server.publicKeyPath = publicKeyPath
+        server.logLevel = logLevel
         
         do {
             try server.start()
