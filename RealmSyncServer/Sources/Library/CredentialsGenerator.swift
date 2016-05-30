@@ -8,18 +8,27 @@
 
 import Foundation
 
+struct CredentialsAccessRights: OptionSetType {
+    let rawValue: Int
+    
+    init(rawValue: Int) {
+        self.rawValue = rawValue
+    }
+    
+    static let Upload = CredentialsAccessRights(rawValue: 0x01)
+    static let Download = CredentialsAccessRights(rawValue: 0x02)
+}
+
 class CredentialsGenerator {
     
-    var passphrase: String
-    var appID: String
-    var uploadAllowed: Bool
-    var downloadAllowed: Bool
+    let passphrase: String
+    let appID: String
+    let accessRights: CredentialsAccessRights
     
-    init(passphrase: String, appID: String, uploadAllowed: Bool, downloadAllowed: Bool) {
+    init(passphrase: String, appID: String, accessRights: CredentialsAccessRights) {
         self.passphrase = passphrase
         self.appID = appID
-        self.uploadAllowed = uploadAllowed
-        self.downloadAllowed = downloadAllowed
+        self.accessRights = accessRights
     }
     
     func generateCredentialsAtURL(url: NSURL) throws {
@@ -40,11 +49,11 @@ class CredentialsGenerator {
     private func generateAndSignManifestAtURL(url: NSURL) throws {
         var access: [String] = []
         
-        if uploadAllowed {
+        if accessRights.contains(.Upload) {
             access.append("upload")
         }
         
-        if downloadAllowed {
+        if accessRights.contains(.Download) {
             access.append("download")
         }
         

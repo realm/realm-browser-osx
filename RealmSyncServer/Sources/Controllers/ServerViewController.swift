@@ -8,6 +8,21 @@
 
 import Cocoa
 
+private struct DefaultValues {
+    static let host = "127.0.0.1"
+    static let port = 7800
+    static let realmDirectoryPath = NSFileManager.defaultManager().URLForApplicationDataDirectory().path!
+    static let logLevel: SyncServerLogLevel = .Normal
+}
+
+private struct DefaultsKeys {
+    static let host = "ServerHost"
+    static let port = "ServerPort"
+    static let realmDirectoryPath = "ServerRealmDirectoryPath"
+    static let publicKeyPath = "ServerPublicKeyPath"
+    static let logLevel = "ServerLogLevel"
+}
+
 class ServerViewController: NSViewController {
     
     @IBOutlet weak var hostTextField: NSTextField!
@@ -26,29 +41,44 @@ class ServerViewController: NSViewController {
     
     @IBOutlet var logOutputTextView: NSTextView!
     
-    let defaultHost = "127.0.0.1"
-    let defaultPort = 7800
-    let defaultRealmDirectoryPath = NSFileManager.defaultManager().URLForApplicationDataDirectory().path!
-    let defaultLogLevel: SyncServerLogLevel = .Normal
-    
     var host: String {
-        return hostTextField.stringValue.characters.count > 0 ? hostTextField.stringValue : defaultHost
+        return NSUserDefaults.standardUserDefaults().stringForKey(DefaultsKeys.host) ?? DefaultValues.host
     }
     
     var port: Int {
-        return portTextField.stringValue.characters.count > 0 ? portTextField.integerValue : defaultPort
+        guard let stringValue = NSUserDefaults.standardUserDefaults().stringForKey(DefaultsKeys.port) else {
+            return DefaultValues.port
+        }
+        
+        return Int(stringValue) ?? DefaultValues.port
     }
     
     var realmDirectoryPath: String {
-        return realmDirectoryPathTextField.stringValue.characters.count > 0 ? realmDirectoryPathTextField.stringValue : defaultRealmDirectoryPath
+        get {
+            return NSUserDefaults.standardUserDefaults().stringForKey(DefaultsKeys.realmDirectoryPath) ?? DefaultValues.realmDirectoryPath
+        }
+        
+        set {
+            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: DefaultsKeys.realmDirectoryPath)
+        }
     }
     
     var publicKeyPath: String? {
-        return publicKeyPathTextField.stringValue.characters.count > 0 ? publicKeyPathTextField.stringValue : nil
+        get {
+            return NSUserDefaults.standardUserDefaults().stringForKey(DefaultsKeys.publicKeyPath)
+        }
+        
+        set {
+            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: DefaultsKeys.publicKeyPath)
+        }
     }
     
     var logLevel: SyncServerLogLevel {
-        return SyncServerLogLevel(rawValue: logLevelPopUpButton.indexOfSelectedItem) ?? defaultLogLevel
+        guard let stringValue = NSUserDefaults.standardUserDefaults().stringForKey(DefaultsKeys.logLevel) , let rawValue = Int(stringValue) else {
+            return DefaultValues.logLevel
+        }
+        
+        return SyncServerLogLevel(rawValue: rawValue) ?? DefaultValues.logLevel
     }
     
     let server = SyncServer()
@@ -56,11 +86,11 @@ class ServerViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        hostTextField.placeholderString = defaultHost
-        portTextField.placeholderString = String(defaultPort)
-        realmDirectoryPathTextField.placeholderString = defaultRealmDirectoryPath
-        publicKeyPathTextField.placeholderString = "(Optional)"
-        logLevelPopUpButton.selectItemAtIndex(defaultLogLevel.rawValue)
+        hostTextField.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.host, options: [NSNullPlaceholderBindingOption: DefaultValues.host])
+        portTextField.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.port, options: [NSNullPlaceholderBindingOption: DefaultValues.port])
+        realmDirectoryPathTextField.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.realmDirectoryPath, options: [NSNullPlaceholderBindingOption: DefaultValues.realmDirectoryPath])
+        publicKeyPathTextField.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.publicKeyPath, options: [NSNullPlaceholderBindingOption: "(Optional)"])
+        logLevelPopUpButton.bind(NSSelectedIndexBinding, toStandardUserDefaultsKey: DefaultsKeys.logLevel, options: [NSNullPlaceholderBindingOption: DefaultValues.logLevel.rawValue])
         
         logOutputTextView.font = NSFont(name: "Menlo", size: 11)
         logOutputTextView.textContainerInset = NSSize(width: 4, height: 6)
@@ -100,7 +130,7 @@ extension ServerViewController {
         
         openPanel.beginSheetModalForWindow(view.window!) { result in
             if let path = openPanel.URL?.path where result == NSFileHandlingPanelOKButton {
-                self.realmDirectoryPathTextField.stringValue = path
+                self.realmDirectoryPath = path
             }
         }
     }
@@ -116,7 +146,7 @@ extension ServerViewController {
         
         openPanel.beginSheetModalForWindow(view.window!) { result in
             if let path = openPanel.URL?.path where result == NSFileHandlingPanelOKButton {
-                self.publicKeyPathTextField.stringValue = path
+                self.publicKeyPath = path
             }
         }
     }
@@ -133,7 +163,7 @@ extension ServerViewController {
         do {
             try server.start()
         } catch let error as NSError {
-            NSAlert(error: error).runModal()
+            NSAlert(error: error).beginSheetModalForWindow(view.window!, completionHandler: nil)
         }
         
         updateUI()
