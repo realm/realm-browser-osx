@@ -63,7 +63,7 @@
 			<key>UTTypeIdentifier</key>
 			<string>io.realm.realm</string>
 			<key>UTTypeReferenceURL</key>
-			<string>http://realm.io</string>
+			<string>https://realm.io</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
