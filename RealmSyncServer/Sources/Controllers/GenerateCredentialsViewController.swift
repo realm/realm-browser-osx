@@ -16,14 +16,14 @@ class GenerateCredentialsViewController: NSViewController {
     @IBOutlet weak var allowDownloadCheckbox: NSButton!
     
     let defaultPassphrase = "OutOfThePark"
-    let defaultAppBundleID = "io.realm.example"
+    let defaultAppBundleID = "io.realm.Example"
     
     var passphrase: String {
         return passphraseTextField.stringValue.characters.count > 0 ? passphraseTextField.stringValue : defaultPassphrase
     }
     
     var appBundleID: String {
-        return appBundleIDTextField.stringValue.characters.count > 0 ? appBundleIDTextField.stringValue : defaultPassphrase
+        return appBundleIDTextField.stringValue.characters.count > 0 ? appBundleIDTextField.stringValue : defaultAppBundleID
     }
 
     var allowUpload: Bool {
@@ -41,10 +41,22 @@ class GenerateCredentialsViewController: NSViewController {
         appBundleIDTextField.placeholderString = defaultAppBundleID
     }
     
-    private func generateCredentialsAtPath(path: String) {
-        // TODO: generate credentials
+    private func generateCredentialsAtURL(url: NSURL) {
+        let credentialsGenerator = CredentialsGenerator(passphrase: passphrase, appID: appBundleID, uploadAllowed: allowUpload, downloadAllowed: allowDownload)
         
-        NSWorkspace.sharedWorkspace().activateFileViewerSelectingURLs([NSURL(fileURLWithPath: path)])
+        do {
+            try credentialsGenerator.generateCredentialsAtURL(url)
+            
+            NSWorkspace.sharedWorkspace().activateFileViewerSelectingURLs([url])
+        } catch let error as NSError {
+            let alert = NSAlert(error: error)
+            
+            if let window = view.window {
+                alert.beginSheetModalForWindow(window, completionHandler: nil)
+            } else {
+                alert.runModal()
+            }
+        }
     }
     
 }
@@ -61,8 +73,8 @@ extension GenerateCredentialsViewController {
         savePanel.canChooseFiles = false
         
         savePanel.beginSheetModalForWindow(view.window!) { result in
-            if let path = savePanel.URL?.path where result == NSFileHandlingPanelOKButton {
-                self.generateCredentialsAtPath(path)
+            if let url = savePanel.URL where result == NSFileHandlingPanelOKButton {
+                self.generateCredentialsAtURL(url)
             }
         }
     }
