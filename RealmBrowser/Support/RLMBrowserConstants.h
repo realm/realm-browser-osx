@@ -24,6 +24,7 @@ extern const NSInteger kMaxNumberOfFilesAtOnce;
 extern const CGFloat kMenuImageSize ;
 
 extern NSString * const kRealmFileExtension;
+extern NSString * const kRealmUTIIdentifier;
 extern NSString * const kDeveloperFolder;
 extern NSString * const kSimulatorFolder;
 extern NSString * const kDesktopFolder;
