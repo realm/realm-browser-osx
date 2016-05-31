@@ -70,6 +70,7 @@
 		84E35A4D196B021B007F0344 /* RLMArrayNavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E35A4C196B021B007F0344 /* RLMArrayNavigationState.m */; };
 		ADBD77D758972C8C68C6F371 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		BE1B845E8A1FFEF254762D39 /* Pods_RealmBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B36A032C4471C7ECBA3D0A2 /* Pods_RealmBrowser.framework */; };
+		C29C63521CFD8DA80099C501 /* Realm Sync Server.app in Copy Embedded Aplications */ = {isa = PBXBuildFile; fileRef = C29C63501CFD8D7B0099C501 /* Realm Sync Server.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E84EB8291A2FC38C00EB780E /* RLMTestObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = E84EB8281A2FC38C00EB780E /* RLMTestObjects.m */; };
 /* End PBXBuildFile section */
 
@@ -84,23 +85,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		22013F711CCA1230000F79B5 /* CopyFiles */ = {
+		22013F711CCA1230000F79B5 /* Copy Embedded Aplications */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 7;
+			dstPath = Contents/Applications;
+			dstSubfolderSpec = 1;
 			files = (
+				C29C63521CFD8DA80099C501 /* Realm Sync Server.app in Copy Embedded Aplications */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		220BCC831CED9A01006432ED /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
+			name = "Copy Embedded Aplications";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -220,6 +213,7 @@
 		84E35A4C196B021B007F0344 /* RLMArrayNavigationState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMArrayNavigationState.m; sourceTree = "<group>"; };
 		B4DD42CE427D384E8A7351A0 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDF6250849D46F6574497388 /* Pods-RealmBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.debug.xcconfig"; sourceTree = "<group>"; };
+		C29C63501CFD8D7B0099C501 /* Realm Sync Server.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = "Realm Sync Server.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA474127E67BC00EC1BC9986 /* Pods-RealmBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.release.xcconfig"; sourceTree = "<group>"; };
 		E84EB8271A2FC38C00EB780E /* RLMTestObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTestObjects.h; sourceTree = "<group>"; };
 		E84EB8281A2FC38C00EB780E /* RLMTestObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTestObjects.m; sourceTree = "<group>"; };
@@ -313,6 +307,7 @@
 				84E0F9551921F3B900D6CA14 /* RealmBrowser */,
 				220BCC431CED6134006432ED /* RealmBrowserSync */,
 				84E0F9761921F3B900D6CA14 /* RealmBrowserTests */,
+				C29C634D1CFD8C680099C501 /* Embedded Aplications */,
 				84E0F94E1921F3B900D6CA14 /* Frameworks */,
 				84E0F94D1921F3B900D6CA14 /* Products */,
 				84C5A1AA857EF2F6F001E1D3 /* Pods */,
@@ -387,6 +382,14 @@
 				84E0F9781921F3B900D6CA14 /* RealmBrowserTests-Info.plist */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C29C634D1CFD8C680099C501 /* Embedded Aplications */ = {
+			isa = PBXGroup;
+			children = (
+				C29C63501CFD8D7B0099C501 /* Realm Sync Server.app */,
+			);
+			name = "Embedded Aplications";
 			sourceTree = "<group>";
 		};
 		E83626C41CE35C4300E9493D /* Application */ = {
@@ -544,8 +547,7 @@
 				84E0F9481921F3B900D6CA14 /* Sources */,
 				84E0F94A1921F3B900D6CA14 /* Resources */,
 				84E0F9491921F3B900D6CA14 /* Frameworks */,
-				22013F711CCA1230000F79B5 /* CopyFiles */,
-				220BCC831CED9A01006432ED /* Embed Frameworks */,
+				22013F711CCA1230000F79B5 /* Copy Embedded Aplications */,
 				D5EE3596D241A5A2DC2DE356 /* Embed Pods Frameworks */,
 				E828CD2F8EE9DBBCC5B1589B /* Copy Pods Resources */,
 			);

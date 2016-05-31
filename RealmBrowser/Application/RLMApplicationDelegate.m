@@ -789,7 +789,13 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
 
 - (IBAction)runSyncServer:(id)sender
 {
-    // TODO: Launch Sync Server
+    NSError *error;
+    
+    NSURL *syncServerAppURL = [[NSBundle mainBundle].bundleURL URLByAppendingPathComponent:@"Contents/Applications/Realm Sync Server.app"];
+    
+    if ([[NSWorkspace sharedWorkspace] launchApplicationAtURL:syncServerAppURL options:NSWorkspaceLaunchDefault configuration:@{} error:&error] == nil) {
+        [[NSAlert alertWithError:error] runModal];
+    }
 }
 
 @end
