@@ -20,29 +20,17 @@
 @import Realm.Private;
 @import RealmConverter;
 
+#import "RLMBrowserConstants.h"
 #import "RLMApplicationDelegate.h"
 #import "RLMTestDataGenerator.h"
 #import "TestClasses.h"
 
+#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
+
 #import "RLMSyncCredentialsView.h"
 #import "RLMSyncWindowController.h"
 
-#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
-
 #import "NSURLComponents+FragmentItems.h"
-
-const NSUInteger kTopTipDelay = 250;
-const NSUInteger kMaxFilesPerCategory = 7;
-const CGFloat kMenuImageSize = 16;
-
-NSString *const kRealmFileExtension = @"realm";
-NSString *const kDeveloperFolder = @"/Developer";
-NSString *const kSimulatorFolder = @"/Library/Application Support/iPhone Simulator";
-NSString *const kDesktopFolder = @"/Desktop";
-NSString *const kDownloadFolder = @"/Download";
-NSString *const kDocumentsFolder = @"/Documents";
-
-NSInteger const kMaxNumberOfFilesAtOnce = 20;
 
 @interface RLMApplicationDelegate ()
 
@@ -71,8 +59,6 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     [[NSUserDefaults standardUserDefaults] setObject:@(kTopTipDelay) forKey:@"NSInitialToolTipDelay"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-    [self configureMainMenuWithSyncItems];
-    
     if (!self.didLoadFile && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
         [NSApp sendAction:self.openMenuItem.action to:self.openMenuItem.target from:self];
 
@@ -97,6 +83,8 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
         self.dateFormatter.dateStyle = NSDateFormatterMediumStyle;
         self.dateFormatter.timeStyle = NSDateFormatterShortStyle;
     }
+    
+    [self configureMainMenuWithSyncItems];
 }
 
 - (BOOL)application:(NSApplication *)application openFile:(NSString *)filename
@@ -768,8 +756,7 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
         }
         
         [RLMRealmConfiguration setDefaultConfiguration:configuration];
-        RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:nil];
-        //[[RLMRealmFileManager sharedManager] addRealm:realm];
+        [RLMRealm realmWithConfiguration:configuration error:nil];
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{

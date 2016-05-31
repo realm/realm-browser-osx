@@ -24,7 +24,6 @@ NSString * const kSyncServerURLKey = @"SyncServerURL";
 NSString * const kSyncSignedUserTokenKey = @"SyncSignedUserToken";
 
 #import "RLMSyncWindowController.h"
-#import "RLMRealmFileManager.h"
 
 @interface RLMSyncWindowController () <NSTextFieldDelegate>
 
@@ -43,7 +42,9 @@ NSString * const kSyncSignedUserTokenKey = @"SyncSignedUserToken";
 {
     if (self = [super initWithWindowNibName:@"SyncWindow"]) {
         NSString *tempFileName = [NSString stringWithFormat:@"%@.realm", [NSUUID UUID].UUIDString];
-        _realmFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:tempFileName];
+        NSString *tempFilePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        tempFilePath = [tempFilePath stringByAppendingPathComponent:@"io.realm.realmbrowser"];
+        _realmFilePath = [tempFilePath stringByAppendingPathComponent:tempFileName];
     }
     
     return self;

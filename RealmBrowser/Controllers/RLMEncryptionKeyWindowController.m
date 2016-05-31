@@ -74,38 +74,34 @@
 #pragma mark - Encryption Testing -
 - (BOOL)testRealmFileWithEncryptionKey:(NSData *)keyData
 {
-    //Sync does not like it when Realm instances are quickly created and destroyed,
-    //so for now, all of the encryption/file format checks are disabled
-    return YES;
+    NSError *error = nil;
+    @autoreleasepool {
+        RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+        configuration.disableFormatUpgrade = YES;
+        configuration.dynamic = YES;
+        configuration.encryptionKey = keyData;
+        configuration.fileURL = self.realmFilePath;
+        [RLMRealm realmWithConfiguration:configuration error:&error];
+    }
     
-//    NSError *error = nil;
-//    @autoreleasepool {
-//        RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-//        configuration.disableFormatUpgrade = YES;
-//        configuration.dynamic = YES;
-//        configuration.encryptionKey = keyData;
-//        configuration.path = self.realmFilePath.path;
-//        [RLMRealm realmWithConfiguration:configuration error:&error];
-//    }
-//    
-//    //If an error is thrown, it can either mean the encryption key was incorrect,
-//    //or the file format requires upgrading
-//    if (error) {
-//        //If a format upgrade is required, prompt the user before proceeding
-//        if (error.code == RLMErrorFileFormatUpgradeRequired) {
-//            if (![RLMAlert showFileFormatUpgradeDialogWithFileName:[self.realmFilePath lastPathComponent]]) {
-//                return NO;
-//            }
-//            
-//            //The file format upgrade is allowed
-//            return YES;
-//        }
-//        
-//        //another error was thrown, which implies that the encryption key was invalid
-//        return NO;
-//    }
-//    
-//    return YES;
+    //If an error is thrown, it can either mean the encryption key was incorrect,
+    //or the file format requires upgrading
+    if (error) {
+        //If a format upgrade is required, prompt the user before proceeding
+        if (error.code == RLMErrorFileFormatUpgradeRequired) {
+            if (![RLMAlert showFileFormatUpgradeDialogWithFileName:[self.realmFilePath lastPathComponent]]) {
+                return NO;
+            }
+            
+            //The file format upgrade is allowed
+            return YES;
+        }
+        
+        //another error was thrown, which implies that the encryption key was invalid
+        return NO;
+    }
+    
+    return YES;
 }
 
 // http://stackoverflow.com/a/13627835/599344

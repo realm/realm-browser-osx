@@ -22,7 +22,6 @@
 @import Realm.Private;
 @import Realm.Dynamic;
 
-#import "RLMRealmFileManager.h"
 #import "RLMSidebarTableCellView.h"
 #import "NSColor+ByteSizeFactory.h"
 
@@ -289,10 +288,11 @@ void RLMClearRealmCache();
 
 - (NSView *)cellViewForTableView:(NSTableView *)tableView
 {
-    NSTextField *result = [tableView makeViewWithIdentifier:@"HeaderLabel" owner:self];
-    [result setStringValue:@"CLASSES"];
+    NSTableCellView *headerView = [tableView makeViewWithIdentifier:@"HeaderCell" owner:self];
     
-    return result;
+    headerView.textField.stringValue = @"Models";
+    
+    return headerView;
 }
 
 #pragma mark - Private methods
