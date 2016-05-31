@@ -306,7 +306,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     
     RLMClassProperty *classProperty = self.displayedType.propertyColumns[propertyIndex];
     RLMObject *selectedInstance = [self.displayedType instanceAtIndex:rowIndex];
-    id propertyValue = [selectedInstance valueForKey:classProperty.name];
+    id propertyValue = [selectedInstance valueForKey:classProperty.name]; NSLog(@"%@", NSStringFromClass([propertyValue class]));
     RLMPropertyType type = classProperty.type;
     BOOL optional = classProperty.property.optional;
     NSString *reuseIdentifier = [NSString stringWithFormat:@"Property.%@.Optional.%d", [RLMDescriptions typeNameOfProperty:classProperty.property], optional];
@@ -936,6 +936,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     RLMTypeNode *displayedType = self.displayedType;
     RLMClassProperty *propertyNode = displayedType.propertyColumns[propertyIndex];
     RLMObject *selectedInstance = [displayedType instanceAtIndex:row];
+    BOOL optionalValue = propertyNode.property.optional;
     
     id result = nil;
     
@@ -969,7 +970,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             break;
     }
     
-    if (result) {
+    if (result || optionalValue) {
         RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
         [realm beginWriteTransaction];
         selectedInstance[propertyNode.name] = result;
