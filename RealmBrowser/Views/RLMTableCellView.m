@@ -59,4 +59,25 @@
     return size;
 }
 
+- (void)setOptional:(BOOL)optional
+{
+    if (optional == _optional) {
+        return;
+    }
+    
+    _optional = optional;
+    
+    if (self.textField == nil) {
+        return;
+    }
+    
+    if (_optional) {
+        NSDictionary *attributes = @{NSForegroundColorAttributeName:[NSColor redColor]};
+        self.textField.placeholderAttributedString = [[NSAttributedString alloc] initWithString:@"nil" attributes:attributes];
+    }
+    else {
+        self.textField.placeholderAttributedString = nil;
+    }
+}
+
 @end
