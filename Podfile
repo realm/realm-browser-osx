@@ -12,6 +12,7 @@ target 'RealmBrowser' do
 	pod 'RealmSyncServerBinaries'
 end
 
+
 post_install do |installer|
 	`rm -rf Pods/Headers/Public/Realm`
 end
