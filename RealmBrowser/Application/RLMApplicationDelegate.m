@@ -26,8 +26,6 @@
 
 #import "RLMSyncCredentialsView.h"
 #import "RLMSyncWindowController.h"
-#import "RLMRunSyncServerWindowController.h"
-#import "RLMSyncAuthWindowController.h"
 
 #import <AppSandboxFileAccess/AppSandboxFileAccess.h>
 
@@ -63,8 +61,6 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
 @property (nonatomic, strong) NSArray *groupedFileItems;
 
 @property (nonatomic, strong) RLMSyncWindowController *syncWindowController;
-@property (nonatomic, strong) RLMRunSyncServerWindowController *runSyncWindowController;
-@property (nonatomic, strong) RLMSyncAuthWindowController *syncAuthWindowController;
 
 @end
 
@@ -586,18 +582,13 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
 {
     NSMenu *mainMenu = [NSApp mainMenu];
     
-    // Get the 'File' and 'Tools' menu items
-    NSMenuItem *fileMenu, *toolsMenu = nil;
+    // Get the 'File' menu item
+    NSMenuItem *fileMenu = nil;
     for (NSMenuItem *subMenu in mainMenu.itemArray) {
         if ([subMenu.title isEqualToString:@"File"]) {
             fileMenu = subMenu;
         }
-        else if ([subMenu.title isEqualToString:@"Tools"]) {
-            toolsMenu = subMenu;
-        }
     }
-    
-    // ---
     
     //Create and insert the menu items for the 'File' item
     NSMenuItem *openSyncURLItem  = [[NSMenuItem alloc] initWithTitle:@"Open Sync URL..." action:@selector(connectToSyncRealmWithURL:) keyEquivalent:@"o"];
@@ -614,18 +605,6 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     NSArray *items = @[separator,newSyncFileItem,openSyncFileItem,openSyncURLItem];
     for (NSMenuItem *item in items) {
         [fileMenu.submenu insertItem:item atIndex:4];
-    }
-    
-    // ---
-    
-    // Create and insert the menu items for the 'Tools' item
-    NSMenuItem *runSyncServerItem  = [[NSMenuItem alloc] initWithTitle:@"Run Sync Server..." action:@selector(runSyncServer:) keyEquivalent:@""];
-    NSMenuItem *createCredsItem = [[NSMenuItem alloc] initWithTitle:@"Generate Sync Auth Crendentials..." action:@selector(generateAuthCredentials:) keyEquivalent:@""];
-    separator = [NSMenuItem separatorItem];
-    items = @[createCredsItem, runSyncServerItem, separator];
-    
-    for (NSMenuItem *item in items) {
-        [toolsMenu.submenu insertItem:item atIndex:1];
     }
 }
 
@@ -808,28 +787,9 @@ NSInteger const kMaxNumberOfFilesAtOnce = 20;
     });
 }
 
-- (IBAction)generateAuthCredentials:(id)sender
-{
-    if (self.syncAuthWindowController) {
-        return;
-    }
-    
-    __weak typeof(self) weakSelf = self;
-    self.syncAuthWindowController = [[RLMSyncAuthWindowController alloc] init];
-    self.syncAuthWindowController.closedHandler = ^{ weakSelf.syncAuthWindowController = nil; };
-    [self.syncAuthWindowController showWindow:nil];
-}
-
 - (IBAction)runSyncServer:(id)sender
 {
-    if (self.runSyncWindowController) {
-        return;
-    }
-    
-    __weak typeof(self) weakSelf = self;
-    self.runSyncWindowController = [[RLMRunSyncServerWindowController alloc] init];
-    self.runSyncWindowController.closedHandler = ^{ weakSelf.runSyncWindowController = nil; };
-    [self.runSyncWindowController showWindow:nil];
+    // TODO: Launch Sync Server
 }
 
 @end
