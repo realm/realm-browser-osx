@@ -7,18 +7,16 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>realm</string>
-			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>FormatIcon</string>
 			<key>CFBundleTypeName</key>
 			<string>Realm</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
-			<key>LSTypeIsPackage</key>
-			<integer>0</integer>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>io.realm.realm</string>
+			</array>
 			<key>NSDocumentClass</key>
 			<string>RLMDocument</string>
 		</dict>
@@ -51,5 +49,29 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Realm</string>
+			<key>UTTypeIconFile</key>
+			<string>FormatIcon</string>
+			<key>UTTypeIdentifier</key>
+			<string>io.realm.realm</string>
+			<key>UTTypeReferenceURL</key>
+			<string>https://realm.io</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>realm</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>
