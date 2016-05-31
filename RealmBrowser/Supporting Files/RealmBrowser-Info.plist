@@ -7,20 +7,14 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>realm</string>
-			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>FormatIcon</string>
 			<key>CFBundleTypeName</key>
 			<string>Realm</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
-			<key>LSTypeIsPackage</key>
 			<key>LSItemContentTypes</key>
 			<array>
-			<integer>0</integer>
 				<string>io.realm.realm</string>
 			</array>
 			<key>NSDocumentClass</key>
@@ -40,11 +34,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.22.0a</string>
+	<string>0.103.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>75</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.developer-tools</string>
 	<key>LSMinimumSystemVersion</key>
