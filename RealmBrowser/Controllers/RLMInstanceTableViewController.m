@@ -31,6 +31,7 @@
 #import "RLMBadgeTableCellView.h"
 #import "RLMBasicTableCellView.h"
 #import "RLMBoolTableCellView.h"
+#import "RLMOptionalBoolTableCellView.h"
 #import "RLMNumberTableCellView.h"
 #import "RLMImageTableCellView.h"
 
@@ -306,7 +307,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     
     RLMClassProperty *classProperty = self.displayedType.propertyColumns[propertyIndex];
     RLMObject *selectedInstance = [self.displayedType instanceAtIndex:rowIndex];
-    id propertyValue = [selectedInstance valueForKey:classProperty.name]; NSLog(@"%@", NSStringFromClass([propertyValue class]));
+    id propertyValue = [selectedInstance valueForKey:classProperty.name];
     RLMPropertyType type = classProperty.type;
     BOOL optional = classProperty.property.optional;
     NSString *reuseIdentifier = [NSString stringWithFormat:@"Property.%@.Optional.%d", [RLMDescriptions typeNameOfProperty:classProperty.property], optional];
@@ -335,17 +336,41 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         }
             
         case RLMPropertyTypeBool: {
-            RLMBoolTableCellView *boolCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
-            if (!boolCellView) {
-                boolCellView = [RLMBoolTableCellView viewWithIdentifier:reuseIdentifier];
-                boolCellView.optional = optional;
-                boolCellView.checkBox.target = self;
-                boolCellView.checkBox.action = @selector(editedCheckBox:);
+            if (optional) {
+                RLMOptionalBoolTableCellView *boolCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
+                if (!boolCellView) {
+                    boolCellView = [RLMOptionalBoolTableCellView viewWithIdentifier:reuseIdentifier];
+                    boolCellView.popupControl.target = self;
+                    boolCellView.popupControl.action = @selector(optionalBoolPopupChanged:);
+                }
+                
+                // 0 = nil, 1 = False, 2 = True
+                if (propertyValue == nil) {
+                    [boolCellView.popupControl selectItemAtIndex:0];
+                }
+                else {
+                    if ([propertyValue boolValue]) {
+                        [boolCellView.popupControl selectItemAtIndex:2];
+                    }
+                    else {
+                        [boolCellView.popupControl selectItemAtIndex:1];
+                    }
+                }
+
+                cellView = boolCellView;
             }
-            boolCellView.checkBox.state = [(NSNumber *)propertyValue boolValue] ? NSOnState : NSOffState;
-            [boolCellView.checkBox setEnabled:!self.realmIsLocked];
-            
-            cellView = boolCellView;
+            else {
+                RLMBoolTableCellView *boolCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
+                if (!boolCellView) {
+                    boolCellView = [RLMBoolTableCellView viewWithIdentifier:reuseIdentifier];
+                    boolCellView.checkBox.target = self;
+                    boolCellView.checkBox.action = @selector(editedCheckBox:);
+                }
+                boolCellView.checkBox.state = [(NSNumber *)propertyValue boolValue] ? NSOnState : NSOffState;
+                [boolCellView.checkBox setEnabled:!self.realmIsLocked];
+                
+                cellView = boolCellView;
+            }
             
             break;
         }
@@ -992,6 +1017,29 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 
     NSNumber *result = @((BOOL)(sender.state == NSOnState));
 
+    RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
+    [realm beginWriteTransaction];
+    selectedInstance[propertyNode.name] = result;
+    [realm commitWriteTransaction];
+    
+    [self.parentWindowController reloadAllWindows];
+}
+
+- (void)optionalBoolPopupChanged:(NSPopUpButton *)sender
+{
+    NSInteger row = [self.tableView rowForView:sender];
+    NSInteger column = [self.tableView columnForView:sender];
+    NSInteger propertyIndex = [self propertyIndexForColumn:column];
+    
+    RLMTypeNode *displayedType = self.displayedType;
+    RLMClassProperty *propertyNode = displayedType.propertyColumns[propertyIndex];
+    RLMObject *selectedInstance = [displayedType instanceAtIndex:row];
+    
+    NSNumber *result = nil;
+    if (sender.indexOfSelectedItem > 0) {
+        result = @((BOOL)(sender.indexOfSelectedItem == 2));
+    }
+    
     RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
     [realm beginWriteTransaction];
     selectedInstance[propertyNode.name] = result;
