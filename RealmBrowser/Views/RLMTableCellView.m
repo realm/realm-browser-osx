@@ -17,6 +17,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #import "RLMTableCellView.h"
+#import "RLMBrowserConstants.h"
+#import "NSColor+ByteSizeFactory.h"
 
 @implementation RLMTableCellView
 
@@ -72,7 +74,7 @@
     }
     
     if (_optional) {
-        NSDictionary *attributes = @{NSForegroundColorAttributeName:[NSColor redColor]};
+        NSDictionary *attributes = @{NSForegroundColorAttributeName:[NSColor colorWithRGBAFloatValues:(CGFloat *)kNilItemColor]};
         self.textField.placeholderAttributedString = [[NSAttributedString alloc] initWithString:@"nil" attributes:attributes];
     }
     else {

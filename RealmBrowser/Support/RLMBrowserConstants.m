@@ -18,10 +18,11 @@
 
 #import "RLMBrowserConstants.h"
 
-const NSUInteger kTopTipDelay = 250;
-const NSUInteger kMaxFilesPerCategory = 7;
-const CGFloat kMenuImageSize = 16;
-const NSInteger kMaxNumberOfFilesAtOnce = 20;
+const NSUInteger    kTopTipDelay = 250;
+const NSUInteger    kMaxFilesPerCategory = 7;
+const CGFloat       kMenuImageSize = 16;
+const NSInteger     kMaxNumberOfFilesAtOnce = 20;
+const CGFloat       kNilItemColor[] = {1.0f, 0.5f, 0.5f, 1.0f};
 
 NSString * const kRealmFileExtension    = @"realm";
 NSString * const kRealmUTIIdentifier    = @"io.realm.realm";
