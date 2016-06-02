@@ -18,6 +18,7 @@
 
 #import "RLMDocument.h"
 
+#import "RLMBrowserConstants.h"
 #import "RLMClassNode.h"
 #import "RLMArrayNode.h"
 #import "RLMClassProperty.h"
@@ -43,7 +44,7 @@
     __block BOOL success = NO;
     
     if (self = [super init]) {
-        if (![[typeName lowercaseString] isEqualToString:@"realm"]) {
+        if (![[typeName lowercaseString] isEqualToString:kRealmUTIIdentifier]) {
             return nil;
         }
         
@@ -54,7 +55,7 @@
         NSString *lastComponent = [absoluteURL lastPathComponent];
         NSString *extension = [absoluteURL pathExtension];
         
-        if (![[extension lowercaseString] isEqualToString:@"realm"]) {
+        if (![[extension lowercaseString] isEqualToString:kRealmFileExtension]) {
             return nil;
         }
         
