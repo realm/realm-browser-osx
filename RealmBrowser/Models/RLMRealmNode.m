@@ -162,11 +162,11 @@ void RLMClearRealmCache();
                 [weakSelf registerChangeNotification:NO schemaLoadedCallBack:nil error:nil];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    NSAlert *alert = [NSAlert alertWithMessageText:@"Failed To Connect To Sync Server"
+                    NSAlert *alert = [NSAlert alertWithMessageText:@"Failed to open Sync URL"
                                                      defaultButton:@"OK"
                                                    alternateButton:nil
                                                        otherButton:nil
-                                         informativeTextWithFormat:@"The URL for the sync server is either not available or not responding. Please verify the server is accessible and try again."];
+                                         informativeTextWithFormat:@"The URL you provided doen't exist on the server or contains an empty Realm file. Please verify URL and try again."];
                     
                     [alert runModal];
                 });
