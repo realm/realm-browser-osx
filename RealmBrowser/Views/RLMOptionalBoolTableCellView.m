@@ -38,7 +38,7 @@
     
     NSPopUpButton *popupButton = [[NSPopUpButton alloc] initWithFrame:self.bounds pullsDown:NO];
     popupButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [popupButton addItemsWithTitles:@[@"nil", @"false", @"true"]];
+    [popupButton addItemsWithTitles:@[@"nil", @"False", @"True"]];
     popupButton.bordered = NO;
     self.popupControl = popupButton;
     [self addSubview:popupButton];
