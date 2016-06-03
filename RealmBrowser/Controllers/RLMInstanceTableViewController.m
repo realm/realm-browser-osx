@@ -318,8 +318,9 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             RLMBadgeTableCellView *badgeCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!badgeCellView) {
                 badgeCellView = [RLMBadgeTableCellView viewWithIdentifier:reuseIdentifier];
-                badgeCellView.optional = YES;
             }
+            badgeCellView.optional = YES;
+            
             NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             NSDictionary *attr = @{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)};
             badgeCellView.textField.attributedStringValue = [[NSAttributedString alloc] initWithString:string attributes:attr];
@@ -381,11 +382,11 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             RLMNumberTableCellView *numberCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!numberCellView) {
                 numberCellView = [RLMNumberTableCellView viewWithIdentifier:reuseIdentifier];
-                numberCellView.optional = optional;
                 numberCellView.textField.target = self;
                 numberCellView.textField.action = @selector(editedTextField:);
             }
 
+            numberCellView.optional = optional;
             numberCellView.textField.objectValue = propertyValue;            
             numberCellView.textField.editable = !self.realmIsLocked;
 
@@ -398,10 +399,10 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             RLMLinkTableCellView *linkCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!linkCellView) {
                 linkCellView = [RLMLinkTableCellView viewWithIdentifier:reuseIdentifier];
-                linkCellView.optional = optional;
                 linkCellView.textField.target = self;
                 linkCellView.textField.action = @selector(editedTextField:);
             }
+            linkCellView.optional = optional;
             NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             NSDictionary *attr = @{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)};
             linkCellView.textField.attributedStringValue = [[NSAttributedString alloc] initWithString:string attributes:attr];
@@ -421,10 +422,11 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             RLMBasicTableCellView *basicCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!basicCellView) {
                 basicCellView = [RLMBasicTableCellView viewWithIdentifier:reuseIdentifier];
-                basicCellView.optional = optional;
                 basicCellView.textField.target = self;
                 basicCellView.textField.action = @selector(editedTextField:);
             }
+            basicCellView.optional = optional;
+            basicCellView.nonNullEmpty = (propertyValue != nil);
             basicCellView.textField.stringValue = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             basicCellView.textField.editable = !self.realmIsLocked && type != RLMPropertyTypeData;
 

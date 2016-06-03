@@ -72,6 +72,12 @@
     [self configurePlaceholderStringHighlighted:NO];
 }
 
+- (void)setNonNullEmpty:(BOOL)nonNullEmpty
+{
+    _nonNullEmpty = nonNullEmpty;
+    [self configurePlaceholderStringHighlighted:NO];
+}
+
 - (void)setBackgroundStyle:(NSBackgroundStyle)backgroundStyle
 {
     [super setBackgroundStyle:backgroundStyle];
@@ -92,7 +98,7 @@
         attributes = @{NSForegroundColorAttributeName:[NSColor colorWithRGBAFloatValues:(CGFloat *)kNilItemColor]};
     }
     
-    NSString *placeholderDescriptor = @"nil";
+    NSString *placeholderDescriptor = self.nonNullEmpty ? @"<empty>" : @"nil";
     self.textField.placeholderAttributedString = [[NSAttributedString alloc] initWithString:placeholderDescriptor attributes:attributes];
 }
 
