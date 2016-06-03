@@ -28,9 +28,14 @@ class SyncServer {
     
     var host: String!
     var port: Int!
-    var realmDirectoryPath: String!
-    var publicKeyPath: String?
+    var realmDirectoryURL: NSURL?
+    
+    var publicKeyURL: NSURL?
+    var enableAuthentication = true
+    
     var logLevel: SyncServerLogLevel = .Everything
+    
+    var realmDirectoryPath: String!
     
     var running: Bool {
         return serverTask != nil
@@ -101,7 +106,7 @@ class SyncServer {
         arguments.append("-p")
         arguments.append(String(port))
         
-        if let path = publicKeyPath where path.characters.count > 0 {
+        if let path = publicKeyURL?.path where enableAuthentication {
             arguments.append("-k")
             arguments.append(path)
         }

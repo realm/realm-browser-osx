@@ -16,9 +16,17 @@
 		C22514641CF5BCA7007E64EB /* SyncServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514631CF5BCA7007E64EB /* SyncServer.swift */; };
 		C22514681CF74F5A007E64EB /* NSFileManager+CommonURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514671CF74F5A007E64EB /* NSFileManager+CommonURLs.swift */; };
 		C22514691CF87853007E64EB /* ServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514341CF5A98D007E64EB /* ServerViewController.swift */; };
-		C22514701CF99EDD007E64EB /* GenerateCredentialsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C225146E1CF99C74007E64EB /* GenerateCredentialsViewController.swift */; };
-		C29C63471CF9B4BB0099C501 /* CredentialsGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29C63461CF9B4BB0099C501 /* CredentialsGenerator.swift */; };
+		C22B99341D01BE4B005CA3F0 /* CredentialsManifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22B99331D01BE4B005CA3F0 /* CredentialsManifest.swift */; };
+		C22B99371D01BE9F005CA3F0 /* JSONRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22B99361D01BE9F005CA3F0 /* JSONRepresentable.swift */; };
+		C22B993A1D01C4C5005CA3F0 /* CredentialsCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22B99391D01C4C5005CA3F0 /* CredentialsCellView.swift */; };
 		C29C634C1CFCB6670099C501 /* NSObject+CommonBindings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29C634A1CFCB5C00099C501 /* NSObject+CommonBindings.swift */; };
+		C29C63561CFF03170099C501 /* private.pem in Resources */ = {isa = PBXBuildFile; fileRef = C29C63541CFF03170099C501 /* private.pem */; };
+		C29C63571CFF03170099C501 /* public.pem in Resources */ = {isa = PBXBuildFile; fileRef = C29C63551CFF03170099C501 /* public.pem */; };
+		C29C635D1CFF20480099C501 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29C635C1CFF20480099C501 /* Credentials.swift */; };
+		C29C635F1CFF28C80099C501 /* TokenGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29C635E1CFF28C80099C501 /* TokenGenerator.swift */; };
+		C29C63611CFF2B140099C501 /* CredentialsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29C63601CFF2B140099C501 /* CredentialsStore.swift */; };
+		C29C63631CFF3E0A0099C501 /* ManageCredentialsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29C63621CFF3E0A0099C501 /* ManageCredentialsViewController.swift */; };
+		C29C63651D0079F70099C501 /* GenerateCredentialsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C225146E1CF99C74007E64EB /* GenerateCredentialsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,8 +64,16 @@
 		C22514631CF5BCA7007E64EB /* SyncServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SyncServer.swift; path = Library/SyncServer.swift; sourceTree = "<group>"; };
 		C22514671CF74F5A007E64EB /* NSFileManager+CommonURLs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSFileManager+CommonURLs.swift"; path = "Library/Extensions/NSFileManager+CommonURLs.swift"; sourceTree = "<group>"; };
 		C225146E1CF99C74007E64EB /* GenerateCredentialsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenerateCredentialsViewController.swift; sourceTree = "<group>"; };
-		C29C63461CF9B4BB0099C501 /* CredentialsGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CredentialsGenerator.swift; path = Library/CredentialsGenerator.swift; sourceTree = "<group>"; };
+		C22B99331D01BE4B005CA3F0 /* CredentialsManifest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CredentialsManifest.swift; path = Models/CredentialsManifest.swift; sourceTree = "<group>"; };
+		C22B99361D01BE9F005CA3F0 /* JSONRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONRepresentable.swift; path = Library/Protocols/JSONRepresentable.swift; sourceTree = "<group>"; };
+		C22B99391D01C4C5005CA3F0 /* CredentialsCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CredentialsCellView.swift; path = Views/CredentialsCellView.swift; sourceTree = "<group>"; };
 		C29C634A1CFCB5C00099C501 /* NSObject+CommonBindings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSObject+CommonBindings.swift"; path = "Library/Extensions/NSObject+CommonBindings.swift"; sourceTree = "<group>"; };
+		C29C63541CFF03170099C501 /* private.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = private.pem; sourceTree = "<group>"; };
+		C29C63551CFF03170099C501 /* public.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = public.pem; sourceTree = "<group>"; };
+		C29C635C1CFF20480099C501 /* Credentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Credentials.swift; path = Models/Credentials.swift; sourceTree = "<group>"; };
+		C29C635E1CFF28C80099C501 /* TokenGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TokenGenerator.swift; path = Library/TokenGenerator.swift; sourceTree = "<group>"; };
+		C29C63601CFF2B140099C501 /* CredentialsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CredentialsStore.swift; path = Models/CredentialsStore.swift; sourceTree = "<group>"; };
+		C29C63621CFF3E0A0099C501 /* ManageCredentialsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageCredentialsViewController.swift; sourceTree = "<group>"; };
 		FBFE0022B396C819784C8F48 /* Pods-RealmSyncServer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmSyncServer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-RealmSyncServer/Pods-RealmSyncServer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -124,7 +140,9 @@
 			children = (
 				C22514611CF5BC3E007E64EB /* Application */,
 				C22514621CF5BC4A007E64EB /* Library */,
+				C29C635B1CFF20210099C501 /* Models */,
 				C22514651CF5D28D007E64EB /* Controllers */,
+				C22B99381D01C48D005CA3F0 /* Views */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -150,6 +168,7 @@
 		C225145D1CF5A9F0007E64EB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C29C63531CFF02A70099C501 /* Certificates */,
 				C22514361CF5A98D007E64EB /* Assets.xcassets */,
 				C225145E1CF5AA62007E64EB /* Main.storyboard */,
 				C225143B1CF5A98D007E64EB /* Info.plist */,
@@ -168,9 +187,10 @@
 		C22514621CF5BC4A007E64EB /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				C22B99351D01BE88005CA3F0 /* Protocols */,
 				C22514661CF74EF2007E64EB /* Extensions */,
 				C22514631CF5BCA7007E64EB /* SyncServer.swift */,
-				C29C63461CF9B4BB0099C501 /* CredentialsGenerator.swift */,
+				C29C635E1CFF28C80099C501 /* TokenGenerator.swift */,
 			);
 			name = Library;
 			sourceTree = "<group>";
@@ -179,6 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				C22514341CF5A98D007E64EB /* ServerViewController.swift */,
+				C29C63621CFF3E0A0099C501 /* ManageCredentialsViewController.swift */,
 				C225146E1CF99C74007E64EB /* GenerateCredentialsViewController.swift */,
 			);
 			path = Controllers;
@@ -191,6 +212,41 @@
 				C29C634A1CFCB5C00099C501 /* NSObject+CommonBindings.swift */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		C22B99351D01BE88005CA3F0 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				C22B99361D01BE9F005CA3F0 /* JSONRepresentable.swift */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
+		C22B99381D01C48D005CA3F0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C22B99391D01C4C5005CA3F0 /* CredentialsCellView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		C29C63531CFF02A70099C501 /* Certificates */ = {
+			isa = PBXGroup;
+			children = (
+				C29C63541CFF03170099C501 /* private.pem */,
+				C29C63551CFF03170099C501 /* public.pem */,
+			);
+			path = Certificates;
+			sourceTree = "<group>";
+		};
+		C29C635B1CFF20210099C501 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C29C635C1CFF20480099C501 /* Credentials.swift */,
+				C29C63601CFF2B140099C501 /* CredentialsStore.swift */,
+				C22B99331D01BE4B005CA3F0 /* CredentialsManifest.swift */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 		D6862C982541E445A6A1E3E1 /* Frameworks */ = {
@@ -310,6 +366,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C22514371CF5A98D007E64EB /* Assets.xcassets in Resources */,
+				C29C63571CFF03170099C501 /* public.pem in Resources */,
+				C29C63561CFF03170099C501 /* private.pem in Resources */,
 				C22514601CF5AA62007E64EB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -384,12 +442,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				C22514331CF5A98D007E64EB /* AppDelegate.swift in Sources */,
+				C22B99371D01BE9F005CA3F0 /* JSONRepresentable.swift in Sources */,
+				C22B993A1D01C4C5005CA3F0 /* CredentialsCellView.swift in Sources */,
+				C29C63651D0079F70099C501 /* GenerateCredentialsViewController.swift in Sources */,
+				C29C63631CFF3E0A0099C501 /* ManageCredentialsViewController.swift in Sources */,
 				C22514641CF5BCA7007E64EB /* SyncServer.swift in Sources */,
+				C29C635D1CFF20480099C501 /* Credentials.swift in Sources */,
+				C29C63611CFF2B140099C501 /* CredentialsStore.swift in Sources */,
+				C22B99341D01BE4B005CA3F0 /* CredentialsManifest.swift in Sources */,
 				C29C634C1CFCB6670099C501 /* NSObject+CommonBindings.swift in Sources */,
-				C22514701CF99EDD007E64EB /* GenerateCredentialsViewController.swift in Sources */,
 				C22514681CF74F5A007E64EB /* NSFileManager+CommonURLs.swift in Sources */,
-				C29C63471CF9B4BB0099C501 /* CredentialsGenerator.swift in Sources */,
 				C22514691CF87853007E64EB /* ServerViewController.swift in Sources */,
+				C29C635F1CFF28C80099C501 /* TokenGenerator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

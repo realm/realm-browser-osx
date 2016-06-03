@@ -8,100 +8,114 @@
 
 import Cocoa
 
+protocol GenerateCredentialsViewControllerDelegate: class {
+    
+    func generateCredentialsViewController(viewController: GenerateCredentialsViewController, didGenerateCredentials credentials: Credentials)
+    
+}
+
 private struct DefaultValues {
-    static let passphrase = "OutOfThePark"
+    
     static let appBundleID = "io.realm.Example"
     static let uploadAllowed = true
     static let downloadAllowed = true
-}
-
-private struct DefaultsKeys {
-    static let passphrase = "CredentialsPassphrase"
-    static let appBundleID = "CredentialsAppBundleID"
-    static let uploadAllowed = "CredentialsUploadAllowed"
-    static let downloadAllowed = "CredentialsDownloadAllowed"
+    
 }
 
 class GenerateCredentialsViewController: NSViewController {
     
-    @IBOutlet weak var passphraseTextField: NSTextField!
+    @IBOutlet weak var identityTextField: NSTextField!
     @IBOutlet weak var appBundleIDTextField: NSTextField!
     @IBOutlet weak var allowUploadCheckbox: NSButton!
     @IBOutlet weak var allowDownloadCheckbox: NSButton!
+    @IBOutlet var tokenTextView: NSTextView!
+    @IBOutlet weak var saveButton: NSButton!
     
-    var passphrase: String {
-        return NSUserDefaults.standardUserDefaults().stringForKey(DefaultsKeys.passphrase) ?? DefaultValues.passphrase
+    weak var delegate: GenerateCredentialsViewControllerDelegate?
+    
+    private let tokenGenerator = TokenGenerator(privateKeyURL: NSBundle.mainBundle().URLForResource("private", withExtension: "pem")!, passphrase: "OutOfThePark")
+    
+    private var identity: String {
+        return identityTextField.stringValue
     }
     
-    var appBundleID: String {
-        return NSUserDefaults.standardUserDefaults().stringForKey(DefaultsKeys.appBundleID) ?? DefaultValues.appBundleID
+    private var appBundleID: String {
+        return appBundleIDTextField.stringValue.characters.count > 0 ? appBundleIDTextField.stringValue : DefaultValues.appBundleID
     }
     
-    var accessRights: CredentialsAccessRights {
+    private var accessRights: CredentialsAccessRights {
         var accessRights: CredentialsAccessRights = []
         
-        if NSUserDefaults.standardUserDefaults().boolForKey(DefaultsKeys.uploadAllowed) {
+        if allowUploadCheckbox.state == NSOnState {
             accessRights.insert(.Upload)
         }
         
-        if NSUserDefaults.standardUserDefaults().boolForKey(DefaultsKeys.downloadAllowed) {
+        if allowDownloadCheckbox.state == NSOnState {
             accessRights.insert(.Download)
         }
         
         return accessRights
     }
+    
+    private var token: String {
+        return tokenTextView.string ?? ""
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let userDefaults = NSUserDefaults.standardUserDefaults()
+        appBundleIDTextField.placeholderString = DefaultValues.appBundleID
+        allowUploadCheckbox.state = DefaultValues.uploadAllowed ? NSOnState : NSOffState
+        allowDownloadCheckbox.state = DefaultValues.downloadAllowed ? NSOnState : NSOffState
         
-        if userDefaults.objectForKey(DefaultsKeys.uploadAllowed) == nil {
-            userDefaults.setBool(DefaultValues.uploadAllowed, forKey: DefaultsKeys.uploadAllowed)
-        }
+        tokenTextView.font = NSFont(name: "Menlo", size: 12)
         
-        if userDefaults.objectForKey(DefaultsKeys.downloadAllowed) == nil {
-            userDefaults.setBool(DefaultValues.downloadAllowed, forKey: DefaultsKeys.downloadAllowed)
-        }
-        
-        passphraseTextField.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.passphrase, options: [NSNullPlaceholderBindingOption: DefaultValues.passphrase])
-        appBundleIDTextField.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.appBundleID, options: [NSNullPlaceholderBindingOption: DefaultValues.appBundleID])
-        allowUploadCheckbox.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.uploadAllowed)
-        allowDownloadCheckbox.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.downloadAllowed)
+        updateUI()
     }
     
-    private func generateCredentialsAtURL(url: NSURL) {
-        let credentialsGenerator = CredentialsGenerator(passphrase: passphrase, appID: appBundleID, accessRights: accessRights)
+    private func updateUI() {
+        saveButton.enabled = token.characters.count > 0
+    }
+    
+    private func updateToken() {
+        tokenTextView.string = ""
         
-        do {
-            try credentialsGenerator.generateCredentialsAtURL(url)
-            
-            NSWorkspace.sharedWorkspace().activateFileViewerSelectingURLs([url])
-        } catch let error as NSError {
-            NSAlert(error: error).beginSheetModalForWindow(view.window!, completionHandler: nil)
+        let manifest = CredentialsManifest(identity: identity, appID: appBundleID, access: accessRights)
+        
+        if manifest.valid {
+            do {
+                tokenTextView.string = try tokenGenerator.generateTokenForJSONObject(manifest)
+            } catch let error as NSError {
+                NSAlert(error: error).runModal()
+            }
         }
+        
+        updateUI()
     }
     
 }
 
 extension GenerateCredentialsViewController {
     
-    @IBAction func generateCredentials(sender: AnyObject?) {
-        let savePanel = NSOpenPanel()
-        
-        savePanel.message = "Select destination directory for the authentication files"
-        savePanel.prompt = "Generate"
-        savePanel.canChooseDirectories = true
-        savePanel.canCreateDirectories = true
-        savePanel.canChooseFiles = false
-        
-        savePanel.beginSheetModalForWindow(view.window!) { result in
-            if let url = savePanel.URL where result == NSFileHandlingPanelOKButton {
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.generateCredentialsAtURL(url)
-                }
-            }
+    @IBAction func updateAccessRights(sender: AnyObject?) {
+        updateToken()
+    }
+    
+    @IBAction func saveCredentials(sender: AnyObject?) {
+        if let delegate = delegate {
+            let credentials = Credentials(identity: identity, appID: appBundleID, accessRights: accessRights, token: token)
+            delegate.generateCredentialsViewController(self, didGenerateCredentials: credentials)
         }
+        
+        dismissController(sender)
+    }
+    
+}
+
+extension GenerateCredentialsViewController: NSTextFieldDelegate {
+    
+    override func controlTextDidChange(obj: NSNotification) {
+        updateToken()
     }
     
 }

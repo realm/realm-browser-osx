@@ -12,6 +12,7 @@ private struct DefaultValues {
     static let host = "127.0.0.1"
     static let port = 7800
     static let realmDirectoryPath = NSFileManager.defaultManager().URLForApplicationDataDirectory().path!
+    static let enableAuthentication = true
     static let logLevel: SyncServerLogLevel = .Normal
 }
 
@@ -19,7 +20,7 @@ private struct DefaultsKeys {
     static let host = "ServerHost"
     static let port = "ServerPort"
     static let realmDirectoryPath = "ServerRealmDirectoryPath"
-    static let publicKeyPath = "ServerPublicKeyPath"
+    static let enableAuthentication = "ServerEnableAuthentication"
     static let logLevel = "ServerLogLevel"
 }
 
@@ -31,8 +32,7 @@ class ServerViewController: NSViewController {
     @IBOutlet weak var realmDirectoryPathTextField: NSTextField!
     @IBOutlet weak var selectRealmDirectoryPathButton: NSButton!
     
-    @IBOutlet weak var publicKeyPathTextField: NSTextField!
-    @IBOutlet weak var selectPublicKeyPathButton: NSButton!
+    @IBOutlet weak var enableAuthenticationCheckbox: NSButton!
     
     @IBOutlet weak var logLevelPopUpButton: NSPopUpButton!
     
@@ -63,14 +63,12 @@ class ServerViewController: NSViewController {
         }
     }
     
-    var publicKeyPath: String? {
-        get {
-            return NSUserDefaults.standardUserDefaults().stringForKey(DefaultsKeys.publicKeyPath)
+    var enableAuthentication: Bool {
+        if let value = NSUserDefaults.standardUserDefaults().objectForKey(DefaultsKeys.enableAuthentication) as? Bool {
+            return value
         }
         
-        set {
-            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: DefaultsKeys.publicKeyPath)
-        }
+        return DefaultValues.enableAuthentication
     }
     
     var logLevel: SyncServerLogLevel {
@@ -89,20 +87,21 @@ class ServerViewController: NSViewController {
         hostTextField.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.host, options: [NSNullPlaceholderBindingOption: DefaultValues.host])
         portTextField.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.port, options: [NSNullPlaceholderBindingOption: DefaultValues.port])
         realmDirectoryPathTextField.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.realmDirectoryPath, options: [NSNullPlaceholderBindingOption: DefaultValues.realmDirectoryPath])
-        publicKeyPathTextField.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.publicKeyPath, options: [NSNullPlaceholderBindingOption: "(Optional)"])
+        enableAuthenticationCheckbox.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.enableAuthentication, options: [NSNullPlaceholderBindingOption: DefaultValues.enableAuthentication])
         logLevelPopUpButton.bind(NSSelectedIndexBinding, toStandardUserDefaultsKey: DefaultsKeys.logLevel, options: [NSNullPlaceholderBindingOption: DefaultValues.logLevel.rawValue])
         
         logOutputTextView.font = NSFont(name: "Menlo", size: 11)
         logOutputTextView.textContainerInset = NSSize(width: 4, height: 6)
         logOutputTextView.delegate = self
         
+        server.publicKeyURL = NSBundle.mainBundle().URLForResource("public", withExtension: "pem")
         server.delegate = self
         
         updateUI()
     }
     
     private func updateUI() {
-        for control in [hostTextField, portTextField, realmDirectoryPathTextField, selectRealmDirectoryPathButton, publicKeyPathTextField, selectPublicKeyPathButton, logLevelPopUpButton] {
+        for control in [hostTextField, portTextField, realmDirectoryPathTextField, selectRealmDirectoryPathButton, enableAuthenticationCheckbox, logLevelPopUpButton] {
             control.enabled = !server.running
         }
         
@@ -135,29 +134,13 @@ extension ServerViewController {
         }
     }
     
-    @IBAction func selectPublicKeyPath(sender: AnyObject?) {
-        let openPanel = NSOpenPanel()
-        
-        openPanel.canChooseFiles = true
-        openPanel.allowedFileTypes = ["pem"]
-        openPanel.canChooseDirectories = false
-        openPanel.message = "Select a public key file"
-        openPanel.prompt = "Select"
-        
-        openPanel.beginSheetModalForWindow(view.window!) { result in
-            if let path = openPanel.URL?.path where result == NSFileHandlingPanelOKButton {
-                self.publicKeyPath = path
-            }
-        }
-    }
-    
     @IBAction func startServer(sender: AnyObject?) {
         clearLog()
         
         server.host = host
         server.port = port
         server.realmDirectoryPath = realmDirectoryPath
-        server.publicKeyPath = publicKeyPath
+        server.enableAuthentication = enableAuthentication
         server.logLevel = logLevel
         
         do {
