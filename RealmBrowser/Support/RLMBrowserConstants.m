@@ -24,6 +24,7 @@ const CGFloat kMenuImageSize = 16;
 const NSInteger kMaxNumberOfFilesAtOnce = 20;
 
 NSString * const kRealmFileExtension    = @"realm";
+NSString * const kRealmUTIIdentifier    = @"io.realm.realm";
 NSString * const kDeveloperFolder       = @"/Developer";
 NSString * const kSimulatorFolder       = @"/Library/Application Support/iPhone Simulator";
 NSString * const kDesktopFolder         = @"/Desktop";
