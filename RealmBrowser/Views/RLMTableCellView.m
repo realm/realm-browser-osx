@@ -68,18 +68,31 @@
     }
     
     _optional = optional;
-    
-    if (self.textField == nil) {
+
+    [self configurePlaceholderStringHighlighted:NO];
+}
+
+- (void)setBackgroundStyle:(NSBackgroundStyle)backgroundStyle
+{
+    [super setBackgroundStyle:backgroundStyle];
+    [self configurePlaceholderStringHighlighted:(backgroundStyle == NSBackgroundStyleDark)];
+}
+
+- (void)configurePlaceholderStringHighlighted:(BOOL)highlighted
+{
+    if (_optional == NO || self.textField == nil) {
         return;
     }
     
-    if (_optional) {
-        NSDictionary *attributes = @{NSForegroundColorAttributeName:[NSColor colorWithRGBAFloatValues:(CGFloat *)kNilItemColor]};
-        self.textField.placeholderAttributedString = [[NSAttributedString alloc] initWithString:@"nil" attributes:attributes];
+    NSDictionary *attributes = nil;
+    if (highlighted) {
+        attributes = @{NSForegroundColorAttributeName:[NSColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f]};
     }
     else {
-        self.textField.placeholderAttributedString = nil;
+        attributes = @{NSForegroundColorAttributeName:[NSColor colorWithRGBAFloatValues:(CGFloat *)kNilItemColor]};
     }
+    
+    self.textField.placeholderAttributedString = [[NSAttributedString alloc] initWithString:@"nil" attributes:attributes];
 }
 
 @end
