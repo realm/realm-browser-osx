@@ -92,7 +92,8 @@
         attributes = @{NSForegroundColorAttributeName:[NSColor colorWithRGBAFloatValues:(CGFloat *)kNilItemColor]};
     }
     
-    self.textField.placeholderAttributedString = [[NSAttributedString alloc] initWithString:@"nil" attributes:attributes];
+    NSString *placeholderDescriptor = @"nil";
+    self.textField.placeholderAttributedString = [[NSAttributedString alloc] initWithString:placeholderDescriptor attributes:attributes];
 }
 
 @end
