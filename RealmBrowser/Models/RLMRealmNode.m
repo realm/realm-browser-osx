@@ -166,7 +166,7 @@ void RLMClearRealmCache();
                                                      defaultButton:@"OK"
                                                    alternateButton:nil
                                                        otherButton:nil
-                                         informativeTextWithFormat:@"The URL you provided doen't exist on the server or contains an empty Realm file. Please verify URL and try again."];
+                                         informativeTextWithFormat:@"The realm you are trying to open is empty or could not connect to the server. Please check the URL and that the server is accessible and try again."];
                     
                     [alert runModal];
                 });
