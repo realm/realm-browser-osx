@@ -20,6 +20,13 @@
 #import "RLMBrowserConstants.h"
 #import "NSColor+ByteSizeFactory.h"
 
+@interface RLMTableCellView ()
+
+@property (nonatomic, strong) NSAttributedString *highlightedPlaceholderString;
+@property (nonatomic, strong) NSAttributedString *defaultPlaceholderString;
+
+@end
+
 @implementation RLMTableCellView
 
 + (instancetype)viewWithIdentifier:(NSString *)identifier
@@ -72,12 +79,6 @@
     [self configurePlaceholderStringHighlighted:NO];
 }
 
-- (void)setNonNullEmpty:(BOOL)nonNullEmpty
-{
-    _nonNullEmpty = nonNullEmpty;
-    [self configurePlaceholderStringHighlighted:NO];
-}
-
 - (void)setBackgroundStyle:(NSBackgroundStyle)backgroundStyle
 {
     [super setBackgroundStyle:backgroundStyle];
@@ -90,15 +91,23 @@
         return;
     }
     
-    NSDictionary *attributes = nil;
-    if (highlighted) {
-        attributes = @{NSForegroundColorAttributeName:[NSColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f]};
-    }
-    else {
-        attributes = @{NSForegroundColorAttributeName:[NSColor colorWithRGBAFloatValues:(CGFloat *)kNilItemColor]};
+    if (self.highlightedPlaceholderString == nil || self.defaultPlaceholderString == nil) {
+        NSDictionary *highlightedAttributes = @{NSForegroundColorAttributeName:[NSColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f]};
+        self.highlightedPlaceholderString = [[NSAttributedString alloc] initWithString:@"nil" attributes:highlightedAttributes];
+        
+        NSDictionary *defaultAttributes = @{NSForegroundColorAttributeName:[NSColor colorWithRGBAFloatValues:(CGFloat *)kNilItemColor]};
+        self.defaultPlaceholderString = [[NSAttributedString alloc] initWithString:@"nil" attributes:defaultAttributes];
+        
     }
     
-    self.textField.placeholderAttributedString = [[NSAttributedString alloc] initWithString:@"nil" attributes:attributes];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        if (highlighted && self.textField.placeholderAttributedString != self.highlightedPlaceholderString) {
+            self.textField.placeholderAttributedString = self.highlightedPlaceholderString;
+        }
+        else if (!highlighted && self.textField.placeholderAttributedString != self.defaultPlaceholderString) {
+            self.textField.placeholderAttributedString = self.defaultPlaceholderString;
+        }
+    }];
 }
 
 @end
