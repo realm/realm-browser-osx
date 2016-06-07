@@ -38,10 +38,15 @@
     
     NSPopUpButton *popupButton = [[NSPopUpButton alloc] initWithFrame:self.bounds pullsDown:NO];
     popupButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [popupButton addItemsWithTitles:@[@"nil", @"false", @"true"]];
+    [popupButton addItemsWithTitles:@[@"nil", @"False", @"True"]];
     popupButton.bordered = NO;
     self.popupControl = popupButton;
     [self addSubview:popupButton];
+
+    //make the 'nil' item red
+    NSMenuItem *nilItem = self.popupControl.itemArray.firstObject;
+    NSDictionary *attributes = @{NSForegroundColorAttributeName:[NSColor colorWithRGBAFloatValues:(CGFloat *)kNilItemColor]};
+    nilItem.attributedTitle = [[NSAttributedString alloc] initWithString:@"nil" attributes:attributes];
     
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.popupControl
                                                      attribute:NSLayoutAttributeWidth
