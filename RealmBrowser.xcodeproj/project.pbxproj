@@ -15,6 +15,7 @@
 		2234B66B1CF83CEB00EAFDF0 /* NSURLComponents+FragmentItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 2234B66A1CF83CEB00EAFDF0 /* NSURLComponents+FragmentItems.m */; };
 		2234B6711CF83FBA00EAFDF0 /* RLMBrowserConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 2234B6701CF83FBA00EAFDF0 /* RLMBrowserConstants.m */; };
 		2249D9B219A62EBD00A31104 /* RLMTableColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 2249D9B119A62EBD00A31104 /* RLMTableColumn.m */; };
+		2250CB571CFEA23F007B6566 /* RLMOptionalBoolTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2250CB561CFEA23F007B6566 /* RLMOptionalBoolTableCellView.m */; };
 		225443F519E3E6360045996B /* RLMTableHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 225443F419E3E6360045996B /* RLMTableHeaderCell.m */; };
 		22565D6719C1BCF400C8C8EC /* RLMLinkTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22565D6619C1BCF400C8C8EC /* RLMLinkTableCellView.m */; };
 		2257869E1BD563A00012436A /* RLMEncryptionKeyWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2257869D1BD563A00012436A /* RLMEncryptionKeyWindowController.m */; };
@@ -107,6 +108,8 @@
 		2234B6701CF83FBA00EAFDF0 /* RLMBrowserConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMBrowserConstants.m; sourceTree = "<group>"; };
 		2249D9B019A62EBD00A31104 /* RLMTableColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTableColumn.h; sourceTree = "<group>"; };
 		2249D9B119A62EBD00A31104 /* RLMTableColumn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTableColumn.m; sourceTree = "<group>"; };
+		2250CB551CFEA23F007B6566 /* RLMOptionalBoolTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMOptionalBoolTableCellView.h; sourceTree = "<group>"; };
+		2250CB561CFEA23F007B6566 /* RLMOptionalBoolTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMOptionalBoolTableCellView.m; sourceTree = "<group>"; };
 		225443F319E3E6360045996B /* RLMTableHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTableHeaderCell.h; sourceTree = "<group>"; };
 		225443F419E3E6360045996B /* RLMTableHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTableHeaderCell.m; sourceTree = "<group>"; };
 		22565D6519C1BCF400C8C8EC /* RLMLinkTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMLinkTableCellView.h; sourceTree = "<group>"; };
@@ -286,6 +289,8 @@
 				22E4737119924CF700EEF7C9 /* RLMBasicTableCellView.m */,
 				22E473771992562400EEF7C9 /* RLMBoolTableCellView.h */,
 				22E473781992562400EEF7C9 /* RLMBoolTableCellView.m */,
+				2250CB551CFEA23F007B6566 /* RLMOptionalBoolTableCellView.h */,
+				2250CB561CFEA23F007B6566 /* RLMOptionalBoolTableCellView.m */,
 				221322F819954AB100D25737 /* RLMImageTableCellView.h */,
 				221322F919954AB100D25737 /* RLMImageTableCellView.m */,
 				22565D6519C1BCF400C8C8EC /* RLMLinkTableCellView.h */,
@@ -668,6 +673,7 @@
 				2249D9B219A62EBD00A31104 /* RLMTableColumn.m in Sources */,
 				220D382819B639D700F79496 /* RLMTestDataGenerator.m in Sources */,
 				84E35A42196A9F3B007F0344 /* RLMNavigationState.m in Sources */,
+				2250CB571CFEA23F007B6566 /* RLMOptionalBoolTableCellView.m in Sources */,
 				84D7990D19388E8900FC76A0 /* RLMRealmNode.m in Sources */,
 				2234B6711CF83FBA00EAFDF0 /* RLMBrowserConstants.m in Sources */,
 				22DC87E61B98086D0024BA34 /* RLMExportIndicatorWindowController.m in Sources */,
