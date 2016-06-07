@@ -33,8 +33,6 @@ const NSInteger NOT_A_COLUMN = -1;
     RLMTableLocation currentMouseLocation;
     RLMTableLocation previousMouseLocation;
 
-    NSMenuItem *insertEmptyStringItem;
-    
     NSMenuItem *clickLockItem;
 
     NSMenuItem *deleteObjectItem;
@@ -142,12 +140,6 @@ const NSInteger NOT_A_COLUMN = -1;
                                                           action:@selector(openArrayInNewWindowAction:)
                                                    keyEquivalent:@""];
     openArrayInNewWindowItem.tag = 230;
-    
-    // Insert an empty (ie non-nil) string value
-    insertEmptyStringItem = [[NSMenuItem alloc] initWithTitle:@"Insert empty string value"
-                                                       action:@selector(insertEmptyStringAction:)
-                                                keyEquivalent:@""];
-    insertEmptyStringItem.tag = 231;
 }
 
 #pragma mark - NSMenu Delegate
@@ -198,9 +190,6 @@ const NSInteger NOT_A_COLUMN = -1;
         return;
     }
     
-    NSMenuItem *separator = [NSMenuItem separatorItem];
-    [self.menu addItem:separator];
-    
     // Below, only menu items that make sense when clicking in a column
     
     if ([self.realmDelegate containsObjectInRows:self.selectedRowIndexes column:self.clickedColumn]) {
@@ -208,9 +197,6 @@ const NSInteger NOT_A_COLUMN = -1;
     }
     else if ([self.realmDelegate containsArrayInRows:self.selectedRowIndexes column:self.clickedColumn]) {
         [self.menu addItem:removeLinkToArrayItem];
-    }
-    else if ([self.realmDelegate containsOptionalStringInRows:self.selectedRowIndexes column:self.clickedColumn]) {
-        [self.menu addItem:insertEmptyStringItem];
     }
 }
 
@@ -406,11 +392,6 @@ const NSInteger NOT_A_COLUMN = -1;
 - (IBAction)openArrayInNewWindowAction:(id)sender
 {
     [self.realmDelegate openArrayInNewWindowAtRow:self.clickedRow column:self.clickedColumn];
-}
-
-- (IBAction)insertEmptyStringAction:(id)sender
-{
-    [self.realmDelegate insertEmptyStringIntoRow:self.clickedRow column:self.clickedColumn];
 }
 
 #pragma mark - NSView Overrides

@@ -457,13 +457,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     return [self propertyTypeForColumn:column] == RLMPropertyTypeObject;
 }
 
-- (BOOL)isColumnOptionalStringType:(NSInteger)column
-{
-    NSAssert(column != NOT_A_COLUMN, @"This method can only be used with an actual column index");
-    RLMProperty *property = [self propertyForColumn:column];
-    return (property.type == RLMPropertyTypeString && property.optional);
-}
-
 // Asking the delegate about the contents
 - (BOOL)containsObjectInRows:(NSIndexSet *)rowIndexes column:(NSInteger)column;
 {
@@ -485,20 +478,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     NSInteger propertyIndex = [self propertyIndexForColumn:column];
     
     if ([self propertyTypeForColumn:column] != RLMPropertyTypeArray) {
-        return NO;
-    }
-    
-    return [self cellsAreNonEmptyInRows:rowIndexes propertyColumn:propertyIndex];
-}
-
-- (BOOL)containsOptionalStringInRows:(NSIndexSet *)rowIndexes column:(NSInteger)column
-{
-    NSAssert(column != NOT_A_COLUMN, @"This method can only be used with an actual column index");
-    
-    NSInteger propertyIndex = [self propertyIndexForColumn:column];
-    
-    RLMProperty *property = [self propertyForColumn:propertyIndex];
-    if (property.type != RLMPropertyTypeString || property.optional == NO) {
         return NO;
     }
     
@@ -616,24 +595,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     [self.parentWindowController newWindowWithNavigationState:state];
 }
 
-- (void)insertEmptyStringIntoRow:(NSInteger)row column:(NSInteger)columnIndex
-{
-    NSInteger propertyIndex = [self propertyIndexForColumn:columnIndex];
-    RLMClassProperty *classProperty = self.displayedType.propertyColumns[propertyIndex];
-    if (classProperty.property.type != RLMPropertyTypeString) {
-        return;
-    }
-    
-    RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
-    RLMObject *selectedInstance = [self.displayedType instanceAtIndex:row];
-    
-    [realm transactionWithBlock:^{
-        selectedInstance[classProperty.name] = @"";
-    }];
-    
-    [self.parentWindowController reloadAllWindows];
-}
-
 #pragma mark - Private Methods - RLMTableView Delegate Helpers
 
 + (RLMObject *)createObjectInRealm:(RLMRealm *)realm withSchema:(RLMObjectSchema *)schema
@@ -726,18 +687,15 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     }
 }
 
-- (RLMProperty *)propertyForColumn:(NSInteger)column
+- (RLMPropertyType)propertyTypeForColumn:(NSInteger)column
 {
     NSInteger propertyIndex = [self propertyIndexForColumn:column];
+
     RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
     RLMObjectSchema *objectSchema = [realm.schema schemaForClassName:self.displayedType.name];
     RLMProperty *property = objectSchema.properties[propertyIndex];
-    return property;
-}
-
-- (RLMPropertyType)propertyTypeForColumn:(NSInteger)column
-{
-    return [self propertyForColumn:column].type;
+    
+    return property.type;
 }
 
 - (BOOL)cellsAreNonEmptyInRows:(NSIndexSet *)rowIndexes propertyColumn:(NSInteger)propertyColumn
