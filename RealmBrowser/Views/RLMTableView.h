@@ -50,10 +50,14 @@ typedef struct {
 
 - (BOOL)isColumnObjectType:(NSInteger)column;
 
+- (BOOL)isColumnOptionalStringType:(NSInteger)column;
+
 // Asking the delegate about the contents
 - (BOOL)containsObjectInRows:(NSIndexSet *)rowIndexes column:(NSInteger)column;
 
 - (BOOL)containsArrayInRows:(NSIndexSet *)rowIndexes column:(NSInteger)column;
+
+- (BOOL)containsOptionalStringInRows:(NSIndexSet *)rowIndexes column:(NSInteger)column;
 
 // RLMObject operations (when showing class table)
 - (void)addNewObjects:(NSIndexSet *)rowIndexes;
@@ -76,6 +80,9 @@ typedef struct {
 
 // Opening an array in a new window
 - (void)openArrayInNewWindowAtRow:(NSInteger)row column:(NSInteger)columnIndex;
+
+// Insert an empty string
+- (void)insertEmptyStringIntoRow:(NSInteger)row column:(NSInteger)columnIndex;
 
 @optional
 

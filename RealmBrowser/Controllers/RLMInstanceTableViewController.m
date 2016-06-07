@@ -318,8 +318,9 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             RLMBadgeTableCellView *badgeCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!badgeCellView) {
                 badgeCellView = [RLMBadgeTableCellView viewWithIdentifier:reuseIdentifier];
-                badgeCellView.optional = YES;
             }
+            badgeCellView.optional = YES;
+            
             NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             NSDictionary *attr = @{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)};
             badgeCellView.textField.attributedStringValue = [[NSAttributedString alloc] initWithString:string attributes:attr];
@@ -381,11 +382,11 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             RLMNumberTableCellView *numberCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!numberCellView) {
                 numberCellView = [RLMNumberTableCellView viewWithIdentifier:reuseIdentifier];
-                numberCellView.optional = optional;
                 numberCellView.textField.target = self;
                 numberCellView.textField.action = @selector(editedTextField:);
             }
 
+            numberCellView.optional = optional;
             numberCellView.textField.objectValue = propertyValue;            
             numberCellView.textField.editable = !self.realmIsLocked;
 
@@ -398,10 +399,10 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             RLMLinkTableCellView *linkCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!linkCellView) {
                 linkCellView = [RLMLinkTableCellView viewWithIdentifier:reuseIdentifier];
-                linkCellView.optional = optional;
                 linkCellView.textField.target = self;
                 linkCellView.textField.action = @selector(editedTextField:);
             }
+            linkCellView.optional = optional;
             NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             NSDictionary *attr = @{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)};
             linkCellView.textField.attributedStringValue = [[NSAttributedString alloc] initWithString:string attributes:attr];
@@ -421,10 +422,11 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             RLMBasicTableCellView *basicCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
             if (!basicCellView) {
                 basicCellView = [RLMBasicTableCellView viewWithIdentifier:reuseIdentifier];
-                basicCellView.optional = optional;
                 basicCellView.textField.target = self;
                 basicCellView.textField.action = @selector(editedTextField:);
             }
+            basicCellView.optional = optional;
+            basicCellView.nonNullEmpty = (propertyValue != nil);
             basicCellView.textField.stringValue = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
             basicCellView.textField.editable = !self.realmIsLocked && type != RLMPropertyTypeData;
 
@@ -455,6 +457,13 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     return [self propertyTypeForColumn:column] == RLMPropertyTypeObject;
 }
 
+- (BOOL)isColumnOptionalStringType:(NSInteger)column
+{
+    NSAssert(column != NOT_A_COLUMN, @"This method can only be used with an actual column index");
+    RLMProperty *property = [self propertyForColumn:column];
+    return (property.type == RLMPropertyTypeString && property.optional);
+}
+
 // Asking the delegate about the contents
 - (BOOL)containsObjectInRows:(NSIndexSet *)rowIndexes column:(NSInteger)column;
 {
@@ -476,6 +485,20 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     NSInteger propertyIndex = [self propertyIndexForColumn:column];
     
     if ([self propertyTypeForColumn:column] != RLMPropertyTypeArray) {
+        return NO;
+    }
+    
+    return [self cellsAreNonEmptyInRows:rowIndexes propertyColumn:propertyIndex];
+}
+
+- (BOOL)containsOptionalStringInRows:(NSIndexSet *)rowIndexes column:(NSInteger)column
+{
+    NSAssert(column != NOT_A_COLUMN, @"This method can only be used with an actual column index");
+    
+    NSInteger propertyIndex = [self propertyIndexForColumn:column];
+    
+    RLMProperty *property = [self propertyForColumn:propertyIndex];
+    if (property.type != RLMPropertyTypeString || property.optional == NO) {
         return NO;
     }
     
@@ -593,6 +616,24 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     [self.parentWindowController newWindowWithNavigationState:state];
 }
 
+- (void)insertEmptyStringIntoRow:(NSInteger)row column:(NSInteger)columnIndex
+{
+    NSInteger propertyIndex = [self propertyIndexForColumn:columnIndex];
+    RLMClassProperty *classProperty = self.displayedType.propertyColumns[propertyIndex];
+    if (classProperty.property.type != RLMPropertyTypeString) {
+        return;
+    }
+    
+    RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
+    RLMObject *selectedInstance = [self.displayedType instanceAtIndex:row];
+    
+    [realm transactionWithBlock:^{
+        selectedInstance[classProperty.name] = @"";
+    }];
+    
+    [self.parentWindowController reloadAllWindows];
+}
+
 #pragma mark - Private Methods - RLMTableView Delegate Helpers
 
 + (RLMObject *)createObjectInRealm:(RLMRealm *)realm withSchema:(RLMObjectSchema *)schema
@@ -685,15 +726,18 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     }
 }
 
-- (RLMPropertyType)propertyTypeForColumn:(NSInteger)column
+- (RLMProperty *)propertyForColumn:(NSInteger)column
 {
     NSInteger propertyIndex = [self propertyIndexForColumn:column];
-
     RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
     RLMObjectSchema *objectSchema = [realm.schema schemaForClassName:self.displayedType.name];
     RLMProperty *property = objectSchema.properties[propertyIndex];
-    
-    return property.type;
+    return property;
+}
+
+- (RLMPropertyType)propertyTypeForColumn:(NSInteger)column
+{
+    return [self propertyForColumn:column].type;
 }
 
 - (BOOL)cellsAreNonEmptyInRows:(NSIndexSet *)rowIndexes propertyColumn:(NSInteger)propertyColumn
