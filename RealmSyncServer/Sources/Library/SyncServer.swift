@@ -100,7 +100,10 @@ class SyncServer {
     private func serverTaskArguments() -> [String] {
         var arguments: [String] = []
         
+        arguments.append("-r")
         arguments.append(realmDirectoryPath)
+        
+        arguments.append("-L")
         arguments.append(host)
         
         arguments.append("-p")
