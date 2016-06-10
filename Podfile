@@ -8,13 +8,13 @@ workspace 'RealmBrowser.xcworkspace'
 
 target 'RealmBrowser' do
 	pod 'AppSandboxFileAccess'
-    pod 'Realm', '1.0.0-1'
+    pod 'Realm', '1.0.0-2'
 	pod 'RealmConverter'
 end
 
 target 'RealmSyncServer' do
 	xcodeproj 'RealmSyncServer/RealmSyncServer.xcodeproj'
-    pod 'RealmSyncServerBinaries', '0.23.0'
+    pod 'RealmSyncServerBinaries', '0.23.1'
 end
 
 post_install do |installer|
