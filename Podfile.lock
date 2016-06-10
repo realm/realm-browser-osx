@@ -2,30 +2,30 @@ PODS:
   - AppSandboxFileAccess (1.0.14)
   - CSwiftV (0.0.5)
   - PathKit (0.6.0)
-  - Realm (1.0.0-1)
+  - Realm (1.0.0-2)
   - RealmConverter (0.1.2):
     - CSwiftV
     - PathKit
     - Realm
     - TGSpreadsheetWriter
-  - RealmSyncServerBinaries (0.23.0)
+  - RealmSyncServerBinaries (0.23.1)
   - SSZipArchive (1.2)
   - TGSpreadsheetWriter (1.0.2):
     - SSZipArchive
 
 DEPENDENCIES:
   - AppSandboxFileAccess
-  - Realm (= 1.0.0-1)
+  - Realm (= 1.0.0-2)
   - RealmConverter
-  - RealmSyncServerBinaries (= 0.23.0)
+  - RealmSyncServerBinaries (= 0.23.1)
 
 SPEC CHECKSUMS:
   AppSandboxFileAccess: f3e10b0ba10bbaa6dc6996639ff47836050329c5
   CSwiftV: 2560532e2e5b04d95c36b0f49a8dc745071fa525
   PathKit: b224b6d2c4e75b87f08f45e1c0c610a3195c94e5
-  Realm: 97e82e7a5a4c528b69ad4a3bc26e0a671cd963c1
+  Realm: baf83a30ab51e9d212f95f94a5da16964981bccf
   RealmConverter: a771c323e50126bd8ad499b4b73f617b103a95c5
-  RealmSyncServerBinaries: cfb4e9cd70c8ce0a6509ae302daa4ab1c6753aa6
+  RealmSyncServerBinaries: 27f9cc075908ba94e1c76533b2268d3c917d6206
   SSZipArchive: 251093c65f98d6ea282c50bc404bfa631d9fd721
   TGSpreadsheetWriter: 09bbb2c18a111a11c94ff9c1af2320e2530c958e
 
