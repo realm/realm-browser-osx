@@ -33,7 +33,7 @@ class GenerateCredentialsViewController: NSViewController {
     
     weak var delegate: GenerateCredentialsViewControllerDelegate?
     
-    private let tokenGenerator = TokenGenerator(privateKeyURL: NSBundle.mainBundle().URLForResource("private", withExtension: "pem")!, passphrase: "OutOfThePark")
+    private let tokenGenerator = TokenGenerator(privateKeyURL: NSBundle.mainBundle().URLForResource("private", withExtension: "pem")!)!
     
     private var identity: String {
         return identityTextField.stringValue
