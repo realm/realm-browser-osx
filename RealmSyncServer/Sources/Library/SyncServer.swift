@@ -28,14 +28,12 @@ class SyncServer {
     
     var host: String!
     var port: Int!
-    var realmDirectoryURL: NSURL?
+    var rootDirectoryURL: NSURL!
     
     var publicKeyURL: NSURL?
     var enableAuthentication = true
     
     var logLevel: SyncServerLogLevel = .Everything
-    
-    var realmDirectoryPath: String!
     
     var running: Bool {
         return serverTask != nil
@@ -53,8 +51,8 @@ class SyncServer {
             return
         }
         
-        if !NSFileManager.defaultManager().fileExistsAtPath(realmDirectoryPath) {
-            try NSFileManager.defaultManager().createDirectoryAtPath(realmDirectoryPath, withIntermediateDirectories: true, attributes: nil)
+        if !rootDirectoryURL.checkResourceIsReachableAndReturnError(nil) {
+            try NSFileManager.defaultManager().createDirectoryAtURL(rootDirectoryURL, withIntermediateDirectories: true, attributes: nil)
         }
         
         let outputPipe = NSPipe()
@@ -101,7 +99,7 @@ class SyncServer {
         var arguments: [String] = []
         
         arguments.append("-r")
-        arguments.append(realmDirectoryPath)
+        arguments.append(rootDirectoryURL.path!)
         
         arguments.append("-L")
         arguments.append(host)

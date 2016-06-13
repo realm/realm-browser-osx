@@ -68,6 +68,10 @@ class GenerateCredentialsViewController: NSViewController {
         allowUploadCheckbox.state = DefaultValues.uploadAllowed ? NSOnState : NSOffState
         allowDownloadCheckbox.state = DefaultValues.downloadAllowed ? NSOnState : NSOffState
         
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineBreakMode = .ByCharWrapping
+        
+        tokenTextView.defaultParagraphStyle = paragraphStyle
         tokenTextView.font = NSFont(name: "Menlo", size: 12)
         
         updateUI()
