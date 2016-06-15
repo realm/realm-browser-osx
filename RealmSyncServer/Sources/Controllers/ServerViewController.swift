@@ -11,7 +11,6 @@ import Cocoa
 private struct DefaultValues {
     static let host = "127.0.0.1"
     static let port = 7800
-    static let realmDirectoryPath = NSFileManager.defaultManager().URLForApplicationDataDirectory().path!
     static let enableAuthentication = true
     static let logLevel: SyncServerLogLevel = .Normal
 }
@@ -19,7 +18,6 @@ private struct DefaultValues {
 private struct DefaultsKeys {
     static let host = "ServerHost"
     static let port = "ServerPort"
-    static let realmDirectoryPath = "ServerRealmDirectoryPath"
     static let enableAuthentication = "ServerEnableAuthentication"
     static let logLevel = "ServerLogLevel"
 }
@@ -28,17 +26,10 @@ class ServerViewController: NSViewController {
     
     @IBOutlet weak var hostTextField: NSTextField!
     @IBOutlet weak var portTextField: NSTextField!
-    
-    @IBOutlet weak var realmDirectoryPathTextField: NSTextField!
-    @IBOutlet weak var selectRealmDirectoryPathButton: NSButton!
-    
     @IBOutlet weak var enableAuthenticationCheckbox: NSButton!
-    
     @IBOutlet weak var logLevelPopUpButton: NSPopUpButton!
-    
-    @IBOutlet weak var startServerButton: NSButton!
-    @IBOutlet weak var stopServerButton: NSButton!
-    
+    @IBOutlet weak var startStopServerButton: NSButton!
+    @IBOutlet weak var resetSyncDataButton: NSButton!
     @IBOutlet var logOutputTextView: NSTextView!
     
     var host: String {
@@ -51,16 +42,6 @@ class ServerViewController: NSViewController {
         }
         
         return Int(stringValue) ?? DefaultValues.port
-    }
-    
-    var realmDirectoryPath: String {
-        get {
-            return NSUserDefaults.standardUserDefaults().stringForKey(DefaultsKeys.realmDirectoryPath) ?? DefaultValues.realmDirectoryPath
-        }
-        
-        set {
-            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: DefaultsKeys.realmDirectoryPath)
-        }
     }
     
     var enableAuthentication: Bool {
@@ -86,7 +67,6 @@ class ServerViewController: NSViewController {
         
         hostTextField.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.host, options: [NSNullPlaceholderBindingOption: DefaultValues.host])
         portTextField.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.port, options: [NSNullPlaceholderBindingOption: DefaultValues.port])
-        realmDirectoryPathTextField.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.realmDirectoryPath, options: [NSNullPlaceholderBindingOption: DefaultValues.realmDirectoryPath])
         enableAuthenticationCheckbox.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.enableAuthentication, options: [NSNullPlaceholderBindingOption: DefaultValues.enableAuthentication])
         logLevelPopUpButton.bind(NSSelectedIndexBinding, toStandardUserDefaultsKey: DefaultsKeys.logLevel, options: [NSNullPlaceholderBindingOption: DefaultValues.logLevel.rawValue])
         
@@ -94,6 +74,7 @@ class ServerViewController: NSViewController {
         logOutputTextView.textContainerInset = NSSize(width: 4, height: 6)
         logOutputTextView.delegate = self
         
+        server.rootDirectoryURL = NSFileManager.defaultManager().URLForApplicationDataDirectory()
         server.publicKeyURL = NSBundle.mainBundle().URLForResource("public", withExtension: "pem")
         server.delegate = self
         
@@ -101,12 +82,11 @@ class ServerViewController: NSViewController {
     }
     
     private func updateUI() {
-        for control in [hostTextField, portTextField, realmDirectoryPathTextField, selectRealmDirectoryPathButton, enableAuthenticationCheckbox, logLevelPopUpButton] {
+        for control in [hostTextField, portTextField, enableAuthenticationCheckbox, logLevelPopUpButton, resetSyncDataButton] {
             control.enabled = !server.running
         }
         
-        startServerButton.enabled = !server.running
-        stopServerButton.enabled = server.running
+        startStopServerButton.title = server.running ? "Stop server" : "Start server"
     }
     
     private func outputLog(message: String) {
@@ -118,43 +98,44 @@ class ServerViewController: NSViewController {
 
 extension ServerViewController {
     
-    @IBAction func selectRealmDirectoryPath(sender: AnyObject?) {
-        let openPanel = NSOpenPanel()
-        
-        openPanel.canChooseFiles = false
-        openPanel.canChooseDirectories = true
-        openPanel.canCreateDirectories = true
-        openPanel.message = "Select a directory where Realm files will be stored"
-        openPanel.prompt = "Select"
-        
-        openPanel.beginSheetModalForWindow(view.window!) { result in
-            if let path = openPanel.URL?.path where result == NSFileHandlingPanelOKButton {
-                self.realmDirectoryPath = path
+    @IBAction func startStopServer(sender: AnyObject?) {
+        if server.running {
+            server.stop()
+        } else {
+            clearLog()
+            
+            server.host = host
+            server.port = port
+            server.enableAuthentication = enableAuthentication
+            server.logLevel = logLevel
+            
+            do {
+                try server.start()
+            } catch let error as NSError {
+                NSAlert(error: error).beginSheetModalForWindow(view.window!, completionHandler: nil)
             }
         }
+        
+        updateUI()
     }
     
-    @IBAction func startServer(sender: AnyObject?) {
-        clearLog()
+    @IBAction func resetSyncData(sender: AnyObject?) {
+        let alert = NSAlert()
         
-        server.host = host
-        server.port = port
-        server.realmDirectoryPath = realmDirectoryPath
-        server.enableAuthentication = enableAuthentication
-        server.logLevel = logLevel
+        alert.messageText = "Reset Sync Data"
+        alert.informativeText = "Are you sure you want to delete all Sync Data?"
+        alert.addButtonWithTitle("Reset")
+        alert.addButtonWithTitle("Cancel")
         
-        do {
-            try server.start()
-        } catch let error as NSError {
-            NSAlert(error: error).beginSheetModalForWindow(view.window!, completionHandler: nil)
+        alert.beginSheetModalForWindow(view.window!) { result in
+            if result == NSAlertFirstButtonReturn {
+                do {
+                    try NSFileManager.defaultManager().removeItemAtURL(NSFileManager.defaultManager().URLForApplicationDataDirectory())
+                } catch let error as NSError {
+                    NSAlert(error: error).runModal()
+                }
+            }
         }
-        
-        updateUI()
-    }
-    
-    @IBAction func stopServer(sender: AnyObject?) {
-        server.stop()
-        updateUI()
     }
     
     @IBAction func clearLog(sender: AnyObject? = nil) {

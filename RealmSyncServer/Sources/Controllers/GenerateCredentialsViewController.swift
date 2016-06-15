@@ -33,7 +33,7 @@ class GenerateCredentialsViewController: NSViewController {
     
     weak var delegate: GenerateCredentialsViewControllerDelegate?
     
-    private let tokenGenerator = TokenGenerator(privateKeyURL: NSBundle.mainBundle().URLForResource("private", withExtension: "pem")!, passphrase: "OutOfThePark")
+    private let tokenGenerator = TokenGenerator(privateKeyURL: NSBundle.mainBundle().URLForResource("private", withExtension: "pem")!)!
     
     private var identity: String {
         return identityTextField.stringValue
@@ -68,6 +68,10 @@ class GenerateCredentialsViewController: NSViewController {
         allowUploadCheckbox.state = DefaultValues.uploadAllowed ? NSOnState : NSOffState
         allowDownloadCheckbox.state = DefaultValues.downloadAllowed ? NSOnState : NSOffState
         
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineBreakMode = .ByCharWrapping
+        
+        tokenTextView.defaultParagraphStyle = paragraphStyle
         tokenTextView.font = NSFont(name: "Menlo", size: 12)
         
         updateUI()
