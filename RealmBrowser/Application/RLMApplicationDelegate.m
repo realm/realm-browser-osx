@@ -609,7 +609,10 @@
     
     NSError *error = nil;
     if (![self createEmptyRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:userToken error:&error]) {
-        [[NSAlert alertWithError:error] runModal];
+        if (error != nil) {
+            [[NSAlert alertWithError:error] runModal];
+        }
+        
         return;
     }
     
@@ -678,7 +681,10 @@
 
     NSError *error = nil;
     if (![self createEmptyRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:userToken error:&error]) {
-        [[NSAlert alertWithError:error] runModal];
+        if (error != nil) {
+            [[NSAlert alertWithError:error] runModal];
+        }
+        
         return;
     }
     
@@ -712,7 +718,23 @@
     configuration.syncServerURL = syncServerURL;
     configuration.syncUserToken = token;
     
-    return [RLMRealm realmWithConfiguration:configuration error:error] != nil;
+    BOOL (^createRealm)(RLMRealmConfiguration *, NSError **) = ^BOOL(RLMRealmConfiguration *configuration, NSError **error) {
+        return [RLMRealm realmWithConfiguration:configuration error:error] != nil;
+    };
+    
+    __block BOOL result = NO;
+    
+    NSURL *folderURL = realmURL.URLByDeletingLastPathComponent;
+    
+    if ([[NSFileManager defaultManager] isWritableFileAtPath:folderURL.path]) {
+        result = createRealm(configuration, error);
+    } else {
+        [[AppSandboxFileAccess fileAccess] accessFileURL:folderURL persistPermission:YES withBlock:^{
+            result = createRealm(configuration, error);
+        }];
+    }
+    
+    return result;
 }
 
 - (NSURL *)temporaryURLForRealmFileWithSync:(NSString *)realmFileName {

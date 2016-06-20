@@ -70,13 +70,17 @@
             folderURL = [folderURL URLByDeletingLastPathComponent];
         }
         
-        AppSandboxFileAccess *sandBoxAccess = [AppSandboxFileAccess fileAccess];
-        [sandBoxAccess requestAccessPermissionsForFileURL:folderURL persistPermission:YES withBlock:^(NSURL *securityScopedFileURL, NSData *bookmarkData){
-            self.securityScopedURL = securityScopedFileURL;
-        }];
-        
-        if (self.securityScopedURL == nil)
-            return nil;
+        // In case we're trying to open Realm file located in app's container directory there is no reason to ask access permissions
+        if (![[NSFileManager defaultManager] isWritableFileAtPath:folderURL.path]) {
+            AppSandboxFileAccess *sandBoxAccess = [AppSandboxFileAccess fileAccess];
+            [sandBoxAccess requestAccessPermissionsForFileURL:folderURL persistPermission:YES withBlock:^(NSURL *securityScopedFileURL, NSData *bookmarkData) {
+                self.securityScopedURL = securityScopedFileURL;
+            }];
+            
+            if (self.securityScopedURL == nil) {
+                return nil;
+            }
+        }
         
         NSArray *fileNameComponents = [lastComponent componentsSeparatedByString:@"."];
         NSString *realmName = [fileNameComponents firstObject];
@@ -90,6 +94,7 @@
         self.fileURL = absoluteURL;
         
         void (^mainThreadBlock)() = ^{
+            [self.securityScopedURL startAccessingSecurityScopedResource];
             
             //Check to see if first the Realm file needs upgrading, and
             //if it does, prompt the user to confirm with proceeding
