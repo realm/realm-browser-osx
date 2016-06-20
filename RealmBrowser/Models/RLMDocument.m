@@ -63,29 +63,6 @@
         NSDictionary *fragmentsDictionary = components.fragmentItemsDictionary;
         
         BOOL showSyncRealmPrompt = (fragmentsDictionary[@"syncCredentialsPrompt"] != nil);
-        BOOL disableCopy = (fragmentsDictionary[@"disableSyncFileCopy"] != nil);
-        
-        //for the purpose of ensuring one sync agent per Realm file,
-        //make a tmp copy of the Realm file and refer to that one for now
-        if (showSyncRealmPrompt && !disableCopy) {
-            NSString *tempFilePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-            
-            NSString *folderName = [NSString stringWithFormat:@"io.realm.sync.%lu", (unsigned long)[absoluteURL.absoluteString hash]];
-            tempFilePath = [tempFilePath stringByAppendingPathComponent:folderName];
-            
-            //Create the folder
-            [[NSFileManager defaultManager] createDirectoryAtPath:tempFilePath withIntermediateDirectories:YES attributes:nil error:nil];
-            
-            NSString *fileName = absoluteURL.absoluteString.lastPathComponent;
-            //strip the fragment
-            fileName = [[fileName componentsSeparatedByString:@"#"] firstObject];
-            tempFilePath = [tempFilePath stringByAppendingPathComponent:fileName];
-            
-            NSURL *tempFileURL = [NSURL fileURLWithPath:tempFilePath];
-            [[NSFileManager defaultManager] copyItemAtURL:absoluteURL toURL:tempFileURL error:nil];
-            
-            absoluteURL = tempFileURL;
-        }
         
         NSURL *folderURL = absoluteURL;
         BOOL isDir = NO;

@@ -602,12 +602,10 @@
         return;
     }
     
-    NSString *tempFileName = [[NSUUID UUID].UUIDString stringByAppendingPathExtension:@"realm"];
-    NSString *tempFilePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"io.realm.realmbrowser"] stringByAppendingPathComponent:tempFileName];
-    
-    NSURL *realmURL = [NSURL fileURLWithPath:tempFilePath];
     NSURL *syncServerURL = connectionWindowController.credentialsViewController.syncServerURL;
     NSString *userToken = connectionWindowController.credentialsViewController.signedUserToken;
+    
+    NSURL *realmURL = [self temporaryURLForRealmFileWithSync:syncServerURL.lastPathComponent];
     
     NSError *error = nil;
     if (![self createEmptyRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:userToken error:&error]) {
@@ -615,7 +613,7 @@
         return;
     }
     
-    [self openRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:userToken makeCopy:NO];
+    [self openRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:userToken];
 }
 
 - (IBAction)openFileWithSync:(id *)sender
@@ -639,19 +637,26 @@
         return;
     }
     
-    NSURL *realmURL = openPanel.URL;
     NSURL *syncServerURL = credentialsViewController.syncServerURL;
     NSString *signedUserToken = credentialsViewController.signedUserToken;
     
-    NSAlert *alert = [NSAlert alertWithMessageText:@"Make a copy of this Realm file?"
-                                     defaultButton:@"No"
-                                   alternateButton:@"Yes"
-                                       otherButton:nil
-                         informativeTextWithFormat:@"Making a copy of this file is necessary if it is going to be accessed from another process at the same time (eg, via iOS Simulator)."];
+    NSURL *realmURL = openPanel.URL;
     
-    BOOL makeCopy = ([alert runModal] == 0);
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.messageText = @"Make a copy of this Realm file?";
+    alert.informativeText = @"Making a copy of this file is necessary if it is going to be accessed from another process at the same time (eg, via iOS Simulator).";
+    [alert addButtonWithTitle:@"No"];
+    [alert addButtonWithTitle:@"Yes"];
     
-    [self openRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:signedUserToken makeCopy:makeCopy];
+    if ([alert runModal] == NSAlertSecondButtonReturn) {
+        NSURL *tempURL = [self temporaryURLForRealmFileWithSync:realmURL.lastPathComponent];
+        
+        [[NSFileManager defaultManager] copyItemAtURL:realmURL toURL:tempURL error:nil];
+        
+        realmURL = tempURL;
+    }
+    
+    [self openRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:signedUserToken];
 }
 
 - (IBAction)createNewRealmFileAndOpenWithSyncURL:(NSMenuItem *)item
@@ -677,17 +682,13 @@
         return;
     }
     
-    [self openRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:userToken makeCopy:NO];
+    [self openRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:userToken];
 }
 
-- (void)openRealmWithSyncAtURL:(NSURL *)realmURL syncServerURL:(NSURL *)syncServerURL userToken:(NSString *)signedUserToken makeCopy:(BOOL)makeCopy {
+- (void)openRealmWithSyncAtURL:(NSURL *)realmURL syncServerURL:(NSURL *)syncServerURL userToken:(NSString *)signedUserToken {
     NSMutableArray *fragmentItems = [NSMutableArray array];
     
     NSURLComponents *components = [NSURLComponents componentsWithURL:realmURL resolvingAgainstBaseURL:NO];
-    
-    if (!makeCopy) {
-        [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"disableSyncFileCopy" value:@"1"]];
-    }
     
     [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"syncServerURL" value:syncServerURL.absoluteString]];
     [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"syncSignedUserToken" value:signedUserToken]];
@@ -712,6 +713,24 @@
     configuration.syncUserToken = token;
     
     return [RLMRealm realmWithConfiguration:configuration error:error] != nil;
+}
+
+- (NSURL *)temporaryURLForRealmFileWithSync:(NSString *)realmFileName {
+    NSString *uniqueString = [NSUUID UUID].UUIDString;
+    
+    if (realmFileName == nil) {
+        realmFileName = uniqueString;
+    }
+    
+    if (![realmFileName.pathExtension isEqualToString:@"realm"]) {
+        realmFileName = [realmFileName stringByAppendingPathExtension:@"realm"];
+    }
+    
+    NSString *tempDirectoryPath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"io.realm.realmbrowser"] stringByAppendingPathComponent:uniqueString];
+    
+    [[NSFileManager defaultManager] createDirectoryAtPath:tempDirectoryPath withIntermediateDirectories:YES attributes:nil error:nil];
+    
+    return [NSURL fileURLWithPath:[tempDirectoryPath stringByAppendingPathComponent:realmFileName]];
 }
 
 - (IBAction)runSyncServer:(id)sender
