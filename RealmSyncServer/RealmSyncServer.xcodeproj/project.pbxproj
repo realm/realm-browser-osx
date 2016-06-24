@@ -274,12 +274,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C22514541CF5A98D007E64EB /* Build configuration list for PBXNativeTarget "RealmSyncServer" */;
 			buildPhases = (
-				0C9E8B07061BA5656F540F03 /* Check Pods Manifest.lock */,
+				0C9E8B07061BA5656F540F03 /* [CP] Check Pods Manifest.lock */,
 				C225142B1CF5A98D007E64EB /* Sources */,
 				C225142C1CF5A98D007E64EB /* Frameworks */,
 				C225142D1CF5A98D007E64EB /* Resources */,
-				77E10D955F7B4F4FFDE8BF28 /* Embed Pods Frameworks */,
-				2B64DAC783F92CAC643CCEA5 /* Copy Pods Resources */,
+				77E10D955F7B4F4FFDE8BF28 /* [CP] Embed Pods Frameworks */,
+				2B64DAC783F92CAC643CCEA5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -404,14 +404,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0C9E8B07061BA5656F540F03 /* Check Pods Manifest.lock */ = {
+		0C9E8B07061BA5656F540F03 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -419,14 +419,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		2B64DAC783F92CAC643CCEA5 /* Copy Pods Resources */ = {
+		2B64DAC783F92CAC643CCEA5 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -434,14 +434,14 @@
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-RealmSyncServer/Pods-RealmSyncServer-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		77E10D955F7B4F4FFDE8BF28 /* Embed Pods Frameworks */ = {
+		77E10D955F7B4F4FFDE8BF28 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
