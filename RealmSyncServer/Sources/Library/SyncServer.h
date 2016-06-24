@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, SyncServerLogLevel) {
-    SyncServerLogLevelDefault,
-    SyncServerLogLevelNone
+    SyncServerLogLevelNormal = 0,
+    SyncServerLogLevelEverything
 };
 
 extern NSString * _Nonnull const SyncServerErrorDomain;

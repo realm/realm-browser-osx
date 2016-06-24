@@ -40,6 +40,18 @@ private:
 
 @implementation SyncServer {
     std::unique_ptr<sync::Server> _server;
+    std::unique_ptr<util::Logger> _logger;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    
+    if (self) {
+        _logger.reset(new SyncServerLogger(self));
+    }
+    
+    return self;
 }
 
 - (void)dealloc {
@@ -47,12 +59,9 @@ private:
 }
 
 - (BOOL)start:(NSError *__autoreleasing  _Nullable *)error {
-    std::unique_ptr<util::Logger> logger(new SyncServerLogger(self));
-    
-    // TODO: set logger level
+    bool log_everything = self.logLevel == SyncServerLogLevelEverything;
     
     util::Optional<sync::PKey> pkey;
-    
     if (self.publicKeyURL != nil) {
         try {
             pkey = sync::PKey::load_public(std::string(self.publicKeyURL.path.UTF8String));
@@ -66,7 +75,7 @@ private:
     }
     
     try {
-        _server.reset(new sync::Server(std::string(self.rootDirectoryURL.path.UTF8String), std::move(pkey), logger.get()));
+        _server.reset(new sync::Server(std::string(self.rootDirectoryURL.path.UTF8String), std::move(pkey), _logger.get(), log_everything));
     } catch (const realm::util::File::AccessError& e) {
         if (error != nil) {
             *error = [self errorWithErrorCode:-2 description:@"Error while opening root directory" stdException:e];

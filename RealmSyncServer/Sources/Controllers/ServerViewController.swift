@@ -12,7 +12,7 @@ private struct DefaultValues {
     static let host = "127.0.0.1"
     static let port = 7800
     static let enableAuthentication = true
-    static let logLevel: SyncServerLogLevel = .Default
+    static let logLevel: SyncServerLogLevel = .Normal
 }
 
 private struct DefaultsKeys {
@@ -89,7 +89,7 @@ class ServerViewController: NSViewController {
     }
     
     private func outputLog(message: String) {
-        logOutputTextView.string = logOutputTextView.string?.stringByAppendingString(message + "\n")
+        logOutputTextView.textStorage?.appendAttributedString(NSAttributedString(string: message + "\n"))
         logOutputTextView.scrollToEndOfDocument(nil)
     }
 
@@ -107,7 +107,6 @@ extension ServerViewController {
             server.port = port
             server.logLevel = logLevel
             server.publicKeyURL = enableAuthentication ? NSBundle.mainBundle().URLForResource("public", withExtension: "pem") : nil
-            
             
             do {
                 try server.start()
