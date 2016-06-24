@@ -21,7 +21,7 @@
 #import "RLMModelExporter.h"
 #import "RLMExportIndicatorWindowController.h"
 #import "RLMEncryptionKeyWindowController.h"
-#import "RLMSyncWindowController.h"
+#import "RLMSyncServerConnectionWindowController.h"
 
 @import Realm;
 @import Realm.Private;
@@ -51,7 +51,6 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 @property (nonatomic, strong) IBOutlet NSSearchField *searchField;
 
 @property (nonatomic, strong) RLMExportIndicatorWindowController *exportWindowController;
-@property (nonatomic, strong) RLMSyncWindowController *syncController;
 
 @property (nonatomic, strong) RLMEncryptionKeyWindowController *encryptionController;
 @property (nonatomic, strong) NSData *encryptionKey;
@@ -130,21 +129,19 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
 - (void)handleSyncPrompt
 {
-    self.syncController = [[RLMSyncWindowController alloc] initWithRealmFilePath:self.modelDocument.fileURL];
-    [self.window beginSheet:self.syncController.window completionHandler:^(NSModalResponse returnCode) {
-        if (returnCode != NSModalResponseOK) {
-            [self.document close];
-            return;
-        }
-        
-        self.modelDocument.presentedRealm.syncServerURL = self.syncController.serverURL;
-        self.modelDocument.presentedRealm.syncSignedUserToken = self.syncController.serverSignedUserToken;
+    RLMSyncServerConnectionWindowController *connectionWindowController = [[RLMSyncServerConnectionWindowController alloc] init];
+    
+    if ([connectionWindowController runModal] == NSModalResponseOK) {
+        self.modelDocument.presentedRealm.syncServerURL = connectionWindowController.credentialsViewController.syncServerURL.path;
+        self.modelDocument.presentedRealm.syncSignedUserToken = connectionWindowController.credentialsViewController.signedUserToken;
         
         typeof(self) __weak weakSelf = self;
         [self.modelDocument.presentedRealm connect:nil schemaLoadedCallBack:^{
             [weakSelf realmDidLoad];
         }];
-    }];
+    } else {
+        [self.document close];
+    }
 }
 
 #pragma mark - Public methods - Accessors

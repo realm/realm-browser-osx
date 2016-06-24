@@ -23,9 +23,9 @@ SPEC CHECKSUMS:
   AppSandboxFileAccess: f3e10b0ba10bbaa6dc6996639ff47836050329c5
   CSwiftV: 2560532e2e5b04d95c36b0f49a8dc745071fa525
   PathKit: b224b6d2c4e75b87f08f45e1c0c610a3195c94e5
-  Realm: 5399ae229eec805f6b06a9d4797adc31f0c55f38
+  Realm: df479b7872e81a024d76a3b425dfeb951d6f1c98
   RealmConverter: a771c323e50126bd8ad499b4b73f617b103a95c5
-  RealmSyncServerBinaries: 948bd37b3b36db63f09d2774ca89318ff1a39db1
+  RealmSyncServerBinaries: 457a7793da5a267e2600d78514ec01a9d7ca2366
   SSZipArchive: 251093c65f98d6ea282c50bc404bfa631d9fd721
   TGSpreadsheetWriter: 09bbb2c18a111a11c94ff9c1af2320e2530c958e
 

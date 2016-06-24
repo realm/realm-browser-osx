@@ -9,11 +9,8 @@
 /* Begin PBXBuildFile section */
 		22096B2719911F7300233D77 /* RLMBadgeTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */; };
 		220A4F131C05A85D00A32787 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 220A4F121C05A85D00A32787 /* libc++.tbd */; };
-		220BCC611CED6134006432ED /* RLMSyncWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 220BCC4F1CED6134006432ED /* RLMSyncWindowController.m */; };
 		220BCC641CED6134006432ED /* SyncCredentialsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220BCC551CED6134006432ED /* SyncCredentialsView.xib */; };
-		220BCC661CED6134006432ED /* SyncWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220BCC571CED6134006432ED /* SyncWindow.xib */; };
 		220BCC691CED89B2006432ED /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 220BCC681CED89B2006432ED /* Realm.framework */; };
-		220BCC7B1CED960A006432ED /* RLMSyncCredentialsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 220BCC7A1CED960A006432ED /* RLMSyncCredentialsView.m */; };
 		220D382819B639D700F79496 /* RLMTestDataGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 220D382719B639D700F79496 /* RLMTestDataGenerator.m */; };
 		221322FA19954AB100D25737 /* RLMImageTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221322F919954AB100D25737 /* RLMImageTableCellView.m */; };
 		221322FD19954B0A00D25737 /* RLMTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221322FC19954B0A00D25737 /* RLMTableCellView.m */; };
@@ -69,7 +66,10 @@
 		84E35A4D196B021B007F0344 /* RLMArrayNavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E35A4C196B021B007F0344 /* RLMArrayNavigationState.m */; };
 		ADBD77D758972C8C68C6F371 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		BE1B845E8A1FFEF254762D39 /* Pods_RealmBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B36A032C4471C7ECBA3D0A2 /* Pods_RealmBrowser.framework */; };
+		C2714EFC1D0EF64E00085A7A /* RLMSyncCredentialsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2714EFB1D0EF64E00085A7A /* RLMSyncCredentialsViewController.m */; };
 		C29C63521CFD8DA80099C501 /* Realm Sync Server.app in Copy Embedded Aplications */ = {isa = PBXBuildFile; fileRef = C29C63501CFD8D7B0099C501 /* Realm Sync Server.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C2B7CABE1D11A08900049C32 /* RLMSyncServerConnectionWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B7CABD1D11A08900049C32 /* RLMSyncServerConnectionWindowController.m */; };
+		C2B7CAC01D11A0C900049C32 /* SyncServerConnectionWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2B7CABF1D11A0C900049C32 /* SyncServerConnectionWindow.xib */; };
 		E84EB8291A2FC38C00EB780E /* RLMTestObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = E84EB8281A2FC38C00EB780E /* RLMTestObjects.m */; };
 /* End PBXBuildFile section */
 
@@ -102,13 +102,8 @@
 		22096B2519911F7300233D77 /* RLMBadgeTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMBadgeTableCellView.h; sourceTree = "<group>"; };
 		22096B2619911F7300233D77 /* RLMBadgeTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMBadgeTableCellView.m; sourceTree = "<group>"; };
 		220A4F121C05A85D00A32787 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
-		220BCC4E1CED6134006432ED /* RLMSyncWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMSyncWindowController.h; sourceTree = "<group>"; };
-		220BCC4F1CED6134006432ED /* RLMSyncWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMSyncWindowController.m; sourceTree = "<group>"; };
 		220BCC551CED6134006432ED /* SyncCredentialsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncCredentialsView.xib; sourceTree = "<group>"; };
-		220BCC571CED6134006432ED /* SyncWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncWindow.xib; sourceTree = "<group>"; };
 		220BCC681CED89B2006432ED /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
-		220BCC791CED960A006432ED /* RLMSyncCredentialsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMSyncCredentialsView.h; sourceTree = "<group>"; };
-		220BCC7A1CED960A006432ED /* RLMSyncCredentialsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMSyncCredentialsView.m; sourceTree = "<group>"; };
 		220D382619B639D700F79496 /* RLMTestDataGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTestDataGenerator.h; sourceTree = "<group>"; };
 		220D382719B639D700F79496 /* RLMTestDataGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTestDataGenerator.m; sourceTree = "<group>"; };
 		221322F819954AB100D25737 /* RLMImageTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMImageTableCellView.h; sourceTree = "<group>"; };
@@ -210,7 +205,12 @@
 		84E35A4C196B021B007F0344 /* RLMArrayNavigationState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMArrayNavigationState.m; sourceTree = "<group>"; };
 		B4DD42CE427D384E8A7351A0 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDF6250849D46F6574497388 /* Pods-RealmBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.debug.xcconfig"; sourceTree = "<group>"; };
+		C2714EFA1D0EF64E00085A7A /* RLMSyncCredentialsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMSyncCredentialsViewController.h; sourceTree = "<group>"; };
+		C2714EFB1D0EF64E00085A7A /* RLMSyncCredentialsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMSyncCredentialsViewController.m; sourceTree = "<group>"; };
 		C29C63501CFD8D7B0099C501 /* Realm Sync Server.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = "Realm Sync Server.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2B7CABC1D11A08900049C32 /* RLMSyncServerConnectionWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMSyncServerConnectionWindowController.h; sourceTree = "<group>"; };
+		C2B7CABD1D11A08900049C32 /* RLMSyncServerConnectionWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMSyncServerConnectionWindowController.m; sourceTree = "<group>"; };
+		C2B7CABF1D11A0C900049C32 /* SyncServerConnectionWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncServerConnectionWindow.xib; sourceTree = "<group>"; };
 		CA474127E67BC00EC1BC9986 /* Pods-RealmBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.release.xcconfig"; sourceTree = "<group>"; };
 		E84EB8271A2FC38C00EB780E /* RLMTestObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTestObjects.h; sourceTree = "<group>"; };
 		E84EB8281A2FC38C00EB780E /* RLMTestObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTestObjects.m; sourceTree = "<group>"; };
@@ -246,7 +246,6 @@
 			children = (
 				220BCC491CED6134006432ED /* Controllers */,
 				220BCC531CED6134006432ED /* Resources */,
-				220BCC581CED6134006432ED /* Views */,
 			);
 			path = RealmBrowserSync;
 			sourceTree = "<group>";
@@ -254,8 +253,10 @@
 		220BCC491CED6134006432ED /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				220BCC4E1CED6134006432ED /* RLMSyncWindowController.h */,
-				220BCC4F1CED6134006432ED /* RLMSyncWindowController.m */,
+				C2714EFA1D0EF64E00085A7A /* RLMSyncCredentialsViewController.h */,
+				C2714EFB1D0EF64E00085A7A /* RLMSyncCredentialsViewController.m */,
+				C2B7CABC1D11A08900049C32 /* RLMSyncServerConnectionWindowController.h */,
+				C2B7CABD1D11A08900049C32 /* RLMSyncServerConnectionWindowController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -264,18 +265,9 @@
 			isa = PBXGroup;
 			children = (
 				220BCC551CED6134006432ED /* SyncCredentialsView.xib */,
-				220BCC571CED6134006432ED /* SyncWindow.xib */,
+				C2B7CABF1D11A0C900049C32 /* SyncServerConnectionWindow.xib */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		220BCC581CED6134006432ED /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				220BCC791CED960A006432ED /* RLMSyncCredentialsView.h */,
-				220BCC7A1CED960A006432ED /* RLMSyncCredentialsView.m */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		84BCA5FE1951BC99008FC850 /* Resources */ = {
@@ -586,7 +578,7 @@
 					84E0F94B1921F3B900D6CA14 = {
 						SystemCapabilities = {
 							com.apple.Sandbox = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
@@ -623,13 +615,13 @@
 				84E0F96B1921F3B900D6CA14 /* Images.xcassets in Resources */,
 				22D2863B1B6BE6BA0078D07D /* FormatIcon.icns in Resources */,
 				225786A11BD564F40012436A /* EncryptionKeyWindow.xib in Resources */,
+				C2B7CAC01D11A0C900049C32 /* SyncServerConnectionWindow.xib in Resources */,
 				84E0F9601921F3B900D6CA14 /* Credits.rtf in Resources */,
 				220BCC641CED6134006432ED /* SyncCredentialsView.xib in Resources */,
 				84E0F9661921F3B900D6CA14 /* RLMDocument.xib in Resources */,
 				84E0F9691921F3B900D6CA14 /* MainMenu.xib in Resources */,
 				22DC87E81B9808790024BA34 /* RLMExportIndicatorWindowController.xib in Resources */,
 				36B669CB1B8B057F00F04AE1 /* RLMObjectLinkSelectionViewController.xib in Resources */,
-				220BCC661CED6134006432ED /* SyncWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,6 +692,7 @@
 				840F97C0192B7DCE006B591E /* RLMDocument.m in Sources */,
 				84AA41B01949CD7700A50F03 /* RLMArrayNode.m in Sources */,
 				22E4737219924CF700EEF7C9 /* RLMBasicTableCellView.m in Sources */,
+				C2714EFC1D0EF64E00085A7A /* RLMSyncCredentialsViewController.m in Sources */,
 				2257869E1BD563A00012436A /* RLMEncryptionKeyWindowController.m in Sources */,
 				22E473791992562400EEF7C9 /* RLMBoolTableCellView.m in Sources */,
 				2234B66E1CF83F9600EAFDF0 /* RLMBrowserConstants.m in Sources */,
@@ -708,7 +701,6 @@
 				225443F519E3E6360045996B /* RLMTableHeaderCell.m in Sources */,
 				22D3AC8A19CC5D710042C1B2 /* RLMModelExporter.m in Sources */,
 				84E0F95C1921F3B900D6CA14 /* main.m in Sources */,
-				220BCC611CED6134006432ED /* RLMSyncWindowController.m in Sources */,
 				84925C61195AD5B000EE27B1 /* NSColor+ByteSizeFactory.m in Sources */,
 				844C34E3194859080027E902 /* TestClasses.m in Sources */,
 				84E35A4D196B021B007F0344 /* RLMArrayNavigationState.m in Sources */,
@@ -723,9 +715,9 @@
 				84E35A49196AD991007F0344 /* RLMNavigationStack.m in Sources */,
 				36B669CE1B8B096A00F04AE1 /* RLMObjectLinkSelectionViewController.m in Sources */,
 				84925C67195AE9AD00EE27B1 /* RLMSidebarTableCellView.m in Sources */,
+				C2B7CABE1D11A08900049C32 /* RLMSyncServerConnectionWindowController.m in Sources */,
 				84D7990B19388E8900FC76A0 /* RLMClassNode.m in Sources */,
 				84AA41A91949C99800A50F03 /* RLMTypeNode.m in Sources */,
-				220BCC7B1CED960A006432ED /* RLMSyncCredentialsView.m in Sources */,
 				22D28EA71993AAAB00497FD3 /* RLMNumberTableCellView.m in Sources */,
 				3615BDB6196FA8BF00E1AE3F /* RLMQueryNavigationState.m in Sources */,
 				84A34A4F192E19C5005D6CC4 /* RLMApplicationDelegate.m in Sources */,
@@ -901,7 +893,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_ENTITLEMENTS = "RealmBrowser/Supporting Files/Realm Browser.entitlements";
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 50;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -932,7 +925,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_ENTITLEMENTS = "RealmBrowser/Supporting Files/Realm Browser.entitlements";
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 50;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";

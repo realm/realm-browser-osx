@@ -63,29 +63,6 @@
         NSDictionary *fragmentsDictionary = components.fragmentItemsDictionary;
         
         BOOL showSyncRealmPrompt = (fragmentsDictionary[@"syncCredentialsPrompt"] != nil);
-        BOOL disableCopy = (fragmentsDictionary[@"disableSyncFileCopy"] != nil);
-        
-        //for the purpose of ensuring one sync agent per Realm file,
-        //make a tmp copy of the Realm file and refer to that one for now
-        if (showSyncRealmPrompt && !disableCopy) {
-            NSString *tempFilePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-            
-            NSString *folderName = [NSString stringWithFormat:@"io.realm.sync.%lu", (unsigned long)[absoluteURL.absoluteString hash]];
-            tempFilePath = [tempFilePath stringByAppendingPathComponent:folderName];
-            
-            //Create the folder
-            [[NSFileManager defaultManager] createDirectoryAtPath:tempFilePath withIntermediateDirectories:YES attributes:nil error:nil];
-            
-            NSString *fileName = absoluteURL.absoluteString.lastPathComponent;
-            //strip the fragment
-            fileName = [[fileName componentsSeparatedByString:@"#"] firstObject];
-            tempFilePath = [tempFilePath stringByAppendingPathComponent:fileName];
-            
-            NSURL *tempFileURL = [NSURL fileURLWithPath:tempFilePath];
-            [[NSFileManager defaultManager] copyItemAtURL:absoluteURL toURL:tempFileURL error:nil];
-            
-            absoluteURL = tempFileURL;
-        }
         
         NSURL *folderURL = absoluteURL;
         BOOL isDir = NO;
@@ -93,13 +70,17 @@
             folderURL = [folderURL URLByDeletingLastPathComponent];
         }
         
-        AppSandboxFileAccess *sandBoxAccess = [AppSandboxFileAccess fileAccess];
-        [sandBoxAccess requestAccessPermissionsForFileURL:folderURL persistPermission:YES withBlock:^(NSURL *securityScopedFileURL, NSData *bookmarkData){
-            self.securityScopedURL = securityScopedFileURL;
-        }];
-        
-        if (self.securityScopedURL == nil)
-            return nil;
+        // In case we're trying to open Realm file located in app's container directory there is no reason to ask access permissions
+        if (![[NSFileManager defaultManager] isWritableFileAtPath:folderURL.path]) {
+            AppSandboxFileAccess *sandBoxAccess = [AppSandboxFileAccess fileAccess];
+            [sandBoxAccess requestAccessPermissionsForFileURL:folderURL persistPermission:YES withBlock:^(NSURL *securityScopedFileURL, NSData *bookmarkData) {
+                self.securityScopedURL = securityScopedFileURL;
+            }];
+            
+            if (self.securityScopedURL == nil) {
+                return nil;
+            }
+        }
         
         NSArray *fileNameComponents = [lastComponent componentsSeparatedByString:@"."];
         NSString *realmName = [fileNameComponents firstObject];
@@ -113,6 +94,7 @@
         self.fileURL = absoluteURL;
         
         void (^mainThreadBlock)() = ^{
+            [self.securityScopedURL startAccessingSecurityScopedResource];
             
             //Check to see if first the Realm file needs upgrading, and
             //if it does, prompt the user to confirm with proceeding

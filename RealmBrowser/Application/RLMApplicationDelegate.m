@@ -27,8 +27,8 @@
 
 #import <AppSandboxFileAccess/AppSandboxFileAccess.h>
 
-#import "RLMSyncCredentialsView.h"
-#import "RLMSyncWindowController.h"
+#import "RLMSyncServerConnectionWindowController.h"
+#import "RLMSyncCredentialsViewController.h"
 
 #import "NSURLComponents+FragmentItems.h"
 
@@ -47,8 +47,6 @@
 @property (nonatomic, strong) NSMetadataQuery *appQuery;
 @property (nonatomic, strong) NSMetadataQuery *projQuery;
 @property (nonatomic, strong) NSArray *groupedFileItems;
-
-@property (nonatomic, strong) RLMSyncWindowController *syncWindowController;
 
 @end
 
@@ -579,10 +577,10 @@
     }
     
     //Create and insert the menu items for the 'File' item
-    NSMenuItem *openSyncURLItem  = [[NSMenuItem alloc] initWithTitle:@"Open Sync URL..." action:@selector(connectToSyncRealmWithURL:) keyEquivalent:@"o"];
+    NSMenuItem *openSyncURLItem  = [[NSMenuItem alloc] initWithTitle:@"Open Sync URL..." action:@selector(openSyncURL:) keyEquivalent:@"o"];
     openSyncURLItem.keyEquivalentModifierMask = (NSShiftKeyMask | NSControlKeyMask | NSCommandKeyMask);
     
-    NSMenuItem *openSyncFileItem = [[NSMenuItem alloc] initWithTitle:@"Open File with Sync..." action:@selector(openSyncRealmFileWithMenuItem:) keyEquivalent:@"o"];
+    NSMenuItem *openSyncFileItem = [[NSMenuItem alloc] initWithTitle:@"Open File with Sync..." action:@selector(openFileWithSync:) keyEquivalent:@"o"];
     openSyncFileItem.keyEquivalentModifierMask = (NSShiftKeyMask | NSCommandKeyMask);
     
     NSMenuItem *newSyncFileItem  = [[NSMenuItem alloc] initWithTitle:@"New Sync File with URL..." action:@selector(createNewRealmFileAndOpenWithSyncURL:) keyEquivalent:@"n"];
@@ -596,25 +594,41 @@
     }
 }
 
-- (IBAction)openSyncRealmFileWithMenuItem:(NSMenuItem *)menuItem
+- (IBAction)openSyncURL:(id *)sender
 {
-    NSNib *accessoryViewNib = [[NSNib alloc] initWithNibNamed:@"SyncCredentialsView" bundle:nil];
-    NSArray *views = nil;
-    [accessoryViewNib instantiateWithOwner:self topLevelObjects:&views];
+    RLMSyncServerConnectionWindowController *connectionWindowController = [[RLMSyncServerConnectionWindowController alloc] init];
     
-    RLMSyncCredentialsView *accessoryView = nil;
-    for (NSObject *view in views) {
-        if ([view isKindOfClass:[RLMSyncCredentialsView class]]) {
-            accessoryView = (RLMSyncCredentialsView *)view;
-            break;
-        }
+    if ([connectionWindowController runModal] != NSModalResponseOK) {
+        return;
     }
+    
+    NSURL *syncServerURL = connectionWindowController.credentialsViewController.syncServerURL;
+    NSString *userToken = connectionWindowController.credentialsViewController.signedUserToken;
+    
+    NSURL *realmURL = [self temporaryURLForRealmFileWithSync:syncServerURL.lastPathComponent];
+    
+    NSError *error = nil;
+    if (![self createEmptyRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:userToken error:&error]) {
+        if (error != nil) {
+            [[NSAlert alertWithError:error] runModal];
+        }
+        
+        return;
+    }
+    
+    [self openRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:userToken];
+}
+
+- (IBAction)openFileWithSync:(id *)sender
+{
+    RLMSyncCredentialsViewController *credentialsViewController = [[RLMSyncCredentialsViewController alloc] init];
     
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];
     openPanel.allowedFileTypes = @[kRealmFileExtension];
     openPanel.canChooseDirectories = NO;
     openPanel.allowsMultipleSelection = NO;
-    openPanel.accessoryView = accessoryView;
+    openPanel.accessoryView = credentialsViewController.view;
+    openPanel.delegate = credentialsViewController;
     
     // Force the options to be displayed (only available in El Cap)
     // Not sure if older versions default to displaying?
@@ -622,156 +636,123 @@
         openPanel.accessoryViewDisclosed = YES;
     }
     
-    if ([openPanel runModal] == NSFileHandlingPanelCancelButton) {
+    if ([openPanel runModal] != NSFileHandlingPanelOKButton || openPanel.URL == nil) {
         return;
     }
     
-    NSURL *realmFileURL = [openPanel.URLs firstObject];
-    if (realmFileURL == nil) {
-        return;
+    NSURL *syncServerURL = credentialsViewController.syncServerURL;
+    NSString *signedUserToken = credentialsViewController.signedUserToken;
+    
+    NSURL *realmURL = openPanel.URL;
+    
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.messageText = @"Make a copy of this Realm file?";
+    alert.informativeText = @"Making a copy of this file is necessary if it is going to be accessed from another process at the same time (eg, via iOS Simulator).";
+    [alert addButtonWithTitle:@"No"];
+    [alert addButtonWithTitle:@"Yes"];
+    
+    if ([alert runModal] == NSAlertSecondButtonReturn) {
+        NSURL *tempURL = [self temporaryURLForRealmFileWithSync:realmURL.lastPathComponent];
+        
+        [[NSFileManager defaultManager] copyItemAtURL:realmURL toURL:tempURL error:nil];
+        
+        realmURL = tempURL;
     }
     
-    NSString *syncServerURL = accessoryView.syncServerURLField.stringValue;
-    NSString *syncServerSignedUserToken = accessoryView.syncSignedUserTokenField.stringValue;
-    
-    if (!syncServerURL ||
-        !syncServerSignedUserToken ||
-        [syncServerURL isEqualToString:@""] ||
-        [syncServerSignedUserToken isEqualToString:@""] ||
-        ![syncServerURL hasPrefix:@"realm://"]) {
-        NSAlert *alert = [NSAlert alertWithMessageText:@"Failed To Enter Valid Sync Credentials"
-                                         defaultButton:@"OK"
-                                       alternateButton:nil
-                                           otherButton:nil
-                             informativeTextWithFormat:@"To open a Realm file with sync, you must enter a valid sync server URL and sync user token. If you don't see these fields in the 'Open' dialog box, click 'Options' in the lower left corner. Please try again."];
-        
-        [alert runModal];
-        return;
-    }
-    
-    NSAlert *alert = [NSAlert alertWithMessageText:@"Make a copy of this Realm file?"
-                                     defaultButton:@"No"
-                                   alternateButton:@"Yes"
-                                       otherButton:nil
-                         informativeTextWithFormat:@"Making a copy of this file is necessary if it is going to be accessed from another process at the same time (eg, via iOS Simulator)."];
-    
-    NSModalResponse response = [alert runModal];
-    
-    //Deferred to the next run loop iteration to give the modal prompt
-    //time to dismiss before the sandboxing prompt appears.
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        NSMutableArray *fragmentItems = [NSMutableArray array];
-        
-        NSURLComponents *components = [NSURLComponents componentsWithURL:realmFileURL resolvingAgainstBaseURL:NO];
-        if (response != 0) {
-            [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"disableSyncFileCopy" value:@"1"]];
-        }
-        
-        NSURLQueryItem *syncURLItem = [NSURLQueryItem queryItemWithName:@"syncServerURL" value:syncServerURL];
-        [fragmentItems addObject:syncURLItem];
-        
-        NSURLQueryItem *syncSignedUserTokenItem = [NSURLQueryItem queryItemWithName:@"syncSignedUserToken" value:syncServerSignedUserToken];
-        [fragmentItems addObject:syncSignedUserTokenItem];
-        
-        components.fragmentItems = fragmentItems;
-        
-        [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:components.URL
-                                                                               display:YES
-                                                                     completionHandler:^(NSDocument * __nullable document, BOOL documentWasAlreadyOpen, NSError * __nullable error)
-         {
-             
-         }];
-    });
-}
-
-- (IBAction)connectToSyncRealmWithURL:(NSMenuItem *)item
-{
-    if (self.syncWindowController) {
-        return;
-    }
-    
-    self.syncWindowController = [[RLMSyncWindowController alloc] initWithTempRealmFile];
-    [self.syncWindowController showWindow:self];
-    
-    __weak typeof(self) weakSelf = self;
-    self.syncWindowController.OKButtonClickedHandler = ^{
-        NSURL *url = [NSURL fileURLWithPath:weakSelf.syncWindowController.realmFilePath];
-        NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-        NSURLQueryItem *syncURLItem = [NSURLQueryItem queryItemWithName:@"syncServerURL" value:weakSelf.syncWindowController.serverURL];
-        NSURLQueryItem *syncSignedUserTokenItem = [NSURLQueryItem queryItemWithName:@"syncSignedUserToken" value:weakSelf.syncWindowController.serverSignedUserToken];
-        components.fragmentItems = @[syncURLItem, syncSignedUserTokenItem];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:components.URL
-                                                                                   display:YES
-                                                                         completionHandler:^(NSDocument * __nullable document, BOOL documentWasAlreadyOpen, NSError * __nullable error){ }];
-        });
-    };
-    
-    self.syncWindowController.windowClosedHandler = ^{
-        weakSelf.syncWindowController = nil;
-    };
+    [self openRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:signedUserToken];
 }
 
 - (IBAction)createNewRealmFileAndOpenWithSyncURL:(NSMenuItem *)item
 {
-    NSNib *accessoryViewNib = [[NSNib alloc] initWithNibNamed:@"SyncCredentialsView" bundle:nil];
-    NSArray *views = nil;
-    [accessoryViewNib instantiateWithOwner:self topLevelObjects:&views];
-    
-    RLMSyncCredentialsView *accessoryView = nil;
-    for (NSObject *view in views) {
-        if ([view isKindOfClass:[RLMSyncCredentialsView class]]) {
-            accessoryView = (RLMSyncCredentialsView *)view;
-            break;
-        }
-    }
+    RLMSyncCredentialsViewController *credentialsViewController = [[RLMSyncCredentialsViewController alloc] init];
     
     NSSavePanel *savePanel = [NSSavePanel savePanel];
     savePanel.allowedFileTypes = @[kRealmFileExtension];
-    savePanel.accessoryView = accessoryView;
-    if ([savePanel runModal] != NSFileHandlingPanelOKButton) {
+    savePanel.accessoryView = credentialsViewController.view;
+    savePanel.delegate = credentialsViewController;
+    
+    if ([savePanel runModal] != NSFileHandlingPanelOKButton || savePanel.URL == nil) {
         return;
     }
     
-    NSString *filePath = savePanel.URL.path;
-    NSString *syncServerURL = accessoryView.syncServerURLField.stringValue;
-    NSString *syncServerSignedUserToken = accessoryView.syncSignedUserTokenField.stringValue;
-    
-    //Create a new Realm instance to create the file on disk
-    //(This NEEDS to be done since RLMDocument requires a file on disk to open)
-    @autoreleasepool {
-        RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-        configuration.fileURL = [NSURL fileURLWithPath:filePath];
-        configuration.dynamic = YES;
-        configuration.customSchema = nil;
-        
-        if (syncServerURL.length > 0) {
-            configuration.syncServerURL = [NSURL URLWithString:syncServerURL];
+    NSURL *realmURL = savePanel.URL;
+    NSURL *syncServerURL = credentialsViewController.syncServerURL;
+    NSString *userToken = credentialsViewController.signedUserToken;
+
+    NSError *error = nil;
+    if (![self createEmptyRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:userToken error:&error]) {
+        if (error != nil) {
+            [[NSAlert alertWithError:error] runModal];
         }
         
-        if (syncServerSignedUserToken.length > 0) {
-            configuration.syncUserToken = syncServerSignedUserToken;
-        }
-        
-        [RLMRealmConfiguration setDefaultConfiguration:configuration];
-        [RLMRealm realmWithConfiguration:configuration error:nil];
+        return;
     }
     
+    [self openRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:userToken];
+}
+
+- (void)openRealmWithSyncAtURL:(NSURL *)realmURL syncServerURL:(NSURL *)syncServerURL userToken:(NSString *)signedUserToken {
+    NSMutableArray *fragmentItems = [NSMutableArray array];
+    
+    NSURLComponents *components = [NSURLComponents componentsWithURL:realmURL resolvingAgainstBaseURL:NO];
+    
+    [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"syncServerURL" value:syncServerURL.absoluteString]];
+    [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"syncSignedUserToken" value:signedUserToken]];
+    
+    components.fragmentItems = fragmentItems;
+    
+    //Deferred to the next run loop iteration to give the modal prompt
+    //time to dismiss before the sandboxing prompt appears.
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSURLComponents *components = [NSURLComponents componentsWithURL:[NSURL fileURLWithPath:filePath] resolvingAgainstBaseURL:NO];
-        NSURLQueryItem *syncURLItem = [NSURLQueryItem queryItemWithName:@"syncServerURL" value:syncServerURL];
-        NSURLQueryItem *syncSignedUserTokenItem = [NSURLQueryItem queryItemWithName:@"syncSignedUserToken" value:syncServerSignedUserToken];
-        components.fragmentItems = @[syncURLItem, syncSignedUserTokenItem];
-        
         [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:components.URL
                                                                                display:YES
-                                                                     completionHandler:^(NSDocument * __nullable document, BOOL documentWasAlreadyOpen, NSError * __nullable error)
-         {
-             
-         }];
+                                                                     completionHandler:^(NSDocument * __nullable document, BOOL documentWasAlreadyOpen, NSError * __nullable error) {}];
     });
+}
+
+- (BOOL)createEmptyRealmWithSyncAtURL:(NSURL *)realmURL syncServerURL:(NSURL *)syncServerURL userToken:(NSString *)token error:(NSError **)error {
+    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+    configuration.fileURL = realmURL;
+    configuration.dynamic = YES;
+    configuration.customSchema = nil;
+    configuration.syncServerURL = syncServerURL;
+    configuration.syncUserToken = token;
+    
+    BOOL (^createRealm)(RLMRealmConfiguration *, NSError **) = ^BOOL(RLMRealmConfiguration *configuration, NSError **error) {
+        return [RLMRealm realmWithConfiguration:configuration error:error] != nil;
+    };
+    
+    __block BOOL result = NO;
+    
+    NSURL *folderURL = realmURL.URLByDeletingLastPathComponent;
+    
+    if ([[NSFileManager defaultManager] isWritableFileAtPath:folderURL.path]) {
+        result = createRealm(configuration, error);
+    } else {
+        [[AppSandboxFileAccess fileAccess] accessFileURL:folderURL persistPermission:YES withBlock:^{
+            result = createRealm(configuration, error);
+        }];
+    }
+    
+    return result;
+}
+
+- (NSURL *)temporaryURLForRealmFileWithSync:(NSString *)realmFileName {
+    NSString *uniqueString = [NSUUID UUID].UUIDString;
+    
+    if (realmFileName == nil) {
+        realmFileName = uniqueString;
+    }
+    
+    if (![realmFileName.pathExtension isEqualToString:@"realm"]) {
+        realmFileName = [realmFileName stringByAppendingPathExtension:@"realm"];
+    }
+    
+    NSString *tempDirectoryPath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"io.realm.realmbrowser"] stringByAppendingPathComponent:uniqueString];
+    
+    [[NSFileManager defaultManager] createDirectoryAtPath:tempDirectoryPath withIntermediateDirectories:YES attributes:nil error:nil];
+    
+    return [NSURL fileURLWithPath:[tempDirectoryPath stringByAppendingPathComponent:realmFileName]];
 }
 
 - (IBAction)runSyncServer:(id)sender
