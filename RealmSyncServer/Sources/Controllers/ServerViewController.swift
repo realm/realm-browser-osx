@@ -89,7 +89,7 @@ class ServerViewController: NSViewController {
     }
     
     private func outputLog(message: String) {
-        logOutputTextView.textStorage?.appendAttributedString(NSAttributedString(string: message + "\n"))
+        logOutputTextView.textStorage?.appendAttributedString(NSAttributedString(string: message + "\n", attributes: [NSFontAttributeName: logOutputTextView.font!]))
         logOutputTextView.scrollToEndOfDocument(nil)
     }
 
