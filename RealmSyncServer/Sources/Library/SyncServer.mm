@@ -85,7 +85,7 @@ private:
     }
 
     try {
-        _server->start(std::string(self.host.UTF8String), std::string([NSString stringWithFormat:@"%ld", (long)self.port].UTF8String), false);
+        _server->start(std::string(self.host.UTF8String), std::string([NSString stringWithFormat:@"%ld", (long)self.port].UTF8String));
     } catch (std::exception& e) {
         if (error != nil) {
             *error = [self errorWithErrorCode:-3 description:@"Error starting the server" stdException:e];
