@@ -25,12 +25,21 @@ public:
     
 protected:
     void do_log(std::string string) override {
-        [_delegate loggerDidOutputMessage:[NSString stringWithUTF8String:string.c_str()]];
+        [_delegate loggerDidOutputMessage:@(string.c_str())];
     }
     
 private:
     __weak id<SyncServerLoggerDelegate> _delegate;
 };
+
+static NSError *errorWithErrorCode(SyncServerError errorCode, NSString *description, const std::exception &e) {
+    NSDictionary *userInfo = @{
+        NSLocalizedDescriptionKey: description,
+        NSLocalizedRecoverySuggestionErrorKey: @(e.what()),
+    };
+    
+    return [[NSError alloc] initWithDomain:SyncServerErrorDomain code:errorCode userInfo:userInfo];
+}
 
 @interface SyncServer() <SyncServerLoggerDelegate>
 
@@ -58,39 +67,35 @@ private:
     [self stop];
 }
 
-- (BOOL)start:(NSError *__autoreleasing  _Nullable *)error {
+- (BOOL)start:(NSError *__autoreleasing *)error {
     bool log_everything = self.logLevel == SyncServerLogLevelEverything;
+    
+    NSError *__autoreleasing localError;
+    if (error == NULL) {
+        error = &localError;
+    }
     
     util::Optional<sync::PKey> pkey;
     if (self.publicKeyURL != nil) {
         try {
-            pkey = sync::PKey::load_public(std::string(self.publicKeyURL.path.UTF8String));
+            pkey = sync::PKey::load_public(self.publicKeyURL.path.UTF8String);
         } catch (const realm::sync::CryptoError& e) {
-            if (error != nil) {
-                *error = [self errorWithErrorCode:-1 description:@"Error while loading public key file" stdException:e];
-            }
-            
+            *error = errorWithErrorCode(SyncServerErrorLoadingPublicKey, @"Error while loading public key file", e);
             return NO;
         }
     }
     
     try {
-        _server.reset(new sync::Server(std::string(self.rootDirectoryURL.path.UTF8String), std::move(pkey), _logger.get(), log_everything));
+        _server.reset(new sync::Server(self.rootDirectoryURL.path.UTF8String, std::move(pkey), _logger.get(), log_everything));
     } catch (const realm::util::File::AccessError& e) {
-        if (error != nil) {
-            *error = [self errorWithErrorCode:-2 description:@"Error while opening root directory" stdException:e];
-        }
-        
+        *error = errorWithErrorCode(SyncServerErrorOpenningRootDirectory, @"Error while opening root directory", e);
         return NO;
     }
 
     try {
-        _server->start(std::string(self.host.UTF8String), std::string([NSString stringWithFormat:@"%ld", (long)self.port].UTF8String));
+        _server->start(self.host.UTF8String, [NSString stringWithFormat:@"%ld", (long)self.port].UTF8String);
     } catch (std::exception& e) {
-        if (error != nil) {
-            *error = [self errorWithErrorCode:-3 description:@"Error starting the server" stdException:e];
-        }
-        
+        *error = errorWithErrorCode(SyncServerErrorStartingServer, @"Error starting the server", e);
         return NO;
     }
 
@@ -98,9 +103,16 @@ private:
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         __typeof(self) strongSelf = weakSelf;
         
-        strongSelf->_server->run();
+        try {
+            strongSelf->_server->run();
+        } catch (std::exception& e) {
+            // The only thing we can do here is to output error as a log message
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [strongSelf.delegate syncServer:strongSelf didOutputLogMessage:@(e.what())];
+            });
+        }
         
-        dispatch_sync(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             strongSelf.running = NO;
             
             [strongSelf.delegate syncServer:strongSelf didOutputLogMessage:@"Server terminated"];
@@ -114,22 +126,13 @@ private:
 }
 
 - (void)stop {
-    if (_server != NULL) {
+    if (_server) {
         _server->stop();
         _server.reset();
     }
 }
 
-- (NSError *)errorWithErrorCode:(NSInteger)code description:(NSString *)description stdException:(const std::exception &)e {
-    NSDictionary *userInfo = @{
-        NSLocalizedDescriptionKey: description,
-        NSLocalizedRecoverySuggestionErrorKey: [NSString stringWithUTF8String:e.what()],
-    };
-    
-    return [[NSError alloc] initWithDomain:SyncServerErrorDomain code:code userInfo:userInfo];
-}
-
-#pragma mark - RLMSyncServerWrapperLoggerDelegate
+#pragma mark - SyncServerLoggerDelegate
 
 - (void)loggerDidOutputMessage:(NSString *)message {
     dispatch_async(dispatch_get_main_queue(), ^{

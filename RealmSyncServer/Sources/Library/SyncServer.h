@@ -8,35 +8,45 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSInteger, SyncServerLogLevel) {
     SyncServerLogLevelNormal = 0,
     SyncServerLogLevelEverything
 };
 
-extern NSString * _Nonnull const SyncServerErrorDomain;
+extern NSString * const SyncServerErrorDomain;
+
+typedef NS_ENUM(NSInteger, SyncServerError) {
+    SyncServerErrorLoadingPublicKey = 0,
+    SyncServerErrorOpenningRootDirectory,
+    SyncServerErrorStartingServer
+};
 
 @class SyncServer;
 
 @protocol SyncServerDelegate
 
-- (void)syncServer:(SyncServer * _Nonnull)server didOutputLogMessage:(NSString * _Nonnull)message;
-- (void)syncServerDidStop:(SyncServer * _Nonnull)server;
+- (void)syncServer:(SyncServer *)server didOutputLogMessage:(NSString *)message;
+- (void)syncServerDidStop:(SyncServer *)server;
 
 @end
 
 @interface SyncServer : NSObject
 
-@property (nonatomic, copy) NSURL * _Nonnull rootDirectoryURL;
-@property (nonatomic, copy) NSURL * _Nullable publicKeyURL;
-@property (nonatomic, copy) NSString * _Nonnull host;
-@property (nonatomic, assign) NSInteger port;
-@property (nonatomic, assign) SyncServerLogLevel logLevel;
+@property (nonatomic, copy) NSURL *rootDirectoryURL;
+@property (nonatomic, copy, nullable) NSURL *publicKeyURL;
+@property (nonatomic, copy) NSString *host;
+@property (nonatomic) NSInteger port;
+@property (nonatomic) SyncServerLogLevel logLevel;
 
-@property (nonatomic, assign, readonly, getter=isRunning) BOOL running;
+@property (nonatomic, readonly, getter=isRunning) BOOL running;
 
-@property (nonatomic, weak) id<SyncServerDelegate> _Nullable delegate;
+@property (nonatomic, weak, nullable) id<SyncServerDelegate> delegate;
 
-- (BOOL)start:(NSError *__autoreleasing _Nullable * _Nonnull)error;
+- (BOOL)start:(NSError *__autoreleasing *)error;
 - (void)stop;
 
 @end
+
+NS_ASSUME_NONNULL_END
