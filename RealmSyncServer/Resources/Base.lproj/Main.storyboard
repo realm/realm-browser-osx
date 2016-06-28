@@ -782,18 +782,15 @@ Gw
                                 <constraints>
                                     <constraint firstAttribute="width" constant="144" id="mTz-Ln-9cO"/>
                                 </constraints>
-                                <popUpButtonCell key="cell" type="push" title="Everything" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="xnw-7a-G0b" id="pP3-jQ-4OF">
+                                <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="pP3-jQ-4OF">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
                                     <menu key="menu" id="QUy-dF-Yco">
                                         <items>
-                                            <menuItem title="Nothing" id="lSq-Xh-d78">
+                                            <menuItem title="Normal" id="lSq-Xh-d78" userLabel="Normal">
                                                 <modifierMask key="keyEquivalentModifierMask"/>
                                             </menuItem>
-                                            <menuItem title="Normal" id="wOe-Qy-prE">
-                                                <modifierMask key="keyEquivalentModifierMask"/>
-                                            </menuItem>
-                                            <menuItem title="Everything" state="on" id="xnw-7a-G0b">
+                                            <menuItem title="Everything" id="xnw-7a-G0b">
                                                 <modifierMask key="keyEquivalentModifierMask"/>
                                             </menuItem>
                                         </items>
@@ -810,11 +807,11 @@ Gw
                             </textField>
                             <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QLK-44-FEP">
                                 <rect key="frame" x="0.0" y="0.0" width="821" height="350"/>
-                                <clipView key="contentView" id="qld-VI-6bf">
+                                <clipView key="contentView" copiesOnScroll="NO" id="qld-VI-6bf">
                                     <rect key="frame" x="0.0" y="0.0" width="821" height="350"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textView editable="NO" drawsBackground="NO" importsGraphics="NO" richText="NO" findStyle="panel" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" smartInsertDelete="YES" id="weH-He-Ekh">
+                                        <textView editable="NO" importsGraphics="NO" richText="NO" findStyle="panel" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" smartInsertDelete="YES" id="weH-He-Ekh">
                                             <rect key="frame" x="0.0" y="0.0" width="821" height="350"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

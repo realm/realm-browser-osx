@@ -75,7 +75,6 @@ class ServerViewController: NSViewController {
         logOutputTextView.delegate = self
         
         server.rootDirectoryURL = NSFileManager.defaultManager().URLForApplicationDataDirectory()
-        server.publicKeyURL = NSBundle.mainBundle().URLForResource("public", withExtension: "pem")
         server.delegate = self
         
         updateUI()
@@ -90,7 +89,7 @@ class ServerViewController: NSViewController {
     }
     
     private func outputLog(message: String) {
-        logOutputTextView.string = logOutputTextView.string?.stringByAppendingString(message)
+        logOutputTextView.textStorage?.appendAttributedString(NSAttributedString(string: message + "\n", attributes: [NSFontAttributeName: logOutputTextView.font!]))
         logOutputTextView.scrollToEndOfDocument(nil)
     }
 
@@ -106,8 +105,8 @@ extension ServerViewController {
             
             server.host = host
             server.port = port
-            server.enableAuthentication = enableAuthentication
             server.logLevel = logLevel
+            server.publicKeyURL = enableAuthentication ? NSBundle.mainBundle().URLForResource("public", withExtension: "pem") : nil
             
             do {
                 try server.start()
@@ -146,11 +145,11 @@ extension ServerViewController {
 
 extension ServerViewController: SyncServerDelegate {
     
-    func serverDidStop(server: SyncServer) {
-        updateUI()
+    func syncServerDidStop(server: SyncServer) {
+        updateUI();
     }
     
-    func serverDidOutputLog(server: SyncServer, message: String) {
+    func syncServer(server: SyncServer, didOutputLogMessage message: String) {
         outputLog(message)
     }
     

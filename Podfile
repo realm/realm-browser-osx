@@ -7,16 +7,12 @@ use_frameworks!
 workspace 'RealmBrowser.xcworkspace'
 
 target 'RealmBrowser' do
-	pod 'AppSandboxFileAccess'
+    pod 'AppSandboxFileAccess'
     pod 'Realm', '1.0.0-3-sync-0.23.2'
-	pod 'RealmConverter'
+    pod 'RealmConverter'
 end
 
 target 'RealmSyncServer' do
-	xcodeproj 'RealmSyncServer/RealmSyncServer.xcodeproj'
-    pod 'RealmSyncServerBinaries', '0.23.2'
-end
-
-post_install do |installer|
-	`rm -rf Pods/Headers/Public/Realm`
+    project 'RealmSyncServer/RealmSyncServer.xcodeproj'
+    pod 'LibRealmSyncServer', '0.23.2'
 end
