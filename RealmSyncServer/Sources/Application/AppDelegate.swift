@@ -24,6 +24,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         return true
     }
+    
+    func application(application: NSApplication, willPresentError error: NSError) -> NSError {
+        NSLog("%@: %@", error.localizedDescription, error.localizedRecoverySuggestion ?? "")
+        
+        return error
+    }
 
 }
 
