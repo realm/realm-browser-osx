@@ -90,7 +90,7 @@ class GenerateCredentialsViewController: NSViewController {
             do {
                 tokenTextView.string = try tokenGenerator.generateTokenForJSONObject(manifest)
             } catch let error as NSError {
-                NSAlert(error: error).runModal()
+                presentError(error)
             }
         }
         

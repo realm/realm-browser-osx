@@ -111,7 +111,7 @@ extension ServerViewController {
             do {
                 try server.start()
             } catch let error as NSError {
-                NSAlert(error: error).beginSheetModalForWindow(view.window!, completionHandler: nil)
+                presentError(error, modalForWindow: view.window!, delegate: nil, didPresentSelector: nil, contextInfo: nil)
             }
         }
         
@@ -131,7 +131,7 @@ extension ServerViewController {
                 do {
                     try NSFileManager.defaultManager().removeItemAtURL(NSFileManager.defaultManager().URLForApplicationDataDirectory())
                 } catch let error as NSError {
-                    NSAlert(error: error).runModal()
+                    self.presentError(error)
                 }
             }
         }
