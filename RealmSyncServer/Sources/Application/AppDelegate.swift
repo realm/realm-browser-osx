@@ -15,6 +15,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         mainWindow = NSApp.windows.first
+        
+        handleCommandLineArguments(NSProcessInfo.processInfo().arguments)
     }
     
     func applicationShouldHandleReopen(sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
@@ -23,4 +25,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
 
+}
+
+extension AppDelegate {
+    
+    private func handleCommandLineArguments(arguments: [String]) {
+        guard let serverViewController = mainWindow?.contentViewController as? ServerViewController else {
+            NSLog("Unnable to handle command line arguments: bad window content view controller")
+            
+            return
+        }
+        
+        if arguments.contains("-start") {
+            serverViewController.startStopServer(nil)
+            
+            guard serverViewController.server.running else {
+                exit(1)
+            }
+        }
+    }
+    
 }
