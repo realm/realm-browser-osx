@@ -109,6 +109,10 @@ extension ServerViewController {
             server.publicKeyURL = enableAuthentication ? NSBundle.mainBundle().URLForResource("public", withExtension: "pem") : nil
             
             do {
+                if !server.rootDirectoryURL.checkResourceIsReachableAndReturnError(nil) {
+                    try NSFileManager.defaultManager().createDirectoryAtURL(server.rootDirectoryURL, withIntermediateDirectories: true, attributes: nil)
+                }
+                
                 try server.start()
             } catch let error as NSError {
                 presentError(error, modalForWindow: view.window!, delegate: nil, didPresentSelector: nil, contextInfo: nil)
