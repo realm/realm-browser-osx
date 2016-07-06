@@ -283,12 +283,12 @@
     NSDictionary *otherDict = @{kPrefix : allPrefix, kItems : [NSMutableArray arrayWithObject:@"Other"]};
     
     // Create array of dictionaries, each corresponding to search folders
-    self.groupedFileItems = @[simDict, devDict, desktopDict, documentsdDict, downloadDict, otherDict];
+    NSArray *tempGroupedFileItems = @[simDict, devDict, desktopDict, documentsdDict, downloadDict, otherDict];
     
     // Iterate through all search results
     for (NSMetadataItem *fileItem in self.realmQuery.results) {
         // Iterate through the different prefixes and add item to corresponding array within dictionary
-        for (NSDictionary *dict in self.groupedFileItems) {
+        for (NSDictionary *dict in tempGroupedFileItems) {
             if ([[fileItem valueForAttribute:NSMetadataItemPathKey] hasPrefix:dict[kPrefix]]) {
                 NSMutableArray *items = dict[kItems];
                 // The first few items are just added
@@ -310,6 +310,9 @@
             }
         }
     }
+    
+    // Do not include empty groups
+    self.groupedFileItems = [tempGroupedFileItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%K.@count > 1", kItems]];
 }
 
 - (IBAction)generatedDemoDatabase:(id)sender
