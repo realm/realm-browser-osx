@@ -253,6 +253,14 @@
 {
     NSString *homeDir = NSHomeDirectory();
     
+    // NSHomeDirectory() returns path to app's container directory like /PATH_TO_HOME_DIRECTORY/Library/Containers/NUNDLE_IDENTIFIER/Data in sandboxed environment.
+    // So removing 4 last path components should give a real path to user's home directory (at least until this path isn't changed).
+    if ([homeDir containsString:[NSBundle mainBundle].bundleIdentifier]) {
+        for (NSInteger i = 0; i < 4; i++) {
+            homeDir = [homeDir stringByDeletingLastPathComponent];
+        }
+    }
+    
     NSString *kPrefix = @"Prefix";
     NSString *kItems = @"Items";
     
