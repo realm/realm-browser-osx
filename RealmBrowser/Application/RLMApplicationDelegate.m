@@ -150,7 +150,7 @@
 
 -(void)updateMenu:(NSMenu *)menu withItems:(NSArray *)items indented:(BOOL)indented
 {
-    NSImage *image = [NSImage imageNamed:@"AppIcon"];
+    NSImage *image = [NSImage imageNamed:@"RealmFileIcon"];
     image.size = NSMakeSize(kMenuImageSize, kMenuImageSize);
     
     for (id item in items) {
