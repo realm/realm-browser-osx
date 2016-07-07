@@ -22,6 +22,7 @@
 #import "RLMBrowserConstants.h"
 #import "RLMApplicationDelegate.h"
 #import "RLMTestDataGenerator.h"
+#import "RLMUtils.h"
 #import "TestClasses.h"
 
 #import <AppSandboxFileAccess/AppSandboxFileAccess.h>
@@ -251,15 +252,7 @@
 
 -(void)updateFileItems
 {
-    NSString *homeDir = NSHomeDirectory();
-    
-    // NSHomeDirectory() returns path to app's container directory like /PATH_TO_HOME_DIRECTORY/Library/Containers/NUNDLE_IDENTIFIER/Data in sandboxed environment.
-    // So removing 4 last path components should give a real path to user's home directory (at least until this path isn't changed).
-    if ([homeDir containsString:[NSBundle mainBundle].bundleIdentifier]) {
-        for (NSInteger i = 0; i < 4; i++) {
-            homeDir = [homeDir stringByDeletingLastPathComponent];
-        }
-    }
+    NSString *homeDir = RLMRealHomeDirectory();
     
     NSString *kPrefix = @"Prefix";
     NSString *kItems = @"Items";
