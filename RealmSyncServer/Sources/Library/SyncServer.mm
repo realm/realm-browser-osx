@@ -19,7 +19,7 @@ using namespace realm;
 
 @end
 
-class SyncServerLogger: public util::Logger {
+class SyncServerLogger: public util::RootLogger {
 public:
     explicit SyncServerLogger(id<SyncServerLoggerDelegate> delegate) noexcept : _delegate(delegate) { }
     
@@ -49,7 +49,7 @@ static NSError *errorWithErrorCode(SyncServerError errorCode, NSString *descript
 
 @implementation SyncServer {
     std::unique_ptr<sync::Server> _server;
-    std::unique_ptr<util::Logger> _logger;
+    std::unique_ptr<SyncServerLogger> _logger;
 }
 
 - (instancetype)init
@@ -68,12 +68,12 @@ static NSError *errorWithErrorCode(SyncServerError errorCode, NSString *descript
 }
 
 - (BOOL)start:(NSError *__autoreleasing *)error {
-    bool log_everything = self.logLevel == SyncServerLogLevelEverything;
-    
     NSError *__autoreleasing localError;
     if (error == NULL) {
         error = &localError;
     }
+    
+    _logger->set_level_threshold([self levelTresholdForLogLevel:self.logLevel]);
     
     util::Optional<sync::PKey> pkey;
     if (self.publicKeyURL != nil) {
@@ -86,7 +86,7 @@ static NSError *errorWithErrorCode(SyncServerError errorCode, NSString *descript
     }
     
     try {
-        _server.reset(new sync::Server(self.rootDirectoryURL.path.UTF8String, std::move(pkey), _logger.get(), log_everything));
+        _server.reset(new sync::Server(self.rootDirectoryURL.path.UTF8String, std::move(pkey), _logger.get()));
     } catch (const realm::util::File::AccessError& e) {
         *error = errorWithErrorCode(SyncServerErrorOpenningRootDirectory, @"Error while opening root directory", e);
         return NO;
@@ -129,6 +129,15 @@ static NSError *errorWithErrorCode(SyncServerError errorCode, NSString *descript
     if (_server) {
         _server->stop();
         _server.reset();
+    }
+}
+
+- (util::Logger::Level)levelTresholdForLogLevel:(SyncServerLogLevel)logLevel {
+    switch (logLevel) {
+        case SyncServerLogLevelEverything:
+            return util::Logger::Level::all;
+        default:
+            return util::Logger::Level::info;
     }
 }
 
