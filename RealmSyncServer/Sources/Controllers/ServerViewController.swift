@@ -9,7 +9,7 @@
 import Cocoa
 
 private struct DefaultValues {
-    static let host = "127.0.0.1"
+    static let host = "0.0.0.0"
     static let port = 7800
     static let enableAuthentication = true
     static let logLevel: SyncServerLogLevel = .Normal
