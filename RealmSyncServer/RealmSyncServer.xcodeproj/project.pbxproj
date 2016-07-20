@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2949A25F1D3FCADA00D8D889 /* HostComboBoxDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949A25E1D3FCADA00D8D889 /* HostComboBoxDataSource.swift */; };
 		BC6981206064E47104CB7249 /* Pods_RealmSyncServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F9285A27E420F8A597AFCB8 /* Pods_RealmSyncServer.framework */; };
 		C22514331CF5A98D007E64EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514321CF5A98D007E64EB /* AppDelegate.swift */; };
 		C22514371CF5A98D007E64EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C22514361CF5A98D007E64EB /* Assets.xcassets */; };
@@ -48,6 +49,7 @@
 
 /* Begin PBXFileReference section */
 		1A9DC1BEED772C38CE484E50 /* Pods-RealmSyncServer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmSyncServer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-RealmSyncServer/Pods-RealmSyncServer.release.xcconfig"; sourceTree = "<group>"; };
+		2949A25E1D3FCADA00D8D889 /* HostComboBoxDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HostComboBoxDataSource.swift; sourceTree = "<group>"; };
 		8F9285A27E420F8A597AFCB8 /* Pods_RealmSyncServer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RealmSyncServer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C225142F1CF5A98D007E64EB /* Realm Sync Server.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Realm Sync Server.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C22514321CF5A98D007E64EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 				C22514341CF5A98D007E64EB /* ServerViewController.swift */,
 				C29C63621CFF3E0A0099C501 /* ManageCredentialsViewController.swift */,
 				C225146E1CF99C74007E64EB /* GenerateCredentialsViewController.swift */,
+				2949A25E1D3FCADA00D8D889 /* HostComboBoxDataSource.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -471,6 +474,7 @@
 				C290C17D1D1D6CC3002AFCA7 /* SyncServer.mm in Sources */,
 				C29C634C1CFCB6670099C501 /* NSObject+CommonBindings.swift in Sources */,
 				C22514681CF74F5A007E64EB /* NSFileManager+CommonURLs.swift in Sources */,
+				2949A25F1D3FCADA00D8D889 /* HostComboBoxDataSource.swift in Sources */,
 				C22514691CF87853007E64EB /* ServerViewController.swift in Sources */,
 				C29C635F1CFF28C80099C501 /* TokenGenerator.swift in Sources */,
 			);

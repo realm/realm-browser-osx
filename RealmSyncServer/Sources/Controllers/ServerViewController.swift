@@ -24,13 +24,15 @@ private struct DefaultsKeys {
 
 class ServerViewController: NSViewController {
     
-    @IBOutlet weak var hostTextField: NSTextField!
+    @IBOutlet weak var hostComboBox: NSComboBox!
     @IBOutlet weak var portTextField: NSTextField!
     @IBOutlet weak var enableAuthenticationCheckbox: NSButton!
     @IBOutlet weak var logLevelPopUpButton: NSPopUpButton!
     @IBOutlet weak var startStopServerButton: NSButton!
     @IBOutlet weak var resetSyncDataButton: NSButton!
     @IBOutlet var logOutputTextView: NSTextView!
+
+    lazy var hostComboBoxDataSource = HostComboBoxDataSource()
     
     var host: String {
         return NSUserDefaults.standardUserDefaults().stringForKey(DefaultsKeys.host) ?? DefaultValues.host
@@ -64,8 +66,9 @@ class ServerViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        hostTextField.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.host, options: [NSNullPlaceholderBindingOption: DefaultValues.host])
+
+        hostComboBox.dataSource = hostComboBoxDataSource
+        hostComboBox.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.host, options: [NSNullPlaceholderBindingOption: DefaultValues.host])
         portTextField.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.port, options: [NSNullPlaceholderBindingOption: DefaultValues.port])
         enableAuthenticationCheckbox.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.enableAuthentication, options: [NSNullPlaceholderBindingOption: DefaultValues.enableAuthentication])
         logLevelPopUpButton.bind(NSSelectedIndexBinding, toStandardUserDefaultsKey: DefaultsKeys.logLevel, options: [NSNullPlaceholderBindingOption: DefaultValues.logLevel.rawValue])
@@ -81,7 +84,7 @@ class ServerViewController: NSViewController {
     }
     
     private func updateUI() {
-        for control in [hostTextField, portTextField, enableAuthenticationCheckbox, logLevelPopUpButton, resetSyncDataButton] {
+        for control in [hostComboBox, portTextField, enableAuthenticationCheckbox, logLevelPopUpButton, resetSyncDataButton] {
             control.enabled = !server.running
         }
         
