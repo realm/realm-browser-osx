@@ -101,8 +101,6 @@ class ServerViewController: NSViewController {
 extension ServerViewController {
     
     @IBAction func startStopServer(sender: AnyObject?) {
-        commitEditing()
-        
         if server.running {
             server.stop()
         } else {
