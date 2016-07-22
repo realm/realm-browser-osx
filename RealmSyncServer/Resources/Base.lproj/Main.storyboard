@@ -729,16 +729,16 @@ Gw
                         <rect key="frame" x="0.0" y="0.0" width="821" height="468"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IQj-Tm-bA8">
-                                <rect key="frame" x="129" y="426" width="312" height="22"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="0ZG-v7-Tkp">
+                            <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IQj-Tm-bA8">
+                                <rect key="frame" x="129" y="424" width="315" height="26"/>
+                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesDataSource="YES" numberOfVisibleItems="5" id="0ZG-v7-Tkp">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
+                                </comboBoxCell>
+                            </comboBox>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="U5Q-to-jTL">
-                                <rect key="frame" x="86" y="429" width="37" height="17"/>
+                                <rect key="frame" x="86" y="428" width="37" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Host:" id="3cs-Uz-ovB">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -746,7 +746,7 @@ Gw
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nfT-g2-DDw">
-                                <rect key="frame" x="487" y="426" width="90" height="22"/>
+                                <rect key="frame" x="487" y="425" width="90" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="90" id="dlJ-m7-HJM"/>
                                 </constraints>
@@ -757,7 +757,7 @@ Gw
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Asm-0I-OSA">
-                                <rect key="frame" x="623" y="420" width="184" height="32"/>
+                                <rect key="frame" x="623" y="419" width="184" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="172" id="ltX-jF-gkT"/>
                                 </constraints>
@@ -770,7 +770,7 @@ Gw
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NE2-tN-GdP">
-                                <rect key="frame" x="447" y="429" width="34" height="17"/>
+                                <rect key="frame" x="447" y="428" width="34" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Port:" id="cXJ-yc-J3R">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -778,7 +778,7 @@ Gw
                                 </textFieldCell>
                             </textField>
                             <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="weH-4v-wFI">
-                                <rect key="frame" x="127" y="368" width="149" height="26"/>
+                                <rect key="frame" x="127" y="358" width="149" height="26"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="144" id="mTz-Ln-9cO"/>
                                 </constraints>
@@ -798,7 +798,7 @@ Gw
                                 </popUpButtonCell>
                             </popUpButton>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Abu-DG-2NC">
-                                <rect key="frame" x="31" y="374" width="92" height="17"/>
+                                <rect key="frame" x="31" y="364" width="92" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Logging Level:" id="pGK-u7-tpM">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -806,19 +806,19 @@ Gw
                                 </textFieldCell>
                             </textField>
                             <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QLK-44-FEP">
-                                <rect key="frame" x="0.0" y="0.0" width="821" height="350"/>
+                                <rect key="frame" x="0.0" y="0.0" width="821" height="340"/>
                                 <clipView key="contentView" copiesOnScroll="NO" id="qld-VI-6bf">
-                                    <rect key="frame" x="0.0" y="0.0" width="821" height="350"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="821" height="340"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView editable="NO" importsGraphics="NO" richText="NO" findStyle="panel" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" smartInsertDelete="YES" id="weH-He-Ekh">
-                                            <rect key="frame" x="0.0" y="0.0" width="821" height="350"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="821" height="340"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <size key="minSize" width="821" height="350"/>
+                                            <size key="minSize" width="821" height="340"/>
                                             <size key="maxSize" width="821" height="10000000"/>
                                             <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <size key="minSize" width="821" height="350"/>
+                                            <size key="minSize" width="821" height="340"/>
                                             <size key="maxSize" width="821" height="10000000"/>
                                         </textView>
                                     </subviews>
@@ -832,19 +832,19 @@ Gw
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="hla-BK-h91">
-                                    <rect key="frame" x="805" y="0.0" width="16" height="350"/>
+                                    <rect key="frame" x="805" y="0.0" width="16" height="340"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="5xN-Hk-hKd">
-                                <rect key="frame" x="127" y="398" width="155" height="18"/>
+                                <rect key="frame" x="127" y="388" width="155" height="18"/>
                                 <buttonCell key="cell" type="check" title="Enable Authentication" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="3ts-ll-6d2">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ENj-od-baL">
-                                <rect key="frame" x="411" y="390" width="172" height="32"/>
+                                <rect key="frame" x="411" y="380" width="172" height="32"/>
                                 <buttonCell key="cell" type="push" title="Manage Credentials..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="uFk-o8-xCc">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -854,13 +854,13 @@ Gw
                                 </connections>
                             </button>
                             <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="bGg-QY-UAG">
-                                <rect key="frame" x="0.0" y="348" width="821" height="5"/>
+                                <rect key="frame" x="0.0" y="338" width="821" height="5"/>
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                 <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <font key="titleFont" metaFont="system"/>
                             </box>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0Yy-Da-qSX">
-                                <rect key="frame" x="623" y="364" width="184" height="32"/>
+                                <rect key="frame" x="623" y="354" width="184" height="32"/>
                                 <buttonCell key="cell" type="push" title="Reset Sync Data" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="CVF-mT-R4s">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -895,7 +895,7 @@ Gw
                             <constraint firstItem="nfT-g2-DDw" firstAttribute="leading" secondItem="NE2-tN-GdP" secondAttribute="trailing" constant="8" symbolic="YES" id="aoL-ZG-VsC"/>
                             <constraint firstItem="U5Q-to-jTL" firstAttribute="baseline" secondItem="IQj-Tm-bA8" secondAttribute="baseline" id="b7K-ha-Oz0"/>
                             <constraint firstItem="Asm-0I-OSA" firstAttribute="trailing" secondItem="0Yy-Da-qSX" secondAttribute="trailing" id="bD3-HG-DjY"/>
-                            <constraint firstItem="ENj-od-baL" firstAttribute="top" secondItem="IQj-Tm-bA8" secondAttribute="bottom" constant="8" symbolic="YES" id="god-SZ-TDg"/>
+                            <constraint firstItem="ENj-od-baL" firstAttribute="top" secondItem="IQj-Tm-bA8" secondAttribute="bottom" constant="20" symbolic="YES" id="god-SZ-TDg"/>
                             <constraint firstItem="IQj-Tm-bA8" firstAttribute="leading" secondItem="5xN-Hk-hKd" secondAttribute="leading" id="iNo-p3-z25"/>
                             <constraint firstItem="IQj-Tm-bA8" firstAttribute="leading" secondItem="U5Q-to-jTL" secondAttribute="trailing" constant="8" symbolic="YES" id="ikt-iG-vdd"/>
                             <constraint firstItem="weH-4v-wFI" firstAttribute="top" secondItem="5xN-Hk-hKd" secondAttribute="bottom" constant="8" id="mex-yK-f5H"/>
@@ -905,7 +905,7 @@ Gw
                     </view>
                     <connections>
                         <outlet property="enableAuthenticationCheckbox" destination="5xN-Hk-hKd" id="6YY-Wy-i76"/>
-                        <outlet property="hostTextField" destination="IQj-Tm-bA8" id="TOO-ql-eey"/>
+                        <outlet property="hostComboBox" destination="IQj-Tm-bA8" id="xbT-4M-F1P"/>
                         <outlet property="logLevelPopUpButton" destination="weH-4v-wFI" id="flm-V6-X4g"/>
                         <outlet property="logOutputTextView" destination="weH-He-Ekh" id="yr8-jz-5Jn"/>
                         <outlet property="portTextField" destination="nfT-g2-DDw" id="L9c-27-AeX"/>
