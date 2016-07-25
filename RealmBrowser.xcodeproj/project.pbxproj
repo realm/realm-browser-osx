@@ -64,6 +64,7 @@
 		84E35A49196AD991007F0344 /* RLMNavigationStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E35A48196AD991007F0344 /* RLMNavigationStack.m */; };
 		84E35A4D196B021B007F0344 /* RLMArrayNavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E35A4C196B021B007F0344 /* RLMArrayNavigationState.m */; };
 		ADBD77D758972C8C68C6F371 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		C299E3921D2E4ECF00D0DA91 /* RLMUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C299E3911D2E4ECF00D0DA91 /* RLMUtils.m */; };
 		E84EB8201A2FB7F500EB780E /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 844C34DE19473D9D0027E902 /* libc++.dylib */; };
 		E84EB8291A2FC38C00EB780E /* RLMTestObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = E84EB8281A2FC38C00EB780E /* RLMTestObjects.m */; };
 		F57853F0E9C240FD283A4F8C /* Pods_RealmBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88A0814FC1FBF4B1C1E4D428 /* Pods_RealmBrowser.framework */; };
@@ -201,6 +202,8 @@
 		A4F4F093ABA4699B1D57AF0F /* Pods-RealmBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.release.xcconfig"; sourceTree = "<group>"; };
 		B4DD42CE427D384E8A7351A0 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5A5F0615B6ED1995CD3051A /* Pods-RealmBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RealmBrowser/Pods-RealmBrowser.debug.xcconfig"; sourceTree = "<group>"; };
+		C299E3911D2E4ECF00D0DA91 /* RLMUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMUtils.m; sourceTree = "<group>"; };
+		C299E3931D2E4EF900D0DA91 /* RLMUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RLMUtils.h; sourceTree = "<group>"; };
 		E84EB8271A2FC38C00EB780E /* RLMTestObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTestObjects.h; sourceTree = "<group>"; };
 		E84EB8281A2FC38C00EB780E /* RLMTestObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTestObjects.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -328,6 +331,8 @@
 				220D382719B639D700F79496 /* RLMTestDataGenerator.m */,
 				844C34E1194859080027E902 /* TestClasses.h */,
 				844C34E2194859080027E902 /* TestClasses.m */,
+				C299E3931D2E4EF900D0DA91 /* RLMUtils.h */,
+				C299E3911D2E4ECF00D0DA91 /* RLMUtils.m */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -673,6 +678,7 @@
 				2249D9B219A62EBD00A31104 /* RLMTableColumn.m in Sources */,
 				220D382819B639D700F79496 /* RLMTestDataGenerator.m in Sources */,
 				84E35A42196A9F3B007F0344 /* RLMNavigationState.m in Sources */,
+				C299E3921D2E4ECF00D0DA91 /* RLMUtils.m in Sources */,
 				2250CB571CFEA23F007B6566 /* RLMOptionalBoolTableCellView.m in Sources */,
 				84D7990D19388E8900FC76A0 /* RLMRealmNode.m in Sources */,
 				2234B6711CF83FBA00EAFDF0 /* RLMBrowserConstants.m in Sources */,

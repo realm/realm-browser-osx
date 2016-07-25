@@ -22,6 +22,7 @@
 #import "RLMBrowserConstants.h"
 #import "RLMApplicationDelegate.h"
 #import "RLMTestDataGenerator.h"
+#import "RLMUtils.h"
 #import "TestClasses.h"
 
 #import <AppSandboxFileAccess/AppSandboxFileAccess.h>
@@ -150,7 +151,7 @@
 
 -(void)updateMenu:(NSMenu *)menu withItems:(NSArray *)items indented:(BOOL)indented
 {
-    NSImage *image = [NSImage imageNamed:@"AppIcon"];
+    NSImage *image = [NSImage imageNamed:@"RealmFileIcon"];
     image.size = NSMakeSize(kMenuImageSize, kMenuImageSize);
     
     for (id item in items) {
@@ -251,7 +252,7 @@
 
 -(void)updateFileItems
 {
-    NSString *homeDir = NSHomeDirectory();
+    NSString *homeDir = RLMRealHomeDirectory();
     
     NSString *kPrefix = @"Prefix";
     NSString *kItems = @"Items";
@@ -275,12 +276,12 @@
     NSDictionary *otherDict = @{kPrefix : allPrefix, kItems : [NSMutableArray arrayWithObject:@"Other"]};
     
     // Create array of dictionaries, each corresponding to search folders
-    self.groupedFileItems = @[simDict, devDict, desktopDict, documentsdDict, downloadDict, otherDict];
+    NSArray *tempGroupedFileItems = @[simDict, devDict, desktopDict, documentsdDict, downloadDict, otherDict];
     
     // Iterate through all search results
     for (NSMetadataItem *fileItem in self.realmQuery.results) {
         // Iterate through the different prefixes and add item to corresponding array within dictionary
-        for (NSDictionary *dict in self.groupedFileItems) {
+        for (NSDictionary *dict in tempGroupedFileItems) {
             if ([[fileItem valueForAttribute:NSMetadataItemPathKey] hasPrefix:dict[kPrefix]]) {
                 NSMutableArray *items = dict[kItems];
                 // The first few items are just added
@@ -302,6 +303,9 @@
             }
         }
     }
+    
+    // Do not include empty groups
+    self.groupedFileItems = [tempGroupedFileItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%K.@count > 1", kItems]];
 }
 
 - (IBAction)generatedDemoDatabase:(id)sender
