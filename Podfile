@@ -14,5 +14,5 @@ end
 
 target 'RealmSyncServer' do
     project 'RealmSyncServer/RealmSyncServer.xcodeproj'
-    pod 'LibRealmSyncServer', '0.25.1'
+    pod 'LibRealmSyncServer', '0.26.3'
 end
