@@ -68,8 +68,8 @@ class ServerViewController: NSViewController {
         super.viewDidLoad()
 
         hostComboBox.dataSource = hostComboBoxDataSource
-        hostComboBox.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.host, options: [NSNullPlaceholderBindingOption: DefaultValues.host, NSContinuouslyUpdatesValueBindingOption: true])
-        portTextField.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.port, options: [NSNullPlaceholderBindingOption: DefaultValues.port, NSContinuouslyUpdatesValueBindingOption: true])
+        hostComboBox.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.host, options: [NSNullPlaceholderBindingOption: DefaultValues.host])
+        portTextField.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.port, options: [NSNullPlaceholderBindingOption: DefaultValues.port])
         enableAuthenticationCheckbox.bind(NSValueBinding, toStandardUserDefaultsKey: DefaultsKeys.enableAuthentication, options: [NSNullPlaceholderBindingOption: DefaultValues.enableAuthentication])
         logLevelPopUpButton.bind(NSSelectedIndexBinding, toStandardUserDefaultsKey: DefaultsKeys.logLevel, options: [NSNullPlaceholderBindingOption: DefaultValues.logLevel.rawValue])
         
@@ -101,6 +101,8 @@ class ServerViewController: NSViewController {
 extension ServerViewController {
     
     @IBAction func startStopServer(sender: AnyObject?) {
+        view.window?.makeFirstResponder(nil)
+
         if server.running {
             server.stop()
         } else {
