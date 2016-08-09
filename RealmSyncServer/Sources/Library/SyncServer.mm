@@ -84,9 +84,12 @@ static NSError *errorWithErrorCode(SyncServerError errorCode, NSString *descript
             return NO;
         }
     }
+
+    sync::Server::Config config;
+    config.logger = _logger.get();
     
     try {
-        _server.reset(new sync::Server(self.rootDirectoryURL.path.UTF8String, std::move(pkey), _logger.get()));
+        _server.reset(new sync::Server(self.rootDirectoryURL.path.UTF8String, std::move(pkey), config));
     } catch (const realm::util::File::AccessError& e) {
         *error = errorWithErrorCode(SyncServerErrorOpenningRootDirectory, @"Error while opening root directory", e);
         return NO;
