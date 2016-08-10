@@ -243,12 +243,16 @@ void RLMClearRealmCache();
     configuration.dynamic = YES;
     configuration.customSchema = nil;
     
-    if (self.syncSignedUserToken.length) {
-        configuration.syncUserToken = self.syncSignedUserToken;
-    }
-    
-    if (self.syncServerURL) {
-        configuration.syncServerURL = [NSURL URLWithString:self.syncServerURL];
+    if (self.syncSignedUserToken.length > 0 && self.syncServerURL != nil) {
+        NSURL *fullURL = [NSURL URLWithString:self.syncServerURL];
+
+        RLMCredential *credentials = [RLMCredential credentialWithAccessToken:self.syncSignedUserToken serverURL:[NSURL URLWithString:@"/" relativeToURL:fullURL].absoluteURL];
+        RLMUser *user = [[RLMUser alloc] initWithLocalIdentity:nil];
+        [user loginWithCredential:credentials completion:nil];
+        [configuration setObjectServerPath:fullURL.path forUser:user];
+
+        // FIXME: setObjectServerPath:forUser: sets wrong path, resseting it for now
+        configuration.fileURL = [NSURL fileURLWithPath:_url];
     }
     
     return configuration;
