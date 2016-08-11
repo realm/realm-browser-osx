@@ -29,6 +29,7 @@
 
 #import "RLMSyncServerConnectionWindowController.h"
 #import "RLMSyncCredentialsViewController.h"
+#import "RLMSyncServerBrowserWindowController.h"
 
 #import "NSURLComponents+FragmentItems.h"
 
@@ -565,8 +566,50 @@
 
 #pragma mark - Sync
 
+- (IBAction)connectToSyncServer:(id)sender {
+    RLMSyncServerConnectionWindowController *connectionWindowController = [[RLMSyncServerConnectionWindowController alloc] init];
+
+    if ([connectionWindowController runModal] != NSModalResponseOK) {
+        return;
+    }
+
+    NSURL *syncServerURL = connectionWindowController.credentialsViewController.syncServerURL;
+    NSString *accessToken = connectionWindowController.credentialsViewController.signedUserToken;
+
+    RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] init];
+
+    NSModalResponse result = [browserWindowController connectToServerAtURL:syncServerURL accessToken:accessToken completion:^(NSError *error) {
+        if (error != nil) {
+            [NSApp presentError:error];
+        }
+    }];
+
+    if (result != NSModalResponseOK) {
+        return;
+    }
+
+    syncServerURL = [syncServerURL URLByAppendingPathComponent:browserWindowController.selectedRealmPath];
+
+    NSURL *realmURL = [self temporaryURLForRealmFileWithSync:syncServerURL.lastPathComponent];
+
+    NSError *error = nil;
+    if (![self createEmptyRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:accessToken error:&error]) {
+        if (error != nil) {
+            [[NSAlert alertWithError:error] runModal];
+        }
+
+        return;
+    }
+
+    [self openRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:accessToken];
+}
+
 - (IBAction)openSyncURL:(id)sender
 {
+    [self connectToSyncServer:sender];
+
+    return;
+
     RLMSyncServerConnectionWindowController *connectionWindowController = [[RLMSyncServerConnectionWindowController alloc] init];
     
     if ([connectionWindowController runModal] != NSModalResponseOK) {
