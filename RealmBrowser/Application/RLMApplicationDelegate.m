@@ -57,6 +57,8 @@
     [[NSUserDefaults standardUserDefaults] setObject:@(kTopTipDelay) forKey:@"NSInitialToolTipDelay"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
+    [RLMServer setupWithAppID:@"io.realm.realm-browser" logLevel:0 errorHandler:nil];
+
     if (!self.didLoadFile && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
         [NSApp sendAction:self.openMenuItem.action to:self.openMenuItem.target from:self];
 
@@ -561,7 +563,7 @@
     }];
 }
 
-#pragma mark - Sync -
+#pragma mark - Sync
 
 - (IBAction)openSyncURL:(id)sender
 {
@@ -612,9 +614,17 @@
     configuration.fileURL = realmURL;
     configuration.dynamic = YES;
     configuration.customSchema = nil;
-    configuration.syncServerURL = syncServerURL;
-    configuration.syncUserToken = token;
-    
+
+    RLMCredential *credentials = [RLMCredential credentialWithAccessToken:token serverURL:[NSURL URLWithString:@"/" relativeToURL:syncServerURL].absoluteURL];
+
+    RLMUser *user = [[RLMUser alloc] initWithLocalIdentity:nil];
+    [user loginWithCredential:credentials completion:nil];
+
+    [configuration setObjectServerPath:realmURL.path forUser:user];
+
+    // FIXME: setObjectServerPath:forUser: sets wrong path, resseting it for now
+    configuration.fileURL = realmURL;
+
     BOOL (^createRealm)(RLMRealmConfiguration *, NSError **) = ^BOOL(RLMRealmConfiguration *configuration, NSError **error) {
         return [RLMRealm realmWithConfiguration:configuration error:error] != nil;
     };
