@@ -33,7 +33,7 @@
 }
 
 - (BOOL)validateCredentials:(NSError *__autoreleasing *)error {
-    if (!([self.syncServerURL.scheme isEqualToString:@"realm"] && self.syncServerURL.host.length > 0 && self.syncServerURL.path.length == 0)) {
+    if (!([self.syncServerURL.scheme isEqualToString:@"realm"] && self.syncServerURL.host.length > 0)) {
         if (error != nil) {
             *error = [NSError errorWithDomain:@"io.realm.browser" code:0 userInfo:@{NSLocalizedDescriptionKey: @"Invalid Sync Server URL", NSLocalizedRecoverySuggestionErrorKey: @"Provide a valid Sync Server URL in format:\n \"realm://HOST:PORT/PATH\"."}];
         }

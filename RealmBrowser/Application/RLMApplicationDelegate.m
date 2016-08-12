@@ -578,67 +578,39 @@
 
     RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] init];
 
-    NSModalResponse result = [browserWindowController connectToServerAtURL:syncServerURL accessToken:accessToken completion:^(NSError *error) {
-        if (error != nil) {
+    NSError *error;
+    if ([browserWindowController connectToServerAtURL:syncServerURL accessToken:accessToken error:&error] != NSModalResponseOK) {
+        if (error) {
             [NSApp presentError:error];
         }
-    }];
 
-    if (result != NSModalResponseOK) {
         return;
     }
 
-    syncServerURL = [syncServerURL URLByAppendingPathComponent:browserWindowController.selectedRealmPath];
+    NSString *serverPath = browserWindowController.selectedRealmPath;
+    NSURL *realmURL = [self temporaryURLForRealmFileWithSync:serverPath.lastPathComponent];
 
-    NSURL *realmURL = [self temporaryURLForRealmFileWithSync:syncServerURL.lastPathComponent];
-
-    NSError *error = nil;
-    if (![self createEmptyRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:accessToken error:&error]) {
-        if (error != nil) {
-            [[NSAlert alertWithError:error] runModal];
+    // FIXME: workaround for https://github.com/realm/realm-sync/issues/619
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSError *error = nil;
+        if (![self createEmptyRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL serverPath:(NSString *)serverPath userToken:accessToken error:&error]) {
+            if (error != nil) {
+                [[NSAlert alertWithError:error] runModal];
+            }
+            
+            return;
         }
 
-        return;
-    }
-
-    [self openRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:accessToken];
+        [self openRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL serverPath:serverPath userToken:accessToken];
+    });
 }
 
-- (IBAction)openSyncURL:(id)sender
-{
-    [self connectToSyncServer:sender];
-
-    return;
-
-    RLMSyncServerConnectionWindowController *connectionWindowController = [[RLMSyncServerConnectionWindowController alloc] init];
-    
-    if ([connectionWindowController runModal] != NSModalResponseOK) {
-        return;
-    }
-    
-    NSURL *syncServerURL = connectionWindowController.credentialsViewController.syncServerURL;
-    NSString *userToken = connectionWindowController.credentialsViewController.signedUserToken;
-    
-    NSURL *realmURL = [self temporaryURLForRealmFileWithSync:syncServerURL.lastPathComponent];
-    
-    NSError *error = nil;
-    if (![self createEmptyRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:userToken error:&error]) {
-        if (error != nil) {
-            [[NSAlert alertWithError:error] runModal];
-        }
-        
-        return;
-    }
-    
-    [self openRealmWithSyncAtURL:realmURL syncServerURL:syncServerURL userToken:userToken];
-}
-
-- (void)openRealmWithSyncAtURL:(NSURL *)realmURL syncServerURL:(NSURL *)syncServerURL userToken:(NSString *)signedUserToken {
+- (void)openRealmWithSyncAtURL:(NSURL *)realmURL syncServerURL:(NSURL *)syncServerURL serverPath:(NSString *)serverPath userToken:(NSString *)signedUserToken {
     NSMutableArray *fragmentItems = [NSMutableArray array];
     
     NSURLComponents *components = [NSURLComponents componentsWithURL:realmURL resolvingAgainstBaseURL:NO];
     
-    [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"syncServerURL" value:syncServerURL.absoluteString]];
+    [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"syncServerURL" value:[syncServerURL URLByAppendingPathComponent:serverPath].absoluteString]];
     [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"syncSignedUserToken" value:signedUserToken]];
     
     components.fragmentItems = fragmentItems;
@@ -652,18 +624,18 @@
     });
 }
 
-- (BOOL)createEmptyRealmWithSyncAtURL:(NSURL *)realmURL syncServerURL:(NSURL *)syncServerURL userToken:(NSString *)token error:(NSError **)error {
+- (BOOL)createEmptyRealmWithSyncAtURL:(NSURL *)realmURL syncServerURL:(NSURL *)syncServerURL serverPath:(NSString *)serverPath userToken:(NSString *)token error:(NSError **)error {
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
     configuration.fileURL = realmURL;
     configuration.dynamic = YES;
     configuration.customSchema = nil;
 
-    RLMCredential *credentials = [RLMCredential credentialWithAccessToken:token serverURL:[NSURL URLWithString:@"/" relativeToURL:syncServerURL].absoluteURL];
+    RLMCredential *credentials = [RLMCredential credentialWithAccessToken:token serverURL:syncServerURL];
 
     RLMUser *user = [[RLMUser alloc] initWithLocalIdentity:nil];
     [user loginWithCredential:credentials completion:nil];
 
-    [configuration setObjectServerPath:realmURL.path forUser:user];
+    [configuration setObjectServerPath:serverPath forUser:user];
 
     // FIXME: setObjectServerPath:forUser: sets wrong path, resseting it for now
     configuration.fileURL = realmURL;

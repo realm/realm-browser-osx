@@ -97,9 +97,9 @@
                                 </menu>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
-                            <menuItem title="Open Sync URL…" keyEquivalent="O" id="iTJ-09-gX5">
+                            <menuItem title="Connect to Sync Server…" keyEquivalent="O" id="iTJ-09-gX5">
                                 <connections>
-                                    <action selector="openSyncURL:" target="PLw-ns-0qo" id="i9j-tD-uSh"/>
+                                    <action selector="connectToSyncServer:" target="PLw-ns-0qo" id="CXU-Xx-Nk6"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="9zf-QU-MRX"/>
