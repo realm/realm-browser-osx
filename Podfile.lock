@@ -3,7 +3,7 @@ PODS:
   - CSwiftV (0.0.5)
   - LibRealmSyncServer (0.27.1)
   - PathKit (0.6.0)
-  - Realm (1.0.2-5-sync-0.27.1)
+  - Realm (1.0.2-6-sync-0.27.1)
   - RealmConverter (0.1.2):
     - CSwiftV
     - PathKit
@@ -16,7 +16,7 @@ PODS:
 DEPENDENCIES:
   - AppSandboxFileAccess
   - LibRealmSyncServer (= 0.27.1)
-  - Realm (= 1.0.2-5-sync-0.27.1)
+  - Realm (= 1.0.2-6-sync-0.27.1)
   - RealmConverter
 
 SPEC CHECKSUMS:
@@ -24,11 +24,11 @@ SPEC CHECKSUMS:
   CSwiftV: 2560532e2e5b04d95c36b0f49a8dc745071fa525
   LibRealmSyncServer: 8a423154cd8ca5decbdd59b3573331b59bacd468
   PathKit: b224b6d2c4e75b87f08f45e1c0c610a3195c94e5
-  Realm: 831bc079e5f76bb0cbdfa71cc90d1d6de24a57cc
+  Realm: d4867eccda1ae74946b741058908e292b90277a6
   RealmConverter: a771c323e50126bd8ad499b4b73f617b103a95c5
   SSZipArchive: bab21000ee11b7ba68d5880bcd87d80e4eb93e65
   TGSpreadsheetWriter: '09bbb2c18a111a11c94ff9c1af2320e2530c958e'
 
-PODFILE CHECKSUM: 5657cdf565ec307dfe44174fe4f5975dd44fc357
+PODFILE CHECKSUM: d67f3601ef4b886e8b13ce685244ce73b3098832
 
 COCOAPODS: 1.0.1
