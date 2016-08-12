@@ -53,6 +53,7 @@
 
     __block RLMNotificationToken *initialNotificationToken = [initialRealm addNotificationBlock:^(RLMNotification  _Nonnull notification, RLMRealm * _Nonnull realm) {
         [initialNotificationToken stop];
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
         [self setupRealmAfterInitialSyncWithConfiguration:configuration];
     }];
 
