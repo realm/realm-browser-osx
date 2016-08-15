@@ -620,7 +620,7 @@
     RLMUser *user = [[RLMUser alloc] initWithLocalIdentity:nil];
     [user loginWithCredential:credentials completion:nil];
 
-    [configuration setObjectServerPath:realmURL.path forUser:user];
+    [configuration setObjectServerPath:syncServerURL.path forUser:user];
 
     // FIXME: setObjectServerPath:forUser: sets wrong path, resseting it for now
     configuration.fileURL = realmURL;
