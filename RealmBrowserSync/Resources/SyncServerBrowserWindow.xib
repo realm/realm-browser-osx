@@ -29,7 +29,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="32" viewBased="YES" id="pZo-lC-m6V">
+                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" rowHeight="32" viewBased="YES" id="pZo-lC-m6V">
                                     <rect key="frame" x="0.0" y="0.0" width="480" height="0.0"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
@@ -146,6 +146,7 @@ Gw
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="jgf-ao-57N"/>
+                <outlet property="initialFirstResponder" destination="pZo-lC-m6V" id="3uF-eS-ZkB"/>
             </connections>
             <point key="canvasLocation" x="860" y="555.5"/>
         </window>
