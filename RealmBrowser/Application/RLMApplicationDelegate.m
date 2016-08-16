@@ -27,8 +27,8 @@
 
 #import <AppSandboxFileAccess/AppSandboxFileAccess.h>
 
-#import "RLMSyncServerConnectionWindowController.h"
-#import "RLMSyncCredentialsViewController.h"
+#import "RLMOpenSyncURLWindowController.h"
+#import "RLMConnectToSyncServerWindowController.h"
 #import "RLMSyncServerBrowserWindowController.h"
 
 #import "NSURLComponents+FragmentItems.h"
@@ -568,14 +568,14 @@
 
 - (IBAction)openSyncURL:(id)sender
 {
-    RLMSyncServerConnectionWindowController *connectionWindowController = [[RLMSyncServerConnectionWindowController alloc] init];
+    RLMOpenSyncURLWindowController *openSyncURLWindowController = [[RLMOpenSyncURLWindowController alloc] init];
 
-    if ([connectionWindowController runModal] != NSModalResponseOK) {
+    if ([openSyncURLWindowController runModal] != NSModalResponseOK) {
         return;
     }
 
-    NSURL *syncURL = connectionWindowController.credentialsViewController.syncServerURL;
-    NSString *accessToken = connectionWindowController.credentialsViewController.signedUserToken;
+    NSURL *syncURL = openSyncURLWindowController.url;
+    NSString *accessToken = openSyncURLWindowController.token;
     NSURL *fileURL = [self uniqueRealmFileURLForSyncURL:syncURL];
 
     NSError *error;
@@ -588,14 +588,14 @@
 }
 
 - (IBAction)connectToSyncServer:(id)sender {
-    RLMSyncServerConnectionWindowController *connectionWindowController = [[RLMSyncServerConnectionWindowController alloc] init];
+    RLMConnectToSyncServerWindowController *connectToSyncServerWindowController = [[RLMConnectToSyncServerWindowController alloc] init];
 
-    if ([connectionWindowController runModal] != NSModalResponseOK) {
+    if ([connectToSyncServerWindowController runModal] != NSModalResponseOK) {
         return;
     }
 
-    NSURL *syncServerURL = connectionWindowController.credentialsViewController.syncServerURL;
-    NSString *accessToken = connectionWindowController.credentialsViewController.signedUserToken;
+    NSURL *syncServerURL = connectToSyncServerWindowController.url;
+    NSString *accessToken = connectToSyncServerWindowController.token;
 
     RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] init];
 
