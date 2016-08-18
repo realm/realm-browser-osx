@@ -63,8 +63,6 @@
         NSURLComponents *components = [NSURLComponents componentsWithURL:absoluteURL resolvingAgainstBaseURL:NO];
         NSDictionary *fragmentsDictionary = components.fragmentItemsDictionary;
         
-        BOOL showSyncRealmPrompt = (fragmentsDictionary[@"syncCredentialsPrompt"] != nil);
-        
         NSURL *folderURL = absoluteURL;
         BOOL isDir = NO;
         if (([[NSFileManager defaultManager] fileExistsAtPath:folderURL.path isDirectory:&isDir] && isDir == NO)) {
