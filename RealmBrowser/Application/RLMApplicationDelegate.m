@@ -31,6 +31,8 @@
 #import "RLMConnectToSyncServerWindowController.h"
 #import "RLMSyncServerBrowserWindowController.h"
 
+#import "RLMDynamicShemaLoader.h"
+
 #import "NSURLComponents+FragmentItems.h"
 
 @interface RLMApplicationDelegate ()
@@ -48,6 +50,8 @@
 @property (nonatomic, strong) NSMetadataQuery *appQuery;
 @property (nonatomic, strong) NSMetadataQuery *projQuery;
 @property (nonatomic, strong) NSArray *groupedFileItems;
+
+@property (nonatomic, strong) RLMDynamicShemaLoader *schemaLoader;
 
 @end
 
@@ -578,13 +582,14 @@
     NSString *accessToken = openSyncURLWindowController.token;
     NSURL *fileURL = [self uniqueRealmFileURLForSyncURL:syncURL];
 
-    NSError *error;
-    if (![self createEmptyRealmAtURL:fileURL forSyncURL:syncURL accessToken:accessToken error:&error]) {
-        [NSApp presentError:error];
-        return;
-    }
-
-    [self openRealmAtURL:fileURL forSyncURL:syncURL accessToken:accessToken];
+    self.schemaLoader = [[RLMDynamicShemaLoader alloc] init];
+    [self.schemaLoader loadSchemaFromSyncURL:syncURL accessToken:accessToken toRealmFileURL:fileURL completionHandler:^(NSError *error) {
+        if (error != nil) {
+            [NSApp presentError:error];
+        } else {
+            [self openRealmAtURL:fileURL forSyncURL:syncURL accessToken:accessToken];
+        }
+    }];
 }
 
 - (IBAction)connectToSyncServer:(id)sender {
@@ -612,12 +617,27 @@
     NSURL *syncURL = [syncServerURL URLByAppendingPathComponent:serverPath];
     NSURL *fileURL = [self uniqueRealmFileURLForSyncURL:syncURL];
 
-    if (![self createEmptyRealmAtURL:fileURL forSyncURL:syncURL accessToken:accessToken error:&error]) {
-        [NSApp presentError:error];
-        return;
-    }
+    self.schemaLoader = [[RLMDynamicShemaLoader alloc] init];
+    [self.schemaLoader loadSchemaFromSyncURL:syncURL accessToken:accessToken toRealmFileURL:fileURL completionHandler:^(NSError *error) {
+        if (error != nil) {
+            [NSApp presentError:error];
+        } else {
+            [self openRealmAtURL:fileURL forSyncURL:syncURL accessToken:accessToken];
+        }
+    }];
+}
 
-    [self openRealmAtURL:fileURL forSyncURL:syncURL accessToken:accessToken];
+- (void)openRealmAtURL:(NSURL *)realmURL forSyncURL:(NSURL *)syncURL accessToken:(NSString *)accessToken {
+    NSMutableArray *fragmentItems = [NSMutableArray array];
+
+    NSURLComponents *components = [NSURLComponents componentsWithURL:realmURL resolvingAgainstBaseURL:NO];
+
+    [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"syncServerURL" value:syncURL.absoluteString]];
+    [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"syncSignedUserToken" value:accessToken]];
+
+    components.fragmentItems = fragmentItems;
+
+    [self openFileAtURL:components.URL];
 }
 
 - (NSURL *)uniqueRealmFileURLForSyncURL:(NSURL *)syncURL {
@@ -631,49 +651,9 @@
     directoryURL = [directoryURL URLByAppendingPathComponent:[NSBundle mainBundle].bundleIdentifier];
     directoryURL = [directoryURL URLByAppendingPathComponent:[NSUUID UUID].UUIDString];
 
-
     [[NSFileManager defaultManager] createDirectoryAtURL:directoryURL withIntermediateDirectories:YES attributes:nil error:nil];
 
     return [directoryURL URLByAppendingPathComponent:fileName];
-}
-
-- (BOOL)createEmptyRealmAtURL:(NSURL *)fileURL forSyncURL:(NSURL *)syncUrl accessToken:(NSString *)accessToken error:(NSError **)error {
-    NSURL *serverURL = [NSURL URLWithString:@"/" relativeToURL:syncUrl].absoluteURL;
-    NSString *serverPath = syncUrl.path;
-
-    RLMCredential *credentials = [RLMCredential credentialWithAccessToken:accessToken serverURL:serverURL];
-
-    RLMUser *user = [[RLMUser alloc] initWithLocalIdentity:nil];
-    [user loginWithCredential:credentials completion:nil];
-
-    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-    configuration.dynamic = YES;
-    configuration.customSchema = nil;
-    [configuration setObjectServerPath:serverPath forUser:user];
-
-    // FIXME: Must be set after setObjectServerPath:forUser: as it resets fileURL
-    configuration.fileURL = fileURL;
-
-    return [RLMRealm realmWithConfiguration:configuration error:error] != nil;
-}
-
-- (void)openRealmAtURL:(NSURL *)realmURL forSyncURL:(NSURL *)syncURL accessToken:(NSString *)accessToken {
-    NSMutableArray *fragmentItems = [NSMutableArray array];
-
-    NSURLComponents *components = [NSURLComponents componentsWithURL:realmURL resolvingAgainstBaseURL:NO];
-
-    [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"syncServerURL" value:syncURL.absoluteString]];
-    [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"syncSignedUserToken" value:accessToken]];
-
-    components.fragmentItems = fragmentItems;
-
-    //Deferred to the next run loop iteration to give the modal prompt
-    //time to dismiss before the sandboxing prompt appears.
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:components.URL
-                                                                               display:YES
-                                                                     completionHandler:^(NSDocument * __nullable document, BOOL documentWasAlreadyOpen, NSError * __nullable error) {}];
-    });
 }
 
 - (IBAction)runSyncServer:(id)sender

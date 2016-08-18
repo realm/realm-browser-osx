@@ -20,8 +20,6 @@
 #import "RLMClassNode.h"
 #import "RLMRealmOutlineNode.h"
 
-typedef void (^RLMSchemaLoadedCallback)();
-
 @interface RLMRealmNode : NSObject <RLMRealmOutlineNode>
 
 @property (nonatomic, readonly) RLMRealm *realm;
@@ -34,11 +32,9 @@ typedef void (^RLMSchemaLoadedCallback)();
 @property (nonatomic, copy) NSString *syncServerURL;
 @property (nonatomic, copy) NSString *syncSignedUserToken;
 
-@property (nonatomic, copy) RLMNotificationBlock notificationBlock;
-
 - (instancetype)initWithName:(NSString *)name url:(NSString *)url;
 
-- (BOOL)connect:(NSError **)error schemaLoadedCallBack:(RLMSchemaLoadedCallback)callback;
+- (BOOL)connect:(NSError **)error;
 
 - (void)addTable:(RLMClassNode *)table;
 
