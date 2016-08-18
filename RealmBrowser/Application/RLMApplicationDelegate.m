@@ -31,7 +31,7 @@
 #import "RLMConnectToSyncServerWindowController.h"
 #import "RLMSyncServerBrowserWindowController.h"
 
-#import "RLMDynamicShemaLoader.h"
+#import "RLMDynamicSchemaLoader.h"
 
 #import "NSURLComponents+FragmentItems.h"
 
@@ -51,7 +51,7 @@
 @property (nonatomic, strong) NSMetadataQuery *projQuery;
 @property (nonatomic, strong) NSArray *groupedFileItems;
 
-@property (nonatomic, strong) RLMDynamicShemaLoader *schemaLoader;
+@property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
 
 @end
 
@@ -582,7 +582,7 @@
     NSString *accessToken = openSyncURLWindowController.token;
     NSURL *fileURL = [self uniqueRealmFileURLForSyncURL:syncURL];
 
-    self.schemaLoader = [[RLMDynamicShemaLoader alloc] init];
+    self.schemaLoader = [[RLMDynamicSchemaLoader alloc] init];
     [self.schemaLoader loadSchemaFromSyncURL:syncURL accessToken:accessToken toRealmFileURL:fileURL completionHandler:^(NSError *error) {
         if (error != nil) {
             [NSApp presentError:error];
@@ -617,7 +617,7 @@
     NSURL *syncURL = [syncServerURL URLByAppendingPathComponent:serverPath];
     NSURL *fileURL = [self uniqueRealmFileURLForSyncURL:syncURL];
 
-    self.schemaLoader = [[RLMDynamicShemaLoader alloc] init];
+    self.schemaLoader = [[RLMDynamicSchemaLoader alloc] init];
     [self.schemaLoader loadSchemaFromSyncURL:syncURL accessToken:accessToken toRealmFileURL:fileURL completionHandler:^(NSError *error) {
         if (error != nil) {
             [NSApp presentError:error];

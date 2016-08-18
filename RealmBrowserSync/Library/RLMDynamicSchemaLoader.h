@@ -1,5 +1,5 @@
 //
-//  RLMDynamicShemaLoader.h
+//  RLMDynamicSchemaLoader.h
 //  RealmBrowser
 //
 //  Created by Dmitry Obukhov on 17/08/16.
@@ -10,7 +10,7 @@
 
 typedef void (^RLMSchemaLoadCompletionHandler)(NSError *error);
 
-@interface RLMDynamicShemaLoader : NSObject
+@interface RLMDynamicSchemaLoader : NSObject
 
 - (void)loadSchemaFromSyncURL:(NSURL *)syncURL accessToken:(NSString *)accessToken toRealmFileURL:(NSURL *)fileURL completionHandler:(RLMSchemaLoadCompletionHandler)handler;
 

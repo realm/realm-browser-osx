@@ -64,7 +64,7 @@
 		84E35A49196AD991007F0344 /* RLMNavigationStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E35A48196AD991007F0344 /* RLMNavigationStack.m */; };
 		84E35A4D196B021B007F0344 /* RLMArrayNavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E35A4C196B021B007F0344 /* RLMArrayNavigationState.m */; };
 		ADBD77D758972C8C68C6F371 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
-		C2644B071D6491F900DBAC67 /* RLMDynamicShemaLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C2644B061D6491F900DBAC67 /* RLMDynamicShemaLoader.m */; };
+		C2644B071D6491F900DBAC67 /* RLMDynamicSchemaLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C2644B061D6491F900DBAC67 /* RLMDynamicSchemaLoader.m */; };
 		C2644B0B1D64957500DBAC67 /* RLMRealmConfiguration+Sync.m in Sources */ = {isa = PBXBuildFile; fileRef = C2644B0A1D64957500DBAC67 /* RLMRealmConfiguration+Sync.m */; };
 		C27E173A1D5CC0EF0095259A /* RLMSyncServerBrowserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C27E17391D5CC0EF0095259A /* RLMSyncServerBrowserWindowController.m */; };
 		C27E173C1D5CC1070095259A /* SyncServerBrowserWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C27E173B1D5CC1070095259A /* SyncServerBrowserWindow.xib */; };
@@ -207,8 +207,8 @@
 		84E35A4B196B021B007F0344 /* RLMArrayNavigationState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMArrayNavigationState.h; sourceTree = "<group>"; };
 		84E35A4C196B021B007F0344 /* RLMArrayNavigationState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMArrayNavigationState.m; sourceTree = "<group>"; };
 		B4DD42CE427D384E8A7351A0 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C2644B051D6491F900DBAC67 /* RLMDynamicShemaLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMDynamicShemaLoader.h; sourceTree = "<group>"; };
-		C2644B061D6491F900DBAC67 /* RLMDynamicShemaLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMDynamicShemaLoader.m; sourceTree = "<group>"; };
+		C2644B051D6491F900DBAC67 /* RLMDynamicSchemaLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMDynamicSchemaLoader.h; sourceTree = "<group>"; };
+		C2644B061D6491F900DBAC67 /* RLMDynamicSchemaLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMDynamicSchemaLoader.m; sourceTree = "<group>"; };
 		C2644B091D64951D00DBAC67 /* RLMRealmConfiguration+Sync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RLMRealmConfiguration+Sync.h"; sourceTree = "<group>"; };
 		C2644B0A1D64957500DBAC67 /* RLMRealmConfiguration+Sync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RLMRealmConfiguration+Sync.m"; sourceTree = "<group>"; };
 		C27E17381D5CC0EF0095259A /* RLMSyncServerBrowserWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMSyncServerBrowserWindowController.h; sourceTree = "<group>"; };
@@ -396,8 +396,8 @@
 			isa = PBXGroup;
 			children = (
 				C2644B081D6494CC00DBAC67 /* Extensions */,
-				C2644B051D6491F900DBAC67 /* RLMDynamicShemaLoader.h */,
-				C2644B061D6491F900DBAC67 /* RLMDynamicShemaLoader.m */,
+				C2644B051D6491F900DBAC67 /* RLMDynamicSchemaLoader.h */,
+				C2644B061D6491F900DBAC67 /* RLMDynamicSchemaLoader.m */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -733,7 +733,7 @@
 				22E4737219924CF700EEF7C9 /* RLMBasicTableCellView.m in Sources */,
 				2257869E1BD563A00012436A /* RLMEncryptionKeyWindowController.m in Sources */,
 				22E473791992562400EEF7C9 /* RLMBoolTableCellView.m in Sources */,
-				C2644B071D6491F900DBAC67 /* RLMDynamicShemaLoader.m in Sources */,
+				C2644B071D6491F900DBAC67 /* RLMDynamicSchemaLoader.m in Sources */,
 				2234B66E1CF83F9600EAFDF0 /* RLMBrowserConstants.m in Sources */,
 				C2AA0F5F1D633F3800D5D7E6 /* RLMSyncCredentialsWindowController.m in Sources */,
 				8474E2BD195452BE00BCA755 /* RLMInstanceTableViewController.m in Sources */,

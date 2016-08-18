@@ -1,5 +1,5 @@
 //
-//  RLMDynamicShemaLoader.m
+//  RLMDynamicSchemaLoader.m
 //  RealmBrowser
 //
 //  Created by Dmitry Obukhov on 17/08/16.
@@ -8,21 +8,21 @@
 
 @import Realm;
 
-#import "RLMDynamicShemaLoader.h"
+#import "RLMDynamicSchemaLoader.h"
 #import "RLMRealmConfiguration+Sync.h"
 
 static NSTimeInterval const schemaLoadTimeout = 5;
 
-NSString * const errorDomain = @"RLMDynamicShemaLoader";
+NSString * const errorDomain = @"RLMDynamicSchemaLoader";
 
-@interface RLMDynamicShemaLoader()
+@interface RLMDynamicSchemaLoader()
 
 @property (nonatomic, strong) RLMNotificationToken *notificationToken;
 @property (nonatomic, strong) RLMSchemaLoadCompletionHandler completionHandler;
 
 @end
 
-@implementation RLMDynamicShemaLoader
+@implementation RLMDynamicSchemaLoader
 
 - (void)loadSchemaFromSyncURL:(NSURL *)syncURL accessToken:(NSString *)accessToken toRealmFileURL:(NSURL *)fileURL completionHandler:(RLMSchemaLoadCompletionHandler)handler {
     self.completionHandler = handler;
