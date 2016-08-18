@@ -8,11 +8,11 @@ workspace 'RealmBrowser.xcworkspace'
 
 target 'RealmBrowser' do
     pod 'AppSandboxFileAccess'
-    pod 'Realm', '1.0.2-6-sync-0.27.1'
+    pod 'Realm', '1.0.2-7-sync-0.28.0'
     pod 'RealmConverter'
 end
 
 target 'RealmSyncServer' do
     project 'RealmSyncServer/RealmSyncServer.xcodeproj'
-    pod 'LibRealmSyncServer', '0.27.1'
+    pod 'LibRealmSyncServer', '0.28.0'
 end
