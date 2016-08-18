@@ -582,14 +582,7 @@
     NSString *accessToken = openSyncURLWindowController.token;
     NSURL *fileURL = [self uniqueRealmFileURLForSyncURL:syncURL];
 
-    self.schemaLoader = [[RLMDynamicSchemaLoader alloc] init];
-    [self.schemaLoader loadSchemaFromSyncURL:syncURL accessToken:accessToken toRealmFileURL:fileURL completionHandler:^(NSError *error) {
-        if (error != nil) {
-            [NSApp presentError:error];
-        } else {
-            [self openRealmAtURL:fileURL forSyncURL:syncURL accessToken:accessToken];
-        }
-    }];
+    [self loadSchemaAndOpenRealmAtURL:fileURL forSyncURL:syncURL accessToken:accessToken];
 }
 
 - (IBAction)connectToSyncServer:(id)sender {
@@ -617,27 +610,24 @@
     NSURL *syncURL = [syncServerURL URLByAppendingPathComponent:serverPath];
     NSURL *fileURL = [self uniqueRealmFileURLForSyncURL:syncURL];
 
+    [self loadSchemaAndOpenRealmAtURL:fileURL forSyncURL:syncURL accessToken:accessToken];
+}
+
+- (void)loadSchemaAndOpenRealmAtURL:(NSURL *)fileURL forSyncURL:(NSURL *)syncURL accessToken:(NSString *)accessToken {
     self.schemaLoader = [[RLMDynamicSchemaLoader alloc] init];
     [self.schemaLoader loadSchemaFromSyncURL:syncURL accessToken:accessToken toRealmFileURL:fileURL completionHandler:^(NSError *error) {
         if (error != nil) {
             [NSApp presentError:error];
         } else {
-            [self openRealmAtURL:fileURL forSyncURL:syncURL accessToken:accessToken];
+            NSURLComponents *components = [NSURLComponents componentsWithURL:fileURL resolvingAgainstBaseURL:NO];
+            components.fragmentItems = @[
+                [NSURLQueryItem queryItemWithName:@"syncServerURL" value:syncURL.absoluteString],
+                [NSURLQueryItem queryItemWithName:@"syncSignedUserToken" value:accessToken]
+            ];
+
+            [self openFileAtURL:components.URL];
         }
     }];
-}
-
-- (void)openRealmAtURL:(NSURL *)realmURL forSyncURL:(NSURL *)syncURL accessToken:(NSString *)accessToken {
-    NSMutableArray *fragmentItems = [NSMutableArray array];
-
-    NSURLComponents *components = [NSURLComponents componentsWithURL:realmURL resolvingAgainstBaseURL:NO];
-
-    [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"syncServerURL" value:syncURL.absoluteString]];
-    [fragmentItems addObject:[NSURLQueryItem queryItemWithName:@"syncSignedUserToken" value:accessToken]];
-
-    components.fragmentItems = fragmentItems;
-
-    [self openFileAtURL:components.URL];
 }
 
 - (NSURL *)uniqueRealmFileURLForSyncURL:(NSURL *)syncURL {
