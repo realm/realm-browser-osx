@@ -26,34 +26,28 @@
 
 @implementation RLMRealmNode
 
-- (instancetype)init
-{
-    return self = [self initWithName:@"Unknown name"
-                                 url:@"Unknown location"];
-}
+- (instancetype)initWithFileUrl:(NSURL *)fileURL syncUrl:(NSURL *)syncUrl accessToken:(NSString *)accessToken {
+    self = [super init];
 
-- (instancetype)initWithName:(NSString *)name url:(NSString *)url
-{
-    if (self = [super init]) {
-        _name = name;
-        _url = url;        
+    if (self) {
+        _name = fileURL.lastPathComponent.stringByDeletingPathExtension;
+        _fileURL = fileURL;
+        _syncURL = syncUrl;
+        _accessToken = accessToken;
     }
+
     return self;
 }
 
 - (BOOL)connect:(NSError **)error
 {
-    NSURL *fileURL = [NSURL fileURLWithPath:_url];
-
     RLMRealmConfiguration *configuration;
 
-    if (self.syncServerURL != nil && self.syncSignedUserToken != nil) {
-        NSURL *syncURL = [NSURL URLWithString:self.syncServerURL];
-
-        configuration = [RLMRealmConfiguration dynamicSchemaConfigurationWithSyncURL:syncURL accessToken:self.syncSignedUserToken fileURL:fileURL];
+    if (self.syncURL != nil && self.accessToken != nil) {
+        configuration = [RLMRealmConfiguration dynamicSchemaConfigurationWithSyncURL:self.syncURL accessToken:self.accessToken fileURL:self.fileURL];
     } else {
         configuration = [[RLMRealmConfiguration alloc] init];
-        configuration.fileURL = fileURL;
+        configuration.fileURL = self.fileURL;
         configuration.encryptionKey = self.encryptionKey;
         configuration.dynamic = YES;
         configuration.customSchema = nil;
@@ -99,7 +93,7 @@
     configuration.disableFormatUpgrade = YES;
     configuration.dynamic = YES;
     configuration.encryptionKey = self.encryptionKey;
-    configuration.fileURL = [NSURL fileURLWithPath:_url];
+    configuration.fileURL = self.fileURL;
     [RLMRealm realmWithConfiguration:configuration error:&localError];
     
     if (localError && localError.code == RLMErrorFileFormatUpgradeRequired) {
@@ -138,7 +132,7 @@
 
 - (NSString *)toolTipString
 {
-    return _url;
+    return self.fileURL.path;
 }
 
 - (NSView *)cellViewForTableView:(NSTableView *)tableView

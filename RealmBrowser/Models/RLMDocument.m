@@ -49,20 +49,14 @@
             return nil;
         }
         
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        if (![fileManager fileExistsAtPath:absoluteURL.path]) {
+        if (![absoluteURL.pathExtension.lowercaseString isEqualToString:kRealmFileExtension]) {
             return nil;
         }
-        NSString *lastComponent = [absoluteURL lastPathComponent];
-        NSString *extension = [absoluteURL pathExtension];
-        
-        if (![[extension lowercaseString] isEqualToString:kRealmFileExtension]) {
+
+        if (![absoluteURL checkResourceIsReachableAndReturnError:nil]) {
             return nil;
         }
-        
-        NSURLComponents *components = [NSURLComponents componentsWithURL:absoluteURL resolvingAgainstBaseURL:NO];
-        NSDictionary *fragmentsDictionary = components.fragmentItemsDictionary;
-        
+
         NSURL *folderURL = absoluteURL;
         BOOL isDir = NO;
         if (([[NSFileManager defaultManager] fileExistsAtPath:folderURL.path isDirectory:&isDir] && isDir == NO)) {
@@ -79,20 +73,21 @@
                 return nil;
             }
         }
-        
-        NSArray *fileNameComponents = [lastComponent componentsSeparatedByString:@"."];
-        NSString *realmName = [fileNameComponents firstObject];
-        
-        RLMRealmNode *realmNode = [[RLMRealmNode alloc] initWithName:realmName url:absoluteURL.path];
-        __weak typeof(self) weakSelf = self;
-        
-        realmNode.syncServerURL = fragmentsDictionary[@"syncServerURL"];
-        realmNode.syncSignedUserToken = fragmentsDictionary[@"syncSignedUserToken"];
-        
+
+        NSDictionary *fragmentsDictionary = [NSURLComponents componentsWithURL:absoluteURL resolvingAgainstBaseURL:NO].fragmentItemsDictionary;
+
+        // FIXME: Define constatns for it
+        NSURL *syncURL = [NSURL URLWithString:fragmentsDictionary[@"syncServerURL"]];
+        NSString *accessToken = fragmentsDictionary[@"syncSignedUserToken"];
+
+        RLMRealmNode *realmNode = [[RLMRealmNode alloc] initWithFileUrl:absoluteURL syncUrl:syncURL accessToken:accessToken];
         self.fileURL = absoluteURL;
-        
+
+        __weak typeof(self) weakSelf = self;
         void (^mainThreadBlock)() = ^{
             [self.securityScopedURL startAccessingSecurityScopedResource];
+
+            NSString *realmName = absoluteURL.lastPathComponent.stringByDeletingPathExtension;
             
             //Check to see if first the Realm file needs upgrading, and
             //if it does, prompt the user to confirm with proceeding
