@@ -21,7 +21,7 @@
 #import "RLMModelExporter.h"
 #import "RLMExportIndicatorWindowController.h"
 #import "RLMEncryptionKeyWindowController.h"
-#import "RLMSyncServerConnectionWindowController.h"
+#import "RLMOpenSyncURLWindowController.h"
 
 @import Realm;
 @import Realm.Private;
@@ -129,12 +129,12 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
 - (void)handleSyncPrompt
 {
-    RLMSyncServerConnectionWindowController *connectionWindowController = [[RLMSyncServerConnectionWindowController alloc] init];
+    RLMSyncCredentialsWindowController *credentialsWindowController = [[RLMOpenSyncURLWindowController alloc] init];
     
-    if ([connectionWindowController runModal] == NSModalResponseOK) {
-        self.modelDocument.presentedRealm.syncServerURL = connectionWindowController.credentialsViewController.syncServerURL.path;
-        self.modelDocument.presentedRealm.syncSignedUserToken = connectionWindowController.credentialsViewController.signedUserToken;
-        
+    if ([credentialsWindowController runModal] == NSModalResponseOK) {
+        self.modelDocument.presentedRealm.syncServerURL = credentialsWindowController.url.path;
+        self.modelDocument.presentedRealm.syncSignedUserToken = credentialsWindowController.token;
+
         typeof(self) __weak weakSelf = self;
         [self.modelDocument.presentedRealm connect:nil schemaLoadedCallBack:^{
             [weakSelf realmDidLoad];
