@@ -57,6 +57,7 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
     if (self.completionHandler != nil) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.completionHandler(error);
+            self.completionHandler = nil;
         });
     }
 }
