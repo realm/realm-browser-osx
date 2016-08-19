@@ -102,7 +102,7 @@
                                     <action selector="openSyncURL:" target="PLw-ns-0qo" id="bt7-BD-wFI"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Connect to Sync Server…" keyEquivalent="k" id="u5P-s1-qhf">
+                            <menuItem title="Connect to Object Server…" keyEquivalent="k" id="u5P-s1-qhf">
                                 <connections>
                                     <action selector="connectToSyncServer:" target="PLw-ns-0qo" id="6MJ-bq-efe"/>
                                 </connections>

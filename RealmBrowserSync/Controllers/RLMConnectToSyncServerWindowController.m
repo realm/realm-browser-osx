@@ -18,8 +18,8 @@
 - (void)windowDidLoad {
     [super windowDidLoad];
     
-    self.window.title = @"Connect to Sync Server";
-    self.urlLabel.stringValue = @"Sync Server Address";
+    self.window.title = @"Connect to Object Server";
+    self.urlLabel.stringValue = @"Object Server Address";
     self.tokenLabel.stringValue = @"Admin Access Token";
     self.okButton.title = @"Connect";
 }

@@ -35,12 +35,12 @@ NSString * const RLMSyncCredentialsWindowControllerErrorDomain = @"io.realm.real
     }
 
     if (!([self.url.scheme isEqualToString:@"realm"] && self.url.host.length > 0)) {
-        *error = [self errorWithCode:0 description:@"Invalid Sync Server URL" recoverySuggestion:@"Provide a valid Sync URL"];
+        *error = [self errorWithCode:0 description:@"Invalid Object Server URL" recoverySuggestion:@"Provide a valid URL"];
         return NO;
     }
 
     if (self.token != nil && [self.token componentsSeparatedByString:@":"].count != 2) {
-        *error = [self errorWithCode:1 description:@"Invalid Token" recoverySuggestion:@"Provide a valid Signed User Token in format:\n \"IDENTITY:SIGNATURE\" or leave it empty."];
+        *error = [self errorWithCode:1 description:@"Invalid Access Token" recoverySuggestion:@"Provide a valid Access Token in format:\n \"IDENTITY:SIGNATURE\" or leave it empty."];
         return NO;
     }
 

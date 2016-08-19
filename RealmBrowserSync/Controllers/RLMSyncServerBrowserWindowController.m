@@ -75,7 +75,7 @@
     [NSApp endModalSession:session];
 
     if (result == NSModalResponseAbort) {
-        *error = [[NSError alloc] initWithDomain:@"io.realm.realmbrowser.sync" code:-1 userInfo:@{NSLocalizedDescriptionKey: @"Error connecting to Sync Server"}];
+        *error = [[NSError alloc] initWithDomain:@"io.realm.realmbrowser.sync" code:-1 userInfo:@{NSLocalizedDescriptionKey: @"Error connecting to Object Server"}];
     }
 
     [initialNotificationToken stop];
