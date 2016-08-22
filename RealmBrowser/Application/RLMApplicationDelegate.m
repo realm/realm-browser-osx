@@ -444,7 +444,7 @@
     openPanel.canChooseDirectories = NO;
     openPanel.canChooseFiles = YES;
     openPanel.canCreateDirectories = YES;
-    openPanel.allowsMultipleSelection = NO;
+    openPanel.allowsMultipleSelection = YES;
     openPanel.message   = @"Please choose the CSV files you wish to import.";
     openPanel.allowedFileTypes = @[@"csv"];
     
