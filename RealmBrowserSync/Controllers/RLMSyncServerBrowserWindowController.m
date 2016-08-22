@@ -53,7 +53,7 @@
     NSURL *adminRealmFileURL = [self temporaryURLForRealmFileWithSync:adminRealmSyncURL.lastPathComponent];
 
     [self.schemaLoader loadSchemaFromSyncURL:adminRealmSyncURL accessToken:token toRealmFileURL:adminRealmFileURL completionHandler:^(NSError *schemaLoadError) {
-        if (error != nil) {
+        if (schemaLoadError != nil) {
             *error = schemaLoadError;
             [NSApp stopModalWithCode:NSModalResponseAbort];
         } else {
