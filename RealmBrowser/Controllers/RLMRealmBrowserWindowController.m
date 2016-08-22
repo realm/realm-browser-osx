@@ -129,19 +129,8 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
 - (void)handleSyncPrompt
 {
-    RLMSyncCredentialsWindowController *credentialsWindowController = [[RLMOpenSyncURLWindowController alloc] init];
-    
-    if ([credentialsWindowController runModal] == NSModalResponseOK) {
-        self.modelDocument.presentedRealm.syncServerURL = credentialsWindowController.url.path;
-        self.modelDocument.presentedRealm.syncSignedUserToken = credentialsWindowController.token;
-
-        typeof(self) __weak weakSelf = self;
-        [self.modelDocument.presentedRealm connect:nil schemaLoadedCallBack:^{
-            [weakSelf realmDidLoad];
-        }];
-    } else {
-        [self.document close];
-    }
+    // FIXME: see https://github.com/realm/realm-browser-osx-private/issues/51
+    NSAssert(NO, @"Not implemented");
 }
 
 #pragma mark - Public methods - Accessors
