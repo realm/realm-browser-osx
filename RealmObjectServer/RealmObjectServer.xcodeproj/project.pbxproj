@@ -60,7 +60,7 @@
 		C22514401CF5A98D007E64EB /* RealmObjectServerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RealmObjectServerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C22514441CF5A98D007E64EB /* RealmSyncServerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmSyncServerTests.swift; sourceTree = "<group>"; };
 		C22514461CF5A98D007E64EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C225144B1CF5A98D007E64EB /* RealmObjectServerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RealmObjectServerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C225144B1CF5A98D007E64EB /* RealmObjectServerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RealmObjectServerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C225144F1CF5A98D007E64EB /* RealmSyncServerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmSyncServerUITests.swift; sourceTree = "<group>"; };
 		C22514511CF5A98D007E64EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C225145F1CF5AA62007E64EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -136,7 +136,7 @@
 			children = (
 				C225142F1CF5A98D007E64EB /* Realm Object Server.app */,
 				C22514401CF5A98D007E64EB /* RealmObjectServerTests.xctest */,
-				C225144B1CF5A98D007E64EB /* RealmObjectServerTests.xctest */,
+				C225144B1CF5A98D007E64EB /* RealmObjectServerUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -330,7 +330,7 @@
 			);
 			name = RealmObjectServerUITests;
 			productName = RealmSyncServerUITests;
-			productReference = C225144B1CF5A98D007E64EB /* RealmObjectServerTests.xctest */;
+			productReference = C225144B1CF5A98D007E64EB /* RealmObjectServerUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -649,7 +649,7 @@
 				INFOPLIST_FILE = RealmSyncServerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.realm.RealmSyncServerTests;
-				PRODUCT_NAME = RealmObjectServerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RealmObjectServer.app/Contents/MacOS/RealmObjectServer";
 			};
 			name = Debug;
@@ -662,7 +662,7 @@
 				INFOPLIST_FILE = RealmSyncServerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.realm.RealmSyncServerTests;
-				PRODUCT_NAME = RealmObjectServerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RealmObjectServer.app/Contents/MacOS/RealmObjectServer";
 			};
 			name = Release;
@@ -674,7 +674,7 @@
 				INFOPLIST_FILE = RealmSyncServerUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.realm.RealmSyncServerUITests;
-				PRODUCT_NAME = RealmObjectServerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_TARGET_NAME = RealmSyncServer;
 			};
 			name = Debug;
@@ -686,7 +686,7 @@
 				INFOPLIST_FILE = RealmSyncServerUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.realm.RealmSyncServerUITests;
-				PRODUCT_NAME = RealmObjectServerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_TARGET_NAME = RealmSyncServer;
 			};
 			name = Release;
