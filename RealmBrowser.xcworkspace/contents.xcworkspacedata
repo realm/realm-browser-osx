@@ -5,7 +5,7 @@
       location = "group:RealmBrowser.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:RealmSyncServer/RealmSyncServer.xcodeproj">
+      location = "group:RealmObjectServer/RealmObjectServer.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
