@@ -7,14 +7,18 @@
 //
 
 @import Realm;
-@import Realm.Private;
 @import Realm.Dynamic;
+
 #import "RLMSyncServerBrowserWindowController.h"
+#import "RLMDynamicSchemaLoader.h"
+#import "RLMRealmConfiguration+Sync.h"
 
 @interface RLMSyncServerBrowserWindowController ()<NSTableViewDataSource, NSTableViewDelegate>
 
 @property (nonatomic, weak) IBOutlet NSTableView *tableView;
 @property (nonatomic, weak) IBOutlet NSProgressIndicator *progressIndicator;
+
+@property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
 
 @property (nonatomic, strong) RLMRealm *realm;
 @property (nonatomic, strong) RLMNotificationToken *notificationToken;
@@ -32,6 +36,7 @@
     self = [super initWithWindowNibName:@"SyncServerBrowserWindow"];
 
     if (self) {
+        self.schemaLoader = [[RLMDynamicSchemaLoader alloc] init];
         [self loadWindow];
     }
 
@@ -44,20 +49,17 @@
         error = &localError;
     }
 
-    RLMRealmConfiguration *configuration = [self adminRealmConfigurationForServerURL:url accessToken:token];
-    RLMRealm *initialRealm = [RLMRealm realmWithConfiguration:configuration error:error];
+    NSURL *adminRealmSyncURL = [url URLByAppendingPathComponent:@"admin"];
+    NSURL *adminRealmFileURL = [self temporaryURLForRealmFileWithSync:adminRealmSyncURL.lastPathComponent];
 
-    if (initialRealm == nil) {
-        return NSModalResponseAbort;
-    }
-
-    __block RLMNotificationToken *initialNotificationToken = [initialRealm addNotificationBlock:^(RLMNotification  _Nonnull notification, RLMRealm * _Nonnull realm) {
-        [initialNotificationToken stop];
-        [NSObject cancelPreviousPerformRequestsWithTarget:self];
-        [self setupRealmAfterInitialSyncWithConfiguration:configuration];
+    [self.schemaLoader loadSchemaFromSyncURL:adminRealmSyncURL accessToken:token toRealmFileURL:adminRealmFileURL completionHandler:^(NSError *schemaLoadError) {
+        if (error != nil) {
+            *error = schemaLoadError;
+            [NSApp stopModalWithCode:NSModalResponseAbort];
+        } else {
+            [self openAdminRealmAtURL:adminRealmFileURL syncURL:adminRealmSyncURL accessToken:token];
+        }
     }];
-
-    [self performSelector:@selector(hadleRealmSchemaLoadTimeout) withObject:nil afterDelay:5];
 
     self.window.title = url.host;
     [self.window center];
@@ -74,11 +76,6 @@
     
     [NSApp endModalSession:session];
 
-    if (result == NSModalResponseAbort) {
-        *error = [[NSError alloc] initWithDomain:@"io.realm.realmbrowser.sync" code:-1 userInfo:@{NSLocalizedDescriptionKey: @"Error connecting to Object Server"}];
-    }
-
-    [initialNotificationToken stop];
     [self.notificationToken stop];
     self.realm = nil;
 
@@ -87,7 +84,9 @@
     return result;
 }
 
-- (void)setupRealmAfterInitialSyncWithConfiguration:(RLMRealmConfiguration *)configuration {
+- (void)openAdminRealmAtURL:(NSURL *)fileURL syncURL:(NSURL *)syncURL accessToken:(NSString *)accessToken {
+    RLMRealmConfiguration *configuration = [RLMRealmConfiguration dynamicSchemaConfigurationWithSyncURL:syncURL accessToken:accessToken fileURL:fileURL];
+
     self.realm = [RLMRealm realmWithConfiguration:configuration error:nil];
 
     __weak typeof(self) weekSelf = self;
@@ -102,25 +101,6 @@
 
     self.tableView.hidden = NO;
     [self.tableView reloadData];
-}
-
-- (void)hadleRealmSchemaLoadTimeout {
-    [NSApp stopModalWithCode:NSModalResponseAbort];
-}
-
-- (RLMRealmConfiguration *)adminRealmConfigurationForServerURL:(NSURL *)url accessToken:(NSString *)token {
-    RLMCredential *credential = [RLMCredential credentialWithAccessToken:token serverURL:url];
-    RLMUser *user = [[RLMUser alloc] initWithLocalIdentity:nil];
-    [user loginWithCredential:credential completion:nil];
-
-    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-    configuration.dynamic = YES;
-    configuration.customSchema = nil;
-
-    [configuration setObjectServerPath:@"admin" forUser:user];
-    configuration.fileURL = [self temporaryURLForRealmFileWithSync:@"admin"];
-
-    return configuration;
 }
 
 - (NSURL *)temporaryURLForRealmFileWithSync:(NSString *)realmFileName {
