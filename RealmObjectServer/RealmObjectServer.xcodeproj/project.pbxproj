@@ -617,7 +617,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.realm.object-server.mac";
+				PRODUCT_BUNDLE_IDENTIFIER = io.realm.realmobjectserver.mac;
 				PRODUCT_NAME = "Realm Object Server";
 				SWIFT_OBJC_BRIDGING_HEADER = "Supporting Files/RealmObjectServer-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -635,7 +635,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.realm.object-server.mac";
+				PRODUCT_BUNDLE_IDENTIFIER = io.realm.realmobjectserver.mac;
 				PRODUCT_NAME = "Realm Object Server";
 				SWIFT_OBJC_BRIDGING_HEADER = "Supporting Files/RealmObjectServer-Bridging-Header.h";
 			};
