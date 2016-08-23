@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2949A25F1D3FCADA00D8D889 /* HostComboBoxDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949A25E1D3FCADA00D8D889 /* HostComboBoxDataSource.swift */; };
-		BC6981206064E47104CB7249 /* Pods_RealmSyncServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F9285A27E420F8A597AFCB8 /* Pods_RealmSyncServer.framework */; };
+		94F93C4E62B25551DFC82FA0 /* Pods_RealmObjectServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE6F072E7F8FA09A8C7A9F3 /* Pods_RealmObjectServer.framework */; };
 		C22514331CF5A98D007E64EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514321CF5A98D007E64EB /* AppDelegate.swift */; };
 		C22514371CF5A98D007E64EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C22514361CF5A98D007E64EB /* Assets.xcassets */; };
 		C22514451CF5A98D007E64EB /* RealmSyncServerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22514441CF5A98D007E64EB /* RealmSyncServerTests.swift */; };
@@ -48,18 +48,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1A9DC1BEED772C38CE484E50 /* Pods-RealmSyncServer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmSyncServer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-RealmSyncServer/Pods-RealmSyncServer.release.xcconfig"; sourceTree = "<group>"; };
+		27FE317218D65524D00EE55D /* Pods-RealmObjectServer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmObjectServer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-RealmObjectServer/Pods-RealmObjectServer.debug.xcconfig"; sourceTree = "<group>"; };
 		2949A25E1D3FCADA00D8D889 /* HostComboBoxDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HostComboBoxDataSource.swift; sourceTree = "<group>"; };
-		8F9285A27E420F8A597AFCB8 /* Pods_RealmSyncServer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RealmSyncServer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C225142F1CF5A98D007E64EB /* Realm Sync Server.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Realm Sync Server.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		411BE19D6C25C1A654FE97F2 /* Pods-RealmObjectServer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmObjectServer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-RealmObjectServer/Pods-RealmObjectServer.release.xcconfig"; sourceTree = "<group>"; };
+		4CE6F072E7F8FA09A8C7A9F3 /* Pods_RealmObjectServer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RealmObjectServer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C225142F1CF5A98D007E64EB /* Realm Object Server.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Realm Object Server.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C22514321CF5A98D007E64EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C22514341CF5A98D007E64EB /* ServerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerViewController.swift; sourceTree = "<group>"; };
 		C22514361CF5A98D007E64EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C225143B1CF5A98D007E64EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C22514401CF5A98D007E64EB /* RealmSyncServerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RealmSyncServerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C22514401CF5A98D007E64EB /* RealmObjectServerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RealmObjectServerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C22514441CF5A98D007E64EB /* RealmSyncServerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmSyncServerTests.swift; sourceTree = "<group>"; };
 		C22514461CF5A98D007E64EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C225144B1CF5A98D007E64EB /* RealmSyncServerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RealmSyncServerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C225144B1CF5A98D007E64EB /* RealmObjectServerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RealmObjectServerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C225144F1CF5A98D007E64EB /* RealmSyncServerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmSyncServerUITests.swift; sourceTree = "<group>"; };
 		C22514511CF5A98D007E64EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C225145F1CF5AA62007E64EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -68,8 +69,8 @@
 		C22B99331D01BE4B005CA3F0 /* CredentialsManifest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CredentialsManifest.swift; path = Models/CredentialsManifest.swift; sourceTree = "<group>"; };
 		C22B99361D01BE9F005CA3F0 /* JSONRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONRepresentable.swift; sourceTree = "<group>"; };
 		C22B99391D01C4C5005CA3F0 /* CredentialsCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CredentialsCellView.swift; path = Views/CredentialsCellView.swift; sourceTree = "<group>"; };
-		C2714EF81D0AF5E100085A7A /* Realm Sync Server.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Realm Sync Server.entitlements"; sourceTree = "<group>"; };
-		C290C17A1D1D6CC2002AFCA7 /* RealmSyncServer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RealmSyncServer-Bridging-Header.h"; sourceTree = "<group>"; };
+		C2714EF81D0AF5E100085A7A /* Realm Object Server.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Realm Object Server.entitlements"; sourceTree = "<group>"; };
+		C290C17A1D1D6CC2002AFCA7 /* RealmObjectServer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RealmObjectServer-Bridging-Header.h"; sourceTree = "<group>"; };
 		C290C17B1D1D6CC3002AFCA7 /* SyncServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncServer.h; sourceTree = "<group>"; };
 		C290C17C1D1D6CC3002AFCA7 /* SyncServer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SyncServer.mm; sourceTree = "<group>"; };
 		C29C634A1CFCB5C00099C501 /* NSObject+CommonBindings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+CommonBindings.swift"; sourceTree = "<group>"; };
@@ -79,7 +80,6 @@
 		C29C635E1CFF28C80099C501 /* TokenGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenGenerator.swift; sourceTree = "<group>"; };
 		C29C63601CFF2B140099C501 /* CredentialsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CredentialsStore.swift; path = Models/CredentialsStore.swift; sourceTree = "<group>"; };
 		C29C63621CFF3E0A0099C501 /* ManageCredentialsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageCredentialsViewController.swift; sourceTree = "<group>"; };
-		FBFE0022B396C819784C8F48 /* Pods-RealmSyncServer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmSyncServer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-RealmSyncServer/Pods-RealmSyncServer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC6981206064E47104CB7249 /* Pods_RealmSyncServer.framework in Frameworks */,
+				94F93C4E62B25551DFC82FA0 /* Pods_RealmObjectServer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,8 +111,8 @@
 		1FC1E1AF86AB2EFCC0333FAD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				FBFE0022B396C819784C8F48 /* Pods-RealmSyncServer.debug.xcconfig */,
-				1A9DC1BEED772C38CE484E50 /* Pods-RealmSyncServer.release.xcconfig */,
+				27FE317218D65524D00EE55D /* Pods-RealmObjectServer.debug.xcconfig */,
+				411BE19D6C25C1A654FE97F2 /* Pods-RealmObjectServer.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -134,9 +134,9 @@
 		C22514301CF5A98D007E64EB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C225142F1CF5A98D007E64EB /* Realm Sync Server.app */,
-				C22514401CF5A98D007E64EB /* RealmSyncServerTests.xctest */,
-				C225144B1CF5A98D007E64EB /* RealmSyncServerUITests.xctest */,
+				C225142F1CF5A98D007E64EB /* Realm Object Server.app */,
+				C22514401CF5A98D007E64EB /* RealmObjectServerTests.xctest */,
+				C225144B1CF5A98D007E64EB /* RealmObjectServerUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -241,8 +241,8 @@
 		C2714EF91D0AF60100085A7A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				C290C17A1D1D6CC2002AFCA7 /* RealmSyncServer-Bridging-Header.h */,
-				C2714EF81D0AF5E100085A7A /* Realm Sync Server.entitlements */,
+				C290C17A1D1D6CC2002AFCA7 /* RealmObjectServer-Bridging-Header.h */,
+				C2714EF81D0AF5E100085A7A /* Realm Object Server.entitlements */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -269,7 +269,7 @@
 		D6862C982541E445A6A1E3E1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8F9285A27E420F8A597AFCB8 /* Pods_RealmSyncServer.framework */,
+				4CE6F072E7F8FA09A8C7A9F3 /* Pods_RealmObjectServer.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -277,9 +277,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C225142E1CF5A98D007E64EB /* RealmSyncServer */ = {
+		C225142E1CF5A98D007E64EB /* RealmObjectServer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C22514541CF5A98D007E64EB /* Build configuration list for PBXNativeTarget "RealmSyncServer" */;
+			buildConfigurationList = C22514541CF5A98D007E64EB /* Build configuration list for PBXNativeTarget "RealmObjectServer" */;
 			buildPhases = (
 				0C9E8B07061BA5656F540F03 /* [CP] Check Pods Manifest.lock */,
 				C225142B1CF5A98D007E64EB /* Sources */,
@@ -292,14 +292,14 @@
 			);
 			dependencies = (
 			);
-			name = RealmSyncServer;
+			name = RealmObjectServer;
 			productName = RealmSyncServer;
-			productReference = C225142F1CF5A98D007E64EB /* Realm Sync Server.app */;
+			productReference = C225142F1CF5A98D007E64EB /* Realm Object Server.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C225143F1CF5A98D007E64EB /* RealmSyncServerTests */ = {
+		C225143F1CF5A98D007E64EB /* RealmObjectServerTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C22514571CF5A98D007E64EB /* Build configuration list for PBXNativeTarget "RealmSyncServerTests" */;
+			buildConfigurationList = C22514571CF5A98D007E64EB /* Build configuration list for PBXNativeTarget "RealmObjectServerTests" */;
 			buildPhases = (
 				C225143C1CF5A98D007E64EB /* Sources */,
 				C225143D1CF5A98D007E64EB /* Frameworks */,
@@ -310,14 +310,14 @@
 			dependencies = (
 				C22514421CF5A98D007E64EB /* PBXTargetDependency */,
 			);
-			name = RealmSyncServerTests;
+			name = RealmObjectServerTests;
 			productName = RealmSyncServerTests;
-			productReference = C22514401CF5A98D007E64EB /* RealmSyncServerTests.xctest */;
+			productReference = C22514401CF5A98D007E64EB /* RealmObjectServerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		C225144A1CF5A98D007E64EB /* RealmSyncServerUITests */ = {
+		C225144A1CF5A98D007E64EB /* RealmObjectServerUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C225145A1CF5A98D007E64EB /* Build configuration list for PBXNativeTarget "RealmSyncServerUITests" */;
+			buildConfigurationList = C225145A1CF5A98D007E64EB /* Build configuration list for PBXNativeTarget "RealmObjectServerUITests" */;
 			buildPhases = (
 				C22514471CF5A98D007E64EB /* Sources */,
 				C22514481CF5A98D007E64EB /* Frameworks */,
@@ -328,9 +328,9 @@
 			dependencies = (
 				C225144D1CF5A98D007E64EB /* PBXTargetDependency */,
 			);
-			name = RealmSyncServerUITests;
+			name = RealmObjectServerUITests;
 			productName = RealmSyncServerUITests;
-			productReference = C225144B1CF5A98D007E64EB /* RealmSyncServerUITests.xctest */;
+			productReference = C225144B1CF5A98D007E64EB /* RealmObjectServerUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -346,6 +346,7 @@
 				TargetAttributes = {
 					C225142E1CF5A98D007E64EB = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = QX5CR2FTN2;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 1;
@@ -362,7 +363,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C225142A1CF5A98D007E64EB /* Build configuration list for PBXProject "RealmSyncServer" */;
+			buildConfigurationList = C225142A1CF5A98D007E64EB /* Build configuration list for PBXProject "RealmObjectServer" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -375,9 +376,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C225142E1CF5A98D007E64EB /* RealmSyncServer */,
-				C225143F1CF5A98D007E64EB /* RealmSyncServerTests */,
-				C225144A1CF5A98D007E64EB /* RealmSyncServerUITests */,
+				C225142E1CF5A98D007E64EB /* RealmObjectServer */,
+				C225143F1CF5A98D007E64EB /* RealmObjectServerTests */,
+				C225144A1CF5A98D007E64EB /* RealmObjectServerUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -438,7 +439,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-RealmSyncServer/Pods-RealmSyncServer-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-RealmObjectServer/Pods-RealmObjectServer-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		77E10D955F7B4F4FFDE8BF28 /* [CP] Embed Pods Frameworks */ = {
@@ -453,7 +454,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-RealmSyncServer/Pods-RealmSyncServer-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-RealmObjectServer/Pods-RealmObjectServer-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -501,12 +502,12 @@
 /* Begin PBXTargetDependency section */
 		C22514421CF5A98D007E64EB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C225142E1CF5A98D007E64EB /* RealmSyncServer */;
+			target = C225142E1CF5A98D007E64EB /* RealmObjectServer */;
 			targetProxy = C22514411CF5A98D007E64EB /* PBXContainerItemProxy */;
 		};
 		C225144D1CF5A98D007E64EB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C225142E1CF5A98D007E64EB /* RealmSyncServer */;
+			target = C225142E1CF5A98D007E64EB /* RealmObjectServer */;
 			targetProxy = C225144C1CF5A98D007E64EB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -607,36 +608,36 @@
 		};
 		C22514551CF5A98D007E64EB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FBFE0022B396C819784C8F48 /* Pods-RealmSyncServer.debug.xcconfig */;
+			baseConfigurationReference = 27FE317218D65524D00EE55D /* Pods-RealmObjectServer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "Supporting Files/Realm Sync Server.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Supporting Files/Realm Object Server.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.realm.realm-sync-server";
-				PRODUCT_NAME = "Realm Sync Server";
-				SWIFT_OBJC_BRIDGING_HEADER = "Supporting Files/RealmSyncServer-Bridging-Header.h";
+				PRODUCT_BUNDLE_IDENTIFIER = io.realm.realmobjectserver.mac;
+				PRODUCT_NAME = "Realm Object Server";
+				SWIFT_OBJC_BRIDGING_HEADER = "Supporting Files/RealmObjectServer-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		C22514561CF5A98D007E64EB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1A9DC1BEED772C38CE484E50 /* Pods-RealmSyncServer.release.xcconfig */;
+			baseConfigurationReference = 411BE19D6C25C1A654FE97F2 /* Pods-RealmObjectServer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "Supporting Files/Realm Sync Server.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Supporting Files/Realm Object Server.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.realm.realm-sync-server";
-				PRODUCT_NAME = "Realm Sync Server";
-				SWIFT_OBJC_BRIDGING_HEADER = "Supporting Files/RealmSyncServer-Bridging-Header.h";
+				PRODUCT_BUNDLE_IDENTIFIER = io.realm.realmobjectserver.mac;
+				PRODUCT_NAME = "Realm Object Server";
+				SWIFT_OBJC_BRIDGING_HEADER = "Supporting Files/RealmObjectServer-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -649,7 +650,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.realm.RealmSyncServerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RealmSyncServer.app/Contents/MacOS/RealmSyncServer";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RealmObjectServer.app/Contents/MacOS/RealmObjectServer";
 			};
 			name = Debug;
 		};
@@ -662,7 +663,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.realm.RealmSyncServerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RealmSyncServer.app/Contents/MacOS/RealmSyncServer";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RealmObjectServer.app/Contents/MacOS/RealmObjectServer";
 			};
 			name = Release;
 		};
@@ -693,7 +694,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C225142A1CF5A98D007E64EB /* Build configuration list for PBXProject "RealmSyncServer" */ = {
+		C225142A1CF5A98D007E64EB /* Build configuration list for PBXProject "RealmObjectServer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C22514521CF5A98D007E64EB /* Debug */,
@@ -702,7 +703,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C22514541CF5A98D007E64EB /* Build configuration list for PBXNativeTarget "RealmSyncServer" */ = {
+		C22514541CF5A98D007E64EB /* Build configuration list for PBXNativeTarget "RealmObjectServer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C22514551CF5A98D007E64EB /* Debug */,
@@ -711,7 +712,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C22514571CF5A98D007E64EB /* Build configuration list for PBXNativeTarget "RealmSyncServerTests" */ = {
+		C22514571CF5A98D007E64EB /* Build configuration list for PBXNativeTarget "RealmObjectServerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C22514581CF5A98D007E64EB /* Debug */,
@@ -720,7 +721,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C225145A1CF5A98D007E64EB /* Build configuration list for PBXNativeTarget "RealmSyncServerUITests" */ = {
+		C225145A1CF5A98D007E64EB /* Build configuration list for PBXNativeTarget "RealmObjectServerUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C225145B1CF5A98D007E64EB /* Debug */,

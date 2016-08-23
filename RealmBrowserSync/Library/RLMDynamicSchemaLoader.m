@@ -50,7 +50,7 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
         [weakSelf schemaDidLoadWithError:nil];
     }];
 
-    [self performSelector:@selector(schemaDidLoadWithError:) withObject:[self errorWithCode:0 description:@"Failed to connect to Sync Server." recoverySuggestion:@"Check the URL and that the server is accessible."] afterDelay:schemaLoadTimeout];
+    [self performSelector:@selector(schemaDidLoadWithError:) withObject:[self errorWithCode:0 description:@"Failed to connect to Object Server." recoverySuggestion:@"Check the URL and that the server is accessible."] afterDelay:schemaLoadTimeout];
 }
 
 - (void)schemaDidLoadWithError:(NSError *)error {
