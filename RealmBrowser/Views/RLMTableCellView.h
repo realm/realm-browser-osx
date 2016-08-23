@@ -20,6 +20,8 @@
 
 @interface RLMTableCellView : NSTableCellView
 
+@property (nonatomic, assign) BOOL optional;
+
 + (instancetype)viewWithIdentifier:(NSString *)identifier;
 
 @end

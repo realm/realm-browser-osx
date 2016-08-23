@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2014-2015 Realm Inc.
+// Copyright 2014-2016 Realm Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,13 +16,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-@import Cocoa;
+#import "RLMUtils.h"
+#include <pwd.h>
 
-@interface NSColor (ByteSizeFactory)
-
-+ (NSColor *)linkColor;
-+ (NSColor *)colorWithByteRed:(NSUInteger)red green:(NSUInteger)green blue:(NSUInteger)blue alpha:(NSUInteger)alpha;
-+ (NSColor *)colorWithByteWhite:(NSUInteger)white alpha:(NSUInteger)alpha;
-+ (NSColor *)colorWithRGBAFloatValues:(CGFloat *)values;
-
-@end
+NSString *RLMRealHomeDirectory() {
+    struct passwd *pw = getpwuid(getuid());
+    return @(pw->pw_dir);
+}

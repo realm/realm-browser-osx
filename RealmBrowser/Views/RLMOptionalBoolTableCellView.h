@@ -16,13 +16,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-@import Cocoa;
+#import "RLMTableCellView.h"
 
-@interface NSColor (ByteSizeFactory)
+@interface RLMOptionalBoolTableCellView : RLMTableCellView
 
-+ (NSColor *)linkColor;
-+ (NSColor *)colorWithByteRed:(NSUInteger)red green:(NSUInteger)green blue:(NSUInteger)blue alpha:(NSUInteger)alpha;
-+ (NSColor *)colorWithByteWhite:(NSUInteger)white alpha:(NSUInteger)alpha;
-+ (NSColor *)colorWithRGBAFloatValues:(CGFloat *)values;
+@property (nonatomic, readonly) NSPopUpButton *popupControl;
 
 @end
