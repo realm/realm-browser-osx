@@ -21,7 +21,8 @@
 extern const NSUInteger kTopTipDelay;
 extern const NSUInteger kMaxFilesPerCategory;
 extern const NSInteger kMaxNumberOfFilesAtOnce;
-extern const CGFloat kMenuImageSize ;
+extern const CGFloat kMenuImageSize;
+extern const CGFloat kNilItemColor[];
 
 extern NSString * const kRealmFileExtension;
 extern NSString * const kRealmUTIIdentifier;

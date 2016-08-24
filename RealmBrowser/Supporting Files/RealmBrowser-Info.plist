@@ -8,7 +8,7 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeIconFile</key>
-			<string>FormatIcon</string>
+			<string>RealmFileIcon</string>
 			<key>CFBundleTypeName</key>
 			<string>Realm</string>
 			<key>CFBundleTypeRole</key>
@@ -59,7 +59,7 @@
 			<key>UTTypeDescription</key>
 			<string>Realm</string>
 			<key>UTTypeIconFile</key>
-			<string>FormatIcon</string>
+			<string>RealmFileIcon</string>
 			<key>UTTypeIdentifier</key>
 			<string>io.realm.realm</string>
 			<key>UTTypeReferenceURL</key>

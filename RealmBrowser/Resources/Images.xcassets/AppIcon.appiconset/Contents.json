@@ -3,61 +3,61 @@
     {
       "size" : "16x16",
       "idiom" : "mac",
-      "filename" : "Realm Browser16w.png",
+      "filename" : "RealmBrowserAppIcon16x16.png",
       "scale" : "1x"
     },
     {
       "size" : "16x16",
       "idiom" : "mac",
-      "filename" : "Realm Browser32w-1.png",
+      "filename" : "RealmBrowserAppIcon16x16@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "32x32",
       "idiom" : "mac",
-      "filename" : "Realm Browser32w.png",
+      "filename" : "RealmBrowserAppIcon32x32.png",
       "scale" : "1x"
     },
     {
       "size" : "32x32",
       "idiom" : "mac",
-      "filename" : "Realm Browser64w.png",
+      "filename" : "RealmBrowserAppIcon32x32@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "128x128",
       "idiom" : "mac",
-      "filename" : "Realm Browser128w.png",
+      "filename" : "RealmBrowserAppIcon128x128.png",
       "scale" : "1x"
     },
     {
       "size" : "128x128",
       "idiom" : "mac",
-      "filename" : "Realm Browser256w-1.png",
+      "filename" : "RealmBrowserAppIcon128x128@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "256x256",
       "idiom" : "mac",
-      "filename" : "Realm Browser256w.png",
+      "filename" : "RealmBrowserAppIcon256x256.png",
       "scale" : "1x"
     },
     {
       "size" : "256x256",
       "idiom" : "mac",
-      "filename" : "Realm Browser512w-1.png",
+      "filename" : "RealmBrowserAppIcon256x256@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "512x512",
       "idiom" : "mac",
-      "filename" : "Realm Browser512w.png",
+      "filename" : "RealmBrowserAppIcon512x512.png",
       "scale" : "1x"
     },
     {
       "size" : "512x512",
       "idiom" : "mac",
-      "filename" : "Realm Browser.png",
+      "filename" : "RealmBrowserAppIcon512x512@2x.png",
       "scale" : "2x"
     }
   ],

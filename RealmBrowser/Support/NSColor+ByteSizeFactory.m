@@ -39,4 +39,13 @@
                              alpha:(CGFloat)alpha/255.0f];
 }
 
++ (NSColor *)colorWithRGBAFloatValues:(CGFloat *)values
+{
+    if (values == nil) {
+        return nil;
+    }
+    
+    return [NSColor colorWithRed:values[0] green:values[1] blue:values[2] alpha:values[3]];
+}
+
 @end

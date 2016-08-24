@@ -176,15 +176,15 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
 {
     switch (property.type) {
         case RLMPropertyTypeInt:
-            return @"Int";
+            return [NSString stringWithFormat:@"Int%@", property.optional ? @" (Optional)":@""];
         case RLMPropertyTypeFloat:
-            return @"Float";
+            return [NSString stringWithFormat:@"Float%@", property.optional ? @" (Optional)":@""];
         case RLMPropertyTypeDouble:
-            return @"Float";
+            return [NSString stringWithFormat:@"Double%@", property.optional ? @" (Optional)":@""];
         case RLMPropertyTypeDate:
             return @"Date";
         case RLMPropertyTypeBool:
-            return @"Boolean";
+            return [NSString stringWithFormat:@"Boolean%@", property.optional ? @" (Optional)":@""];
         case RLMPropertyTypeString:
             return @"String";
         case RLMPropertyTypeData:

@@ -187,19 +187,19 @@
 {
     switch (property.type) {
         case RLMPropertyTypeBool:
-            return @"boolean";
+            return property.optional ? @"Boolean" : @"boolean";
         case RLMPropertyTypeInt:
-            return @"int";
+            return property.optional ? @"Long" : @"long";
         case RLMPropertyTypeFloat:
-            return @"float";
+            return property.optional ? @"Float" : @"float";
         case RLMPropertyTypeDouble:
-            return @"double";
+            return property.optional ? @"Double" : @"double";
         case RLMPropertyTypeString:
             return @"String";
         case RLMPropertyTypeData:
             return @"byte[]";
         case RLMPropertyTypeAny:
-            return @"Any";
+            return @"Any";  // FIXME: we don't support it
         case RLMPropertyTypeDate:
             return @"Date";
         case RLMPropertyTypeArray:
