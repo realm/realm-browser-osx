@@ -20,10 +20,26 @@
 
 #import "RLMRealmNode.h"
 
+typedef NS_ENUM(NSInteger, RLMDocumentState) {
+    RLMDocumentStateRequiresFormatUpgrade,
+    RLMDocumentStateNeedsEncryptionKey,
+    RLMDocumentStateNeedsValidCredentials,
+    RLMDocumentStateLoading,
+    RLMDocumentStateLoaded
+};
+
 @interface RLMDocument : NSDocument
 
 @property (nonatomic, readonly) BOOL potentiallyEncrypted;
 @property (nonatomic, readonly) BOOL potentiallySync;
 @property (nonatomic, strong) IBOutlet RLMRealmNode *presentedRealm;
+
+@property (nonatomic, copy) NSURL *syncURL;
+
+- (instancetype)initWithContentsOfFileURL:(NSURL *)fileURL error:(NSError **)outError;
+- (instancetype)initWithContentsOfSyncURL:(NSURL *)syncURL credential:(RLMCredential *)credential error:(NSError **)outError;
+
+- (BOOL)loadWithError:(NSError * __autoreleasing *)error;
+- (void)loadWithCompletionHandler:(void (^)(NSError *error))completionHandler;
 
 @end
