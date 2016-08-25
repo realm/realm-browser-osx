@@ -257,13 +257,6 @@ CA
                                     <action selector="generatedDemoDatabase:" target="-1" id="jBw-mZ-hAB"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="05L-1P-PiM"/>
-                            <menuItem title="Run Object Server..." id="9Xr-Zu-G3G">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="runSyncServer:" target="PLw-ns-0qo" id="xye-eH-7Jx"/>
-                                </connections>
-                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
