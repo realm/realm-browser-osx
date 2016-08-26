@@ -21,7 +21,6 @@
 @import Realm.Dynamic;
 
 #import "RLMRealmNode.h"
-#import "RLMRealmConfiguration+Sync.h"
 
 @interface RLMRealmNode ()
 

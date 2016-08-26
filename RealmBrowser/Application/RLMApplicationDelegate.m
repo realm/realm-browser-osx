@@ -615,7 +615,7 @@
     RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] init];
 
     NSError *error;
-    if ([browserWindowController connectToServerAtURL:serverURL accessToken:accessToken error:&error] != NSModalResponseOK) {
+    if ([browserWindowController connectToServerAtURL:serverURL adminAccessToken:accessToken error:&error] != NSModalResponseOK) {
         if (error) {
             [NSApp presentError:error];
         }

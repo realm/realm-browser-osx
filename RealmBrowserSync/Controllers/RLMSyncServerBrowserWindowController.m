@@ -8,10 +8,12 @@
 
 @import Realm;
 @import Realm.Dynamic;
+@import Realm.Private;
 
 #import "RLMSyncServerBrowserWindowController.h"
 #import "RLMDynamicSchemaLoader.h"
-#import "RLMRealmConfiguration+Sync.h"
+
+static  NSString * const RLMAdminRealmServerPath = @"admin";
 
 @interface RLMSyncServerBrowserWindowController ()<NSTableViewDataSource, NSTableViewDelegate>
 
@@ -36,32 +38,37 @@
     self = [super initWithWindowNibName:@"SyncServerBrowserWindow"];
 
     if (self) {
-        self.schemaLoader = [[RLMDynamicSchemaLoader alloc] init];
         [self loadWindow];
     }
 
     return self;
 }
 
-- (NSModalResponse)connectToServerAtURL:(NSURL *)url accessToken:(NSString *)token error:(NSError **)error {
+- (NSModalResponse)connectToServerAtURL:(NSURL *)serverURL adminAccessToken:(NSString *)accessToken error:(NSError **)error {
     __autoreleasing NSError *localError;
     if (error == NULL) {
         error = &localError;
     }
 
-    NSURL *adminRealmSyncURL = [url URLByAppendingPathComponent:@"admin"];
+    NSURL *adminRealmSyncURL = [serverURL URLByAppendingPathComponent:RLMAdminRealmServerPath];
     NSURL *adminRealmFileURL = [self temporaryURLForRealmFileWithSync:adminRealmSyncURL.lastPathComponent];
 
-    [self.schemaLoader loadSchemaFromSyncURL:adminRealmSyncURL accessToken:token toRealmFileURL:adminRealmFileURL completionHandler:^(NSError *schemaLoadError) {
+    RLMCredential *credential = [RLMCredential credentialWithAccessToken:accessToken serverURL:serverURL];
+
+    RLMUser *user = [[RLMUser alloc] initWithLocalIdentity:nil];
+    [user loginWithCredential:credential completion:nil];
+
+    self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:adminRealmSyncURL user:user];
+    [self.schemaLoader loadSchemaToURL:adminRealmFileURL completionHandler:^(NSError *schemaLoadError) {
         if (schemaLoadError != nil) {
             *error = schemaLoadError;
             [NSApp stopModalWithCode:NSModalResponseAbort];
         } else {
-            [self openAdminRealmAtURL:adminRealmFileURL syncURL:adminRealmSyncURL accessToken:token];
+            [self openAdminRealmAtURL:adminRealmFileURL user:user];
         }
     }];
 
-    self.window.title = url.host;
+    self.window.title = serverURL.host;
     [self.window center];
     [self.progressIndicator startAnimation:nil];
     self.tableView.hidden = YES;
@@ -84,8 +91,16 @@
     return result;
 }
 
-- (void)openAdminRealmAtURL:(NSURL *)fileURL syncURL:(NSURL *)syncURL accessToken:(NSString *)accessToken {
-    RLMRealmConfiguration *configuration = [RLMRealmConfiguration dynamicSchemaConfigurationWithSyncURL:syncURL accessToken:accessToken fileURL:fileURL];
+- (void)openAdminRealmAtURL:(NSURL *)fileURL user:(RLMUser *)user {
+    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+    configuration.dynamic = YES;
+    configuration.customSchema = nil;
+
+    [configuration setObjectServerPath:RLMAdminRealmServerPath forUser:user];
+
+    if (fileURL != nil) {
+        configuration.fileURL = fileURL;
+    }
 
     self.realm = [RLMRealm realmWithConfiguration:configuration error:nil];
 

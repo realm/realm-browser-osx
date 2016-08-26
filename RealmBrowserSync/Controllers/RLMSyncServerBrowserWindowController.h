@@ -12,6 +12,6 @@
 
 @property (nonatomic, strong, readonly) NSString *selectedRealmPath;
 
-- (NSModalResponse)connectToServerAtURL:(NSURL *)url accessToken:(NSString *)token error:(NSError **)error;
+- (NSModalResponse)connectToServerAtURL:(NSURL *)serverURL adminAccessToken:(NSString *)accessToken error:(NSError **)error;
 
 @end

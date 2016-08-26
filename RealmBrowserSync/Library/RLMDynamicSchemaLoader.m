@@ -10,7 +10,6 @@
 @import Realm.Private;
 
 #import "RLMDynamicSchemaLoader.h"
-#import "RLMRealmConfiguration+Sync.h"
 
 static NSTimeInterval const schemaLoadTimeout = 5;
 
@@ -49,35 +48,6 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
     NSError *error;
 
     RLMRealm *realm = [RLMRealm realmWithConfiguration:self.configuration error:&error];
-
-    if (error != nil) {
-        [self schemaDidLoadWithError:error];
-        return;
-    }
-
-    if (realm.schema.objectSchema.count > 0) {
-        [self schemaDidLoadWithError:nil];
-        return;
-    }
-
-    __weak typeof(self) weakSelf = self;
-    self.notificationToken = [realm addNotificationBlock:^(RLMNotification notification, RLMRealm *realm) {
-        [NSObject cancelPreviousPerformRequestsWithTarget:weakSelf];
-
-        [weakSelf.notificationToken stop];
-        [weakSelf schemaDidLoadWithError:nil];
-    }];
-
-    [self performSelector:@selector(schemaDidLoadWithError:) withObject:[self errorWithCode:0 description:@"Failed to connect to Object Server." recoverySuggestion:@"Check the URL and that the server is accessible."] afterDelay:schemaLoadTimeout];
-}
-
-- (void)loadSchemaFromSyncURL:(NSURL *)syncURL accessToken:(NSString *)accessToken toRealmFileURL:(NSURL *)fileURL completionHandler:(RLMSchemaLoadCompletionHandler)handler {
-    self.completionHandler = handler;
-
-    NSError *error;
-
-    RLMRealmConfiguration *configuration = [RLMRealmConfiguration dynamicSchemaConfigurationWithSyncURL:syncURL accessToken:accessToken fileURL:fileURL];
-    RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:&error];
 
     if (error != nil) {
         [self schemaDidLoadWithError:error];

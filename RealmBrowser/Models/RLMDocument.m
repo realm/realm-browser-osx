@@ -259,15 +259,4 @@
     return [directoryURL URLByAppendingPathComponent:fileName];
 }
 
-- (void)loadSchemaAndOpenRealmAtURL:(NSURL *)fileURL forSyncURL:(NSURL *)syncURL accessToken:(NSString *)accessToken {
-//    self.schemaLoader = [[RLMDynamicSchemaLoader alloc] init];
-//    [self.schemaLoader loadSchemaFromSyncURL:syncURL accessToken:accessToken toRealmFileURL:fileURL completionHandler:^(NSError *error) {
-//        if (error != nil) {
-//            [NSApp presentError:error];
-//        } else {
-//
-//        }
-//    }];
-}
-
 @end
