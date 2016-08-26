@@ -39,7 +39,6 @@
 - (instancetype)initWithContentsOfURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError **)outError
 {
     if (![typeName.lowercaseString isEqualToString:kRealmUTIIdentifier]) {
-        // TODO: specify error
         return nil;
     }
 

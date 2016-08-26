@@ -33,7 +33,6 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
     if (self != nil) {
         self.configuration = [[RLMRealmConfiguration alloc] init];
         self.configuration.dynamic = YES;
-        self.configuration.customSchema = nil;
 
         [self.configuration setObjectServerPath:syncURL.path forUser:user];
     }

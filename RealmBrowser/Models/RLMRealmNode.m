@@ -35,9 +35,8 @@
 
     if (self) {
         self.configuration = [[RLMRealmConfiguration alloc] init];
-        self.configuration.fileURL = fileURL;
         self.configuration.dynamic = YES;
-        self.configuration.customSchema = nil;
+        self.configuration.fileURL = fileURL;
     }
     
     return self;
