@@ -21,18 +21,12 @@
 
 #import "RLMDocument.h"
 #import "RLMBrowserConstants.h"
-
 #import "RLMDynamicSchemaLoader.h"
-
 #import "RLMRealmBrowserWindowController.h"
 
 @interface RLMDocument ()
 
-@property (nonatomic, assign, readwrite) BOOL potentiallyEncrypted;
-@property (nonatomic, assign, readwrite) BOOL potentiallySync;
-
 @property (nonatomic, strong) NSURL *securityScopedURL;
-@property (nonatomic, strong) RLMNotificationToken *changeNotificationToken;
 
 @property (nonatomic, copy) NSURL *syncURL;
 @property (nonatomic, strong) RLMUser *user;
@@ -131,8 +125,6 @@
 
 - (void)dealloc
 {
-    [self.changeNotificationToken stop];
-
     if (self.securityScopedURL != nil) {
         //In certain instances, RLMRealm's C++ destructor method will attempt to clean up
         //specific auxiliary files belonging to this realm file.
@@ -194,22 +186,13 @@
 }
 
 - (BOOL)loadWithError:(NSError **)error {
-    if ([self.presentedRealm connect:error]) {
-        // FIXME: move to window controller
-        __weak typeof(self) weakSelf = self;
-        self.changeNotificationToken = [self.presentedRealm.realm addNotificationBlock:^(NSString *notification, RLMRealm *realm) {
-            [weakSelf.windowControllers makeObjectsPerformSelector:@selector(reloadAfterEdit)];
-        }];
-
-        // FIXME: move to window controller
-        [self.windowControllers makeObjectsPerformSelector:@selector(realmDidLoad)];
-
-        self.state = RLMDocumentStateLoaded;
-
-        return YES;
-    } else {
+    if (![self.presentedRealm connect:error]) {
         return NO;
     }
+
+    self.state = RLMDocumentStateLoaded;
+
+    return YES;
 }
 
 #pragma mark NSDocument overrides

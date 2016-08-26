@@ -51,8 +51,9 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 @property (nonatomic, strong) IBOutlet NSSearchField *searchField;
 
 @property (nonatomic, strong) RLMExportIndicatorWindowController *exportWindowController;
-
 @property (nonatomic, strong) RLMEncryptionKeyWindowController *encryptionController;
+
+@property (nonatomic, strong) RLMNotificationToken *documentNotificationToken;
 
 @end
 
@@ -67,7 +68,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
         return;
     }
 
-    [self stopObservingDocumentState];
+    [self stopObservingDocument];
 
     [super setDocument:document];
 
@@ -99,7 +100,16 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     [self.document addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionInitial context:nil];
 }
 
-- (void)observeDocumentStateChange {
+- (void)startObservingDocumentRealm {
+    __weak typeof(self) weakSelf = self;
+
+    self.documentNotificationToken = [self.document.presentedRealm.realm addNotificationBlock:^(RLMNotification notification, RLMRealm *realm) {
+        // Send notifications to all document's window controllers
+        [weakSelf.document.windowControllers makeObjectsPerformSelector:@selector(handleDocumentRealmChange)];
+    }];
+}
+
+- (void)handleDocumentStateChange {
     switch (self.document.state) {
         case RLMDocumentStateRequiresFormatUpgrade:
             [self handleFormatUpgrade];
@@ -123,8 +133,13 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     }
 }
 
-- (void)stopObservingDocumentState {
+- (void)handleDocumentRealmChange {
+    [self reloadAfterEdit];
+}
+
+- (void)stopObservingDocument {
     [self.document removeObserver:self forKeyPath:@"state"];
+    [self.documentNotificationToken stop];
 }
 
 - (void)realmDidLoad {
@@ -133,13 +148,13 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     
     [self updateNavigationButtons];
 
-    [self reloadAfterEdit];
-
     id firstItem = self.document.presentedRealm.topLevelClasses.firstObject;
     if (firstItem != nil && navigationStack.currentState == nil) {
         RLMNavigationState *initState = [[RLMNavigationState alloc] initWithSelectedType:firstItem index:NSNotFound];
         [self addNavigationState:initState fromViewController:nil];
     }
+
+    [self startObservingDocumentRealm];
 }
 
 - (void)handleFormatUpgrade {
@@ -173,7 +188,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
     if (object == self.document && [keyPath isEqualToString:@"state"]) {
-        [self observeDocumentStateChange];
+        [self handleDocumentStateChange];
     }
 }
 
