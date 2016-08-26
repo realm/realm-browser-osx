@@ -73,21 +73,6 @@
     return !localError;
 }
 
-- (void)addTable:(RLMClassNode *)table
-{
-
-}
-
-- (void)setEncryptionKey:(NSData *)encryptionKey
-{
-    if (encryptionKey == _encryptionKey)
-        return;
-    
-    _realm = nil;
-    _encryptionKey = encryptionKey;
-    [self connect:nil];
-}
-
 - (BOOL)realmFileRequiresFormatUpgrade
 {
     NSError *localError;

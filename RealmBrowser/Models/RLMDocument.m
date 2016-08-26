@@ -25,7 +25,6 @@
 #import "RLMDynamicSchemaLoader.h"
 
 #import "RLMRealmBrowserWindowController.h"
-#import "RLMAlert.h"
 
 @interface RLMDocument ()
 
@@ -35,6 +34,7 @@
 @property (nonatomic, strong) NSURL *securityScopedURL;
 @property (nonatomic, strong) RLMNotificationToken *changeNotificationToken;
 
+@property (nonatomic, copy) NSURL *syncURL;
 @property (nonatomic, strong) RLMUser *user;
 @property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
 
@@ -86,39 +86,23 @@
 
         [self.securityScopedURL startAccessingSecurityScopedResource];
 
-        RLMRealmNode *realmNode = [[RLMRealmNode alloc] initWithFileURL:self.fileURL];
+        self.presentedRealm = [[RLMRealmNode alloc] initWithFileURL:self.fileURL];
 
-        //Check to see if first the Realm file needs upgrading, and
-        //if it does, prompt the user to confirm with proceeding
-        if ([realmNode realmFileRequiresFormatUpgrade]) {
-            if (![RLMAlert showFileFormatUpgradeDialogWithFileName:self.fileURL.lastPathComponent]) {
-                return nil;
-            }
-        }
+        if ([self.presentedRealm realmFileRequiresFormatUpgrade]) {
+            self.state = RLMDocumentStateRequiresFormatUpgrade;
+        } else {
+            NSError *error;
+            if (![self loadWithError:&error]) {
+                if (error.code == RLMErrorFileAccess) {
+                    self.state = RLMDocumentStateNeedsEncryptionKey;
+                } else {
+                    if (outError != nil) {
+                        *outError = error;
+                    }
 
-        NSError *error;
-        if ([realmNode connect:&error] || error.code == 2) {
-            if (error) {
-                if (![RLMAlert showEncryptionConfirmationDialogWithFileName:self.fileURL.lastPathComponent]) {
                     return nil;
                 }
-
-                self.potentiallyEncrypted = YES;
             }
-
-            self.presentedRealm = realmNode;
-
-            // FIXME: move to window controller
-            __weak typeof(self) weakSelf = self;
-            self.changeNotificationToken = [realmNode.realm addNotificationBlock:^(NSString *notification, RLMRealm *realm) {
-                [weakSelf.windowControllers makeObjectsPerformSelector:@selector(reloadAfterEdit)];
-            }];
-        } else if (error) {
-            if (outError != nil) {
-                *outError = error;
-            }
-
-            return nil;
         }
     }
 
@@ -133,8 +117,12 @@
         self.fileURL = [self temporaryFileURLForSyncURL:syncURL];
         self.user = [[RLMUser alloc] initWithLocalIdentity:nil];
 
+        self.presentedRealm = [[RLMRealmNode alloc] initWithFileURL:self.fileURL syncURL:self.syncURL user:self.user];
+
+        self.state = RLMDocumentStateNeedsValidCredential;
+
         if (credential != nil) {
-            [self loadFromSyncURL:syncURL credential:credential completionHandler:nil];
+            [self loadWithCredential:credential completionHandler:nil];
         }
     }
 
@@ -160,52 +148,68 @@
     }
 }
 
-//- (BOOL)loadWithError:(NSError *__autoreleasing *)error {
-//
-//}
+- (BOOL)loadByPerformingFormatUpgradeWithError:(NSError **)error {
+    NSAssert(self.state == RLMDocumentStateRequiresFormatUpgrade, @"Invalid document state");
 
-- (void)loadFromSyncURL:(NSURL *)syncURL credential:(RLMCredential *)credential completionHandler:(void (^)(NSError *))completionHandler {
+    return [self loadWithError:error];
+}
+
+- (BOOL)loadWithEncryptionKey:(NSData *)key error:(NSError **)error {
+    NSAssert(self.state == RLMDocumentStateNeedsEncryptionKey, @"Invalid document state");
+
+    self.presentedRealm.encryptionKey = key;
+
+    return [self loadWithError:error];
+}
+
+- (void)loadWithCredential:(RLMCredential *)credential completionHandler:(void (^)(NSError *error))completionHandler {
+    NSAssert(self.state == RLMDocumentStateNeedsValidCredential, @"Invalid document state");
+
     completionHandler = completionHandler ?: ^(NSError *error) {};
 
     __weak typeof(self) weakSelf = self;
 
+    self.state = RLMDocumentStateLoadingSchema;
+
     [self.user loginWithCredential:credential completion:^(NSError *error) {
         if (error != nil) {
+             self.state = RLMDocumentStateNeedsValidCredential;
+
             completionHandler(error);
             return;
         }
 
-        weakSelf.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:syncURL user:weakSelf.user];
+        weakSelf.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:weakSelf.user];
 
         [weakSelf.schemaLoader loadSchemaToURL:weakSelf.fileURL completionHandler:^(NSError *error) {
             if (error == nil) {
-                [weakSelf setupAfterSchemaLoadWithError:&error];
+                [weakSelf loadWithError:&error];
             }
+
+            // FIXME: we should have `RLMDocumentStateLoaded` here or unrecoverable error.
 
             completionHandler(error);
         }];
     }];
 }
 
-- (BOOL)setupAfterSchemaLoadWithError:(NSError **)error {
-    RLMRealmNode *realmNode = [[RLMRealmNode alloc] initWithFileURL:self.fileURL syncURL:self.syncURL user:self.user];
-
-    if ([realmNode connect:error]) {
-        self.presentedRealm = realmNode;
-
+- (BOOL)loadWithError:(NSError **)error {
+    if ([self.presentedRealm connect:error]) {
         // FIXME: move to window controller
         __weak typeof(self) weakSelf = self;
-        self.changeNotificationToken = [realmNode.realm addNotificationBlock:^(NSString *notification, RLMRealm *realm) {
+        self.changeNotificationToken = [self.presentedRealm.realm addNotificationBlock:^(NSString *notification, RLMRealm *realm) {
             [weakSelf.windowControllers makeObjectsPerformSelector:@selector(reloadAfterEdit)];
         }];
 
         // FIXME: move to window controller
         [self.windowControllers makeObjectsPerformSelector:@selector(realmDidLoad)];
+
+        self.state = RLMDocumentStateLoaded;
+
+        return YES;
     } else {
         return NO;
     }
-
-    return YES;
 }
 
 #pragma mark NSDocument overrides

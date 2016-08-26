@@ -16,19 +16,19 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+@import Realm;
+@import Realm.Private;
+@import Realm.Dynamic;
+@import RealmConverter;
+@import AppSandboxFileAccess;
+
 #import "RLMRealmBrowserWindowController.h"
 #import "RLMNavigationStack.h"
 #import "RLMModelExporter.h"
 #import "RLMExportIndicatorWindowController.h"
 #import "RLMEncryptionKeyWindowController.h"
 #import "RLMOpenSyncURLWindowController.h"
-
-@import Realm;
-@import Realm.Private;
-@import Realm.Dynamic;
-@import RealmConverter;
-
-#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
+#import "RLMAlert.h"
 
 NSString * const kRealmLockedImage = @"RealmLocked";
 NSString * const kRealmUnlockedImage = @"RealmUnlocked";
@@ -53,10 +53,6 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 @property (nonatomic, strong) RLMExportIndicatorWindowController *exportWindowController;
 
 @property (nonatomic, strong) RLMEncryptionKeyWindowController *encryptionController;
-@property (nonatomic, strong) NSData *encryptionKey;
-
-- (void)handleEncryptionKeyPrompt;
-- (void)handleSyncPrompt;
 
 @end
 
@@ -66,46 +62,78 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
 @dynamic document;
 
-#pragma mark - NSViewController Overrides
+- (void)setDocument:(RLMDocument *)document {
+    if (document == self.document) {
+        return;
+    }
+
+    [self stopObservingDocumentState];
+
+    [super setDocument:document];
+
+    if (self.windowLoaded && self.window.isVisible) {
+        [self startObservingDocumentState];
+    }
+}
+
+#pragma mark - NSWindowController Overrides
 
 - (void)windowDidLoad
 {
     navigationStack = [[RLMNavigationStack alloc] init];
-    self.window.alphaValue = 0.0;
 
-    if (self.document.presentedRealm) {
-        // if already loaded
-        [self realmDidLoad];
-    }
+    NSString *realmPath = self.document.presentedRealm.realm.configuration.fileURL.path;
+    [self setWindowFrameAutosaveName:[NSString stringWithFormat:kRealmKeyWindowFrameForRealm, realmPath]];
+    [self.splitView setAutosaveName:[NSString stringWithFormat:kRealmKeyOutlineWidthForRealm, realmPath]];
 }
 
 - (IBAction)showWindow:(id)sender
 {
     [super showWindow:sender];
-    
-    if (self.document.potentiallyEncrypted) {
-        [self handleEncryptionKeyPrompt];
-    }
-    else if (self.document.potentiallySync) {
-        [self handleSyncPrompt];
+    [self startObservingDocumentState];
+}
+
+#pragma mark - Document observation
+
+- (void)startObservingDocumentState {
+    [self.document addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionInitial context:nil];
+}
+
+- (void)observeDocumentStateChange {
+    switch (self.document.state) {
+        case RLMDocumentStateRequiresFormatUpgrade:
+            [self handleFormatUpgrade];
+            break;
+
+        case RLMDocumentStateNeedsEncryptionKey:
+            [self handleEncryption];
+            break;
+
+        case RLMDocumentStateNeedsValidCredential:
+            [self handleSyncCredentials];
+            break;
+
+        case RLMDocumentStateLoadingSchema:
+            // TODO: show progress
+            break;
+
+        case RLMDocumentStateLoaded:
+            [self realmDidLoad];
+            break;
     }
 }
 
-#pragma mark - RLMViewController Overrides
+- (void)stopObservingDocumentState {
+    [self.document removeObserver:self forKeyPath:@"state"];
+}
 
--(void)realmDidLoad
-{
+- (void)realmDidLoad {
     [self.outlineViewController realmDidLoad];
     [self.tableViewController realmDidLoad];
     
     [self updateNavigationButtons];
 
-    NSString *realmPath = self.document.presentedRealm.realm.configuration.fileURL.path;
-    [self setWindowFrameAutosaveName:[NSString stringWithFormat:kRealmKeyWindowFrameForRealm, realmPath]];
-    [self.splitView setAutosaveName:[NSString stringWithFormat:kRealmKeyOutlineWidthForRealm, realmPath]];
-    
     [self reloadAfterEdit];
-    self.window.alphaValue = 1.0;
 
     id firstItem = self.document.presentedRealm.topLevelClasses.firstObject;
     if (firstItem != nil && navigationStack.currentState == nil) {
@@ -114,25 +142,39 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     }
 }
 
-- (void)handleEncryptionKeyPrompt
-{
+- (void)handleFormatUpgrade {
+    if ([RLMAlert showFileFormatUpgradeDialogWithFileName:self.document.fileURL.lastPathComponent]) {
+        // TODO: handle error
+        [self.document loadByPerformingFormatUpgradeWithError:nil];
+    } else {
+        [self.document close];
+    }
+}
+
+- (void)handleEncryption {
     self.encryptionController = [[RLMEncryptionKeyWindowController alloc] initWithRealmFilePath:self.document.fileURL];
+
     [self.window beginSheet:self.encryptionController.window completionHandler:^(NSModalResponse returnCode) {
-        if (returnCode != NSModalResponseOK) {
+        if (returnCode == NSModalResponseOK) {
+            // No errors shoud be here because currently RLMEncryptionKeyWindowController cares about the key
+            [self.document loadWithEncryptionKey:self.encryptionController.encryptionKey error:nil];
+        } else {
             [self.document close];
-            return;
         }
-        
-        self.encryptionKey = self.encryptionController.encryptionKey;
-        self.document.presentedRealm.encryptionKey = self.encryptionKey;
-        [self realmDidLoad];
     }];
 }
 
-- (void)handleSyncPrompt
-{
+- (void)handleSyncCredentials {
     // FIXME: see https://github.com/realm/realm-browser-osx-private/issues/51
     NSAssert(NO, @"Not implemented");
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+    if (object == self.document && [keyPath isEqualToString:@"state"]) {
+        [self observeDocumentStateChange];
+    }
 }
 
 #pragma mark - Public methods - Accessors

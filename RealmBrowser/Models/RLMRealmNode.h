@@ -32,8 +32,6 @@
 
 - (BOOL)connect:(NSError **)error;
 
-- (void)addTable:(RLMClassNode *)table;
-
 - (BOOL)realmFileRequiresFormatUpgrade;
 
 @end
