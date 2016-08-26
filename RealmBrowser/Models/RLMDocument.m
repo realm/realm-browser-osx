@@ -213,7 +213,6 @@
 - (void)makeWindowControllers
 {
     RLMRealmBrowserWindowController *windowController = [[RLMRealmBrowserWindowController alloc] initWithWindowNibName:self.windowNibName];
-    windowController.modelDocument = self;
     [self addWindowController:windowController];
 }
 
