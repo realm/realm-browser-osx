@@ -15,25 +15,29 @@
 @implementation RLMDocumentController
 
 - (void)openDocumentWithContentsOfSyncURL:(NSURL *)url credential:(RLMCredential *)credential display:(BOOL)displayDocument completionHandler:(void (^)(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error))completionHandler {
-    // TODO: handle documentWasAlreadyOpen properly
+    RLMDocument *document = [self documentForURL:url];
 
-    NSError *error;
-    RLMDocument *document = [[RLMDocument alloc] initWithContentsOfSyncURL:url credential:credential error:&error];
-
-    if (error != nil) {
-        // TODO: handle error
+    if (document != nil) {
+        completionHandler(document, YES, nil);
         return;
     }
 
-    [self addDocument:document];
+    NSError *error;
+    document = [[RLMDocument alloc] initWithContentsOfSyncURL:url credential:credential error:&error];
 
-    if (displayDocument) {
-        [document makeWindowControllers];
-        [document showWindows];
+    if (document != nil) {
+        [self addDocument:document];
+
+        if (displayDocument) {
+            [document makeWindowControllers];
+            [document showWindows];
+        }
     }
 
-    // TODO: call completion handler
-    completionHandler(document, NO, error);
+    // NSDocumentController calls completion handler asynchronously for new documents
+    dispatch_async(dispatch_get_main_queue(), ^{
+        completionHandler(document, NO, error);
+    });
 }
 
 - (NSString *)typeForContentsOfURL:(NSURL *)url error:(NSError * _Nullable __autoreleasing *)outError {
