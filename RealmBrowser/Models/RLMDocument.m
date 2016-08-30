@@ -158,40 +158,49 @@
 
     completionHandler = completionHandler ?: ^(NSError *error) {};
 
-    __weak typeof(self) weakSelf = self;
-
     self.state = RLMDocumentStateLoadingSchema;
 
     [self.user loginWithCredential:credential completion:^(NSError *error) {
-        if (error != nil) {
-             self.state = RLMDocumentStateNeedsValidCredential;
+        // FIXME: API callbacks chould be dispatched on main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (error != nil) {
+                self.state = RLMDocumentStateNeedsValidCredential;
 
-            completionHandler(error);
-            return;
-        }
-
-        weakSelf.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:weakSelf.user];
-
-        [weakSelf.schemaLoader loadSchemaToURL:weakSelf.fileURL completionHandler:^(NSError *error) {
-            if (error == nil) {
-                [weakSelf loadWithError:&error];
+                completionHandler(error);
+                return;
             }
 
-            // FIXME: we should have `RLMDocumentStateLoaded` here or unrecoverable error.
+            // FIXME: workaround for loading schema while using dynamic API
+            [self loadSchemaWithCompletionHandler:^(NSError *error) {
+                if (error == nil) {
+                    [self loadWithError:&error];
+                } else {
+                    self.state = RLMDocumentStateUnrecoverableError;
+                }
 
+                completionHandler(error);
+            }];
+        });
+    }];
+}
+
+- (void)loadSchemaWithCompletionHandler:(void (^)(NSError *error))completionHandler {
+    self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:self.user];
+    [self.schemaLoader loadSchemaToURL:self.fileURL completionHandler:^(NSError *error) {
+        self.schemaLoader = nil;
+
+        if (completionHandler != nil) {
             completionHandler(error);
-        }];
+        }
     }];
 }
 
 - (BOOL)loadWithError:(NSError **)error {
-    if (![self.presentedRealm connect:error]) {
-        return NO;
-    }
+    BOOL result = [self.presentedRealm connect:error];
 
-    self.state = RLMDocumentStateLoaded;
+    self.state = result ? RLMDocumentStateLoaded : RLMDocumentStateUnrecoverableError;
 
-    return YES;
+    return result;
 }
 
 #pragma mark NSDocument overrides

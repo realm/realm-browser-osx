@@ -25,7 +25,8 @@ typedef NS_ENUM(NSInteger, RLMDocumentState) {
     RLMDocumentStateNeedsEncryptionKey,
     RLMDocumentStateNeedsValidCredential,
     RLMDocumentStateLoadingSchema,
-    RLMDocumentStateLoaded
+    RLMDocumentStateLoaded,
+    RLMDocumentStateUnrecoverableError
 };
 
 @interface RLMDocument : NSDocument
