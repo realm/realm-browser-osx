@@ -1,6 +1,8 @@
 x.x.x Release notes (yyyy-MM-dd)
 =============================================================
 * Adding support for optional fields (Java exporter)
+* Improved Realm file discovery in "Open Common Location"
+* Added the ability for multiple CSV file importing
 
 0.103.1 Release notes (2016-05-20)
 =============================================================
