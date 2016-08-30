@@ -40,6 +40,10 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
     return self;
 }
 
+- (void)dealloc {
+    [self.notificationToken stop];
+}
+
 - (void)loadSchemaToURL:(NSURL *)fileURL completionHandler:(RLMSchemaLoadCompletionHandler)handler {
     self.completionHandler = handler;
     self.configuration.fileURL = fileURL;
@@ -66,7 +70,7 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
         [weakSelf schemaDidLoadWithError:nil];
     }];
 
-    [self performSelector:@selector(schemaDidLoadWithError:) withObject:[self errorWithCode:0 description:@"Failed to connect to Object Server." recoverySuggestion:@"Check the URL and that the server is accessible."] afterDelay:schemaLoadTimeout];
+    [self performSelector:@selector(schemaLoadingTimeout) withObject:nil afterDelay:schemaLoadTimeout];
 }
 
 - (void)schemaDidLoadWithError:(NSError *)error {
@@ -76,6 +80,11 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
             self.completionHandler = nil;
         });
     }
+}
+
+- (void)schemaLoadingTimeout {
+    [self.notificationToken stop];
+    [self schemaDidLoadWithError:[self errorWithCode:0 description:@"Failed to connect to Object Server." recoverySuggestion:@"Check the URL and that the server is accessible."]];
 }
 
 - (NSError *)errorWithCode:(NSInteger)code description:(NSString *)description recoverySuggestion:(NSString *)recoverySuggestion {
