@@ -135,11 +135,11 @@ static NSString * const RLMWindowControllerClassSyffix = @"Controller";
 }
 
 - (void)closeWindow:(id)sender {
-    [self closeWindowWithReturnCode:[sender tag]];
+    [self closeWithReturnCode:[sender tag]];
 }
 
 - (void)close {
-    [self closeWindowWithReturnCode:NSModalResponseCancel];
+    [self closeWithReturnCode:NSModalResponseCancel];
 }
 
 #pragma mark - NSWindowDelegate
