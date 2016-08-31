@@ -6,12 +6,14 @@
 //  Copyright © 2016 Realm inc. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+@import Realm;
 
-@interface RLMSyncServerBrowserWindowController : NSWindowController
+#import "RLMWindowController.h"
 
-@property (nonatomic, strong, readonly) NSString *selectedRealmPath;
+@interface RLMSyncServerBrowserWindowController : RLMWindowController
 
-- (NSModalResponse)connectToServerAtURL:(NSURL *)serverURL adminAccessToken:(NSString *)accessToken error:(NSError **)error;
+@property (nonatomic, readonly) NSURL *selectedURL;
+
+- (instancetype)initWithServerURL:(NSURL *)serverURL user:(RLMUser *)user;
 
 @end
