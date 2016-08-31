@@ -66,7 +66,9 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
     self.notificationToken = [realm addNotificationBlock:^(RLMNotification notification, RLMRealm *realm) {
         [NSObject cancelPreviousPerformRequestsWithTarget:weakSelf];
 
-        [weakSelf.notificationToken stop];
+        // FIXME: Looks like there is an issue with closing realm and opening it the secont time
+        // so will keep realm opened until dealloc for now
+        // [weakSelf.notificationToken stop];
         [weakSelf schemaDidLoadWithError:nil];
     }];
 
