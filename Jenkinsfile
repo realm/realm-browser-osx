@@ -32,8 +32,13 @@ def get_version(String version){
 node('osx_vegas') {
   stage 'SCM'
   dir('realm-browser') {
-    checkout scm
-    sh 'git clean -ffdx -e .????????'
+    checkout([
+      $class: 'GitSCM',
+      branches: scm.branches,
+      gitTool: 'native git',
+      extensions: scm.extensions + [[$class: 'CleanCheckout']],
+      userRemoteConfigs: scm.userRemoteConfigs
+    ])
   }
 
   sh '''
@@ -46,7 +51,7 @@ node('osx_vegas') {
     def archiveName = "realm_browser_${currentVersion}.zip"
     echo archiveName
 
-    sh 'pod update'
+    sh 'pod repo update'
     sh 'pod install'
 
     //FIXME build debug version and test
