@@ -54,7 +54,9 @@
 }
 
 - (IBAction)ok:(id)sender {
-    [self closeWithReturnCode:NSModalResponseOK];
+    if (self.credential != nil) {
+        [self closeWithReturnCode:NSModalResponseOK];
+    }
 }
 
 - (IBAction)cancel:(id)sender {
