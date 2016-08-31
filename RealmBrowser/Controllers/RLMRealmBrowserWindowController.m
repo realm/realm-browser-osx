@@ -27,8 +27,9 @@
 #import "RLMModelExporter.h"
 #import "RLMExportIndicatorWindowController.h"
 #import "RLMEncryptionKeyWindowController.h"
-#import "RLMOpenSyncURLWindowController.h"
 #import "RLMAlert.h"
+
+#import "RLMCredentialsWindowController.h"
 
 NSString * const kRealmLockedImage = @"RealmLocked";
 NSString * const kRealmUnlockedImage = @"RealmUnlocked";
@@ -52,6 +53,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
 @property (nonatomic, strong) RLMExportIndicatorWindowController *exportWindowController;
 @property (nonatomic, strong) RLMEncryptionKeyWindowController *encryptionController;
+@property (nonatomic, strong) RLMCredentialsWindowController *credentialsController;
 
 @property (nonatomic, strong) RLMNotificationToken *documentNotificationToken;
 
@@ -73,7 +75,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     [super setDocument:document];
 
     if (self.windowLoaded && self.window.isVisible) {
-        [self startObservingDocumentState];
+        [self handleDocumentState];
     }
 }
 
@@ -91,25 +93,12 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 - (IBAction)showWindow:(id)sender
 {
     [super showWindow:sender];
-    [self startObservingDocumentState];
+    [self handleDocumentState];
 }
 
 #pragma mark - Document observation
 
-- (void)startObservingDocumentState {
-    [self.document addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionInitial context:nil];
-}
-
-- (void)startObservingDocumentRealm {
-    __weak typeof(self) weakSelf = self;
-
-    self.documentNotificationToken = [self.document.presentedRealm.realm addNotificationBlock:^(RLMNotification notification, RLMRealm *realm) {
-        // Send notifications to all document's window controllers
-        [weakSelf.document.windowControllers makeObjectsPerformSelector:@selector(handleDocumentRealmChange)];
-    }];
-}
-
-- (void)handleDocumentStateChange {
+- (void)handleDocumentState {
     switch (self.document.state) {
         case RLMDocumentStateRequiresFormatUpgrade:
             [self handleFormatUpgrade];
@@ -130,15 +119,27 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
         case RLMDocumentStateLoaded:
             [self realmDidLoad];
             break;
+
+        case RLMDocumentStateUnrecoverableError:
+            // TODO: show error & close document
+            break;
     }
 }
 
-- (void)handleDocumentRealmChange {
+- (void)startObservingDocument {
+    __weak typeof(self) weakSelf = self;
+
+    self.documentNotificationToken = [self.document.presentedRealm.realm addNotificationBlock:^(RLMNotification notification, RLMRealm *realm) {
+        // Send notifications to all document's window controllers
+        [weakSelf.document.windowControllers makeObjectsPerformSelector:@selector(handleDocumentChange)];
+    }];
+}
+
+- (void)handleDocumentChange {
     [self reloadAfterEdit];
 }
 
 - (void)stopObservingDocument {
-    [self.document removeObserver:self forKeyPath:@"state"];
     [self.documentNotificationToken stop];
 }
 
@@ -154,7 +155,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
         [self addNavigationState:initState fromViewController:nil];
     }
 
-    [self startObservingDocumentRealm];
+    [self startObservingDocument];
 }
 
 - (void)handleFormatUpgrade {
@@ -180,16 +181,27 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 }
 
 - (void)handleSyncCredentials {
-    // FIXME: see https://github.com/realm/realm-browser-osx-private/issues/51
-    NSAssert(NO, @"Not implemented");
-}
+    // TODO: pass recent credentials
+    self.credentialsController = [[RLMCredentialsWindowController alloc] initWithSyncURL:self.document.syncURL];
 
-#pragma mark - KVO
+    [self.credentialsController showSheetForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode == NSModalResponseOK) {
+            [self.document loadWithCredential:self.credentialsController.credential completionHandler:^(NSError *error) {
+                // TODO: handle error code properly
+                if (error != nil) {
+                    [[NSAlert alertWithError:error] beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+                        [self handleSyncCredentials];
+                    }];
+                } else {
+                    [self realmDidLoad];
+                }
+            }];
+        } else {
+            [self.document close];
+        }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
-    if (object == self.document && [keyPath isEqualToString:@"state"]) {
-        [self handleDocumentStateChange];
-    }
+        self.credentialsController = nil;
+    }];
 }
 
 #pragma mark - Public methods - Accessors

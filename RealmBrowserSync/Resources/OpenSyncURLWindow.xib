@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="RLMOpenSyncURLWindowController">
+            <connections>
+                <outlet property="credentialsContainerView" destination="1bu-8A-vu1" id="wfv-Ee-2Oi"/>
+                <outlet property="openButton" destination="VT1-77-glH" id="31S-vu-78c"/>
+                <outlet property="urlTextField" destination="EGr-Jj-IJA" id="KdK-2S-apW"/>
+                <outlet property="window" destination="QvC-M9-y7g" id="Vof-Sc-K4G"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Open Sync URL" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="240" width="498" height="376"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <view key="contentView" id="EiT-Mj-1SZ">
+                <rect key="frame" x="0.0" y="0.0" width="498" height="376"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EGr-Jj-IJA">
+                        <rect key="frame" x="20" y="320" width="458" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="PJ3-4e-rnb"/>
+                        </constraints>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="nkI-kL-AoU">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                        <connections>
+                            <binding destination="-2" name="value" keyPath="url" id="akW-BS-D7a">
+                                <dictionary key="options">
+                                    <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                    <bool key="NSConditionallySetsEditable" value="NO"/>
+                                    <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                    <string key="NSNoSelectionPlaceholder">realm://</string>
+                                    <string key="NSNotApplicablePlaceholder">realm://</string>
+                                    <string key="NSNullPlaceholder">realm://</string>
+                                    <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                    <string key="NSValueTransformerName">RLMSyncURLValueTransformer</string>
+                                </dictionary>
+                            </binding>
+                        </connections>
+                    </textField>
+                    <textField horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fOH-GZ-SV5">
+                        <rect key="frame" x="18" y="342" width="67" height="14"/>
+                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Server URL:" id="8n6-KZ-10N">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VrP-Eo-o2V">
+                        <rect key="frame" x="14" y="13" width="82" height="32"/>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ySg-HC-qLR">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="cancel:" target="-2" id="4DE-eH-Sfn"/>
+                        </connections>
+                    </button>
+                    <customView verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1bu-8A-vu1">
+                        <rect key="frame" x="0.0" y="61" width="498" height="239"/>
+                    </customView>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VT1-77-glH">
+                        <rect key="frame" x="411" y="13" width="73" height="32"/>
+                        <buttonCell key="cell" type="push" title="Open" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Os0-VX-Gjy">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="open:" target="-2" id="Obq-Ak-Q54"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="1bu-8A-vu1" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="5kh-6Q-IQL"/>
+                    <constraint firstItem="fOH-GZ-SV5" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="5vM-kP-ix8"/>
+                    <constraint firstItem="1bu-8A-vu1" firstAttribute="top" secondItem="EGr-Jj-IJA" secondAttribute="bottom" constant="20" id="Ap4-aR-vYo"/>
+                    <constraint firstItem="VrP-Eo-o2V" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="CFG-RG-Wmi"/>
+                    <constraint firstAttribute="trailing" secondItem="1bu-8A-vu1" secondAttribute="trailing" id="KUS-L8-NAz"/>
+                    <constraint firstItem="EGr-Jj-IJA" firstAttribute="top" secondItem="fOH-GZ-SV5" secondAttribute="bottom" id="LKI-xQ-spn"/>
+                    <constraint firstAttribute="trailing" secondItem="EGr-Jj-IJA" secondAttribute="trailing" constant="20" id="Q2Y-U7-iAJ"/>
+                    <constraint firstItem="VrP-Eo-o2V" firstAttribute="top" secondItem="1bu-8A-vu1" secondAttribute="bottom" constant="20" id="RJa-bh-2xf"/>
+                    <constraint firstAttribute="bottom" secondItem="VrP-Eo-o2V" secondAttribute="bottom" constant="20" id="bvB-bT-OIo"/>
+                    <constraint firstAttribute="trailing" secondItem="VT1-77-glH" secondAttribute="trailing" constant="20" id="oGU-Mh-0Pd"/>
+                    <constraint firstItem="EGr-Jj-IJA" firstAttribute="leading" secondItem="fOH-GZ-SV5" secondAttribute="leading" id="pqT-sw-dmV"/>
+                    <constraint firstAttribute="bottom" secondItem="VT1-77-glH" secondAttribute="bottom" constant="20" id="rfy-W3-lgY"/>
+                    <constraint firstItem="VT1-77-glH" firstAttribute="top" secondItem="1bu-8A-vu1" secondAttribute="bottom" constant="20" id="tpW-i8-iBJ"/>
+                    <constraint firstItem="EGr-Jj-IJA" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="wJ8-Rt-mBK"/>
+                </constraints>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="oo5-st-slJ"/>
+            </connections>
+            <point key="canvasLocation" x="478" y="419"/>
+        </window>
+    </objects>
+</document>

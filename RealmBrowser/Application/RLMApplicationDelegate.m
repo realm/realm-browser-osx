@@ -30,7 +30,7 @@
 #import "TestClasses.h"
 
 #import "RLMOpenSyncURLWindowController.h"
-#import "RLMConnectToSyncServerWindowController.h"
+#import "RLMConnectToServerWindowController.h"
 #import "RLMSyncServerBrowserWindowController.h"
 
 @interface RLMApplicationDelegate ()
@@ -48,6 +48,8 @@
 @property (nonatomic, strong) NSMetadataQuery *appQuery;
 @property (nonatomic, strong) NSMetadataQuery *projQuery;
 @property (nonatomic, strong) NSArray *groupedFileItems;
+
+@property (nonatomic, strong) NSMutableArray *auxiliaryWindowControllers;
 
 @end
 
@@ -580,53 +582,99 @@
     }];
 }
 
+#pragma mark - Auxiliary Windows Management
+
+- (void)addAuxiliaryWindowController:(NSWindowController *)windowController {
+    if (self.auxiliaryWindowControllers == nil) {
+        self.auxiliaryWindowControllers = [NSMutableArray new];
+    }
+
+    [self.auxiliaryWindowControllers addObject:windowController];
+}
+
+- (void)removeAuxiliaryWindowController:(NSWindowController *)windowController {
+    [self.auxiliaryWindowControllers removeObject:windowController];
+}
+
+- (__kindof NSWindowController *)auxiliaryWindowControllerOfClass:(Class)windowControllerClass {
+    for (NSWindowController *windowController in self.auxiliaryWindowControllers) {
+        if ([windowController isKindOfClass:windowControllerClass]) {
+
+            return windowController;
+        }
+    }
+
+    return nil;
+}
+
 #pragma mark - Sync
 
-- (IBAction)openSyncURL:(id)sender
-{
-    RLMOpenSyncURLWindowController *openSyncURLWindowController = [[RLMOpenSyncURLWindowController alloc] init];
+- (IBAction)openSyncURL:(id)sender {
+    RLMOpenSyncURLWindowController *openSyncURLWindowController = [self auxiliaryWindowControllerOfClass:[RLMOpenSyncURLWindowController class]];
 
-    if ([openSyncURLWindowController runModal] != NSModalResponseOK) {
+    if (openSyncURLWindowController != nil) {
+        [openSyncURLWindowController.window makeKeyAndOrderFront:sender];
         return;
     }
 
-    NSURL *syncURL = openSyncURLWindowController.url;
+    openSyncURLWindowController = [[RLMOpenSyncURLWindowController alloc] init];
 
-    NSURL *serverURL = [NSURL URLWithString:@"/" relativeToURL:syncURL].absoluteURL;
-    NSString *accessToken = openSyncURLWindowController.token;
+    [openSyncURLWindowController showWindow:sender completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode == NSModalResponseOK) {
+            [self openSyncURL:openSyncURLWindowController.url credential:openSyncURLWindowController.credential];
+        }
 
-    RLMCredential *credential = [RLMCredential credentialWithAccessToken:accessToken serverURL:serverURL];
+        [self removeAuxiliaryWindowController:openSyncURLWindowController];
+    }];
 
-    [self openSyncURL:syncURL credential:credential];
+    [self addAuxiliaryWindowController:openSyncURLWindowController];
 }
 
 - (IBAction)connectToSyncServer:(id)sender {
-    RLMConnectToSyncServerWindowController *connectToSyncServerWindowController = [[RLMConnectToSyncServerWindowController alloc] init];
+    RLMConnectToServerWindowController *connectToServerWindowController = [self auxiliaryWindowControllerOfClass:[RLMConnectToServerWindowController class]];
 
-    if ([connectToSyncServerWindowController runModal] != NSModalResponseOK) {
+    if (connectToServerWindowController != nil) {
+        [connectToServerWindowController.window makeKeyAndOrderFront:sender];
         return;
     }
 
-    NSURL *serverURL = connectToSyncServerWindowController.url;
-    NSString *accessToken = connectToSyncServerWindowController.token;
+    connectToServerWindowController = [[RLMConnectToServerWindowController alloc] init];
 
-    RLMCredential *credential = [RLMCredential credentialWithAccessToken:accessToken serverURL:serverURL];
+    [connectToServerWindowController showWindow:sender completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode == NSModalResponseOK) {
+            NSURL *serverURL = connectToServerWindowController.serverURL;
+            NSString *accessToken = connectToServerWindowController.adminAccessToken;
 
-    RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] init];
-
-    NSError *error;
-    if ([browserWindowController connectToServerAtURL:serverURL adminAccessToken:accessToken error:&error] != NSModalResponseOK) {
-        if (error) {
-            [NSApp presentError:error];
+            [self connectToServerAtURL:serverURL credential:[RLMCredential credentialWithAccessToken:accessToken serverURL:serverURL]];
         }
 
-        return;
-    }
+        [self removeAuxiliaryWindowController:connectToServerWindowController];
+    }];
 
-    NSString *serverPath = browserWindowController.selectedRealmPath;
-    NSURL *syncURL = [serverURL URLByAppendingPathComponent:serverPath];
+    [self addAuxiliaryWindowController:connectToServerWindowController];
+}
 
-    [self openSyncURL:syncURL credential:credential];
+- (void)connectToServerAtURL:(NSURL *)serverURL credential:(RLMCredential *)credential {
+    RLMUser *user = [[RLMUser alloc] initWithLocalIdentity:nil];
+
+    [user loginWithCredential:credential completion:^(NSError *error) {
+        if (error != nil) {
+            [NSApp presentError:error];
+            return;
+        }
+
+        RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] initWithServerURL:serverURL user:user];
+
+        [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
+            if (returnCode == NSModalResponseOK) {
+                [self openSyncURL:browserWindowController.selectedURL credential:credential];
+            }
+
+            [self removeAuxiliaryWindowController:browserWindowController];
+        }];
+
+        [self addAuxiliaryWindowController:browserWindowController];
+    }];
 }
 
 @end
