@@ -42,7 +42,7 @@ node('osx_vegas') {
   def currentVersionNumber = readFile('currentversion').readLines()[0]
 
   dir('realm-browser') {
-    def currentVersionv= 'v' + get_version(currentVersionNumber)
+    def currentVersion = 'v' + get_version(currentVersionNumber)
     def archiveName = "realm_browser_${currentVersion}.zip"
     echo archiveName
 
