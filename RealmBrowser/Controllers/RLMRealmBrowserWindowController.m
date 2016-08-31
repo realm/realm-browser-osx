@@ -27,9 +27,9 @@
 #import "RLMModelExporter.h"
 #import "RLMExportIndicatorWindowController.h"
 #import "RLMEncryptionKeyWindowController.h"
-#import "RLMAlert.h"
-
 #import "RLMCredentialsWindowController.h"
+#import "RLMConnectionIndicatorWindowController.h"
+#import "RLMAlert.h"
 
 NSString * const kRealmLockedImage = @"RealmLocked";
 NSString * const kRealmUnlockedImage = @"RealmUnlocked";
@@ -54,6 +54,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 @property (nonatomic, strong) RLMExportIndicatorWindowController *exportWindowController;
 @property (nonatomic, strong) RLMEncryptionKeyWindowController *encryptionController;
 @property (nonatomic, strong) RLMCredentialsWindowController *credentialsController;
+@property (nonatomic, strong) RLMConnectionIndicatorWindowController *connectionIndicatorWindowController;
 
 @property (nonatomic, strong) RLMNotificationToken *documentNotificationToken;
 
@@ -113,7 +114,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
             break;
 
         case RLMDocumentStateLoadingSchema:
-            // TODO: show progress
+            [self handleDocumentSchemaLoading];
             break;
 
         case RLMDocumentStateLoaded:
@@ -201,6 +202,16 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
         }
 
         self.credentialsController = nil;
+    }];
+}
+
+- (void)handleDocumentSchemaLoading {
+    self.connectionIndicatorWindowController = [[RLMConnectionIndicatorWindowController alloc] init];
+
+    [self.connectionIndicatorWindowController showSheetForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode == NSModalResponseCancel) {
+            [self.document close];
+        }
     }];
 }
 
