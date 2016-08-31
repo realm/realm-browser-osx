@@ -12,12 +12,7 @@ def readGitSha() {
   return sha
 }
 
-
-def gitTag
-def gitSha
-
-
-def get_version(String version){
+def getVersion(String version){
   def gitTag = readGitTag()
   def gitSha = readGitSha()
   if (gitTag == "") {
@@ -47,8 +42,9 @@ node('osx_vegas') {
   def currentVersionNumber = readFile('currentversion').readLines()[0]
 
   dir('realm-browser') {
-    def currentVersion = 'v' + get_version(currentVersionNumber)
+    def currentVersion = 'v' + getVersion(currentVersionNumber)
     def archiveName = "realm_browser_${currentVersion}.zip"
+    def gitTag = readGitTag()
     echo archiveName
 
     sh 'pod repo update'
