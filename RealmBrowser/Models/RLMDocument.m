@@ -154,11 +154,17 @@
 }
 
 - (void)loadWithCredential:(RLMCredential *)credential completionHandler:(void (^)(NSError *error))completionHandler {
-    NSAssert(self.state == RLMDocumentStateNeedsValidCredential, @"Invalid document state");
+    // Workaround for access token auth, state will be set to RLMDocumentStateUnrecoverableError in case of invalid token
+    NSAssert(self.state == RLMDocumentStateNeedsValidCredential || self.state == RLMDocumentStateUnrecoverableError, @"Invalid document state");
 
     completionHandler = completionHandler ?: ^(NSError *error) {};
 
     self.state = RLMDocumentStateLoadingSchema;
+
+    // Workaround for access token auth
+    if (self.user.isLoggedIn) {
+        [self.user logout:NO completion:nil];
+    }
 
     [self.user loginWithCredential:credential completion:^(NSError *error) {
         // FIXME: API callbacks chould be dispatched on main thread
