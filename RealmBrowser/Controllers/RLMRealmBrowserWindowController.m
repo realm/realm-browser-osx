@@ -122,7 +122,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
             break;
 
         case RLMDocumentStateUnrecoverableError:
-            // TODO: show error & close document
+            [self handleUnrecoverableError];
             break;
     }
 }
@@ -187,7 +187,11 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
     [self.credentialsController showSheetForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseOK) {
+            [self showLoadingIndicator];
+
             [self.document loadWithCredential:self.credentialsController.credential completionHandler:^(NSError *error) {
+                [self hideLoadingIndicator];
+
                 // TODO: handle error code properly
                 if (error != nil) {
                     [[NSAlert alertWithError:error] beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
@@ -206,12 +210,37 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 }
 
 - (void)handleDocumentSchemaLoading {
+    [self showLoadingIndicator];
+}
+
+- (void)showLoadingIndicator {
+    if (self.connectionIndicatorWindowController.isWindowVisible) {
+        return;
+    }
+
     self.connectionIndicatorWindowController = [[RLMConnectionIndicatorWindowController alloc] init];
 
     [self.connectionIndicatorWindowController showSheetForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseCancel) {
             [self.document close];
         }
+
+        self.connectionIndicatorWindowController = nil;
+    }];
+}
+
+- (void)hideLoadingIndicator {
+    [self.connectionIndicatorWindowController closeWithReturnCode:NSModalResponseOK];
+}
+
+- (void)handleUnrecoverableError {
+    NSAlert *alert = [[NSAlert alloc] init];
+
+    alert.messageText = @"Realm couldn't be opened";
+    alert.alertStyle = NSCriticalAlertStyle;
+
+    [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+        [self.document close];
     }];
 }
 
