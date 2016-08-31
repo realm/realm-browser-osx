@@ -40,6 +40,8 @@ NSString * const kRealmKeyIsLockedForRealm = @"LockedRealm:%@";
 NSString * const kRealmKeyWindowFrameForRealm = @"WindowFrameForRealm:%@";
 NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
+static void const *kWaitForDocumentSchemaLoadObservationContext;
+
 @interface RLMRealm ()
 - (BOOL)compact;
 @end
@@ -109,12 +111,12 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
             [self handleEncryption];
             break;
 
-        case RLMDocumentStateNeedsValidCredential:
-            [self handleSyncCredentials];
+        case RLMDocumentStateLoadingSchema:
+            [self waitForDocumentSchemaLoad];
             break;
 
-        case RLMDocumentStateLoadingSchema:
-            [self handleDocumentSchemaLoading];
+        case RLMDocumentStateNeedsValidCredential:
+            [self handleSyncCredentials];
             break;
 
         case RLMDocumentStateLoaded:
@@ -181,6 +183,17 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     }];
 }
 
+- (void)waitForDocumentSchemaLoad {
+    [self showLoadingIndicator];
+    [self.document addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:&kWaitForDocumentSchemaLoadObservationContext];
+}
+
+- (void)documentSchemaLoaded {
+    [self.document removeObserver:self forKeyPath:@"state"];
+    [self hideLoadingIndicator];
+    [self handleDocumentState];
+}
+
 - (void)handleSyncCredentials {
     // TODO: pass recent credentials
     self.credentialsController = [[RLMCredentialsWindowController alloc] initWithSyncURL:self.document.syncURL];
@@ -207,10 +220,6 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
         self.credentialsController = nil;
     }];
-}
-
-- (void)handleDocumentSchemaLoading {
-    [self showLoadingIndicator];
 }
 
 - (void)showLoadingIndicator {
@@ -242,6 +251,16 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
         [self.document close];
     }];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+    if (context == &kWaitForDocumentSchemaLoadObservationContext) {
+        if (self.document.state != RLMDocumentStateLoadingSchema) {
+            [self documentSchemaLoaded];
+        }
+    }
 }
 
 #pragma mark - Public methods - Accessors
