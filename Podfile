@@ -12,6 +12,10 @@ target 'RealmBrowser' do
     pod 'RealmConverter'
 end
 
+target 'RealmBrowserTests' do
+  pod 'Realm', '1.0.2-9-sync-1.0.0-beta-29.0'
+end
+
 target 'RealmObjectServer' do
     project 'RealmObjectServer/RealmObjectServer.xcodeproj'
     pod 'LibRealmSyncServer', '1.0.0-beta-29.0'
