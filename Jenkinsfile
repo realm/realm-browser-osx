@@ -41,11 +41,11 @@ node('osx_vegas') {
   '''
   def currentVersionNumber = readFile('currentversion').readLines()[0]
 
-  def currentVersion = 'v' + get_version(currentVersionNumber)
-  def archiveName = "realm_browser_${currentVersion}.zip"
-  echo archiveName
-
   dir('realm-browser') {
+    def currentVersionv= 'v' + get_version(currentVersionNumber)
+    def archiveName = "realm_browser_${currentVersion}.zip"
+    echo archiveName
+
     sh 'pod update'
     sh 'pod install'
 
@@ -58,8 +58,6 @@ node('osx_vegas') {
 
     stage 'Build'
     sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Release -derivedDataPath 'build/DerivedData' CODE_SIGN_IDENTITY='Developer ID Application' clean build"
-
-  }
 
     stage 'Package'
     dir("build/DerivedData/Build/Products/Release/") {
@@ -74,4 +72,5 @@ node('osx_vegas') {
             echo "Uploaded to 's3://realm-ci-artifacts/browser/${currentVersionNumber}/cocoa/'"
         }
     }
+  }
 }
