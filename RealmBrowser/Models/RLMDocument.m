@@ -29,6 +29,8 @@
 @property (nonatomic, strong) NSURL *securityScopedURL;
 
 @property (nonatomic, copy) NSURL *syncURL;
+@property (nonatomic, strong) RLMCredential *credential;
+
 @property (nonatomic, strong) RLMUser *user;
 @property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
 
@@ -107,6 +109,8 @@
 
     if (self != nil) {
         self.syncURL = syncURL;
+        self.credential = credential;
+
         self.fileURL = [self temporaryFileURLForSyncURL:syncURL];
         self.user = [[RLMUser alloc] initWithLocalIdentity:nil];
 
@@ -159,6 +163,7 @@
 
     completionHandler = completionHandler ?: ^(NSError *error) {};
 
+    self.credential = credential;
     self.state = RLMDocumentStateLoadingSchema;
 
     // Workaround for access token auth

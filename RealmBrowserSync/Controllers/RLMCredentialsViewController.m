@@ -71,6 +71,13 @@
 }
 
 - (void)setCredential:(RLMCredential *)credential {
+    if (![[self.class supportedIdentityProviders] containsObject:credential.provider]) {
+        return;
+    }
+
+    // Force load view if it's not loaded yet
+    [self view];
+
     [self.tabView selectTabViewItemWithIdentifier:credential.provider];
     self.selectedCredentialViewController.credential = credential;
 }

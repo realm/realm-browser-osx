@@ -29,7 +29,7 @@
 - (RLMCredential *)credential {
     NSString *token = self.tokenTextField.stringValue;
 
-    if (token.length > 0) {
+    if (token.length > 0 && self.serverURL != nil) {
         return [RLMCredential credentialWithAccessToken:token serverURL:self.serverURL];
     }
 

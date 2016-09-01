@@ -199,8 +199,8 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 }
 
 - (void)handleSyncCredentials {
-    // TODO: pass recent credentials
     self.credentialsController = [[RLMCredentialsWindowController alloc] initWithSyncURL:self.document.syncURL];
+    self.credentialsController.credential = self.document.credential;
 
     [self.credentialsController showSheetForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseOK) {
