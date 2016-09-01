@@ -19,13 +19,13 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="498" height="376"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="800"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="498" height="376"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EGr-Jj-IJA">
-                        <rect key="frame" x="20" y="320" width="458" height="22"/>
+                        <rect key="frame" x="20" y="309" width="458" height="22"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="PJ3-4e-rnb"/>
                         </constraints>
@@ -50,9 +50,9 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fOH-GZ-SV5">
-                        <rect key="frame" x="18" y="342" width="67" height="14"/>
-                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Server URL:" id="8n6-KZ-10N">
-                            <font key="font" metaFont="smallSystem"/>
+                        <rect key="frame" x="18" y="339" width="74" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Realm URL:" id="8n6-KZ-10N">
+                            <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
@@ -71,7 +71,7 @@ Gw
                         </connections>
                     </button>
                     <customView verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1bu-8A-vu1">
-                        <rect key="frame" x="0.0" y="61" width="498" height="239"/>
+                        <rect key="frame" x="0.0" y="61" width="498" height="228"/>
                     </customView>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VT1-77-glH">
                         <rect key="frame" x="411" y="13" width="73" height="32"/>
@@ -93,7 +93,7 @@ DQ
                     <constraint firstItem="1bu-8A-vu1" firstAttribute="top" secondItem="EGr-Jj-IJA" secondAttribute="bottom" constant="20" id="Ap4-aR-vYo"/>
                     <constraint firstItem="VrP-Eo-o2V" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="CFG-RG-Wmi"/>
                     <constraint firstAttribute="trailing" secondItem="1bu-8A-vu1" secondAttribute="trailing" id="KUS-L8-NAz"/>
-                    <constraint firstItem="EGr-Jj-IJA" firstAttribute="top" secondItem="fOH-GZ-SV5" secondAttribute="bottom" id="LKI-xQ-spn"/>
+                    <constraint firstItem="EGr-Jj-IJA" firstAttribute="top" secondItem="fOH-GZ-SV5" secondAttribute="bottom" constant="8" symbolic="YES" id="LKI-xQ-spn"/>
                     <constraint firstAttribute="trailing" secondItem="EGr-Jj-IJA" secondAttribute="trailing" constant="20" id="Q2Y-U7-iAJ"/>
                     <constraint firstItem="VrP-Eo-o2V" firstAttribute="top" secondItem="1bu-8A-vu1" secondAttribute="bottom" constant="20" id="RJa-bh-2xf"/>
                     <constraint firstAttribute="bottom" secondItem="VrP-Eo-o2V" secondAttribute="bottom" constant="20" id="bvB-bT-OIo"/>
