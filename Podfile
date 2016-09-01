@@ -10,6 +10,11 @@ target 'RealmBrowser' do
     pod 'AppSandboxFileAccess'
     pod 'Realm', '1.0.2-9-sync-1.0.0-beta-29.0'
     pod 'RealmConverter'
+
+    target 'RealmBrowserTests' do
+      # It looks like that inheritance via search paths is still broken with frameworks, see https://github.com/CocoaPods/CocoaPods/issues/4944
+      # inherit! :search_paths
+    end
 end
 
 target 'RealmObjectServer' do

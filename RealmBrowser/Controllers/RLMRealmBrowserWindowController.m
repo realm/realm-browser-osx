@@ -264,6 +264,8 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
         if (self.document.state != RLMDocumentStateLoadingSchema) {
             [self documentSchemaLoaded];
         }
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 
