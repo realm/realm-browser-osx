@@ -432,7 +432,7 @@ const NSInteger NOT_A_COLUMN = -1;
     NSRect frame = self.headerView.frame;
     frame.size.height = 36;
     self.headerView.frame = frame;
-    
+
     [self beginUpdates];
     // If array, add extra first column with numbers
     if ([typeNode isMemberOfClass:[RLMArrayNode class]]) {
@@ -471,6 +471,9 @@ const NSInteger NOT_A_COLUMN = -1;
     }
     
     [self endUpdates];
+
+    // FIXME: force layout subview to change header view height
+    [self.enclosingScrollView tile];
 }
 
 #pragma mark - Private Methods - Table Columns
