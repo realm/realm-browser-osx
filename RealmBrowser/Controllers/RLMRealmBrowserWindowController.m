@@ -125,10 +125,17 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
         case RLMDocumentStateLoadingSchema:
             // TODO: show progress
+            NSLog(@"Loading Realm schema");
             break;
 
         case RLMDocumentStateLoaded:
             [self realmDidLoad];
+            break;
+
+        case RLMDocumentStateUnrecoverableError:
+            [[NSAlert alertWithMessageText:@"Unable to open Realm" defaultButton:nil alternateButton:nil otherButton:nil informativeTextWithFormat:@""] beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+                [self.document close];
+            }];
             break;
     }
 }
@@ -189,6 +196,8 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
     if (object == self.document && [keyPath isEqualToString:@"state"]) {
         [self handleDocumentStateChange];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 

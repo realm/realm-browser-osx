@@ -38,7 +38,7 @@
         self.configuration.dynamic = YES;
         self.configuration.fileURL = fileURL;
     }
-    
+
     return self;
 }
 
