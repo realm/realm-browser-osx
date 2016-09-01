@@ -163,8 +163,12 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
 - (void)handleFormatUpgrade {
     if ([RLMAlert showFileFormatUpgradeDialogWithFileName:self.document.fileURL.lastPathComponent]) {
-        // TODO: handle error
-        [self.document loadByPerformingFormatUpgradeWithError:nil];
+        NSError *error;
+        if (![self.document loadByPerformingFormatUpgradeWithError:&error]) {
+            [[NSAlert alertWithError:error] beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+                [self.document close];
+            }];
+        }
     } else {
         [self.document close];
     }
