@@ -110,7 +110,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     
     [self.tableView setAutosaveTableColumns:NO];
     
-    RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
+    RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     
     if ([newState isMemberOfClass:[RLMNavigationState class]]) {
         self.displayedType = newState.selectedType;
@@ -492,7 +492,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 
 - (void)addNewObjects:(NSIndexSet *)rowIndexes
 {
-    RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
+    RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     NSUInteger objectCount = MAX(rowIndexes.count, 1);
 
     RLMObject *newObject;
@@ -539,12 +539,12 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     popover.contentViewController = popoverContent;
     popover.behavior = NSPopoverBehaviorTransient;
     
-    NSArray *topLevelClasses = self.parentWindowController.modelDocument.presentedRealm.topLevelClasses;
+    NSArray *topLevelClasses = self.parentWindowController.document.presentedRealm.topLevelClasses;
     
     RLMObject *selectedInstance = [self.displayedType instanceAtIndex:rowIndexes.firstIndex];
     NSInteger propertyIndex = [self propertyIndexForColumn:columnIndex];
     
-    RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
+    RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     RLMObjectSchema *objectSchema = [realm.schema schemaForClassName:self.displayedType.name];
     RLMProperty *property = objectSchema.properties[propertyIndex];
     
@@ -558,7 +558,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     __weak typeof(popover) weakPopover = popover;
     
     popoverContent.didSelectedBlock = ^(RLMObject *object) {
-        RLMRealm *realm = weakSelf.parentWindowController.modelDocument.presentedRealm.realm;
+        RLMRealm *realm = weakSelf.parentWindowController.document.presentedRealm.realm;
         [realm beginWriteTransaction];
         
         selectedInstance[property.name] = object;
@@ -690,7 +690,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 {
     NSInteger propertyIndex = [self propertyIndexForColumn:column];
 
-    RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
+    RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     RLMObjectSchema *objectSchema = [realm.schema schemaForClassName:self.displayedType.name];
     RLMProperty *property = objectSchema.properties[propertyIndex];
     
@@ -719,7 +719,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 {
     NSInteger propertyIndex = [self propertyIndexForColumn:column];
     
-    RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
+    RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     RLMClassProperty *classProperty = self.displayedType.propertyColumns[propertyIndex];
     
     id newValue = [NSNull null];
@@ -742,7 +742,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 // Removing
 - (void)removeRowsInRealmAt:(NSIndexSet *)rowIndexes
 {
-    RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
+    RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     
     [realm beginWriteTransaction];
     [rowIndexes enumerateIndexesWithOptions:NSEnumerationReverse usingBlock:^(NSUInteger index, BOOL *stop) {
@@ -774,7 +774,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         rowIndexes = [NSIndexSet indexSetWithIndex:0];
     }
     
-    RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
+    RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     
     [realm beginWriteTransaction];
     
@@ -808,7 +808,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 // Moving
 - (void)moveRowsInRealmFrom:(NSIndexSet *)sourceIndexes to:(NSUInteger)destination
 {
-    RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
+    RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     
     NSMutableArray *sources = [self arrayWithIndexSet:sourceIndexes];
     
@@ -867,7 +867,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 
 - (void)deleteObjectsInRealmAtIndexes:(NSIndexSet *)rowIndexes
 {
-    RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
+    RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     
     NSMutableArray *objectsToDelete = [NSMutableArray array];
     [rowIndexes enumerateIndexesUsingBlock:^(NSUInteger index, BOOL *stop) {
@@ -997,7 +997,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     }
     
     if (result || optionalValue) {
-        RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
+        RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
         [realm beginWriteTransaction];
         selectedInstance[propertyNode.name] = result;
         [realm commitWriteTransaction];
@@ -1018,7 +1018,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 
     NSNumber *result = @((BOOL)(sender.state == NSOnState));
 
-    RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
+    RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     [realm beginWriteTransaction];
     selectedInstance[propertyNode.name] = result;
     [realm commitWriteTransaction];
@@ -1041,7 +1041,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         result = @((BOOL)(sender.indexOfSelectedItem == 2));
     }
     
-    RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
+    RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     [realm beginWriteTransaction];
     selectedInstance[propertyNode.name] = result;
     [realm commitWriteTransaction];
@@ -1089,7 +1089,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             RLMObject *linkedObject = (RLMObject *)propertyValue;
             RLMObjectSchema *linkedObjectSchema = linkedObject.objectSchema;
             
-            for (RLMClassNode *classNode in self.parentWindowController.modelDocument.presentedRealm.topLevelClasses) {
+            for (RLMClassNode *classNode in self.parentWindowController.document.presentedRealm.topLevelClasses) {
                 if ([classNode.name isEqualToString:linkedObjectSchema.className]) {
                     RLMResults *allInstances = [linkedObject.realm allObjects:linkedObjectSchema.className];
                     NSUInteger objectIndex = [allInstances indexOfObject:linkedObject];
@@ -1161,7 +1161,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             [menu addItem:item];
             
             if ([menu popUpMenuPositioningItem:nil atLocation:frame.origin inView:self.tableView]) {
-                RLMRealm *realm = self.parentWindowController.modelDocument.presentedRealm.realm;
+                RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
                 [realm beginWriteTransaction];
                 selectedObject[propertyNode.name] = datepicker.dateValue;
                 [realm commitWriteTransaction];

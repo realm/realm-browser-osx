@@ -23,19 +23,14 @@
 @interface RLMRealmNode : NSObject <RLMRealmOutlineNode>
 
 @property (nonatomic, readonly) RLMRealm *realm;
-@property (nonatomic, readonly) NSString *name;
-@property (nonatomic, readonly) NSURL *fileURL;
-@property (nonatomic, readonly) NSURL *syncURL;
-@property (nonatomic, readonly) NSString *accessToken;
 @property (nonatomic, readonly) NSArray *topLevelClasses;
 
 @property (nonatomic, strong) NSData *encryptionKey;
 
-- (instancetype)initWithFileUrl:(NSURL *)fileUrl syncUrl:(NSURL *)syncUrl accessToken:(NSString *)accessToken;
+- (instancetype)initWithFileURL:(NSURL *)fileURL;
+- (instancetype)initWithFileURL:(NSURL *)fileURL syncURL:(NSURL *)syncURL user:(RLMUser *)user;
 
 - (BOOL)connect:(NSError **)error;
-
-- (void)addTable:(RLMClassNode *)table;
 
 - (BOOL)realmFileRequiresFormatUpgrade;
 

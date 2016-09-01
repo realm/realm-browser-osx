@@ -12,6 +12,8 @@ typedef void (^RLMSchemaLoadCompletionHandler)(NSError *error);
 
 @interface RLMDynamicSchemaLoader : NSObject
 
-- (void)loadSchemaFromSyncURL:(NSURL *)syncURL accessToken:(NSString *)accessToken toRealmFileURL:(NSURL *)fileURL completionHandler:(RLMSchemaLoadCompletionHandler)handler;
+- (instancetype)initWithSyncURL:(NSURL *)syncURL user:(RLMUser *)user;
+
+- (void)loadSchemaToURL:(NSURL *)fileURL completionHandler:(RLMSchemaLoadCompletionHandler)handler;
 
 @end

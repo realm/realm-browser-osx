@@ -19,22 +19,19 @@
 @import Realm;
 @import Realm.Private;
 @import RealmConverter;
+@import AppSandboxFileAccess;
 
 #import "RLMBrowserConstants.h"
 #import "RLMApplicationDelegate.h"
+#import "RLMDocumentController.h"
+
 #import "RLMTestDataGenerator.h"
 #import "RLMUtils.h"
 #import "TestClasses.h"
 
-#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
-
 #import "RLMOpenSyncURLWindowController.h"
 #import "RLMConnectToSyncServerWindowController.h"
 #import "RLMSyncServerBrowserWindowController.h"
-
-#import "RLMDynamicSchemaLoader.h"
-
-#import "NSURLComponents+FragmentItems.h"
 
 @interface RLMApplicationDelegate ()
 
@@ -52,11 +49,14 @@
 @property (nonatomic, strong) NSMetadataQuery *projQuery;
 @property (nonatomic, strong) NSArray *groupedFileItems;
 
-@property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
-
 @end
 
 @implementation RLMApplicationDelegate
+
+- (void)applicationWillFinishLaunching:(NSNotification *)notification {
+    // Will set sharedController
+    [RLMDocumentController new];
+}
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification
 {
@@ -526,18 +526,26 @@
 
 #pragma mark - Private methods
 
--(void)openFileWithMenuItem:(NSMenuItem *)menuItem
+- (void)openFileWithMenuItem:(NSMenuItem *)menuItem
 {
     [self openFileAtURL:menuItem.representedObject];
 }
 
--(void)openFileAtURL:(NSURL *)url
+- (void)openFileAtURL:(NSURL *)url
 {
-    NSDocumentController *documentController = [[NSDocumentController alloc] init];
-    [documentController openDocumentWithContentsOfURL:url
-                                              display:YES
-                                    completionHandler:^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error){
-                                    }];
+    [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:url display:YES completionHandler:^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error) {
+        if (error != nil) {
+            [NSApp presentError:error];
+        }
+    }];
+}
+
+- (void)openSyncURL:(NSURL *)syncURL credential:(RLMCredential *)credential {
+    [(RLMDocumentController *)[NSDocumentController sharedDocumentController] openDocumentWithContentsOfSyncURL:syncURL credential:credential display:YES completionHandler:^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error) {
+        if (error != nil) {
+            [NSApp presentError:error];
+        }
+    }];
 }
 
 - (void)showSavePanelStringFromDirectory:(NSURL *)directoryUrl completionHandler:(void(^)(BOOL userSelectesFile, NSURL *selectedFile))completion
@@ -583,10 +591,13 @@
     }
 
     NSURL *syncURL = openSyncURLWindowController.url;
-    NSString *accessToken = openSyncURLWindowController.token;
-    NSURL *fileURL = [self uniqueRealmFileURLForSyncURL:syncURL];
 
-    [self loadSchemaAndOpenRealmAtURL:fileURL forSyncURL:syncURL accessToken:accessToken];
+    NSURL *serverURL = [NSURL URLWithString:@"/" relativeToURL:syncURL].absoluteURL;
+    NSString *accessToken = openSyncURLWindowController.token;
+
+    RLMCredential *credential = [RLMCredential credentialWithAccessToken:accessToken serverURL:serverURL];
+
+    [self openSyncURL:syncURL credential:credential];
 }
 
 - (IBAction)connectToSyncServer:(id)sender {
@@ -596,13 +607,15 @@
         return;
     }
 
-    NSURL *syncServerURL = connectToSyncServerWindowController.url;
+    NSURL *serverURL = connectToSyncServerWindowController.url;
     NSString *accessToken = connectToSyncServerWindowController.token;
+
+    RLMCredential *credential = [RLMCredential credentialWithAccessToken:accessToken serverURL:serverURL];
 
     RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] init];
 
     NSError *error;
-    if ([browserWindowController connectToServerAtURL:syncServerURL accessToken:accessToken error:&error] != NSModalResponseOK) {
+    if ([browserWindowController connectToServerAtURL:serverURL adminAccessToken:accessToken error:&error] != NSModalResponseOK) {
         if (error) {
             [NSApp presentError:error];
         }
@@ -611,43 +624,9 @@
     }
 
     NSString *serverPath = browserWindowController.selectedRealmPath;
-    NSURL *syncURL = [syncServerURL URLByAppendingPathComponent:serverPath];
-    NSURL *fileURL = [self uniqueRealmFileURLForSyncURL:syncURL];
+    NSURL *syncURL = [serverURL URLByAppendingPathComponent:serverPath];
 
-    [self loadSchemaAndOpenRealmAtURL:fileURL forSyncURL:syncURL accessToken:accessToken];
-}
-
-- (void)loadSchemaAndOpenRealmAtURL:(NSURL *)fileURL forSyncURL:(NSURL *)syncURL accessToken:(NSString *)accessToken {
-    self.schemaLoader = [[RLMDynamicSchemaLoader alloc] init];
-    [self.schemaLoader loadSchemaFromSyncURL:syncURL accessToken:accessToken toRealmFileURL:fileURL completionHandler:^(NSError *error) {
-        if (error != nil) {
-            [NSApp presentError:error];
-        } else {
-            NSURLComponents *components = [NSURLComponents componentsWithURL:fileURL resolvingAgainstBaseURL:NO];
-            components.fragmentItems = @[
-                [NSURLQueryItem queryItemWithName:@"syncServerURL" value:syncURL.absoluteString],
-                [NSURLQueryItem queryItemWithName:@"syncSignedUserToken" value:accessToken]
-            ];
-
-            [self openFileAtURL:components.URL];
-        }
-    }];
-}
-
-- (NSURL *)uniqueRealmFileURLForSyncURL:(NSURL *)syncURL {
-    NSString *fileName = syncURL.lastPathComponent;
-
-    if (![fileName.pathExtension isEqualToString:kRealmFileExtension]) {
-        fileName = [fileName stringByAppendingPathExtension:kRealmFileExtension];
-    }
-
-    NSURL *directoryURL = [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject];
-    directoryURL = [directoryURL URLByAppendingPathComponent:[NSBundle mainBundle].bundleIdentifier];
-    directoryURL = [directoryURL URLByAppendingPathComponent:[NSUUID UUID].UUIDString];
-
-    [[NSFileManager defaultManager] createDirectoryAtURL:directoryURL withIntermediateDirectories:YES attributes:nil error:nil];
-
-    return [directoryURL URLByAppendingPathComponent:fileName];
+    [self openSyncURL:syncURL credential:credential];
 }
 
 @end

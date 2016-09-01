@@ -16,50 +16,52 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#import "RLMRealmNode.h"
-
 @import Realm;
 @import Realm.Private;
 @import Realm.Dynamic;
 
-#import "RLMRealmConfiguration+Sync.h"
+#import "RLMRealmNode.h"
+
+@interface RLMRealmNode ()
+
+@property (nonatomic, strong) RLMRealmConfiguration *configuration;
+
+@end
 
 @implementation RLMRealmNode
 
-- (instancetype)initWithFileUrl:(NSURL *)fileURL syncUrl:(NSURL *)syncUrl accessToken:(NSString *)accessToken {
+- (instancetype)initWithFileURL:(NSURL *)fileURL {
     self = [super init];
 
     if (self) {
-        _name = fileURL.lastPathComponent.stringByDeletingPathExtension;
-        _fileURL = fileURL;
-        _syncURL = syncUrl;
-        _accessToken = accessToken;
+        self.configuration = [[RLMRealmConfiguration alloc] init];
+        self.configuration.dynamic = YES;
+        self.configuration.fileURL = fileURL;
     }
 
     return self;
 }
 
-- (BOOL)connect:(NSError **)error
-{
-    RLMRealmConfiguration *configuration;
+- (instancetype)initWithFileURL:(NSURL *)fileURL syncURL:(NSURL *)syncURL user:(RLMUser *)user {
+    self = [self initWithFileURL:fileURL];
 
-    if (self.syncURL != nil && self.accessToken != nil) {
-        configuration = [RLMRealmConfiguration dynamicSchemaConfigurationWithSyncURL:self.syncURL accessToken:self.accessToken fileURL:self.fileURL];
-    } else {
-        configuration = [[RLMRealmConfiguration alloc] init];
-        configuration.fileURL = self.fileURL;
-        configuration.encryptionKey = self.encryptionKey;
-        configuration.dynamic = YES;
-        configuration.customSchema = nil;
+    if (self) {
+        [self.configuration setObjectServerPath:syncURL.path forUser:user];
+        self.configuration.fileURL = fileURL;
     }
 
+    return self;
+}
+
+- (BOOL)connect:(NSError **)error {
+    self.configuration.encryptionKey = self.encryptionKey;
+
     NSError *localError;
-    _realm = [RLMRealm realmWithConfiguration:configuration error:&localError];
+    _realm = [RLMRealm realmWithConfiguration:self.configuration error:&localError];
 
     if (localError) {
         NSLog(@"Realm was opened with error: %@", localError);
-    }
-    else {
+    } else {
         _topLevelClasses = [self constructTopLevelClasses];
     }
 
@@ -70,21 +72,6 @@
     return !localError;
 }
 
-- (void)addTable:(RLMClassNode *)table
-{
-
-}
-
-- (void)setEncryptionKey:(NSData *)encryptionKey
-{
-    if (encryptionKey == _encryptionKey)
-        return;
-    
-    _realm = nil;
-    _encryptionKey = encryptionKey;
-    [self connect:nil];
-}
-
 - (BOOL)realmFileRequiresFormatUpgrade
 {
     NSError *localError;
@@ -93,7 +80,7 @@
     configuration.disableFormatUpgrade = YES;
     configuration.dynamic = YES;
     configuration.encryptionKey = self.encryptionKey;
-    configuration.fileURL = self.fileURL;
+    configuration.fileURL = self.configuration.fileURL;
     [RLMRealm realmWithConfiguration:configuration error:&localError];
     
     if (localError && localError.code == RLMErrorFileFormatUpgradeRequired) {
@@ -132,7 +119,7 @@
 
 - (NSString *)toolTipString
 {
-    return self.fileURL.path;
+    return self.configuration.fileURL.path;
 }
 
 - (NSView *)cellViewForTableView:(NSTableView *)tableView

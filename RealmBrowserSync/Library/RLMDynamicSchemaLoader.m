@@ -7,9 +7,9 @@
 //
 
 @import Realm;
+@import Realm.Private;
 
 #import "RLMDynamicSchemaLoader.h"
-#import "RLMRealmConfiguration+Sync.h"
 
 static NSTimeInterval const schemaLoadTimeout = 5;
 
@@ -17,6 +17,7 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
 
 @interface RLMDynamicSchemaLoader()
 
+@property (nonatomic, strong) RLMRealmConfiguration *configuration;
 @property (nonatomic, strong) RLMNotificationToken *notificationToken;
 @property (nonatomic, strong) RLMSchemaLoadCompletionHandler completionHandler;
 
@@ -24,13 +25,32 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
 
 @implementation RLMDynamicSchemaLoader
 
-- (void)loadSchemaFromSyncURL:(NSURL *)syncURL accessToken:(NSString *)accessToken toRealmFileURL:(NSURL *)fileURL completionHandler:(RLMSchemaLoadCompletionHandler)handler {
+- (instancetype)initWithSyncURL:(NSURL *)syncURL user:(RLMUser *)user {
+    NSAssert(user.isLoggedIn, @"User must be logged in");
+
+    self = [super init];
+
+    if (self != nil) {
+        self.configuration = [[RLMRealmConfiguration alloc] init];
+        self.configuration.dynamic = YES;
+
+        [self.configuration setObjectServerPath:syncURL.path forUser:user];
+    }
+
+    return self;
+}
+
+- (void)dealloc {
+    [self.notificationToken stop];
+}
+
+- (void)loadSchemaToURL:(NSURL *)fileURL completionHandler:(RLMSchemaLoadCompletionHandler)handler {
     self.completionHandler = handler;
+    self.configuration.fileURL = fileURL;
 
     NSError *error;
 
-    RLMRealmConfiguration *configuration = [RLMRealmConfiguration dynamicSchemaConfigurationWithSyncURL:syncURL accessToken:accessToken fileURL:fileURL];
-    RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:&error];
+    RLMRealm *realm = [RLMRealm realmWithConfiguration:self.configuration error:&error];
 
     if (error != nil) {
         [self schemaDidLoadWithError:error];
@@ -50,7 +70,7 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
         [weakSelf schemaDidLoadWithError:nil];
     }];
 
-    [self performSelector:@selector(schemaDidLoadWithError:) withObject:[self errorWithCode:0 description:@"Failed to connect to Object Server." recoverySuggestion:@"Check the URL and that the server is accessible."] afterDelay:schemaLoadTimeout];
+    [self performSelector:@selector(schemaLoadingTimeout) withObject:nil afterDelay:schemaLoadTimeout];
 }
 
 - (void)schemaDidLoadWithError:(NSError *)error {
@@ -60,6 +80,11 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
             self.completionHandler = nil;
         });
     }
+}
+
+- (void)schemaLoadingTimeout {
+    [self.notificationToken stop];
+    [self schemaDidLoadWithError:[self errorWithCode:0 description:@"Failed to connect to Object Server." recoverySuggestion:@"Check the URL and that the server is accessible."]];
 }
 
 - (NSError *)errorWithCode:(NSInteger)code description:(NSString *)description recoverySuggestion:(NSString *)recoverySuggestion {

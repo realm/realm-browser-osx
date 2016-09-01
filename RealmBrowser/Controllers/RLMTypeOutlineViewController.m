@@ -40,7 +40,7 @@
 {
     [self.classesOutlineView reloadData];
     // Expand the root item representing the selected realm.
-    RLMRealmNode *firstItem = self.parentWindowController.modelDocument.presentedRealm;
+    RLMRealmNode *firstItem = self.parentWindowController.document.presentedRealm;
     if (firstItem != nil) {
         // We want the class outline to be expanded as default
         [self.classesOutlineView expandItem:firstItem expandChildren:YES];
@@ -52,7 +52,7 @@
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
     if (item == nil) {
-        return self.parentWindowController.modelDocument.presentedRealm;
+        return self.parentWindowController.document.presentedRealm;
     }
     // ... and second level nodes are all classes.
     else if ([item conformsToProtocol:@protocol(RLMRealmOutlineNode)]) {
@@ -68,7 +68,7 @@
 {
     // The root node is expandable if we are presenting a realm
     if (item == nil) {
-        return self.parentWindowController.modelDocument.presentedRealm == nil;
+        return self.parentWindowController.document.presentedRealm == nil;
     }
     // ... otherwise the exandability check is re-delegated to the node in question.
     else if ([item conformsToProtocol:@protocol(RLMRealmOutlineNode)]) {
@@ -209,7 +209,7 @@
 
 - (void)removeAllChildArrays
 {
-    for (RLMClassNode *node in self.parentWindowController.modelDocument.presentedRealm.topLevelClasses) {
+    for (RLMClassNode *node in self.parentWindowController.document.presentedRealm.topLevelClasses) {
         [node removeAllChildNodes];
         [self.classesOutlineView reloadItem:node];
     }
