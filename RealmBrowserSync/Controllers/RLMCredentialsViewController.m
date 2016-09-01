@@ -21,11 +21,20 @@
 
 @implementation RLMCredentialsViewController
 
-+ (NSDictionary *)credentialViewControllerClassByIdentityProvider {
-    return @{
++ (NSArray *)supportedIdentityProviders {
+    return @[
+        RLMIdentityProviderUsernamePassword,
+        RLMIdentityProviderRealm
+    ];
+}
+
++ (Class)credentialViewControllerClassForIdentityProvider:(RLMIdentityProvider)provider {
+    NSDictionary *classByProvider = @{
         RLMIdentityProviderUsernamePassword: [RLMUsernameCredentialViewController class],
         RLMIdentityProviderRealm: [RLMAccessTokenCredentialViewController class],
     };
+
+    return classByProvider[provider];
 }
 
 - (instancetype)initWithSyncURL:(NSURL *)syncURL {
@@ -45,8 +54,8 @@
         [self.tabView removeTabViewItem:item];
     }
 
-    for (RLMIdentityProvider provider in [self.class credentialViewControllerClassByIdentityProvider]) {
-        Class viewControllerClass = [self.class credentialViewControllerClassByIdentityProvider][provider];
+    for (RLMIdentityProvider provider in [self.class supportedIdentityProviders]) {
+        Class viewControllerClass = [self.class credentialViewControllerClassForIdentityProvider:provider];
 
         RLMCredentialViewController *credentialController = [[viewControllerClass alloc] initWithServerURL:self.serverURL credential:self.credential];
 
