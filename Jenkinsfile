@@ -50,12 +50,8 @@ node('osx_vegas') {
     sh 'pod repo update'
     sh 'pod install'
 
-    //FIXME build debug version and test
-    stage 'Build debug'
-    //sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Debug -derivedDataPath 'build/DerivedData' CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO clean build"
-
     stage 'Test'
-    //sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Debug -derivedDataPath 'build/DerivedData' CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO test"
+    sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Debug -derivedDataPath 'build/DerivedData' CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO clean build test"
 
     stage 'Build'
     sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Release -derivedDataPath 'build/DerivedData' CODE_SIGN_IDENTITY='Developer ID Application' clean build"
