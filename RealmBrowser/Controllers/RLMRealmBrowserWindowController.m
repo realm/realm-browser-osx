@@ -206,7 +206,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
         if (returnCode == NSModalResponseOK) {
             [self showLoadingIndicator];
 
-            [self.document loadWithCredential:self.credentialsController.credential completionHandler:^(NSError *error) {
+            [self.document loadWithCredential:self.credentialsController.credential authServerURL:self.credentialsController.authServerURL completionHandler:^(NSError *error) {
                 [self hideLoadingIndicator];
 
                 // TODO: handle error code properly

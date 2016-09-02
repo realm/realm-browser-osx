@@ -11,8 +11,8 @@
 
 @interface RLMCredentialsViewController : NSViewController
 
-@property (nonatomic, strong) NSURL *syncURL;
-@property (nonatomic, strong) RLMCredential *credential;
+@property (nonatomic, strong) RLMSyncCredential *credential;
+@property (nonatomic, strong, readonly) NSURL *authServerURL;
 
 - (instancetype)initWithSyncURL:(NSURL *)syncURL;
 

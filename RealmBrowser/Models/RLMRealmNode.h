@@ -17,6 +17,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 @import Foundation;
+@import Realm;
+
 #import "RLMClassNode.h"
 #import "RLMRealmOutlineNode.h"
 
@@ -28,7 +30,7 @@
 @property (nonatomic, strong) NSData *encryptionKey;
 
 - (instancetype)initWithFileURL:(NSURL *)fileURL;
-- (instancetype)initWithFileURL:(NSURL *)fileURL syncURL:(NSURL *)syncURL user:(RLMUser *)user;
+- (instancetype)initWithFileURL:(NSURL *)fileURL syncURL:(NSURL *)syncURL user:(RLMSyncUser *)user;
 
 - (BOOL)connect:(NSError **)error;
 

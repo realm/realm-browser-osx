@@ -16,7 +16,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-@import Realm;
 @import AppSandboxFileAccess;
 
 #import "RLMDocument.h"
@@ -29,9 +28,9 @@
 @property (nonatomic, strong) NSURL *securityScopedURL;
 
 @property (nonatomic, copy) NSURL *syncURL;
-@property (nonatomic, strong) RLMCredential *credential;
+@property (nonatomic, strong) RLMSyncCredential *credential;
 
-@property (nonatomic, strong) RLMUser *user;
+@property (nonatomic, strong) RLMSyncUser *user;
 @property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
 
 @end
@@ -47,7 +46,7 @@
     if (absoluteURL.isFileURL) {
         return [self initWithContentsOfFileURL:absoluteURL error:outError];
     } else {
-        return [self initWithContentsOfSyncURL:absoluteURL credential:nil error:outError];
+        return [self initWithContentsOfSyncURL:absoluteURL credential:nil authServerURL:nil error:outError];
     }
 }
 
@@ -104,22 +103,17 @@
     return self;
 }
 
-- (instancetype)initWithContentsOfSyncURL:(NSURL *)syncURL credential:(RLMCredential *)credential error:(NSError **)outError {
+- (instancetype)initWithContentsOfSyncURL:(NSURL *)syncURL credential:(RLMSyncCredential *)credential authServerURL:(NSURL *)authServerURL error:(NSError **)outError {
     self = [super init];
 
     if (self != nil) {
         self.syncURL = syncURL;
-        self.credential = credential;
-
         self.fileURL = [self temporaryFileURLForSyncURL:syncURL];
-        self.user = [[RLMUser alloc] initWithLocalIdentity:nil];
-
-        self.presentedRealm = [[RLMRealmNode alloc] initWithFileURL:self.fileURL syncURL:self.syncURL user:self.user];
-
+        self.presentedRealm = [[RLMRealmNode alloc] initWithFileURL:self.fileURL syncURL:self.syncURL user:nil];
         self.state = RLMDocumentStateNeedsValidCredential;
 
         if (credential != nil) {
-            [self loadWithCredential:credential completionHandler:nil];
+            [self loadWithCredential:credential authServerURL:authServerURL completionHandler:nil];
         }
     }
 
@@ -157,7 +151,7 @@
     return [self loadWithError:error];
 }
 
-- (void)loadWithCredential:(RLMCredential *)credential completionHandler:(void (^)(NSError *error))completionHandler {
+- (void)loadWithCredential:(RLMSyncCredential *)credential authServerURL:(NSURL *)authServerURL completionHandler:(void (^)(NSError *error))completionHandler {
     // Workaround for access token auth, state will be set to RLMDocumentStateUnrecoverableError in case of invalid token
     NSAssert(self.state == RLMDocumentStateNeedsValidCredential || self.state == RLMDocumentStateUnrecoverableError, @"Invalid document state");
 
@@ -166,37 +160,38 @@
     self.credential = credential;
     self.state = RLMDocumentStateLoadingSchema;
 
-    // Workaround for access token auth
-    if (self.user.isLoggedIn) {
-        [self.user logout:NO completion:nil];
-    }
+    void (^loadWithUserBlock)(RLMSyncUser *) = ^void(RLMSyncUser *user) {
+        // FIXME: workaround for loading schema while using dynamic API
+        [self loadSchemaWithUser:user completionHandler:^(NSError *error) {
+            if (error == nil) {
+                [self loadWithError:&error];
+            } else {
+                self.state = RLMDocumentStateUnrecoverableError;
+            }
 
-    [self.user loginWithCredential:credential completion:^(NSError *error) {
-        // FIXME: API callbacks chould be dispatched on main thread
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (error != nil) {
+            completionHandler(error);
+        }];
+    };
+
+    // FIXME: workaround for access token auth, Browser is missing RLMIdentityProviderAccessToken so much :'(
+    if (credential.provider == RLMIdentityProviderRealm) {
+        loadWithUserBlock([RLMSyncUser userWithAccessToken:credential.token identity:nil]);
+    } else {
+        [RLMSyncUser authenticateWithCredential:self.credential actions:RLMAuthenticationActionsUseExistingAccount authServerURL:authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
+            if (user == nil) {
                 self.state = RLMDocumentStateNeedsValidCredential;
 
                 completionHandler(error);
-                return;
+            } else {
+                loadWithUserBlock(user);
             }
-
-            // FIXME: workaround for loading schema while using dynamic API
-            [self loadSchemaWithCompletionHandler:^(NSError *error) {
-                if (error == nil) {
-                    [self loadWithError:&error];
-                } else {
-                    self.state = RLMDocumentStateUnrecoverableError;
-                }
-
-                completionHandler(error);
-            }];
-        });
-    }];
+        }];
+    }
 }
 
-- (void)loadSchemaWithCompletionHandler:(void (^)(NSError *error))completionHandler {
-    self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:self.user];
+- (void)loadSchemaWithUser:(RLMSyncUser *)user completionHandler:(void (^)(NSError *error))completionHandler {
+    self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:user];
+
     [self.schemaLoader loadSchemaToURL:self.fileURL completionHandler:^(NSError *error) {
         self.schemaLoader = nil;
 

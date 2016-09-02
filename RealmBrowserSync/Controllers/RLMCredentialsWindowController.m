@@ -45,11 +45,11 @@
     self.messageLabel.stringValue = message;
 }
 
-- (RLMCredential *)credential {
+- (RLMSyncCredential *)credential {
     return self.credentialsViewController.credential;
 }
 
-- (void)setCredential:(RLMCredential *)credential {
+- (void)setCredential:(RLMSyncCredential *)credential {
     self.credentialsViewController.credential = credential;
 }
 

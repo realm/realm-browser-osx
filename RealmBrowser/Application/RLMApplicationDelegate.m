@@ -65,8 +65,6 @@
     [[NSUserDefaults standardUserDefaults] setObject:@(kTopTipDelay) forKey:@"NSInitialToolTipDelay"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-    [RLMServer setupWithAppID:[NSBundle mainBundle].bundleIdentifier logLevel:0 errorHandler:nil];
-
     if (!self.didLoadFile && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
         [NSApp sendAction:self.openMenuItem.action to:self.openMenuItem.target from:self];
 
@@ -542,8 +540,8 @@
     }];
 }
 
-- (void)openSyncURL:(NSURL *)syncURL credential:(RLMCredential *)credential {
-    [(RLMDocumentController *)[NSDocumentController sharedDocumentController] openDocumentWithContentsOfSyncURL:syncURL credential:credential display:YES completionHandler:^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error) {
+- (void)openSyncURL:(NSURL *)syncURL credential:(RLMSyncCredential *)credential authServerURL:(NSURL *)authServerURL {
+    [(RLMDocumentController *)[NSDocumentController sharedDocumentController] openDocumentWithContentsOfSyncURL:syncURL credential:credential authServerURL:authServerURL display:YES completionHandler:^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error) {
         if (error != nil) {
             [NSApp presentError:error];
         }
@@ -621,7 +619,7 @@
 
     [openSyncURLWindowController showWindow:sender completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseOK) {
-            [self openSyncURL:openSyncURLWindowController.url credential:openSyncURLWindowController.credential];
+            [self openSyncURL:openSyncURLWindowController.url credential:openSyncURLWindowController.credential authServerURL:openSyncURLWindowController.authServerURL];
         }
 
         [self removeAuxiliaryWindowController:openSyncURLWindowController];
@@ -645,7 +643,7 @@
             NSURL *serverURL = connectToServerWindowController.serverURL;
             NSString *accessToken = connectToServerWindowController.adminAccessToken;
 
-            [self connectToServerAtURL:serverURL credential:[RLMCredential credentialWithAccessToken:accessToken serverURL:serverURL]];
+            [self connectToServerAtURL:serverURL adminAccessToken:accessToken];
         }
 
         [self removeAuxiliaryWindowController:connectToServerWindowController];
@@ -654,27 +652,26 @@
     [self addAuxiliaryWindowController:connectToServerWindowController];
 }
 
-- (void)connectToServerAtURL:(NSURL *)serverURL credential:(RLMCredential *)credential {
-    RLMUser *user = [[RLMUser alloc] initWithLocalIdentity:nil];
+- (void)connectToServerAtURL:(NSURL *)serverURL adminAccessToken:(NSString *)adminAccessToken {
+    RLMSyncUser *adminUser = [RLMSyncUser userWithAccessToken:adminAccessToken identity:nil];
 
-    [user loginWithCredential:credential completion:^(NSError *error) {
-        if (error != nil) {
-            [NSApp presentError:error];
-            return;
+    RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] initWithServerURL:serverURL user:adminUser];
+
+    [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode == NSModalResponseOK) {
+            // FIXME: workaround for the missing RLMIdentityProviderAccessToken
+            RLMSyncCredential* adminCredential = [[RLMSyncCredential alloc] initWithCustomToken:adminAccessToken provider:RLMIdentityProviderRealm userInfo:nil];
+
+            // FIXME: provide a valid URL, doesn't make sence for AccessToken actually
+            NSURL *authServerURL = serverURL;
+
+            [self openSyncURL:browserWindowController.selectedURL credential:adminCredential authServerURL:authServerURL];
         }
 
-        RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] initWithServerURL:serverURL user:user];
-
-        [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
-            if (returnCode == NSModalResponseOK) {
-                [self openSyncURL:browserWindowController.selectedURL credential:credential];
-            }
-
-            [self removeAuxiliaryWindowController:browserWindowController];
-        }];
-
-        [self addAuxiliaryWindowController:browserWindowController];
+        [self removeAuxiliaryWindowController:browserWindowController];
     }];
+
+    [self addAuxiliaryWindowController:browserWindowController];
 }
 
 @end

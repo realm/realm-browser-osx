@@ -61,13 +61,15 @@ NSString * const RLMOpenSyncURLWindowControllerErrorDomain = @"io.realm.realmbro
 
     _url = [url copy];
 
-    self.credentialsViewController.syncURL = self.url;
-
     [self updateUI];
 }
 
-- (RLMCredential *)credential {
+- (RLMSyncCredential *)credential {
     return self.credentialsViewController.credential;
+}
+
+- (NSURL *)authServerURL {
+    return self.credentialsViewController.authServerURL;
 }
 
 - (void)updateUI {

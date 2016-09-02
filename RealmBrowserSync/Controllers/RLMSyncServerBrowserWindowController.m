@@ -6,7 +6,6 @@
 //  Copyright © 2016 Realm inc. All rights reserved.
 //
 
-@import Realm;
 @import Realm.Dynamic;
 @import Realm.Private;
 
@@ -27,7 +26,7 @@ static  NSString * const RLMAdminRealmServerPath = @"admin";
 @property (nonatomic, strong) NSURL *adminRealmSyncURL;
 @property (nonatomic, strong) NSURL *adminRealmFileURL;
 
-@property (nonatomic, strong) RLMUser *user;
+@property (nonatomic, strong) RLMSyncUser *user;
 
 @property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
 @property (nonatomic, strong) RLMNotificationToken *notificationToken;
@@ -37,7 +36,7 @@ static  NSString * const RLMAdminRealmServerPath = @"admin";
 
 @implementation RLMSyncServerBrowserWindowController
 
-- (instancetype)initWithServerURL:(NSURL *)serverURL user:(RLMUser *)user {
+- (instancetype)initWithServerURL:(NSURL *)serverURL user:(RLMSyncUser *)user {
     self = [super init];
 
     if (self != nil) {
@@ -84,12 +83,10 @@ static  NSString * const RLMAdminRealmServerPath = @"admin";
     }];
 }
 
-- (void)openAdminRealmAtURL:(NSURL *)fileURL user:(RLMUser *)user {
+- (void)openAdminRealmAtURL:(NSURL *)fileURL user:(RLMSyncUser *)user {
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
     configuration.dynamic = YES;
-    configuration.customSchema = nil;
-
-    [configuration setObjectServerPath:RLMAdminRealmServerPath forUser:user];
+    configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:user realmURL:self.adminRealmSyncURL];
 
     if (fileURL != nil) {
         configuration.fileURL = fileURL;

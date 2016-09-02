@@ -16,7 +16,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-@import Realm;
 @import Realm.Private;
 @import Realm.Dynamic;
 
@@ -42,11 +41,11 @@
     return self;
 }
 
-- (instancetype)initWithFileURL:(NSURL *)fileURL syncURL:(NSURL *)syncURL user:(RLMUser *)user {
+- (instancetype)initWithFileURL:(NSURL *)fileURL syncURL:(NSURL *)syncURL user:(RLMSyncUser *)user {
     self = [self initWithFileURL:fileURL];
 
     if (self) {
-        [self.configuration setObjectServerPath:syncURL.path forUser:user];
+        self.configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:user realmURL:syncURL];
         self.configuration.fileURL = fileURL;
     }
 

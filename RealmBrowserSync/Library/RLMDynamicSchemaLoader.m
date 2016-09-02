@@ -6,7 +6,6 @@
 //  Copyright © 2016 Realm inc. All rights reserved.
 //
 
-@import Realm;
 @import Realm.Private;
 
 #import "RLMDynamicSchemaLoader.h"
@@ -25,16 +24,15 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
 
 @implementation RLMDynamicSchemaLoader
 
-- (instancetype)initWithSyncURL:(NSURL *)syncURL user:(RLMUser *)user {
-    NSAssert(user.isLoggedIn, @"User must be logged in");
+- (instancetype)initWithSyncURL:(NSURL *)syncURL user:(RLMSyncUser *)user {
+    NSAssert(user.isValid, @"User must be logged in");
 
     self = [super init];
 
     if (self != nil) {
         self.configuration = [[RLMRealmConfiguration alloc] init];
         self.configuration.dynamic = YES;
-
-        [self.configuration setObjectServerPath:syncURL.path forUser:user];
+        self.configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:user realmURL:syncURL];
     }
 
     return self;
