@@ -76,6 +76,8 @@
 		C29CC7CA1D76F57F00186B29 /* NSView+RLMExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C29CC7C91D76F57F00186B29 /* NSView+RLMExtensions.m */; };
 		C29CC7CD1D77097700186B29 /* RLMConnectionIndicatorWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C29CC7CC1D77097700186B29 /* RLMConnectionIndicatorWindowController.m */; };
 		C29CC7CF1D770A4100186B29 /* ConnectionIndicatorWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C29CC7CE1D770A4100186B29 /* ConnectionIndicatorWindow.xib */; };
+		C29CC7D21D79CA5800186B29 /* RLMWelcomeWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C29CC7D11D79CA5800186B29 /* RLMWelcomeWindowController.m */; };
+		C29CC7D41D79CA6D00186B29 /* WelcomeWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C29CC7D31D79CA6D00186B29 /* WelcomeWindow.xib */; };
 		C2AA0F631D634FBF00D5D7E6 /* RLMOpenSyncURLWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2AA0F621D634FBF00D5D7E6 /* RLMOpenSyncURLWindowController.m */; };
 		C2AA0F671D634FDA00D5D7E6 /* RLMConnectToServerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2AA0F651D634FDA00D5D7E6 /* RLMConnectToServerWindowController.m */; };
 		C2B7CAC01D11A0C900049C32 /* ConnectToServerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2B7CABF1D11A0C900049C32 /* ConnectToServerWindow.xib */; };
@@ -226,6 +228,9 @@
 		C29CC7CB1D77097700186B29 /* RLMConnectionIndicatorWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMConnectionIndicatorWindowController.h; sourceTree = "<group>"; };
 		C29CC7CC1D77097700186B29 /* RLMConnectionIndicatorWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMConnectionIndicatorWindowController.m; sourceTree = "<group>"; };
 		C29CC7CE1D770A4100186B29 /* ConnectionIndicatorWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionIndicatorWindow.xib; sourceTree = "<group>"; };
+		C29CC7D01D79CA5800186B29 /* RLMWelcomeWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMWelcomeWindowController.h; sourceTree = "<group>"; };
+		C29CC7D11D79CA5800186B29 /* RLMWelcomeWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMWelcomeWindowController.m; sourceTree = "<group>"; };
+		C29CC7D31D79CA6D00186B29 /* WelcomeWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WelcomeWindow.xib; sourceTree = "<group>"; };
 		C2AA0F611D634FBF00D5D7E6 /* RLMOpenSyncURLWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMOpenSyncURLWindowController.h; sourceTree = "<group>"; };
 		C2AA0F621D634FBF00D5D7E6 /* RLMOpenSyncURLWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMOpenSyncURLWindowController.m; sourceTree = "<group>"; };
 		C2AA0F641D634FDA00D5D7E6 /* RLMConnectToServerWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMConnectToServerWindowController.h; sourceTree = "<group>"; };
@@ -321,6 +326,8 @@
 				C29CC7BB1D76D8C100186B29 /* RLMUsernameCredentialViewController.m */,
 				C29CC7CB1D77097700186B29 /* RLMConnectionIndicatorWindowController.h */,
 				C29CC7CC1D77097700186B29 /* RLMConnectionIndicatorWindowController.m */,
+				C29CC7D01D79CA5800186B29 /* RLMWelcomeWindowController.h */,
+				C29CC7D11D79CA5800186B29 /* RLMWelcomeWindowController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -336,6 +343,7 @@
 				C29CC7BE1D76DC5900186B29 /* AccessTokenCredentialView.xib */,
 				C29CC7C01D76DD4500186B29 /* UsernameCredentialView.xib */,
 				C29CC7CE1D770A4100186B29 /* ConnectionIndicatorWindow.xib */,
+				C29CC7D31D79CA6D00186B29 /* WelcomeWindow.xib */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -679,6 +687,7 @@
 				C2986A7F1D6C8126005A2CD6 /* RLMDocument.xib in Resources */,
 				C27E173C1D5CC1070095259A /* SyncServerBrowserWindow.xib in Resources */,
 				C29CC7C11D76DD4500186B29 /* UsernameCredentialView.xib in Resources */,
+				C29CC7D41D79CA6D00186B29 /* WelcomeWindow.xib in Resources */,
 				C2986A7D1D6C811E005A2CD6 /* EncryptionKeyWindow.xib in Resources */,
 				C2B7CAC01D11A0C900049C32 /* ConnectToServerWindow.xib in Resources */,
 				2215F6361D0011CD005A46F7 /* RealmFileIcon.icns in Resources */,
@@ -809,6 +818,7 @@
 				C2644B071D6491F900DBAC67 /* RLMDynamicSchemaLoader.m in Sources */,
 				2234B66E1CF83F9600EAFDF0 /* RLMBrowserConstants.m in Sources */,
 				C2986A8B1D6C8257005A2CD6 /* RLMOptionalBoolTableCellView.m in Sources */,
+				C29CC7D21D79CA5800186B29 /* RLMWelcomeWindowController.m in Sources */,
 				8474E2BD195452BE00BCA755 /* RLMInstanceTableViewController.m in Sources */,
 				C29CC7B91D76D55D00186B29 /* RLMAccessTokenCredentialViewController.m in Sources */,
 				84754ABE193CA4600093604E /* RLMRealmBrowserWindowController.m in Sources */,
