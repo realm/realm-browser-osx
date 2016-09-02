@@ -29,6 +29,8 @@
 @property (nonatomic, strong) NSURL *securityScopedURL;
 
 @property (nonatomic, copy) NSURL *syncURL;
+@property (nonatomic, strong) RLMCredential *credential;
+
 @property (nonatomic, strong) RLMUser *user;
 @property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
 
@@ -107,6 +109,8 @@
 
     if (self != nil) {
         self.syncURL = syncURL;
+        self.credential = credential;
+
         self.fileURL = [self temporaryFileURLForSyncURL:syncURL];
         self.user = [[RLMUser alloc] initWithLocalIdentity:nil];
 
@@ -154,11 +158,18 @@
 }
 
 - (void)loadWithCredential:(RLMCredential *)credential completionHandler:(void (^)(NSError *error))completionHandler {
-    NSAssert(self.state == RLMDocumentStateNeedsValidCredential, @"Invalid document state");
+    // Workaround for access token auth, state will be set to RLMDocumentStateUnrecoverableError in case of invalid token
+    NSAssert(self.state == RLMDocumentStateNeedsValidCredential || self.state == RLMDocumentStateUnrecoverableError, @"Invalid document state");
 
     completionHandler = completionHandler ?: ^(NSError *error) {};
 
+    self.credential = credential;
     self.state = RLMDocumentStateLoadingSchema;
+
+    // Workaround for access token auth
+    if (self.user.isLoggedIn) {
+        [self.user logout:NO completion:nil];
+    }
 
     [self.user loginWithCredential:credential completion:^(NSError *error) {
         // FIXME: API callbacks chould be dispatched on main thread

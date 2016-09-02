@@ -27,7 +27,8 @@
 #import "RLMModelExporter.h"
 #import "RLMExportIndicatorWindowController.h"
 #import "RLMEncryptionKeyWindowController.h"
-#import "RLMOpenSyncURLWindowController.h"
+#import "RLMCredentialsWindowController.h"
+#import "RLMConnectionIndicatorWindowController.h"
 #import "RLMAlert.h"
 
 NSString * const kRealmLockedImage = @"RealmLocked";
@@ -38,6 +39,8 @@ NSString * const kRealmKeyIsLockedForRealm = @"LockedRealm:%@";
 
 NSString * const kRealmKeyWindowFrameForRealm = @"WindowFrameForRealm:%@";
 NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
+
+static void const *kWaitForDocumentSchemaLoadObservationContext;
 
 @interface RLMRealm ()
 - (BOOL)compact;
@@ -52,6 +55,8 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
 @property (nonatomic, strong) RLMExportIndicatorWindowController *exportWindowController;
 @property (nonatomic, strong) RLMEncryptionKeyWindowController *encryptionController;
+@property (nonatomic, strong) RLMCredentialsWindowController *credentialsController;
+@property (nonatomic, strong) RLMConnectionIndicatorWindowController *connectionIndicatorWindowController;
 
 @property (nonatomic, strong) RLMNotificationToken *documentNotificationToken;
 
@@ -73,7 +78,7 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     [super setDocument:document];
 
     if (self.windowLoaded && self.window.isVisible) {
-        [self startObservingDocumentState];
+        [self handleDocumentState];
     }
 }
 
@@ -91,25 +96,12 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 - (IBAction)showWindow:(id)sender
 {
     [super showWindow:sender];
-    [self startObservingDocumentState];
+    [self handleDocumentState];
 }
 
 #pragma mark - Document observation
 
-- (void)startObservingDocumentState {
-    [self.document addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionInitial context:nil];
-}
-
-- (void)startObservingDocumentRealm {
-    __weak typeof(self) weakSelf = self;
-
-    self.documentNotificationToken = [self.document.presentedRealm.realm addNotificationBlock:^(RLMNotification notification, RLMRealm *realm) {
-        // Send notifications to all document's window controllers
-        [weakSelf.document.windowControllers makeObjectsPerformSelector:@selector(handleDocumentRealmChange)];
-    }];
-}
-
-- (void)handleDocumentStateChange {
+- (void)handleDocumentState {
     switch (self.document.state) {
         case RLMDocumentStateRequiresFormatUpgrade:
             [self handleFormatUpgrade];
@@ -119,13 +111,12 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
             [self handleEncryption];
             break;
 
-        case RLMDocumentStateNeedsValidCredential:
-            [self handleSyncCredentials];
+        case RLMDocumentStateLoadingSchema:
+            [self waitForDocumentSchemaLoad];
             break;
 
-        case RLMDocumentStateLoadingSchema:
-            // TODO: show progress
-            NSLog(@"Loading Realm schema");
+        case RLMDocumentStateNeedsValidCredential:
+            [self handleSyncCredentials];
             break;
 
         case RLMDocumentStateLoaded:
@@ -133,19 +124,25 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
             break;
 
         case RLMDocumentStateUnrecoverableError:
-            [[NSAlert alertWithMessageText:@"Unable to open Realm" defaultButton:nil alternateButton:nil otherButton:nil informativeTextWithFormat:@""] beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
-                [self.document close];
-            }];
+            [self handleUnrecoverableError];
             break;
     }
 }
 
-- (void)handleDocumentRealmChange {
+- (void)startObservingDocument {
+    __weak typeof(self) weakSelf = self;
+
+    self.documentNotificationToken = [self.document.presentedRealm.realm addNotificationBlock:^(RLMNotification notification, RLMRealm *realm) {
+        // Send notifications to all document's window controllers
+        [weakSelf.document.windowControllers makeObjectsPerformSelector:@selector(handleDocumentChange)];
+    }];
+}
+
+- (void)handleDocumentChange {
     [self reloadAfterEdit];
 }
 
 - (void)stopObservingDocument {
-    [self.document removeObserver:self forKeyPath:@"state"];
     [self.documentNotificationToken stop];
 }
 
@@ -161,13 +158,17 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
         [self addNavigationState:initState fromViewController:nil];
     }
 
-    [self startObservingDocumentRealm];
+    [self startObservingDocument];
 }
 
 - (void)handleFormatUpgrade {
     if ([RLMAlert showFileFormatUpgradeDialogWithFileName:self.document.fileURL.lastPathComponent]) {
-        // TODO: handle error
-        [self.document loadByPerformingFormatUpgradeWithError:nil];
+        NSError *error;
+        if (![self.document loadByPerformingFormatUpgradeWithError:&error]) {
+            [[NSAlert alertWithError:error] beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+                [self.document close];
+            }];
+        }
     } else {
         [self.document close];
     }
@@ -186,16 +187,83 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
     }];
 }
 
+- (void)waitForDocumentSchemaLoad {
+    [self showLoadingIndicator];
+    [self.document addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:&kWaitForDocumentSchemaLoadObservationContext];
+}
+
+- (void)documentSchemaLoaded {
+    [self.document removeObserver:self forKeyPath:@"state"];
+    [self hideLoadingIndicator];
+    [self handleDocumentState];
+}
+
 - (void)handleSyncCredentials {
-    // FIXME: see https://github.com/realm/realm-browser-osx-private/issues/51
-    NSAssert(NO, @"Not implemented");
+    self.credentialsController = [[RLMCredentialsWindowController alloc] initWithSyncURL:self.document.syncURL];
+    self.credentialsController.credential = self.document.credential;
+
+    [self.credentialsController showSheetForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode == NSModalResponseOK) {
+            [self showLoadingIndicator];
+
+            [self.document loadWithCredential:self.credentialsController.credential completionHandler:^(NSError *error) {
+                [self hideLoadingIndicator];
+
+                // TODO: handle error code properly
+                if (error != nil) {
+                    [[NSAlert alertWithError:error] beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+                        [self handleSyncCredentials];
+                    }];
+                } else {
+                    [self realmDidLoad];
+                }
+            }];
+        } else {
+            [self.document close];
+        }
+
+        self.credentialsController = nil;
+    }];
+}
+
+- (void)showLoadingIndicator {
+    if (self.connectionIndicatorWindowController.isWindowVisible) {
+        return;
+    }
+
+    self.connectionIndicatorWindowController = [[RLMConnectionIndicatorWindowController alloc] init];
+
+    [self.connectionIndicatorWindowController showSheetForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode == NSModalResponseCancel) {
+            [self.document close];
+        }
+
+        self.connectionIndicatorWindowController = nil;
+    }];
+}
+
+- (void)hideLoadingIndicator {
+    [self.connectionIndicatorWindowController closeWithReturnCode:NSModalResponseOK];
+}
+
+- (void)handleUnrecoverableError {
+    NSAlert *alert = [[NSAlert alloc] init];
+
+    alert.messageText = @"Realm couldn't be opened";
+    alert.alertStyle = NSCriticalAlertStyle;
+
+    [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+        [self.document close];
+    }];
 }
 
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
-    if (object == self.document && [keyPath isEqualToString:@"state"]) {
-        [self handleDocumentStateChange];
+    if (context == &kWaitForDocumentSchemaLoadObservationContext) {
+        if (self.document.state != RLMDocumentStateLoadingSchema) {
+            [self documentSchemaLoaded];
+        }
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }

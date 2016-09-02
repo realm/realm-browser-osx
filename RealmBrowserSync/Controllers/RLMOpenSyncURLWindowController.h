@@ -6,8 +6,13 @@
 //  Copyright © 2016 Realm inc. All rights reserved.
 //
 
-#import "RLMSyncCredentialsWindowController.h"
+@import Realm;
 
-@interface RLMOpenSyncURLWindowController : RLMSyncCredentialsWindowController
+#import "RLMWindowController.h"
+
+@interface RLMOpenSyncURLWindowController : RLMWindowController
+
+@property (nonatomic, copy) NSURL *url;
+@property (nonatomic, strong) RLMCredential *credential;
 
 @end

@@ -20,75 +20,68 @@ static  NSString * const RLMAdminRealmServerPath = @"admin";
 @property (nonatomic, weak) IBOutlet NSTableView *tableView;
 @property (nonatomic, weak) IBOutlet NSProgressIndicator *progressIndicator;
 
-@property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
+@property (nonatomic, strong) NSURL *selectedURL;
 
-@property (nonatomic, strong) RLMRealm *realm;
+@property (nonatomic, strong) NSURL *serverURL;
+
+@property (nonatomic, strong) NSURL *adminRealmSyncURL;
+@property (nonatomic, strong) NSURL *adminRealmFileURL;
+
+@property (nonatomic, strong) RLMUser *user;
+
+@property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
 @property (nonatomic, strong) RLMNotificationToken *notificationToken;
 @property (nonatomic, strong) RLMResults *realmFiles;
-
-@property (nonatomic, strong) NSString *selectedRealmPath;
-
-@property (nonatomic, assign) NSModalSession modalSession;
 
 @end
 
 @implementation RLMSyncServerBrowserWindowController
 
-- (instancetype)init {
-    self = [super initWithWindowNibName:@"SyncServerBrowserWindow"];
+- (instancetype)initWithServerURL:(NSURL *)serverURL user:(RLMUser *)user {
+    self = [super init];
 
-    if (self) {
-        [self loadWindow];
+    if (self != nil) {
+        self.serverURL = serverURL;
+
+        self.adminRealmSyncURL = [serverURL URLByAppendingPathComponent:RLMAdminRealmServerPath];
+        self.adminRealmFileURL = [self temporaryURLForRealmFileWithSync:self.adminRealmSyncURL.lastPathComponent];
+
+        self.user = user;
+
+        self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.adminRealmSyncURL user:self.user];
     }
 
     return self;
 }
 
-- (NSModalResponse)connectToServerAtURL:(NSURL *)serverURL adminAccessToken:(NSString *)accessToken error:(NSError **)error {
-    __autoreleasing NSError *localError;
-    if (error == NULL) {
-        error = &localError;
-    }
+- (void)dealloc {
+    [self.notificationToken stop];
+}
 
-    NSURL *adminRealmSyncURL = [serverURL URLByAppendingPathComponent:RLMAdminRealmServerPath];
-    NSURL *adminRealmFileURL = [self temporaryURLForRealmFileWithSync:adminRealmSyncURL.lastPathComponent];
+- (void)windowDidLoad {
+    [super windowDidLoad];
 
-    RLMCredential *credential = [RLMCredential credentialWithAccessToken:accessToken serverURL:serverURL];
+    self.tableView.hidden = YES;
+}
 
-    RLMUser *user = [[RLMUser alloc] initWithLocalIdentity:nil];
-    [user loginWithCredential:credential completion:nil];
+- (void)showWindow:(id)sender {
+    [super showWindow:sender];
 
-    self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:adminRealmSyncURL user:user];
-    [self.schemaLoader loadSchemaToURL:adminRealmFileURL completionHandler:^(NSError *schemaLoadError) {
-        if (schemaLoadError != nil) {
-            *error = schemaLoadError;
-            [NSApp stopModalWithCode:NSModalResponseAbort];
+    [self.progressIndicator startAnimation:nil];
+
+    __weak typeof(self) weakSelf = self;
+    [self.schemaLoader loadSchemaToURL:self.adminRealmFileURL completionHandler:^(NSError *error) {
+        if (error != nil) {
+            [weakSelf.progressIndicator stopAnimation:nil];
+            weakSelf.progressIndicator.hidden = YES;
+
+            [[NSAlert alertWithError:error] beginSheetModalForWindow:weakSelf.window completionHandler:^(NSModalResponse returnCode) {
+                [weakSelf close];
+            }];
         } else {
-            [self openAdminRealmAtURL:adminRealmFileURL user:user];
+            [weakSelf openAdminRealmAtURL:weakSelf.adminRealmFileURL user:weakSelf.user];
         }
     }];
-
-    self.window.title = serverURL.host;
-    [self.window center];
-    [self.progressIndicator startAnimation:nil];
-    self.tableView.hidden = YES;
-
-    NSModalSession session = [NSApp beginModalSessionForWindow:self.window];
-    NSModalResponse result = NSRunContinuesResponse;
-
-    while (result == NSRunContinuesResponse) {
-        result = [NSApp runModalSession:session];
-        [[NSRunLoop currentRunLoop] limitDateForMode:NSDefaultRunLoopMode];
-    }
-    
-    [NSApp endModalSession:session];
-
-    [self.notificationToken stop];
-    self.realm = nil;
-
-    [self close];
-
-    return result;
 }
 
 - (void)openAdminRealmAtURL:(NSURL *)fileURL user:(RLMUser *)user {
@@ -102,14 +95,14 @@ static  NSString * const RLMAdminRealmServerPath = @"admin";
         configuration.fileURL = fileURL;
     }
 
-    self.realm = [RLMRealm realmWithConfiguration:configuration error:nil];
+    RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:nil];
 
     __weak typeof(self) weekSelf = self;
-    self.notificationToken = [self.realm addNotificationBlock:^(RLMNotification  _Nonnull notification, RLMRealm * _Nonnull realm) {
+    self.notificationToken = [realm addNotificationBlock:^(RLMNotification  _Nonnull notification, RLMRealm * _Nonnull realm) {
         [weekSelf.tableView reloadData];
     }];
 
-    self.realmFiles = [self.realm allObjects:@"RealmFile"];
+    self.realmFiles = [realm allObjects:@"RealmFile"];
 
     [self.progressIndicator stopAnimation:nil];
     self.progressIndicator.hidden = YES;
@@ -137,14 +130,7 @@ static  NSString * const RLMAdminRealmServerPath = @"admin";
 }
 
 - (IBAction)open:(id)sender {
-    [NSApp stopModalWithCode:NSModalResponseOK];
-}
-
-#pragma mark - NSWindowDelegate
-
-- (BOOL)windowShouldClose:(id)sender {
-    [NSApp stopModalWithCode:NSModalResponseCancel];
-    return YES;
+    [self closeWithReturnCode:NSModalResponseOK];
 }
 
 #pragma mark - NSTableViewDataSource
@@ -164,7 +150,7 @@ static  NSString * const RLMAdminRealmServerPath = @"admin";
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
-    self.selectedRealmPath = self.tableView.selectedRow >= 0 ? [self.realmFiles[self.tableView.selectedRow] valueForKey:@"path"] : nil;
+    self.selectedURL = self.tableView.selectedRow >= 0 ? [self.serverURL URLByAppendingPathComponent:[self.realmFiles[self.tableView.selectedRow] valueForKey:@"path"]] : nil;
 }
 
 @end

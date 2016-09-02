@@ -46,10 +46,6 @@ extern const NSUInteger kMaxNumberOfArrayEntriesInToolTip;
 
 - (void)newWindowWithNavigationState:(RLMNavigationState *)state;
 
-- (void)realmDidLoad;
-
 - (void)reloadAllWindows;
-
-- (void)reloadAfterEdit;
 
 @end

@@ -106,7 +106,7 @@ DQ
                         </buttonCell>
                         <connections>
                             <action selector="open:" target="-2" id="uY4-tT-DlH"/>
-                            <binding destination="-2" name="enabled" keyPath="selectedRealmPath" id="IYy-hZ-SfZ">
+                            <binding destination="-2" name="enabled" keyPath="selectedURL" id="rpr-BT-PUb">
                                 <dictionary key="options">
                                     <string key="NSValueTransformerName">NSIsNotNil</string>
                                 </dictionary>
