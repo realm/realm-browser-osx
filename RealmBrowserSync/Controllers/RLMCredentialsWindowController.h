@@ -12,7 +12,7 @@
 
 @interface RLMCredentialsWindowController : RLMWindowController
 
-@property (nonatomic, strong) NSString *message;
+@property (nonatomic, copy) NSString *message;
 @property (nonatomic, strong) RLMCredential *credential;
 
 - (instancetype)initWithSyncURL:(NSURL *)syncURL;
