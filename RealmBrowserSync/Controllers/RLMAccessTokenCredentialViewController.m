@@ -30,8 +30,10 @@
     NSString *token = self.tokenTextField.stringValue;
 
     if (token.length > 0) {
-        // FIXME: RLMIdentityProviderRealm is used for RLMIdentityProviderAccessToken currently
-        return [[RLMSyncCredential alloc] initWithCustomToken:token provider:RLMIdentityProviderRealm userInfo:nil];
+        // FIXME: remove after it's possible to pass nil identity to create credential
+        NSString *identity = [NSUUID UUID].UUIDString;
+
+        return [RLMSyncCredential credentialWithAccessToken:token identity:identity];
     }
 
     return nil;

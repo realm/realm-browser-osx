@@ -653,25 +653,36 @@
 }
 
 - (void)connectToServerAtURL:(NSURL *)serverURL adminAccessToken:(NSString *)adminAccessToken {
-    RLMSyncUser *adminUser = [RLMSyncUser userWithAccessToken:adminAccessToken identity:nil];
+    // FIXME: remove after it's possible to pass nil identity to create credential
+    NSString *identity = [NSUUID UUID].UUIDString;
+    RLMSyncCredential *credential = [RLMSyncCredential credentialWithAccessToken:adminAccessToken identity:identity];
 
-    RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] initWithServerURL:serverURL user:adminUser];
+    // FIXME: remove after it's possible to pass nil for authServerURL to authenticate user
+    NSURL *fakeAuthServerURL = [NSURL URLWithString:@"http://fake-realm-auth-server"];
 
-    [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
-        if (returnCode == NSModalResponseOK) {
-            // FIXME: workaround for the missing RLMIdentityProviderAccessToken
-            RLMSyncCredential* adminCredential = [[RLMSyncCredential alloc] initWithCustomToken:adminAccessToken provider:RLMIdentityProviderRealm userInfo:nil];
+    [RLMSyncUser authenticateWithCredential:credential actions:RLMAuthenticationActionsUseExistingAccount authServerURL:fakeAuthServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
+        if (user == nil) {
+            [NSApp presentError:error];
+        } else {
+            RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] initWithServerURL:serverURL user:user];
 
-            // FIXME: provide a valid URL, doesn't make sence for AccessToken actually
-            NSURL *authServerURL = serverURL;
+            [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
+                if (returnCode == NSModalResponseOK) {
+                    // FIXME: workaround for the missing RLMIdentityProviderAccessToken
+                    RLMSyncCredential* adminCredential = [[RLMSyncCredential alloc] initWithCustomToken:adminAccessToken provider:RLMIdentityProviderRealm userInfo:nil];
 
-            [self openSyncURL:browserWindowController.selectedURL credential:adminCredential authServerURL:authServerURL];
+                    // FIXME: provide a valid URL, doesn't make sence for AccessToken actually
+                    NSURL *authServerURL = serverURL;
+
+                    [self openSyncURL:browserWindowController.selectedURL credential:adminCredential authServerURL:authServerURL];
+                }
+
+                [self removeAuxiliaryWindowController:browserWindowController];
+            }];
+            
+            [self addAuxiliaryWindowController:browserWindowController];
         }
-
-        [self removeAuxiliaryWindowController:browserWindowController];
     }];
-
-    [self addAuxiliaryWindowController:browserWindowController];
 }
 
 @end

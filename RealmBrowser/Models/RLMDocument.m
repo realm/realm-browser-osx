@@ -160,33 +160,24 @@
     self.credential = credential;
     self.state = RLMDocumentStateLoadingSchema;
 
-    void (^loadWithUserBlock)(RLMSyncUser *) = ^void(RLMSyncUser *user) {
-        // FIXME: workaround for loading schema while using dynamic API
-        [self loadSchemaWithUser:user completionHandler:^(NSError *error) {
-            if (error == nil) {
-                [self loadWithError:&error];
-            } else {
-                self.state = RLMDocumentStateUnrecoverableError;
-            }
+    [RLMSyncUser authenticateWithCredential:self.credential actions:RLMAuthenticationActionsUseExistingAccount authServerURL:authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
+        if (user == nil) {
+            self.state = RLMDocumentStateNeedsValidCredential;
 
             completionHandler(error);
-        }];
-    };
-
-    // FIXME: workaround for access token auth, Browser is missing RLMIdentityProviderAccessToken so much :'(
-    if (credential.provider == RLMIdentityProviderRealm) {
-        loadWithUserBlock([RLMSyncUser userWithAccessToken:credential.token identity:nil]);
-    } else {
-        [RLMSyncUser authenticateWithCredential:self.credential actions:RLMAuthenticationActionsUseExistingAccount authServerURL:authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
-            if (user == nil) {
-                self.state = RLMDocumentStateNeedsValidCredential;
+        } else {
+            // FIXME: workaround for loading schema while using dynamic API
+            [self loadSchemaWithUser:user completionHandler:^(NSError *error) {
+                if (error == nil) {
+                    [self loadWithError:&error];
+                } else {
+                    self.state = RLMDocumentStateUnrecoverableError;
+                }
 
                 completionHandler(error);
-            } else {
-                loadWithUserBlock(user);
-            }
-        }];
-    }
+            }];
+        }
+    }];
 }
 
 - (void)loadSchemaWithUser:(RLMSyncUser *)user completionHandler:(void (^)(NSError *error))completionHandler {
