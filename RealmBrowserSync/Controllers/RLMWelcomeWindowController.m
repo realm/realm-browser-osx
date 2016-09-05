@@ -11,23 +11,51 @@
 
 @interface RLMWelcomeWindowController ()
 
+@property (nonatomic, weak) IBOutlet NSTextField *versionLabel;
+
 @end
 
 @implementation RLMWelcomeWindowController
 
+- (void)windowDidLoad {
+    [super windowDidLoad];
+
+    self.window.backgroundColor = [NSColor whiteColor];
+    self.window.titlebarAppearsTransparent = YES;
+    self.window.movableByWindowBackground = YES;
+
+    [[self.window standardWindowButton:NSWindowMiniaturizeButton] setHidden:YES];
+    [[self.window standardWindowButton:NSWindowZoomButton] setHidden:YES];
+
+    self.versionLabel.stringValue = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+}
+
 - (IBAction)openRealmFile:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSDocumentController sharedDocumentController] openDocument:sender];
+    });
+
     [self close];
-    [[NSDocumentController sharedDocumentController] openDocument:sender];
 }
 
 - (IBAction)openRealmURL:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [(RLMApplicationDelegate *)NSApp.delegate openSyncURL:sender];
+    });
+
     [self close];
-    [(RLMApplicationDelegate *)NSApp.delegate openSyncURL:sender];
 }
 
 - (IBAction)connecToServer:(id)sender {
     [self close];
-    [(RLMApplicationDelegate *)NSApp.delegate connectToSyncServer:sender];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [(RLMApplicationDelegate *)NSApp.delegate connectToSyncServer:sender];
+    });
+}
+
+- (void)cancel:(id)sender {
+    [self close];
 }
 
 @end
