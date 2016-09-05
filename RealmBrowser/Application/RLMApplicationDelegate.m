@@ -69,14 +69,7 @@
     [RLMServer setupWithAppID:[NSBundle mainBundle].bundleIdentifier logLevel:0 errorHandler:nil];
 
     if (!self.didLoadFile && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
-        RLMWelcomeWindowController *welcomeWindowController = [[RLMWelcomeWindowController alloc] init];
-
-        [welcomeWindowController.window center];
-        [welcomeWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
-            [self removeAuxiliaryWindowController:welcomeWindowController];
-        }];
-
-        [self addAuxiliaryWindowController:welcomeWindowController];
+        [self showWelcomeWindow:nil];
     }
 
     self.realmQuery = [[NSMetadataQuery alloc] init];
@@ -137,7 +130,24 @@
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)application hasVisibleWindows:(BOOL)flag
 {
+    if (!flag) {
+        [self showWelcomeWindow:nil];
+    }
+
     return NO;
+}
+
+#pragma mark - Welcome Window
+
+- (IBAction)showWelcomeWindow:(id)sender {
+    RLMWelcomeWindowController *welcomeWindowController = [[RLMWelcomeWindowController alloc] init];
+
+    [welcomeWindowController.window center];
+    [welcomeWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
+        [self removeAuxiliaryWindowController:welcomeWindowController];
+    }];
+
+    [self addAuxiliaryWindowController:welcomeWindowController];
 }
 
 #pragma mark - Event handling
