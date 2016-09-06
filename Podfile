@@ -16,8 +16,3 @@ target 'RealmBrowser' do
       # inherit! :search_paths
     end
 end
-
-target 'RealmObjectServer' do
-    project 'RealmObjectServer/RealmObjectServer.xcodeproj'
-    pod 'LibRealmSyncServer', '1.0.0-beta-29.0'
-end
