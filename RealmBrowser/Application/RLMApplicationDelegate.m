@@ -43,8 +43,6 @@
 
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
-@property (nonatomic, assign) BOOL didLoadFile;
-
 @property (nonatomic, strong) NSMetadataQuery *realmQuery;
 @property (nonatomic, strong) NSMetadataQuery *appQuery;
 @property (nonatomic, strong) NSMetadataQuery *projQuery;
@@ -56,9 +54,19 @@
 
 @implementation RLMApplicationDelegate
 
+- (void)handleGetURLEvent:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
+    NSString* urlString = [event paramDescriptorForKeyword:keyDirectObject].stringValue;
+
+    NSURL *realmURL = [NSURL URLWithString:urlString];
+
+    [self openSyncURL:realmURL credential:nil];
+}
+
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
     // Will set sharedController
     [RLMDocumentController new];
+
+    [[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleGetURLEvent:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
 }
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification
@@ -67,10 +75,6 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     [RLMServer setupWithAppID:[NSBundle mainBundle].bundleIdentifier logLevel:0 errorHandler:nil];
-
-    if (!self.didLoadFile && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
-        [self showWelcomeWindow:nil];
-    }
 
     self.realmQuery = [[NSMetadataQuery alloc] init];
     [self.realmQuery setSortDescriptors:@[[[NSSortDescriptor alloc] initWithKey:(id)kMDItemContentModificationDate ascending:NO]]];
@@ -92,12 +96,15 @@
     self.dateFormatter = [[NSDateFormatter alloc] init];
     self.dateFormatter.dateStyle = NSDateFormatterMediumStyle;
     self.dateFormatter.timeStyle = NSDateFormatterShortStyle;
+
+    if (NSApp.windows.count == 0 && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
+        [self showWelcomeWindow:nil];
+    }
 }
 
 - (BOOL)application:(NSApplication *)application openFile:(NSString *)filename
 {
     [self openFileAtURL:[NSURL fileURLWithPath:filename]];
-    self.didLoadFile = YES;
 
     return YES;
 }
@@ -117,8 +124,7 @@
         if ([alert runModal] != NSAlertFirstButtonReturn)
             return;
     }
-    
-    self.didLoadFile = YES;
+
     for (NSString *filename in filenames)
         [self openFileAtURL:[NSURL fileURLWithPath:filename]];
 }
