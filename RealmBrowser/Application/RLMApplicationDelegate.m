@@ -29,6 +29,7 @@
 #import "RLMUtils.h"
 #import "TestClasses.h"
 
+#import "RLMWelcomeWindowController.h"
 #import "RLMOpenSyncURLWindowController.h"
 #import "RLMConnectToServerWindowController.h"
 #import "RLMSyncServerBrowserWindowController.h"
@@ -66,29 +67,29 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     if (!self.didLoadFile && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
-        [NSApp sendAction:self.openMenuItem.action to:self.openMenuItem.target from:self];
-
-        self.realmQuery = [[NSMetadataQuery alloc] init];
-        [self.realmQuery setSortDescriptors:@[[[NSSortDescriptor alloc] initWithKey:(id)kMDItemContentModificationDate ascending:NO]]];
-        NSPredicate *realmPredicate = [NSPredicate predicateWithFormat:@"kMDItemFSName like[c] '*.realm'"];
-        self.realmQuery.predicate = realmPredicate;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(realmQueryNote:) name:nil object:self.realmQuery];
-        [self.realmQuery startQuery];
-        
-        self.appQuery = [[NSMetadataQuery alloc] init];
-        NSPredicate *appPredicate = [NSPredicate predicateWithFormat:@"kMDItemFSName like[c] '*.app'"];
-        self.appQuery.predicate = appPredicate;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(otherQueryNote:) name:nil object:self.appQuery];
-
-        self.projQuery = [[NSMetadataQuery alloc] init];
-        NSPredicate *projPredicate = [NSPredicate predicateWithFormat:@"kMDItemFSName like[c] '*.xcodeproj'"];
-        self.projQuery.predicate = projPredicate;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(otherQueryNote:) name:nil object:self.projQuery];
-
-        self.dateFormatter = [[NSDateFormatter alloc] init];
-        self.dateFormatter.dateStyle = NSDateFormatterMediumStyle;
-        self.dateFormatter.timeStyle = NSDateFormatterShortStyle;
+        [self showWelcomeWindow:nil];
     }
+
+    self.realmQuery = [[NSMetadataQuery alloc] init];
+    [self.realmQuery setSortDescriptors:@[[[NSSortDescriptor alloc] initWithKey:(id)kMDItemContentModificationDate ascending:NO]]];
+    NSPredicate *realmPredicate = [NSPredicate predicateWithFormat:@"kMDItemFSName like[c] '*.realm'"];
+    self.realmQuery.predicate = realmPredicate;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(realmQueryNote:) name:nil object:self.realmQuery];
+    [self.realmQuery startQuery];
+    
+    self.appQuery = [[NSMetadataQuery alloc] init];
+    NSPredicate *appPredicate = [NSPredicate predicateWithFormat:@"kMDItemFSName like[c] '*.app'"];
+    self.appQuery.predicate = appPredicate;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(otherQueryNote:) name:nil object:self.appQuery];
+
+    self.projQuery = [[NSMetadataQuery alloc] init];
+    NSPredicate *projPredicate = [NSPredicate predicateWithFormat:@"kMDItemFSName like[c] '*.xcodeproj'"];
+    self.projQuery.predicate = projPredicate;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(otherQueryNote:) name:nil object:self.projQuery];
+
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    self.dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+    self.dateFormatter.timeStyle = NSDateFormatterShortStyle;
 }
 
 - (BOOL)application:(NSApplication *)application openFile:(NSString *)filename
@@ -127,7 +128,24 @@
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)application hasVisibleWindows:(BOOL)flag
 {
+    if (!flag) {
+        [self showWelcomeWindow:nil];
+    }
+
     return NO;
+}
+
+#pragma mark - Welcome Window
+
+- (IBAction)showWelcomeWindow:(id)sender {
+    RLMWelcomeWindowController *welcomeWindowController = [[RLMWelcomeWindowController alloc] init];
+
+    [welcomeWindowController.window center];
+    [welcomeWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
+        [self removeAuxiliaryWindowController:welcomeWindowController];
+    }];
+
+    [self addAuxiliaryWindowController:welcomeWindowController];
 }
 
 #pragma mark - Event handling

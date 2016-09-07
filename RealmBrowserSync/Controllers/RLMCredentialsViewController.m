@@ -9,6 +9,8 @@
 #import "RLMCredentialsViewController.h"
 
 #import "RLMUsernameCredentialViewController.h"
+#import "RLMFacebookCredentialViewController.h"
+#import "RLMGoogleCredentialViewController.h"
 #import "RLMAccessTokenCredentialViewController.h"
 
 @interface RLMCredentialsViewController ()
@@ -24,6 +26,8 @@
 + (NSArray *)supportedIdentityProviders {
     return @[
         RLMIdentityProviderUsernamePassword,
+        RLMIdentityProviderFacebook,
+        RLMIdentityProviderGoogle,
         RLMIdentityProviderRealm
     ];
 }
@@ -31,6 +35,8 @@
 + (Class)credentialViewControllerClassForIdentityProvider:(RLMIdentityProvider)provider {
     NSDictionary *classByProvider = @{
         RLMIdentityProviderUsernamePassword: [RLMUsernameCredentialViewController class],
+        RLMIdentityProviderFacebook: [RLMFacebookCredentialViewController class],
+        RLMIdentityProviderGoogle: [RLMGoogleCredentialViewController class],
         RLMIdentityProviderRealm: [RLMAccessTokenCredentialViewController class],
     };
 

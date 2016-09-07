@@ -57,6 +57,10 @@
 		84E35A4D196B021B007F0344 /* RLMArrayNavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E35A4C196B021B007F0344 /* RLMArrayNavigationState.m */; };
 		9D25DD9EEFA4ED17DD9B0B58 /* Pods_RealmBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A5C7B6B3C4F4B2895F8110D /* Pods_RealmBrowser.framework */; };
 		C2644B071D6491F900DBAC67 /* RLMDynamicSchemaLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C2644B061D6491F900DBAC67 /* RLMDynamicSchemaLoader.m */; };
+		C277A6E71D7D990E00DED239 /* FacebookCredentialView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C277A6E61D7D990E00DED239 /* FacebookCredentialView.xib */; };
+		C277A6EA1D7D9A0100DED239 /* RLMFacebookCredentialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C277A6E91D7D9A0100DED239 /* RLMFacebookCredentialViewController.m */; };
+		C277A6ED1D7EC03B00DED239 /* RLMGoogleCredentialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C277A6EC1D7EC03B00DED239 /* RLMGoogleCredentialViewController.m */; };
+		C277A6EF1D7EC1AF00DED239 /* GoogleCredentialView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C277A6EE1D7EC1AF00DED239 /* GoogleCredentialView.xib */; };
 		C27E173A1D5CC0EF0095259A /* RLMSyncServerBrowserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C27E17391D5CC0EF0095259A /* RLMSyncServerBrowserWindowController.m */; };
 		C27E173C1D5CC1070095259A /* SyncServerBrowserWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C27E173B1D5CC1070095259A /* SyncServerBrowserWindow.xib */; };
 		C2986A7D1D6C811E005A2CD6 /* EncryptionKeyWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2257869F1BD564F40012436A /* EncryptionKeyWindow.xib */; };
@@ -76,6 +80,8 @@
 		C29CC7CA1D76F57F00186B29 /* NSView+RLMExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C29CC7C91D76F57F00186B29 /* NSView+RLMExtensions.m */; };
 		C29CC7CD1D77097700186B29 /* RLMConnectionIndicatorWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C29CC7CC1D77097700186B29 /* RLMConnectionIndicatorWindowController.m */; };
 		C29CC7CF1D770A4100186B29 /* ConnectionIndicatorWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C29CC7CE1D770A4100186B29 /* ConnectionIndicatorWindow.xib */; };
+		C29CC7D21D79CA5800186B29 /* RLMWelcomeWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C29CC7D11D79CA5800186B29 /* RLMWelcomeWindowController.m */; };
+		C29CC7D41D79CA6D00186B29 /* WelcomeWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C29CC7D31D79CA6D00186B29 /* WelcomeWindow.xib */; };
 		C2AA0F631D634FBF00D5D7E6 /* RLMOpenSyncURLWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2AA0F621D634FBF00D5D7E6 /* RLMOpenSyncURLWindowController.m */; };
 		C2AA0F671D634FDA00D5D7E6 /* RLMConnectToServerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2AA0F651D634FDA00D5D7E6 /* RLMConnectToServerWindowController.m */; };
 		C2B7CAC01D11A0C900049C32 /* ConnectToServerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2B7CABF1D11A0C900049C32 /* ConnectToServerWindow.xib */; };
@@ -198,6 +204,12 @@
 		84E35A4C196B021B007F0344 /* RLMArrayNavigationState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMArrayNavigationState.m; sourceTree = "<group>"; };
 		C2644B051D6491F900DBAC67 /* RLMDynamicSchemaLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMDynamicSchemaLoader.h; sourceTree = "<group>"; };
 		C2644B061D6491F900DBAC67 /* RLMDynamicSchemaLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMDynamicSchemaLoader.m; sourceTree = "<group>"; };
+		C277A6E61D7D990E00DED239 /* FacebookCredentialView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FacebookCredentialView.xib; sourceTree = "<group>"; };
+		C277A6E81D7D9A0100DED239 /* RLMFacebookCredentialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMFacebookCredentialViewController.h; sourceTree = "<group>"; };
+		C277A6E91D7D9A0100DED239 /* RLMFacebookCredentialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMFacebookCredentialViewController.m; sourceTree = "<group>"; };
+		C277A6EB1D7EC03B00DED239 /* RLMGoogleCredentialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMGoogleCredentialViewController.h; sourceTree = "<group>"; };
+		C277A6EC1D7EC03B00DED239 /* RLMGoogleCredentialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMGoogleCredentialViewController.m; sourceTree = "<group>"; };
+		C277A6EE1D7EC1AF00DED239 /* GoogleCredentialView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GoogleCredentialView.xib; sourceTree = "<group>"; };
 		C27E17381D5CC0EF0095259A /* RLMSyncServerBrowserWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMSyncServerBrowserWindowController.h; sourceTree = "<group>"; };
 		C27E17391D5CC0EF0095259A /* RLMSyncServerBrowserWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMSyncServerBrowserWindowController.m; sourceTree = "<group>"; };
 		C27E173B1D5CC1070095259A /* SyncServerBrowserWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncServerBrowserWindow.xib; sourceTree = "<group>"; };
@@ -226,6 +238,9 @@
 		C29CC7CB1D77097700186B29 /* RLMConnectionIndicatorWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMConnectionIndicatorWindowController.h; sourceTree = "<group>"; };
 		C29CC7CC1D77097700186B29 /* RLMConnectionIndicatorWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMConnectionIndicatorWindowController.m; sourceTree = "<group>"; };
 		C29CC7CE1D770A4100186B29 /* ConnectionIndicatorWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionIndicatorWindow.xib; sourceTree = "<group>"; };
+		C29CC7D01D79CA5800186B29 /* RLMWelcomeWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMWelcomeWindowController.h; sourceTree = "<group>"; };
+		C29CC7D11D79CA5800186B29 /* RLMWelcomeWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMWelcomeWindowController.m; sourceTree = "<group>"; };
+		C29CC7D31D79CA6D00186B29 /* WelcomeWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WelcomeWindow.xib; sourceTree = "<group>"; };
 		C2AA0F611D634FBF00D5D7E6 /* RLMOpenSyncURLWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMOpenSyncURLWindowController.h; sourceTree = "<group>"; };
 		C2AA0F621D634FBF00D5D7E6 /* RLMOpenSyncURLWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMOpenSyncURLWindowController.m; sourceTree = "<group>"; };
 		C2AA0F641D634FDA00D5D7E6 /* RLMConnectToServerWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMConnectToServerWindowController.h; sourceTree = "<group>"; };
@@ -319,8 +334,14 @@
 				C29CC7B81D76D55D00186B29 /* RLMAccessTokenCredentialViewController.m */,
 				C29CC7BA1D76D8C100186B29 /* RLMUsernameCredentialViewController.h */,
 				C29CC7BB1D76D8C100186B29 /* RLMUsernameCredentialViewController.m */,
+				C277A6E81D7D9A0100DED239 /* RLMFacebookCredentialViewController.h */,
+				C277A6E91D7D9A0100DED239 /* RLMFacebookCredentialViewController.m */,
+				C277A6EB1D7EC03B00DED239 /* RLMGoogleCredentialViewController.h */,
+				C277A6EC1D7EC03B00DED239 /* RLMGoogleCredentialViewController.m */,
 				C29CC7CB1D77097700186B29 /* RLMConnectionIndicatorWindowController.h */,
 				C29CC7CC1D77097700186B29 /* RLMConnectionIndicatorWindowController.m */,
+				C29CC7D01D79CA5800186B29 /* RLMWelcomeWindowController.h */,
+				C29CC7D11D79CA5800186B29 /* RLMWelcomeWindowController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -336,6 +357,9 @@
 				C29CC7BE1D76DC5900186B29 /* AccessTokenCredentialView.xib */,
 				C29CC7C01D76DD4500186B29 /* UsernameCredentialView.xib */,
 				C29CC7CE1D770A4100186B29 /* ConnectionIndicatorWindow.xib */,
+				C277A6E61D7D990E00DED239 /* FacebookCredentialView.xib */,
+				C277A6EE1D7EC1AF00DED239 /* GoogleCredentialView.xib */,
+				C29CC7D31D79CA6D00186B29 /* WelcomeWindow.xib */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -679,12 +703,15 @@
 				C2986A7F1D6C8126005A2CD6 /* RLMDocument.xib in Resources */,
 				C27E173C1D5CC1070095259A /* SyncServerBrowserWindow.xib in Resources */,
 				C29CC7C11D76DD4500186B29 /* UsernameCredentialView.xib in Resources */,
+				C29CC7D41D79CA6D00186B29 /* WelcomeWindow.xib in Resources */,
 				C2986A7D1D6C811E005A2CD6 /* EncryptionKeyWindow.xib in Resources */,
 				C2B7CAC01D11A0C900049C32 /* ConnectToServerWindow.xib in Resources */,
 				2215F6361D0011CD005A46F7 /* RealmFileIcon.icns in Resources */,
+				C277A6E71D7D990E00DED239 /* FacebookCredentialView.xib in Resources */,
 				84E0F9601921F3B900D6CA14 /* Credits.rtf in Resources */,
 				22DC87E81B9808790024BA34 /* RLMExportIndicatorWindowController.xib in Resources */,
 				36B669CB1B8B057F00F04AE1 /* RLMObjectLinkSelectionViewController.xib in Resources */,
+				C277A6EF1D7EC1AF00DED239 /* GoogleCredentialView.xib in Resources */,
 				C29CC7C31D76DE0900186B29 /* CredentialsView.xib in Resources */,
 				C2D302E61D7455B600E091DF /* CredentialsWindow.xib in Resources */,
 				C2D302E81D7478AC00E091DF /* OpenSyncURLWindow.xib in Resources */,
@@ -809,6 +836,7 @@
 				C2644B071D6491F900DBAC67 /* RLMDynamicSchemaLoader.m in Sources */,
 				2234B66E1CF83F9600EAFDF0 /* RLMBrowserConstants.m in Sources */,
 				C2986A8B1D6C8257005A2CD6 /* RLMOptionalBoolTableCellView.m in Sources */,
+				C29CC7D21D79CA5800186B29 /* RLMWelcomeWindowController.m in Sources */,
 				8474E2BD195452BE00BCA755 /* RLMInstanceTableViewController.m in Sources */,
 				C29CC7B91D76D55D00186B29 /* RLMAccessTokenCredentialViewController.m in Sources */,
 				84754ABE193CA4600093604E /* RLMRealmBrowserWindowController.m in Sources */,
@@ -849,8 +877,10 @@
 				84A34A4F192E19C5005D6CC4 /* RLMApplicationDelegate.m in Sources */,
 				8474E2B419544D8000BCA755 /* RLMTypeOutlineViewController.m in Sources */,
 				2249D9B219A62EBD00A31104 /* RLMTableColumn.m in Sources */,
+				C277A6EA1D7D9A0100DED239 /* RLMFacebookCredentialViewController.m in Sources */,
 				220D382819B639D700F79496 /* RLMTestDataGenerator.m in Sources */,
 				84E35A42196A9F3B007F0344 /* RLMNavigationState.m in Sources */,
+				C277A6ED1D7EC03B00DED239 /* RLMGoogleCredentialViewController.m in Sources */,
 				84D7990D19388E8900FC76A0 /* RLMRealmNode.m in Sources */,
 				22565D6719C1BCF400C8C8EC /* RLMLinkTableCellView.m in Sources */,
 				221322FA19954AB100D25737 /* RLMImageTableCellView.m in Sources */,
