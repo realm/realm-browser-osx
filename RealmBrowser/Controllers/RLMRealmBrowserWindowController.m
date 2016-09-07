@@ -88,7 +88,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 {
     navigationStack = [[RLMNavigationStack alloc] init];
 
-    NSString *realmPath = self.document.presentedRealm.realm.configuration.fileURL.path;
+    NSString *realmPath = self.document.fileURL.path;
     [self setWindowFrameAutosaveName:[NSString stringWithFormat:kRealmKeyWindowFrameForRealm, realmPath]];
     [self.splitView setAutosaveName:[NSString stringWithFormat:kRealmKeyOutlineWidthForRealm, realmPath]];
 }
@@ -301,7 +301,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
 - (IBAction)saveCopy:(id)sender
 {
-    NSString *fileName = [self.document.presentedRealm.realm.configuration.fileURL.path lastPathComponent];
+    NSString *fileName = [self.document.fileURL.path lastPathComponent];
     NSSavePanel *panel = [NSSavePanel savePanel];
     panel.canCreateDirectories = YES;
     panel.nameFieldStringValue = fileName;
@@ -341,7 +341,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
             [securelyScopedURL startAccessingSecurityScopedResource];
             
             NSString *folderPath = panel.URL.path;
-            NSString *realmFolderPath = self.document.presentedRealm.realm.configuration.fileURL.path;
+            NSString *realmFolderPath = self.document.fileURL.path;
             RLMCSVDataExporter *exporter = [[RLMCSVDataExporter alloc] initWithRealmFileAtPath:realmFolderPath];
             NSError *error = nil;
             [exporter exportToFolderAtPath:folderPath withError:&error];
@@ -358,7 +358,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     NSError *error = nil;
     
     //Check that this won't end up overwriting the original file
-    if ([realmFileURL.path.lowercaseString isEqualToString:self.document.presentedRealm.realm.configuration.fileURL.path.lowercaseString]) {
+    if ([realmFileURL.path.lowercaseString isEqualToString:self.document.fileURL.path.lowercaseString]) {
         NSAlert *alert = [[NSAlert alloc] init];
         alert.messageText = @"You cannot overwrite the original Realm file.";
         alert.informativeText = @"Please choose a different location in which to save this Realm file.";
@@ -431,7 +431,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 {
     [self.outlineViewController.tableView reloadData];
     
-    NSString *realmPath = self.document.presentedRealm.realm.configuration.fileURL.path;
+    NSString *realmPath = self.document.fileURL.path;
     NSString *key = [NSString stringWithFormat:kRealmKeyIsLockedForRealm, realmPath];
     
     BOOL realmIsLocked = [[NSUserDefaults standardUserDefaults] boolForKey:key];
@@ -551,7 +551,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
 - (IBAction)userClickedLockRealm:(id)sender
 {
-    NSString *realmPath = self.document.presentedRealm.realm.configuration.fileURL.path;
+    NSString *realmPath = self.document.fileURL.path;
     NSString *key = [NSString stringWithFormat:kRealmKeyIsLockedForRealm, realmPath];
 
     BOOL currentlyLocked = [[NSUserDefaults standardUserDefaults] boolForKey:key];
@@ -560,7 +560,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
 -(void)setRealmLocked:(BOOL)locked
 {
-    NSString *realmPath = self.document.presentedRealm.realm.configuration.fileURL.path;
+    NSString *realmPath = self.document.fileURL.path;
     NSString *key = [NSString stringWithFormat:kRealmKeyIsLockedForRealm, realmPath];
     [[NSUserDefaults standardUserDefaults] setBool:locked forKey:key];
     [[NSUserDefaults standardUserDefaults] synchronize];
