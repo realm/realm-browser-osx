@@ -107,9 +107,8 @@
     self = [super init];
 
     if (self != nil) {
-        self.syncURL = syncURL;
         self.fileURL = [self temporaryFileURLForSyncURL:syncURL];
-        self.presentedRealm = [[RLMRealmNode alloc] initWithFileURL:self.fileURL syncURL:self.syncURL user:nil];
+        self.syncURL = syncURL;
         self.state = RLMDocumentStateNeedsValidCredential;
 
         if (credential != nil) {
@@ -167,8 +166,14 @@
             completionHandler(error);
         } else {
             // FIXME: workaround for loading schema while using dynamic API
-            [self loadSchemaWithUser:user completionHandler:^(NSError *error) {
+            self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:user];
+
+            [self.schemaLoader loadSchemaToURL:self.fileURL completionHandler:^(NSError *error) {
+                self.schemaLoader = nil;
+
                 if (error == nil) {
+                    self.presentedRealm = [[RLMRealmNode alloc] initWithFileURL:self.fileURL syncURL:self.syncURL user:user];
+
                     [self loadWithError:&error];
                 } else {
                     self.state = RLMDocumentStateUnrecoverableError;
@@ -180,19 +185,9 @@
     }];
 }
 
-- (void)loadSchemaWithUser:(RLMSyncUser *)user completionHandler:(void (^)(NSError *error))completionHandler {
-    self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:user];
-
-    [self.schemaLoader loadSchemaToURL:self.fileURL completionHandler:^(NSError *error) {
-        self.schemaLoader = nil;
-
-        if (completionHandler != nil) {
-            completionHandler(error);
-        }
-    }];
-}
-
 - (BOOL)loadWithError:(NSError **)error {
+    NSAssert(self.presentedRealm != nil, @"Presented Realm must be created before loading");
+
     BOOL result = [self.presentedRealm connect:error];
 
     self.state = result ? RLMDocumentStateLoaded : RLMDocumentStateUnrecoverableError;
