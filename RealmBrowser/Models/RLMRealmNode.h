@@ -30,7 +30,7 @@
 @property (nonatomic, strong) NSData *encryptionKey;
 
 - (instancetype)initWithFileURL:(NSURL *)fileURL;
-- (instancetype)initWithFileURL:(NSURL *)fileURL syncURL:(NSURL *)syncURL user:(RLMSyncUser *)user;
+- (instancetype)initWithSyncURL:(NSURL *)syncURL user:(RLMSyncUser *)user;
 
 - (BOOL)connect:(NSError **)error;
 

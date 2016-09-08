@@ -41,14 +41,13 @@
     return self;
 }
 
-- (instancetype)initWithFileURL:(NSURL *)fileURL syncURL:(NSURL *)syncURL user:(RLMSyncUser *)user {
-    self = [self initWithFileURL:fileURL];
+- (instancetype)initWithSyncURL:(NSURL *)syncURL user:(RLMSyncUser *)user {
+    self = [super init];
 
     if (self) {
+        self.configuration = [[RLMRealmConfiguration alloc] init];
+        self.configuration.dynamic = YES;
         self.configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:user realmURL:syncURL];
-
-        // FIXME: Workaround for https://github.com/realm/realm-cocoa-private/issues/257
-        // self.configuration.fileURL = fileURL;
     }
 
     return self;

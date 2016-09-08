@@ -107,7 +107,9 @@
     self = [super init];
 
     if (self != nil) {
-        self.fileURL = [self temporaryFileURLForSyncURL:syncURL];
+        // FIXME: Workaround for https://github.com/realm/realm-cocoa-private/issues/257
+        // self.fileURL = [self temporaryFileURLForSyncURL:syncURL];
+
         self.syncURL = syncURL;
         self.state = RLMDocumentStateNeedsValidCredential;
 
@@ -172,7 +174,7 @@
                 self.schemaLoader = nil;
 
                 if (error == nil) {
-                    self.presentedRealm = [[RLMRealmNode alloc] initWithFileURL:self.fileURL syncURL:self.syncURL user:user];
+                    self.presentedRealm = [[RLMRealmNode alloc] initWithSyncURL:self.syncURL user:user];
 
                     [self loadWithError:&error];
                 } else {
