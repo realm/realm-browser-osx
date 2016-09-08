@@ -42,11 +42,8 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
     [self.notificationToken stop];
 }
 
-- (void)loadSchemaToURL:(NSURL *)fileURL completionHandler:(RLMSchemaLoadCompletionHandler)handler {
+- (void)loadSchemaWithCompletionHandler:(RLMSchemaLoadCompletionHandler)handler {
     self.completionHandler = handler;
-
-    // FIXME: Workaround for https://github.com/realm/realm-cocoa-private/issues/257
-    // self.configuration.fileURL = fileURL;
 
     NSError *error;
 

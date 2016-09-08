@@ -167,7 +167,7 @@
         // FIXME: workaround for loading schema while using dynamic API
         self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:self.user];
 
-        [self.schemaLoader loadSchemaToURL:self.fileURL completionHandler:^(NSError *error) {
+        [self.schemaLoader loadSchemaWithCompletionHandler:^(NSError *error) {
             self.schemaLoader = nil;
 
             if (error == nil) {
@@ -250,24 +250,6 @@
 - (NSString *)displayName
 {
     return self.syncURL ? self.syncURL.absoluteString : self.fileURL.lastPathComponent.stringByDeletingPathExtension;
-}
-
-#pragma mark Private
-
-- (NSURL *)temporaryFileURLForSyncURL:(NSURL *)syncURL {
-    NSString *fileName = syncURL.lastPathComponent;
-
-    if (![fileName.pathExtension isEqualToString:kRealmFileExtension]) {
-        fileName = [fileName stringByAppendingPathExtension:kRealmFileExtension];
-    }
-
-    NSURL *directoryURL = [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject];
-    directoryURL = [directoryURL URLByAppendingPathComponent:[NSBundle mainBundle].bundleIdentifier];
-    directoryURL = [directoryURL URLByAppendingPathComponent:[NSUUID UUID].UUIDString];
-
-    [[NSFileManager defaultManager] createDirectoryAtURL:directoryURL withIntermediateDirectories:YES attributes:nil error:nil];
-
-    return [directoryURL URLByAppendingPathComponent:fileName];
 }
 
 @end
