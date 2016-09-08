@@ -86,6 +86,8 @@
     [self view];
 
     [self.tabView selectTabViewItemWithIdentifier:credential.provider];
+    [self.view layoutSubtreeIfNeeded];
+
     self.selectedCredentialViewController.credential = credential;
 }
 
