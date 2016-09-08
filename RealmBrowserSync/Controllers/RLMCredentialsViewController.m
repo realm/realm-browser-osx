@@ -17,7 +17,7 @@
 
 @property (nonatomic, weak) IBOutlet NSTabView *tabView;
 
-@property (nonatomic, strong) NSURL *serverURL;
+@property (nonatomic, strong) NSURL *authServerURL;
 
 @end
 
@@ -43,11 +43,11 @@
     return classByProvider[provider];
 }
 
-- (instancetype)initWithSyncURL:(NSURL *)syncURL {
+- (instancetype)initWithSyncURL:(NSURL *)syncURL authServerURL:(NSURL *)authServerURL {
     self = [super initWithNibName:@"CredentialsView" bundle:nil];
 
     if (self != nil) {
-        self.serverURL = [[NSURL alloc] initWithString:@"/" relativeToURL:syncURL].absoluteURL;
+        self.authServerURL = authServerURL ?: [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:8080", syncURL.host]];
     }
 
     return self;
@@ -63,7 +63,7 @@
     for (RLMIdentityProvider provider in [self.class supportedIdentityProviders]) {
         Class viewControllerClass = [self.class credentialViewControllerClassForIdentityProvider:provider];
 
-        RLMCredentialViewController *credentialController = [[viewControllerClass alloc] initWithServerURL:self.serverURL credential:self.credential];
+        RLMCredentialViewController *credentialController = [[viewControllerClass alloc] init];
 
         NSTabViewItem *item = [NSTabViewItem tabViewItemWithViewController:credentialController];
         item.identifier = provider;
@@ -72,11 +72,11 @@
     }
 }
 
-- (RLMCredential *)credential {
+- (RLMSyncCredential *)credential {
     return self.selectedCredentialViewController.credential;
 }
 
-- (void)setCredential:(RLMCredential *)credential {
+- (void)setCredential:(RLMSyncCredential *)credential {
     if (![[self.class supportedIdentityProviders] containsObject:credential.provider]) {
         return;
     }
@@ -85,6 +85,8 @@
     [self view];
 
     [self.tabView selectTabViewItemWithIdentifier:credential.provider];
+    [self.view layoutSubtreeIfNeeded];
+
     self.selectedCredentialViewController.credential = credential;
 }
 

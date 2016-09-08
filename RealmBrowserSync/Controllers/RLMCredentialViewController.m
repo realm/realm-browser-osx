@@ -28,15 +28,8 @@ static NSString * const RLMCredentialViewControllerClassSyffix = @"Controller";
     return nibName;
 }
 
-- (instancetype)initWithServerURL:(NSURL *)serverURL credential:(RLMCredential *)credential {
-    self = [super initWithNibName:[self.class defaultNibName] bundle:nil];
-
-    if (self != nil) {
-        self.serverURL = serverURL;
-        self.credential = credential;
-    }
-
-    return self;
+- (instancetype)init {
+    return [self initWithNibName:[self.class defaultNibName] bundle:nil];
 }
 
 @end

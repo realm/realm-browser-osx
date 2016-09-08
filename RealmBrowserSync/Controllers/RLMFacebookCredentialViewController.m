@@ -20,18 +20,18 @@
     return @"Facebook";
 }
 
-- (RLMCredential *)credential {
+- (RLMSyncCredential *)credential {
     NSString *token = self.tokenTextField.stringValue;
 
-    if (token.length > 0 && self.serverURL != nil) {
-        return [RLMCredential credentialWithFacebookToken:token];
+    if (token.length > 0) {
+        return [RLMSyncCredential credentialWithFacebookToken:token];
     }
 
     return nil;
 }
 
-- (void)setCredential:(RLMCredential *)credential {
-    self.tokenTextField.stringValue = credential.credentialToken;
+- (void)setCredential:(RLMSyncCredential *)credential {
+    self.tokenTextField.stringValue = credential.token;
 }
 
 @end

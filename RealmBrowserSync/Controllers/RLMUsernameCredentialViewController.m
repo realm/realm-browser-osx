@@ -28,19 +28,19 @@
     self.passwordTextField.delegate = self;
 }
 
-- (RLMCredential *)credential {
+- (RLMSyncCredential *)credential {
     NSString *username = self.usernameTextField.stringValue;
     NSString *password = self.passwordTextField.stringValue;
 
     if (username.length > 0 && password.length) {
-        return [[RLMCredential alloc] initWithCredentialToken:username provider:RLMIdentityProviderUsernamePassword userInfo:@{@"password": password, @"register": @(NO)} serverURL:self.serverURL];
+        return [RLMSyncCredential credentialWithUsername:username password:password];
     }
 
     return nil;
 }
 
-- (void)setCredential:(RLMCredential *)credential {
-    self.usernameTextField.stringValue = credential.credentialToken;
+- (void)setCredential:(RLMSyncCredential *)credential {
+    self.usernameTextField.stringValue = credential.token;
 }
 
 #pragma mark - NSTextFieldDelegate

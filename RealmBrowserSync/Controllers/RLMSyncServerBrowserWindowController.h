@@ -14,6 +14,6 @@
 
 @property (nonatomic, readonly) NSURL *selectedURL;
 
-- (instancetype)initWithServerURL:(NSURL *)serverURL user:(RLMUser *)user;
+- (instancetype)initWithServerURL:(NSURL *)serverURL user:(RLMSyncUser *)user;
 
 @end

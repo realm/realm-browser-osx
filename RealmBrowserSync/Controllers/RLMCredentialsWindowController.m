@@ -21,11 +21,11 @@
 
 @implementation RLMCredentialsWindowController
 
-- (instancetype)initWithSyncURL:(NSURL *)syncURL; {
+- (instancetype)initWithSyncURL:(NSURL *)syncURL authServerURL:(NSURL *)authServerURL {
     self = [super init];
 
     if (self != nil) {
-        self.credentialsViewController = [[RLMCredentialsViewController alloc] initWithSyncURL:syncURL];
+        self.credentialsViewController = [[RLMCredentialsViewController alloc] initWithSyncURL:syncURL authServerURL:authServerURL];
     }
 
     return self;
@@ -45,11 +45,15 @@
     self.messageLabel.stringValue = message;
 }
 
-- (RLMCredential *)credential {
+- (NSURL *)authServerURL {
+    return self.credentialsViewController.authServerURL;
+}
+
+- (RLMSyncCredential *)credential {
     return self.credentialsViewController.credential;
 }
 
-- (void)setCredential:(RLMCredential *)credential {
+- (void)setCredential:(RLMSyncCredential *)credential {
     self.credentialsViewController.credential = credential;
 }
 

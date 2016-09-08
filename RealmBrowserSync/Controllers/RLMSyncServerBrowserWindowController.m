@@ -6,14 +6,13 @@
 //  Copyright © 2016 Realm inc. All rights reserved.
 //
 
-@import Realm;
 @import Realm.Dynamic;
 @import Realm.Private;
 
 #import "RLMSyncServerBrowserWindowController.h"
 #import "RLMDynamicSchemaLoader.h"
 
-static  NSString * const RLMAdminRealmServerPath = @"admin";
+static  NSString * const RLMAdminRealmServerPath = @"public/admin";
 
 @interface RLMSyncServerBrowserWindowController ()<NSTableViewDataSource, NSTableViewDelegate>
 
@@ -25,9 +24,8 @@ static  NSString * const RLMAdminRealmServerPath = @"admin";
 @property (nonatomic, strong) NSURL *serverURL;
 
 @property (nonatomic, strong) NSURL *adminRealmSyncURL;
-@property (nonatomic, strong) NSURL *adminRealmFileURL;
 
-@property (nonatomic, strong) RLMUser *user;
+@property (nonatomic, strong) RLMSyncUser *user;
 
 @property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
 @property (nonatomic, strong) RLMNotificationToken *notificationToken;
@@ -37,17 +35,13 @@ static  NSString * const RLMAdminRealmServerPath = @"admin";
 
 @implementation RLMSyncServerBrowserWindowController
 
-- (instancetype)initWithServerURL:(NSURL *)serverURL user:(RLMUser *)user {
+- (instancetype)initWithServerURL:(NSURL *)serverURL user:(RLMSyncUser *)user {
     self = [super init];
 
     if (self != nil) {
         self.serverURL = serverURL;
-
         self.adminRealmSyncURL = [serverURL URLByAppendingPathComponent:RLMAdminRealmServerPath];
-        self.adminRealmFileURL = [self temporaryURLForRealmFileWithSync:self.adminRealmSyncURL.lastPathComponent];
-
         self.user = user;
-
         self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.adminRealmSyncURL user:self.user];
     }
 
@@ -70,7 +64,7 @@ static  NSString * const RLMAdminRealmServerPath = @"admin";
     [self.progressIndicator startAnimation:nil];
 
     __weak typeof(self) weakSelf = self;
-    [self.schemaLoader loadSchemaToURL:self.adminRealmFileURL completionHandler:^(NSError *error) {
+    [self.schemaLoader loadSchemaWithCompletionHandler:^(NSError *error) {
         if (error != nil) {
             [weakSelf.progressIndicator stopAnimation:nil];
             weakSelf.progressIndicator.hidden = YES;
@@ -79,21 +73,15 @@ static  NSString * const RLMAdminRealmServerPath = @"admin";
                 [weakSelf close];
             }];
         } else {
-            [weakSelf openAdminRealmAtURL:weakSelf.adminRealmFileURL user:weakSelf.user];
+            [weakSelf openAdminRealmWithUser:weakSelf.user];
         }
     }];
 }
 
-- (void)openAdminRealmAtURL:(NSURL *)fileURL user:(RLMUser *)user {
+- (void)openAdminRealmWithUser:(RLMSyncUser *)user {
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
     configuration.dynamic = YES;
-    configuration.customSchema = nil;
-
-    [configuration setObjectServerPath:RLMAdminRealmServerPath forUser:user];
-
-    if (fileURL != nil) {
-        configuration.fileURL = fileURL;
-    }
+    configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:user realmURL:self.adminRealmSyncURL];
 
     RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:nil];
 
@@ -109,24 +97,6 @@ static  NSString * const RLMAdminRealmServerPath = @"admin";
 
     self.tableView.hidden = NO;
     [self.tableView reloadData];
-}
-
-- (NSURL *)temporaryURLForRealmFileWithSync:(NSString *)realmFileName {
-    NSString *uniqueString = [NSUUID UUID].UUIDString;
-
-    if (realmFileName == nil) {
-        realmFileName = uniqueString;
-    }
-
-    if (![realmFileName.pathExtension isEqualToString:@"realm"]) {
-        realmFileName = [realmFileName stringByAppendingPathExtension:@"realm"];
-    }
-
-    NSString *tempDirectoryPath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"io.realm.realmbrowser"] stringByAppendingPathComponent:uniqueString];
-
-    [[NSFileManager defaultManager] createDirectoryAtPath:tempDirectoryPath withIntermediateDirectories:YES attributes:nil error:nil];
-
-    return [NSURL fileURLWithPath:[tempDirectoryPath stringByAppendingPathComponent:realmFileName]];
 }
 
 - (IBAction)open:(id)sender {
