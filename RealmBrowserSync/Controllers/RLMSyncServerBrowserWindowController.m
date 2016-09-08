@@ -88,9 +88,10 @@ static  NSString * const RLMAdminRealmServerPath = @"admin";
     configuration.dynamic = YES;
     configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:user realmURL:self.adminRealmSyncURL];
 
-    if (fileURL != nil) {
-        configuration.fileURL = fileURL;
-    }
+    // FIXME: Workaround for https://github.com/realm/realm-cocoa-private/issues/257
+    // if (fileURL != nil) {
+    //     configuration.fileURL = fileURL;
+    // }
 
     RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:nil];
 

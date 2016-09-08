@@ -46,7 +46,9 @@
 
     if (self) {
         self.configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:user realmURL:syncURL];
-        self.configuration.fileURL = fileURL;
+
+        // FIXME: Workaround for https://github.com/realm/realm-cocoa-private/issues/257
+        // self.configuration.fileURL = fileURL;
     }
 
     return self;
