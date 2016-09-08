@@ -34,7 +34,9 @@ typedef NS_ENUM(NSInteger, RLMDocumentState) {
 
 @property (nonatomic, assign) RLMDocumentState state;
 @property (nonatomic, strong) IBOutlet RLMRealmNode *presentedRealm;
+
 @property (nonatomic, copy, readonly) NSURL *syncURL;
+@property (nonatomic, copy, readonly) NSURL *authServerURL;
 @property (nonatomic, strong, readonly) RLMSyncCredential *credential;
 
 - (instancetype)initWithContentsOfFileURL:(NSURL *)fileURL error:(NSError **)outError;

@@ -28,6 +28,7 @@
 @property (nonatomic, strong) NSURL *securityScopedURL;
 
 @property (nonatomic, copy) NSURL *syncURL;
+@property (nonatomic, copy) NSURL *authServerURL;
 @property (nonatomic, strong) RLMSyncCredential *credential;
 
 @property (nonatomic, strong) RLMSyncUser *user;
@@ -107,10 +108,8 @@
     self = [super init];
 
     if (self != nil) {
-        // FIXME: Workaround for https://github.com/realm/realm-cocoa-private/issues/257
-        // self.fileURL = [self temporaryFileURLForSyncURL:syncURL];
-
         self.syncURL = syncURL;
+        self.authServerURL = authServerURL;
         self.state = RLMDocumentStateNeedsValidCredential;
 
         if (credential != nil) {
@@ -121,9 +120,10 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [self.user logOut];
+- (void)dealloc {
+    if (self.user.isValid) {
+        [self.user logOut];
+    }
 
     if (self.securityScopedURL != nil) {
         //In certain instances, RLMRealm's C++ destructor method will attempt to clean up
@@ -163,36 +163,51 @@
     self.credential = credential;
     self.state = RLMDocumentStateLoadingSchema;
 
+    void (^loadRealmBlock)() = ^void() {
+        // FIXME: workaround for loading schema while using dynamic API
+        self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:self.user];
+
+        [self.schemaLoader loadSchemaToURL:self.fileURL completionHandler:^(NSError *error) {
+            self.schemaLoader = nil;
+
+            if (error == nil) {
+                self.presentedRealm = [[RLMRealmNode alloc] initWithSyncURL:self.syncURL user:self.user];
+
+                [self loadWithError:&error];
+            } else {
+                self.state = RLMDocumentStateUnrecoverableError;
+            }
+
+            completionHandler(error);
+        }];
+    };
+
+    // FIXME: Cocoa throws an exeption if authenticate the users with the same credentials again
     for (RLMSyncUser *user in [RLMSyncUser all]) {
         if (user.sessions.count == 0) {
+            // Log out all invalid non-relevant users
             [user logOut];
+        } else if ([user.sessions.allKeys containsObject:self.syncURL]) {
+            self.user = user;
+            break;
         }
     }
 
-    [RLMSyncUser authenticateWithCredential:self.credential actions:RLMAuthenticationActionsUseExistingAccount authServerURL:authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
-        if (user == nil) {
-            self.state = RLMDocumentStateNeedsValidCredential;
-
-            completionHandler(error);
-        } else {
-            // FIXME: workaround for loading schema while using dynamic API
-            self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:user];
-
-            [self.schemaLoader loadSchemaToURL:self.fileURL completionHandler:^(NSError *error) {
-                self.schemaLoader = nil;
-
-                if (error == nil) {
-                    self.presentedRealm = [[RLMRealmNode alloc] initWithSyncURL:self.syncURL user:user];
-
-                    [self loadWithError:&error];
-                } else {
-                    self.state = RLMDocumentStateUnrecoverableError;
-                }
+    if (self.user.isValid) {
+        loadRealmBlock();
+    } else {
+        [RLMSyncUser authenticateWithCredential:self.credential actions:RLMAuthenticationActionsUseExistingAccount authServerURL:authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
+            if (user == nil) {
+                self.state = RLMDocumentStateNeedsValidCredential;
 
                 completionHandler(error);
-            }];
-        }
-    }];
+            } else {
+                self.user = user;
+
+                loadRealmBlock();
+            }
+        }];
+    }
 }
 
 - (BOOL)loadWithError:(NSError **)error {

@@ -43,12 +43,11 @@
     return classByProvider[provider];
 }
 
-- (instancetype)initWithSyncURL:(NSURL *)syncURL {
+- (instancetype)initWithSyncURL:(NSURL *)syncURL authServerURL:(NSURL *)authServerURL {
     self = [super initWithNibName:@"CredentialsView" bundle:nil];
 
     if (self != nil) {
-        // FIXME: provide UI to specify an Auth Server URL
-        self.authServerURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:8080", syncURL.host]];
+        self.authServerURL = authServerURL ?: [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:8080", syncURL.host]];
     }
 
     return self;

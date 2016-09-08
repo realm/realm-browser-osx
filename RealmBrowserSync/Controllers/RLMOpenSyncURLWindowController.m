@@ -35,7 +35,7 @@ NSString * const RLMOpenSyncURLWindowControllerErrorDomain = @"io.realm.realmbro
     }
 
     // TODO: use recent credentials for credentialsViewController
-    self.credentialsViewController = [[RLMCredentialsViewController alloc] initWithSyncURL:self.url];
+    self.credentialsViewController = [[RLMCredentialsViewController alloc] initWithSyncURL:self.url authServerURL:nil];
 
     [self.credentialsContainerView addContentSubview:self.credentialsViewController.view];
 }
