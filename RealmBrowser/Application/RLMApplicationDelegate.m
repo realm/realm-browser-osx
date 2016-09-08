@@ -685,14 +685,11 @@
             RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] initWithServerURL:serverURL user:user];
 
             [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
+                // FIXME: cocoa will throw an exception if create user with the same credentials twice
+                [user logOut];
+
                 if (returnCode == NSModalResponseOK) {
-                    // FIXME: workaround for the missing RLMIdentityProviderAccessToken
-                    RLMSyncCredential* adminCredential = [[RLMSyncCredential alloc] initWithCustomToken:adminAccessToken provider:RLMIdentityProviderRealm userInfo:nil];
-
-                    // FIXME: provide a valid URL, doesn't make sence for AccessToken actually
-                    NSURL *authServerURL = serverURL;
-
-                    [self openSyncURL:browserWindowController.selectedURL credential:adminCredential authServerURL:authServerURL];
+                    [self openSyncURL:browserWindowController.selectedURL credential:credential authServerURL:fakeAuthServerURL];
                 }
 
                 [self removeAuxiliaryWindowController:browserWindowController];
