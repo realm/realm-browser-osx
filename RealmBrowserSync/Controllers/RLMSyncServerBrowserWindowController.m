@@ -12,7 +12,7 @@
 #import "RLMSyncServerBrowserWindowController.h"
 #import "RLMDynamicSchemaLoader.h"
 
-static  NSString * const RLMAdminRealmServerPath = @"admin";
+static  NSString * const RLMAdminRealmServerPath = @"public/admin";
 
 @interface RLMSyncServerBrowserWindowController ()<NSTableViewDataSource, NSTableViewDelegate>
 
