@@ -123,6 +123,8 @@
 
 - (void)dealloc
 {
+    [self.user logOut];
+
     if (self.securityScopedURL != nil) {
         //In certain instances, RLMRealm's C++ destructor method will attempt to clean up
         //specific auxiliary files belonging to this realm file.
@@ -160,6 +162,12 @@
 
     self.credential = credential;
     self.state = RLMDocumentStateLoadingSchema;
+
+    for (RLMSyncUser *user in [RLMSyncUser all]) {
+        if (user.sessions.count == 0) {
+            [user logOut];
+        }
+    }
 
     [RLMSyncUser authenticateWithCredential:self.credential actions:RLMAuthenticationActionsUseExistingAccount authServerURL:authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
         if (user == nil) {
