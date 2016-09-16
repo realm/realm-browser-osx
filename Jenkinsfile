@@ -66,8 +66,8 @@ node('osx_vegas') {
 
         if (['sync'].contains(env.BRANCH_NAME) || gitTag != "") {
             stage 'trigger release'
-            sh "/usr/local/bin/s3cmd put ${archiveName} 's3://realm-ci-artifacts/browser/${currentVersionNumber}/cocoa/'"
-            echo "Uploaded to 's3://realm-ci-artifacts/browser/${currentVersionNumber}/cocoa/'"
+            sh "/usr/local/bin/s3cmd put ${archiveName} 's3://realm-ci-artifacts/browser/${currentVersionNumber.split('_')[0]}/cocoa/'"
+            echo "Uploaded to 's3://realm-ci-artifacts/browser/${currentVersionNumber.split('_')[0]}/cocoa/'"
         }
     }
   }
