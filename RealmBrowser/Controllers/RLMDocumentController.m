@@ -41,7 +41,7 @@
 }
 
 - (NSString *)typeForContentsOfURL:(NSURL *)url error:(NSError * _Nullable __autoreleasing *)outError {
-    if ([url.scheme isEqualToString:@"realm"] || [url.scheme isEqualToString:@"realms"]) {
+    if ([url.scheme isEqualToString:kRealmURLScheme] || [url.scheme isEqualToString:kSecureRealmURLScheme]) {
         return kRealmUTIIdentifier;
     } else {
         return [super typeForContentsOfURL:url error:outError];

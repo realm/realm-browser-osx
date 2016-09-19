@@ -7,6 +7,7 @@
 //
 
 #import "RLMConnectToServerWindowController.h"
+#import "RLMBrowserConstants.h"
 
 static NSString * const serverURLKey = @"ServerURL";
 static NSString * const adminAccessTokenKey = @"AdminAccessToken";
@@ -38,7 +39,7 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
         error = &localError;
     }
 
-    if (!([self.serverURL.scheme isEqualToString:@"realm"] && self.serverURL.host.length > 0 && self.serverURL.path.length < 2)) {
+    if (!(([self.serverURL.scheme isEqualToString:kRealmURLScheme] || [self.serverURL.scheme isEqualToString:kSecureRealmURLScheme]) && self.serverURL.host.length > 0 && self.serverURL.path.length < 2)) {
         *error = [self errorWithCode:0 description:@"Invalid Object Server URL" recoverySuggestion:@"Provide a valid URL"];
         return NO;
     }

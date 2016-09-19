@@ -9,6 +9,7 @@
 #import "RLMOpenSyncURLWindowController.h"
 #import "RLMCredentialsViewController.h"
 #import "NSView+RLMExtensions.h"
+#import "RLMBrowserConstants.h"
 
 static NSString * const urlKey = @"URL";
 
@@ -46,7 +47,7 @@ NSString * const RLMOpenSyncURLWindowControllerErrorDomain = @"io.realm.realmbro
         error = &localError;
     }
 
-    if (!([self.url.scheme isEqualToString:@"realm"] && self.url.host.length > 0 && self.url.path.length > 1)) {
+    if (!(([self.url.scheme isEqualToString:kRealmURLScheme] || [self.url.scheme isEqualToString:kSecureRealmURLScheme]) && self.url.host.length > 0 && self.url.path.length > 1)) {
         *error = [self errorWithCode:0 description:@"Invalid Object Server URL" recoverySuggestion:@"Provide a valid URL"];
         return NO;
     }
