@@ -685,9 +685,6 @@
             RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] initWithServerURL:serverURL user:user];
 
             [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
-                // FIXME: cocoa will throw an exception if create user with the same credentials twice
-                [user logOut];
-
                 if (returnCode == NSModalResponseOK) {
                     [self openSyncURL:browserWindowController.selectedURL credential:credential authServerURL:fakeAuthServerURL];
                 }

@@ -163,51 +163,32 @@
     self.credential = credential;
     self.state = RLMDocumentStateLoadingSchema;
 
-    void (^loadRealmBlock)() = ^void() {
-        // FIXME: workaround for loading schema while using dynamic API
-        self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:self.user];
-
-        [self.schemaLoader loadSchemaWithCompletionHandler:^(NSError *error) {
-            self.schemaLoader = nil;
-
-            if (error == nil) {
-                self.presentedRealm = [[RLMRealmNode alloc] initWithSyncURL:self.syncURL user:self.user];
-
-                [self loadWithError:&error];
-            } else {
-                self.state = RLMDocumentStateUnrecoverableError;
-            }
+    [RLMSyncUser authenticateWithCredential:self.credential actions:RLMAuthenticationActionsUseExistingAccount authServerURL:authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
+        if (user == nil) {
+            self.state = RLMDocumentStateNeedsValidCredential;
 
             completionHandler(error);
-        }];
-    };
-
-    // FIXME: Cocoa throws an exeption if authenticate the users with the same credentials again
-    for (RLMSyncUser *user in [RLMSyncUser all]) {
-        if (user.sessions.count == 0) {
-            // Log out all invalid non-relevant users
-            [user logOut];
-        } else if ([user.sessions.allKeys containsObject:self.syncURL]) {
+        } else {
             self.user = user;
-            break;
-        }
-    }
 
-    if (self.user.isValid) {
-        loadRealmBlock();
-    } else {
-        [RLMSyncUser authenticateWithCredential:self.credential actions:RLMAuthenticationActionsUseExistingAccount authServerURL:authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
-            if (user == nil) {
-                self.state = RLMDocumentStateNeedsValidCredential;
+            // FIXME: workaround for loading schema while using dynamic API
+            self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:self.user];
 
+            [self.schemaLoader loadSchemaWithCompletionHandler:^(NSError *error) {
+                self.schemaLoader = nil;
+
+                if (error == nil) {
+                    self.presentedRealm = [[RLMRealmNode alloc] initWithSyncURL:self.syncURL user:self.user];
+
+                    [self loadWithError:&error];
+                } else {
+                    self.state = RLMDocumentStateUnrecoverableError;
+                }
+                
                 completionHandler(error);
-            } else {
-                self.user = user;
-
-                loadRealmBlock();
-            }
-        }];
-    }
+            }];
+        }
+    }];
 }
 
 - (BOOL)loadWithError:(NSError **)error {
