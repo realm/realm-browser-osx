@@ -6,14 +6,14 @@
 //  Copyright © 2016 Realm inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Realm;
 
 typedef void (^RLMSchemaLoadCompletionHandler)(NSError *error);
 
 @interface RLMDynamicSchemaLoader : NSObject
 
-- (instancetype)initWithSyncURL:(NSURL *)syncURL user:(RLMUser *)user;
+- (instancetype)initWithSyncURL:(NSURL *)syncURL user:(RLMSyncUser *)user;
 
-- (void)loadSchemaToURL:(NSURL *)fileURL completionHandler:(RLMSchemaLoadCompletionHandler)handler;
+- (void)loadSchemaWithCompletionHandler:(RLMSchemaLoadCompletionHandler)handler;
 
 @end

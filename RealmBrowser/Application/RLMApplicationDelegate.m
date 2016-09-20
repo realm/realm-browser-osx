@@ -59,7 +59,7 @@
 
     NSURL *realmURL = [NSURL URLWithString:urlString];
 
-    [self openSyncURL:realmURL credential:nil];
+    [self openSyncURL:realmURL credential:nil authServerURL:nil];
 }
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
@@ -74,7 +74,6 @@
     [[NSUserDefaults standardUserDefaults] setObject:@(kTopTipDelay) forKey:@"NSInitialToolTipDelay"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-    [RLMServer setupWithAppID:[NSBundle mainBundle].bundleIdentifier logLevel:0 errorHandler:nil];
 
     self.realmQuery = [[NSMetadataQuery alloc] init];
     [self.realmQuery setSortDescriptors:@[[[NSSortDescriptor alloc] initWithKey:(id)kMDItemContentModificationDate ascending:NO]]];
@@ -566,8 +565,8 @@
     }];
 }
 
-- (void)openSyncURL:(NSURL *)syncURL credential:(RLMCredential *)credential {
-    [(RLMDocumentController *)[NSDocumentController sharedDocumentController] openDocumentWithContentsOfSyncURL:syncURL credential:credential display:YES completionHandler:^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error) {
+- (void)openSyncURL:(NSURL *)syncURL credential:(RLMSyncCredential *)credential authServerURL:(NSURL *)authServerURL {
+    [(RLMDocumentController *)[NSDocumentController sharedDocumentController] openDocumentWithContentsOfSyncURL:syncURL credential:credential authServerURL:authServerURL display:YES completionHandler:^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error) {
         if (error != nil) {
             [NSApp presentError:error];
         }
@@ -645,7 +644,7 @@
 
     [openSyncURLWindowController showWindow:sender completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseOK) {
-            [self openSyncURL:openSyncURLWindowController.url credential:openSyncURLWindowController.credential];
+            [self openSyncURL:openSyncURLWindowController.url credential:openSyncURLWindowController.credential authServerURL:openSyncURLWindowController.authServerURL];
         }
 
         [self removeAuxiliaryWindowController:openSyncURLWindowController];
@@ -669,7 +668,7 @@
             NSURL *serverURL = connectToServerWindowController.serverURL;
             NSString *accessToken = connectToServerWindowController.adminAccessToken;
 
-            [self connectToServerAtURL:serverURL credential:[RLMCredential credentialWithAccessToken:accessToken serverURL:serverURL]];
+            [self connectToServerAtURL:serverURL adminAccessToken:accessToken];
         }
 
         [self removeAuxiliaryWindowController:connectToServerWindowController];
@@ -678,26 +677,30 @@
     [self addAuxiliaryWindowController:connectToServerWindowController];
 }
 
-- (void)connectToServerAtURL:(NSURL *)serverURL credential:(RLMCredential *)credential {
-    RLMUser *user = [[RLMUser alloc] initWithLocalIdentity:nil];
+- (void)connectToServerAtURL:(NSURL *)serverURL adminAccessToken:(NSString *)adminAccessToken {
+    // FIXME: remove after it's possible to pass nil identity to create credential
+    NSString *identity = [NSUUID UUID].UUIDString;
+    RLMSyncCredential *credential = [RLMSyncCredential credentialWithAccessToken:adminAccessToken identity:identity];
 
-    [user loginWithCredential:credential completion:^(NSError *error) {
-        if (error != nil) {
+    // FIXME: remove after it's possible to pass nil for authServerURL to authenticate user
+    NSURL *fakeAuthServerURL = [NSURL URLWithString:@"http://fake-realm-auth-server"];
+
+    [RLMSyncUser authenticateWithCredential:credential actions:RLMAuthenticationActionsUseExistingAccount authServerURL:fakeAuthServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
+        if (user == nil) {
             [NSApp presentError:error];
-            return;
+        } else {
+            RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] initWithServerURL:serverURL user:user];
+
+            [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
+                if (returnCode == NSModalResponseOK) {
+                    [self openSyncURL:browserWindowController.selectedURL credential:credential authServerURL:fakeAuthServerURL];
+                }
+
+                [self removeAuxiliaryWindowController:browserWindowController];
+            }];
+            
+            [self addAuxiliaryWindowController:browserWindowController];
         }
-
-        RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] initWithServerURL:serverURL user:user];
-
-        [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
-            if (returnCode == NSModalResponseOK) {
-                [self openSyncURL:browserWindowController.selectedURL credential:credential];
-            }
-
-            [self removeAuxiliaryWindowController:browserWindowController];
-        }];
-
-        [self addAuxiliaryWindowController:browserWindowController];
     }];
 }
 

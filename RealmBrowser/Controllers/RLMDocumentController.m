@@ -14,7 +14,7 @@
 
 @implementation RLMDocumentController
 
-- (void)openDocumentWithContentsOfSyncURL:(NSURL *)url credential:(RLMCredential *)credential display:(BOOL)displayDocument completionHandler:(void (^)(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error))completionHandler {
+- (void)openDocumentWithContentsOfSyncURL:(NSURL *)url credential:(RLMSyncCredential *)credential authServerURL:(NSURL *)authServerURL display:(BOOL)displayDocument completionHandler:(void (^)(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error))completionHandler; {
     RLMDocument *document = [self documentForURL:url];
 
     if (document != nil) {
@@ -23,7 +23,7 @@
     }
 
     NSError *error;
-    document = [[RLMDocument alloc] initWithContentsOfSyncURL:url credential:credential error:&error];
+    document = [[RLMDocument alloc] initWithContentsOfSyncURL:url credential:credential authServerURL:authServerURL error:&error];
 
     if (document != nil) {
         [self addDocument:document];

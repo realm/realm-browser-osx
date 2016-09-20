@@ -16,7 +16,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-@import Realm;
 @import AppSandboxFileAccess;
 
 #import "RLMDocument.h"
@@ -29,9 +28,10 @@
 @property (nonatomic, strong) NSURL *securityScopedURL;
 
 @property (nonatomic, copy) NSURL *syncURL;
-@property (nonatomic, strong) RLMCredential *credential;
+@property (nonatomic, copy) NSURL *authServerURL;
+@property (nonatomic, strong) RLMSyncCredential *credential;
 
-@property (nonatomic, strong) RLMUser *user;
+@property (nonatomic, strong) RLMSyncUser *user;
 @property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
 
 @end
@@ -47,7 +47,7 @@
     if (absoluteURL.isFileURL) {
         return [self initWithContentsOfFileURL:absoluteURL error:outError];
     } else {
-        return [self initWithContentsOfSyncURL:absoluteURL credential:nil error:outError];
+        return [self initWithContentsOfSyncURL:absoluteURL credential:nil authServerURL:nil error:outError];
     }
 }
 
@@ -104,30 +104,27 @@
     return self;
 }
 
-- (instancetype)initWithContentsOfSyncURL:(NSURL *)syncURL credential:(RLMCredential *)credential error:(NSError **)outError {
+- (instancetype)initWithContentsOfSyncURL:(NSURL *)syncURL credential:(RLMSyncCredential *)credential authServerURL:(NSURL *)authServerURL error:(NSError **)outError {
     self = [super init];
 
     if (self != nil) {
         self.syncURL = syncURL;
-        self.credential = credential;
-
-        self.fileURL = [self temporaryFileURLForSyncURL:syncURL];
-        self.user = [[RLMUser alloc] initWithLocalIdentity:nil];
-
-        self.presentedRealm = [[RLMRealmNode alloc] initWithFileURL:self.fileURL syncURL:self.syncURL user:self.user];
-
+        self.authServerURL = authServerURL;
         self.state = RLMDocumentStateNeedsValidCredential;
 
         if (credential != nil) {
-            [self loadWithCredential:credential completionHandler:nil];
+            [self loadWithCredential:credential authServerURL:authServerURL completionHandler:nil];
         }
     }
 
     return self;
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
+    if (self.user.isValid) {
+        [self.user logOut];
+    }
+
     if (self.securityScopedURL != nil) {
         //In certain instances, RLMRealm's C++ destructor method will attempt to clean up
         //specific auxiliary files belonging to this realm file.
@@ -157,7 +154,7 @@
     return [self loadWithError:error];
 }
 
-- (void)loadWithCredential:(RLMCredential *)credential completionHandler:(void (^)(NSError *error))completionHandler {
+- (void)loadWithCredential:(RLMSyncCredential *)credential authServerURL:(NSURL *)authServerURL completionHandler:(void (^)(NSError *error))completionHandler {
     // Workaround for access token auth, state will be set to RLMDocumentStateUnrecoverableError in case of invalid token
     NSAssert(self.state == RLMDocumentStateNeedsValidCredential || self.state == RLMDocumentStateUnrecoverableError, @"Invalid document state");
 
@@ -166,47 +163,37 @@
     self.credential = credential;
     self.state = RLMDocumentStateLoadingSchema;
 
-    // Workaround for access token auth
-    if (self.user.isLoggedIn) {
-        [self.user logout:NO completion:nil];
-    }
+    [RLMSyncUser authenticateWithCredential:self.credential actions:RLMAuthenticationActionsUseExistingAccount authServerURL:authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
+        if (user == nil) {
+            self.state = RLMDocumentStateNeedsValidCredential;
 
-    [self.user loginWithCredential:credential completion:^(NSError *error) {
-        // FIXME: API callbacks chould be dispatched on main thread
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (error != nil) {
-                self.state = RLMDocumentStateNeedsValidCredential;
-
-                completionHandler(error);
-                return;
-            }
+            completionHandler(error);
+        } else {
+            self.user = user;
 
             // FIXME: workaround for loading schema while using dynamic API
-            [self loadSchemaWithCompletionHandler:^(NSError *error) {
+            self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:self.user];
+
+            [self.schemaLoader loadSchemaWithCompletionHandler:^(NSError *error) {
+                self.schemaLoader = nil;
+
                 if (error == nil) {
+                    self.presentedRealm = [[RLMRealmNode alloc] initWithSyncURL:self.syncURL user:self.user];
+
                     [self loadWithError:&error];
                 } else {
                     self.state = RLMDocumentStateUnrecoverableError;
                 }
-
+                
                 completionHandler(error);
             }];
-        });
-    }];
-}
-
-- (void)loadSchemaWithCompletionHandler:(void (^)(NSError *error))completionHandler {
-    self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:self.user];
-    [self.schemaLoader loadSchemaToURL:self.fileURL completionHandler:^(NSError *error) {
-        self.schemaLoader = nil;
-
-        if (completionHandler != nil) {
-            completionHandler(error);
         }
     }];
 }
 
 - (BOOL)loadWithError:(NSError **)error {
+    NSAssert(self.presentedRealm != nil, @"Presented Realm must be created before loading");
+
     BOOL result = [self.presentedRealm connect:error];
 
     self.state = result ? RLMDocumentStateLoaded : RLMDocumentStateUnrecoverableError;
@@ -244,24 +231,6 @@
 - (NSString *)displayName
 {
     return self.syncURL ? self.syncURL.absoluteString : self.fileURL.lastPathComponent.stringByDeletingPathExtension;
-}
-
-#pragma mark Private
-
-- (NSURL *)temporaryFileURLForSyncURL:(NSURL *)syncURL {
-    NSString *fileName = syncURL.lastPathComponent;
-
-    if (![fileName.pathExtension isEqualToString:kRealmFileExtension]) {
-        fileName = [fileName stringByAppendingPathExtension:kRealmFileExtension];
-    }
-
-    NSURL *directoryURL = [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject];
-    directoryURL = [directoryURL URLByAppendingPathComponent:[NSBundle mainBundle].bundleIdentifier];
-    directoryURL = [directoryURL URLByAppendingPathComponent:[NSUUID UUID].UUIDString];
-
-    [[NSFileManager defaultManager] createDirectoryAtURL:directoryURL withIntermediateDirectories:YES attributes:nil error:nil];
-
-    return [directoryURL URLByAppendingPathComponent:fileName];
 }
 
 @end
