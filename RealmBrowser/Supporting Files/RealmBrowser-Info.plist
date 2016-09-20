@@ -37,6 +37,21 @@
 	<string>0.103.2-4_cocoa_1.0.2-18_sync_1.0.0-beta-34.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLIconFile</key>
+			<string>RealmFileIcon</string>
+			<key>CFBundleURLName</key>
+			<string>Realm Sync URL</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>realm</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSApplicationCategoryType</key>
