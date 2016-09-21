@@ -47,28 +47,33 @@ node('osx_vegas') {
     def gitTag = readGitTag()
     echo archiveName
 
-    sh 'pod repo update'
-    sh 'pod install'
+    withEnv([
+      "DEVELOPER_DIR=/Applications/Xcode-7.3.1.app/Contents/Developer/"
+    ]) {
 
-    stage 'Test'
-    // FIXME Enable tests
-    //sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Debug -derivedDataPath 'build/DerivedData' CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO clean build test"
+      sh 'pod repo update'
+      sh 'pod install'
 
-    stage 'Build'
-    sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Release -derivedDataPath 'build/DerivedData' CODE_SIGN_IDENTITY='Developer ID Application' clean build"
+      stage 'Test'
+      // FIXME Enable tests
+      //sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Debug -derivedDataPath 'build/DerivedData' CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO clean build test"
+
+      stage 'Build'
+      sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Release -derivedDataPath 'build/DerivedData' CODE_SIGN_IDENTITY='Developer ID Application' clean build"
+    }
 
     stage 'Package'
     dir("build/DerivedData/Build/Products/Release/") {
-        sh "ls -alh"
-        sh "zip --symlinks -r ${archiveName} 'Realm Browser.app'"
+      sh "ls -alh"
+      sh "zip --symlinks -r ${archiveName} 'Realm Browser.app'"
 
-        archive "${archiveName}"
+      archive "${archiveName}"
 
-        if (['sync'].contains(env.BRANCH_NAME) || gitTag != "") {
-            stage 'trigger release'
-            sh "/usr/local/bin/s3cmd put ${archiveName} 's3://realm-ci-artifacts/browser/${currentVersionNumber.split('_')[0]}/cocoa/'"
-            echo "Uploaded to 's3://realm-ci-artifacts/browser/${currentVersionNumber.split('_')[0]}/cocoa/'"
-        }
+      if (gitTag != "") {
+        stage 'trigger release'
+        sh "/usr/local/bin/s3cmd put ${archiveName} 's3://realm-ci-artifacts/browser/${currentVersionNumber.split('_')[0]}/cocoa/'"
+        echo "Uploaded to 's3://realm-ci-artifacts/browser/${currentVersionNumber.split('_')[0]}/cocoa/'"
+      }
     }
   }
 }
