@@ -163,7 +163,7 @@
     self.credential = credential;
     self.state = RLMDocumentStateLoadingSchema;
 
-    [RLMSyncUser authenticateWithCredential:self.credential actions:RLMAuthenticationActionsUseExistingAccount authServerURL:authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
+    [RLMSyncUser authenticateWithCredential:self.credential authServerURL:authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
         if (user == nil) {
             self.state = RLMDocumentStateNeedsValidCredential;
 

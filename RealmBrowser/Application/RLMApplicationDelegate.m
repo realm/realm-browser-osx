@@ -74,6 +74,10 @@
     [[NSUserDefaults standardUserDefaults] setObject:@(kTopTipDelay) forKey:@"NSInitialToolTipDelay"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
+    [RLMSyncManager sharedManager].disableSSLValidation = YES;
+    [RLMSyncManager sharedManager].errorHandler = ^(NSError *error, RLMSyncSession *session) {
+        [NSApp presentError:error];
+    };
 
     self.realmQuery = [[NSMetadataQuery alloc] init];
     [self.realmQuery setSortDescriptors:@[[[NSSortDescriptor alloc] initWithKey:(id)kMDItemContentModificationDate ascending:NO]]];
@@ -685,7 +689,7 @@
     // FIXME: remove after it's possible to pass nil for authServerURL to authenticate user
     NSURL *fakeAuthServerURL = [NSURL URLWithString:@"http://fake-realm-auth-server"];
 
-    [RLMSyncUser authenticateWithCredential:credential actions:RLMAuthenticationActionsUseExistingAccount authServerURL:fakeAuthServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
+    [RLMSyncUser authenticateWithCredential:credential authServerURL:fakeAuthServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
         if (user == nil) {
             [NSApp presentError:error];
         } else {
