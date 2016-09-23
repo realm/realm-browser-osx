@@ -120,7 +120,7 @@ static  NSString * const RLMAdminRealmServerPath = @"public/admin";
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
-    self.selectedURL = self.tableView.selectedRow >= 0 ? [self.serverURL URLByAppendingPathComponent:[self.realmFiles[self.tableView.selectedRow] valueForKey:@"path"]] : nil;
+    self.selectedURL = self.tableView.selectedRow >= 0 ? [[NSURL alloc] initWithString:[self.realmFiles[self.tableView.selectedRow] valueForKey:@"path"] relativeToURL:self.serverURL] : nil;
 }
 
 @end
