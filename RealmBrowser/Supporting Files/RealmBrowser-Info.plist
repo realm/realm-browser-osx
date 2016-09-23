@@ -51,6 +51,18 @@
 				<string>realm</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLIconFile</key>
+			<string>RealmFileIcon</string>
+			<key>CFBundleURLName</key>
+			<string>Secure Realm Sync URL</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>realms</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>

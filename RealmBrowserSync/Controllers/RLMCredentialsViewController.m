@@ -30,7 +30,7 @@
         RLMIdentityProviderFacebook,
         RLMIdentityProviderGoogle,
         RLMIdentityProviderICloud,
-        RLMIdentityProviderRealm
+        @"accessToken"
     ];
 }
 
@@ -40,7 +40,7 @@
         RLMIdentityProviderFacebook: [RLMFacebookCredentialViewController class],
         RLMIdentityProviderGoogle: [RLMGoogleCredentialViewController class],
         RLMIdentityProviderICloud: [RLMCloudKitCredentialViewController class],
-        RLMIdentityProviderRealm: [RLMAccessTokenCredentialViewController class],
+        @"accessToken": [RLMAccessTokenCredentialViewController class],
     };
 
     return classByProvider[provider];

@@ -24,6 +24,9 @@ extern const NSInteger kMaxNumberOfFilesAtOnce;
 extern const CGFloat kMenuImageSize;
 extern const CGFloat kNilItemColor[];
 
+extern NSString * const kRealmURLScheme;
+extern NSString * const kSecureRealmURLScheme;
+
 extern NSString * const kRealmFileExtension;
 extern NSString * const kRealmUTIIdentifier;
 extern NSString * const kDeveloperFolder;
