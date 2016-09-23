@@ -11,6 +11,7 @@
 #import "RLMUsernameCredentialViewController.h"
 #import "RLMFacebookCredentialViewController.h"
 #import "RLMGoogleCredentialViewController.h"
+#import "RLMCloudKitCredentialViewController.h"
 #import "RLMAccessTokenCredentialViewController.h"
 
 @interface RLMCredentialsViewController ()
@@ -28,6 +29,7 @@
         RLMIdentityProviderUsernamePassword,
         RLMIdentityProviderFacebook,
         RLMIdentityProviderGoogle,
+        RLMIdentityProviderICloud,
         @"accessToken"
     ];
 }
@@ -37,6 +39,7 @@
         RLMIdentityProviderUsernamePassword: [RLMUsernameCredentialViewController class],
         RLMIdentityProviderFacebook: [RLMFacebookCredentialViewController class],
         RLMIdentityProviderGoogle: [RLMGoogleCredentialViewController class],
+        RLMIdentityProviderICloud: [RLMCloudKitCredentialViewController class],
         @"accessToken": [RLMAccessTokenCredentialViewController class],
     };
 
