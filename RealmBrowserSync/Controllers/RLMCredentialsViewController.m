@@ -28,7 +28,7 @@
         RLMIdentityProviderUsernamePassword,
         RLMIdentityProviderFacebook,
         RLMIdentityProviderGoogle,
-        RLMIdentityProviderRealm
+        @"accessToken"
     ];
 }
 
@@ -37,7 +37,7 @@
         RLMIdentityProviderUsernamePassword: [RLMUsernameCredentialViewController class],
         RLMIdentityProviderFacebook: [RLMFacebookCredentialViewController class],
         RLMIdentityProviderGoogle: [RLMGoogleCredentialViewController class],
-        RLMIdentityProviderRealm: [RLMAccessTokenCredentialViewController class],
+        @"accessToken": [RLMAccessTokenCredentialViewController class],
     };
 
     return classByProvider[provider];
