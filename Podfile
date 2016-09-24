@@ -8,7 +8,7 @@ workspace 'RealmBrowser.xcworkspace'
 
 target 'RealmBrowser' do
     pod 'AppSandboxFileAccess'
-    pod 'Realm', '1.1.0-1-sync-1.0.0-beta-37.0'
+    pod 'Realm', '1.1.0-2-sync-1.0.0-beta-37.2'
     pod 'RealmConverter'
 
     target 'RealmBrowserTests' do

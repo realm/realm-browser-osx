@@ -2,7 +2,7 @@ PODS:
   - AppSandboxFileAccess (1.0.14)
   - CSwiftV (0.0.5)
   - PathKit (0.6.0)
-  - Realm (1.1.0-1-sync-1.0.0-beta-37.0)
+  - Realm (1.1.0-2-sync-1.0.0-beta-37.2)
   - RealmConverter (0.1.2):
     - CSwiftV
     - PathKit
@@ -14,18 +14,18 @@ PODS:
 
 DEPENDENCIES:
   - AppSandboxFileAccess
-  - Realm (= 1.1.0-1-sync-1.0.0-beta-37.0)
+  - Realm (= 1.1.0-2-sync-1.0.0-beta-37.2)
   - RealmConverter
 
 SPEC CHECKSUMS:
   AppSandboxFileAccess: f3e10b0ba10bbaa6dc6996639ff47836050329c5
   CSwiftV: 2560532e2e5b04d95c36b0f49a8dc745071fa525
   PathKit: b224b6d2c4e75b87f08f45e1c0c610a3195c94e5
-  Realm: b0289c576c71d52b9b899f6717b7da983662f16d
+  Realm: b41dccdd0ae43fa20faf727126d4a4d5388ece00
   RealmConverter: a771c323e50126bd8ad499b4b73f617b103a95c5
   SSZipArchive: 29daace2bccb90a47de2837744da397728ff9207
-  TGSpreadsheetWriter: '09bbb2c18a111a11c94ff9c1af2320e2530c958e'
+  TGSpreadsheetWriter: 09bbb2c18a111a11c94ff9c1af2320e2530c958e
 
-PODFILE CHECKSUM: 3473195bfb85a78111ac64ba0d113d86af9c4563
+PODFILE CHECKSUM: 4ca2224687844d55210b896c6bd91104872d87e5
 
 COCOAPODS: 1.0.1
