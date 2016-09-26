@@ -28,8 +28,6 @@
 
 @property (nonatomic, weak) IBOutlet NSTabView *tabView;
 
-@property (nonatomic, strong) NSURL *authServerURL;
-
 @end
 
 @implementation RLMCredentialsViewController
@@ -56,14 +54,8 @@
     return classByProvider[provider];
 }
 
-- (instancetype)initWithSyncURL:(NSURL *)syncURL authServerURL:(NSURL *)authServerURL {
-    self = [super initWithNibName:@"CredentialsView" bundle:nil];
-
-    if (self != nil) {
-        self.authServerURL = authServerURL ?: [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:8080", syncURL.host]];
-    }
-
-    return self;
+- (instancetype)init {
+    return [super initWithNibName:@"CredentialsView" bundle:nil];
 }
 
 - (void)viewDidLoad {

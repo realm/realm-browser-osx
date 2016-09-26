@@ -22,6 +22,5 @@
 @interface RLMCredentialViewController : NSViewController
 
 @property (nonatomic, strong) RLMSyncCredential *credential;
-@property (nonatomic, strong) NSURL *authServerURL;
 
 @end

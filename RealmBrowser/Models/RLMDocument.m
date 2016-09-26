@@ -109,11 +109,23 @@
 
     if (self != nil) {
         self.syncURL = syncURL;
-        self.authServerURL = authServerURL;
+
+        if (authServerURL != nil) {
+            self.authServerURL = authServerURL;
+        } else {
+            NSURLComponents *authServerURLComponents = [[NSURLComponents alloc] init];
+
+            authServerURLComponents.scheme = [syncURL.scheme isEqualToString:kSecureRealmURLScheme] ? @"https" : @"http";
+            authServerURLComponents.host = syncURL.host;
+            authServerURLComponents.port = syncURL.port;
+
+            self.authServerURL = authServerURLComponents.URL;
+        }
+
         self.state = RLMDocumentStateNeedsValidCredential;
 
         if (credential != nil) {
-            [self loadWithCredential:credential authServerURL:authServerURL completionHandler:nil];
+            [self loadWithCredential:credential completionHandler:nil];
         }
     }
 
@@ -154,7 +166,7 @@
     return [self loadWithError:error];
 }
 
-- (void)loadWithCredential:(RLMSyncCredential *)credential authServerURL:(NSURL *)authServerURL completionHandler:(void (^)(NSError *error))completionHandler {
+- (void)loadWithCredential:(RLMSyncCredential *)credential completionHandler:(void (^)(NSError *error))completionHandler {
     // Workaround for access token auth, state will be set to RLMDocumentStateUnrecoverableError in case of invalid token
     NSAssert(self.state == RLMDocumentStateNeedsValidCredential || self.state == RLMDocumentStateUnrecoverableError, @"Invalid document state");
 
@@ -163,7 +175,7 @@
     self.credential = credential;
     self.state = RLMDocumentStateLoadingSchema;
 
-    [RLMSyncUser authenticateWithCredential:self.credential authServerURL:authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
+    [RLMSyncUser authenticateWithCredential:self.credential authServerURL:self.authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
         if (user == nil) {
             self.state = RLMDocumentStateNeedsValidCredential;
 

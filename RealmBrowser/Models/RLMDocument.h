@@ -44,6 +44,6 @@ typedef NS_ENUM(NSInteger, RLMDocumentState) {
 
 - (BOOL)loadByPerformingFormatUpgradeWithError:(NSError * __autoreleasing *)error;
 - (BOOL)loadWithEncryptionKey:(NSData *)key error:(NSError * __autoreleasing *)error;
-- (void)loadWithCredential:(RLMSyncCredential *)credential authServerURL:(NSURL *)authServerURL completionHandler:(void (^)(NSError *error))completionHandler;
+- (void)loadWithCredential:(RLMSyncCredential *)credential completionHandler:(void (^)(NSError *error))completionHandler;
 
 @end

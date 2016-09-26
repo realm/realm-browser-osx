@@ -24,8 +24,5 @@
 
 @property (nonatomic, copy) NSString *message;
 @property (nonatomic, strong) RLMSyncCredential *credential;
-@property (nonatomic, copy, readonly) NSURL *authServerURL;
-
-- (instancetype)initWithSyncURL:(NSURL *)syncURL authServerURL:(NSURL *)authServerURL;
 
 @end
