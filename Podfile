@@ -7,7 +7,7 @@ workspace 'RealmBrowser.xcworkspace'
 
 target 'RealmBrowser' do
     pod 'AppSandboxFileAccess'
-    pod 'Realm', git: 'git@github.com:realm/realm-cocoa-private.git', tag: 'v1.1.0-3', submodules: true
+    pod 'Realm', git: 'git@github.com:realm/realm-cocoa-private.git', branch: 'jp-avoid-deadlock-get-session', submodules: true
     pod 'RealmConverter'
 
     target 'RealmBrowserTests' do
