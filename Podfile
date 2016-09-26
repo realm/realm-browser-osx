@@ -1,4 +1,3 @@
-source 'git@github.com:realm/cocoapods-specs-private.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 platform :osx, '10.9'
@@ -8,7 +7,7 @@ workspace 'RealmBrowser.xcworkspace'
 
 target 'RealmBrowser' do
     pod 'AppSandboxFileAccess'
-    pod 'Realm', '1.1.0-2-sync-1.0.0-beta-37.2'
+    pod 'Realm', git: 'git@github.com:realm/realm-cocoa-private.git', tag: 'v1.1.0-3', submodules: true
     pod 'RealmConverter'
 
     target 'RealmBrowserTests' do
