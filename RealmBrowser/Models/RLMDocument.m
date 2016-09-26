@@ -109,7 +109,19 @@
 
     if (self != nil) {
         self.syncURL = syncURL;
-        self.authServerURL = authServerURL;
+
+        if (authServerURL != nil) {
+            self.authServerURL = authServerURL;
+        } else {
+            NSURLComponents *authServerURLComponents = [[NSURLComponents alloc] init];
+
+            authServerURLComponents.scheme = [syncURL.scheme isEqualToString:kSecureRealmURLScheme] ? @"https" : @"http";
+            authServerURLComponents.host = syncURL.host;
+            authServerURLComponents.port = syncURL.port;
+
+            self.authServerURL = authServerURLComponents.URL;
+        }
+
         self.state = RLMDocumentStateNeedsValidCredential;
 
         if (credential != nil) {
