@@ -35,7 +35,7 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
 @implementation RLMDynamicSchemaLoader
 
 - (instancetype)initWithSyncURL:(NSURL *)syncURL user:(RLMSyncUser *)user {
-    NSAssert(user.isValid, @"User must be logged in");
+    NSAssert(user.state == RLMSyncUserStateActive, @"User must be logged in");
 
     self = [super init];
 

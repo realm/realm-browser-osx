@@ -133,9 +133,7 @@
 }
 
 - (void)dealloc {
-    if (self.user.isValid) {
-        [self.user logOut];
-    }
+    [self.user logOut];
 
     if (self.securityScopedURL != nil) {
         //In certain instances, RLMRealm's C++ destructor method will attempt to clean up
