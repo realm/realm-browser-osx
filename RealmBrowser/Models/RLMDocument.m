@@ -167,6 +167,18 @@
         if (user == nil) {
             self.state = RLMDocumentStateNeedsValidCredential;
 
+            // FIXME: workaround for https://github.com/realm/realm-cocoa-private/issues/204
+            if (error.code == RLMSyncErrorHTTPStatusCodeError && [[error.userInfo valueForKey:@"statusCode"] integerValue] == 400) {
+                NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
+
+                [userInfo setValue:@"Invalid credentials." forKey:NSLocalizedDescriptionKey];
+                [userInfo setValue:@"Please check your authentication credentials and that you have an access to the specified URL." forKey:NSLocalizedRecoverySuggestionErrorKey];
+
+                NSError *authenticationError = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
+
+                error = authenticationError;
+            }
+
             completionHandler(error);
         } else {
             self.user = user;
