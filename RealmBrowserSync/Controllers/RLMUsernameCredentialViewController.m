@@ -32,7 +32,7 @@
     NSString *username = self.usernameTextField.stringValue;
     NSString *password = self.passwordTextField.stringValue;
 
-    if (username.length > 0 && password.length) {
+    if (username.length > 0 && password.length > 0) {
         return [RLMSyncCredential credentialWithUsername:username password:password actions:RLMAuthenticationActionsUseExistingAccount];
     }
 

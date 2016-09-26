@@ -648,7 +648,7 @@
 
     [openSyncURLWindowController showWindow:sender completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseOK) {
-            [self openSyncURL:openSyncURLWindowController.url credential:openSyncURLWindowController.credential authServerURL:openSyncURLWindowController.authServerURL];
+            [self openSyncURL:openSyncURLWindowController.url credential:openSyncURLWindowController.credential authServerURL:nil];
         }
 
         [self removeAuxiliaryWindowController:openSyncURLWindowController];
@@ -697,7 +697,7 @@
 
             [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
                 if (returnCode == NSModalResponseOK) {
-                    [self openSyncURL:browserWindowController.selectedURL credential:credential authServerURL:fakeAuthServerURL];
+                    [self openSyncURL:browserWindowController.selectedURL credential:credential authServerURL:nil];
                 }
 
                 [self removeAuxiliaryWindowController:browserWindowController];

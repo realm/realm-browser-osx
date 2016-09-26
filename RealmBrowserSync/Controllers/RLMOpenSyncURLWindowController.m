@@ -32,11 +32,10 @@ NSString * const RLMOpenSyncURLWindowControllerErrorDomain = @"io.realm.realmbro
     [super windowDidLoad];
 
     if (self.url == nil) {
-        [self loadRecentCredentials];
+        [self loadRecentURL];
     }
 
-    // TODO: use recent credentials for credentialsViewController
-    self.credentialsViewController = [[RLMCredentialsViewController alloc] initWithSyncURL:self.url authServerURL:nil];
+    self.credentialsViewController = [[RLMCredentialsViewController alloc] init];
 
     [self.credentialsContainerView addContentSubview:self.credentialsViewController.view];
 }
@@ -69,10 +68,6 @@ NSString * const RLMOpenSyncURLWindowControllerErrorDomain = @"io.realm.realmbro
     return self.credentialsViewController.credential;
 }
 
-- (NSURL *)authServerURL {
-    return self.credentialsViewController.authServerURL;
-}
-
 - (void)updateUI {
     self.openButton.enabled = [self validateCredentials:nil];
 }
@@ -80,7 +75,7 @@ NSString * const RLMOpenSyncURLWindowControllerErrorDomain = @"io.realm.realmbro
 #pragma mark - Actions
 
 - (IBAction)open:(id)sender {
-    [self seaveRecentCredentials];
+    [self seaveRecentURL];
     [self closeWithReturnCode:NSModalResponseOK];
 }
 
@@ -90,11 +85,11 @@ NSString * const RLMOpenSyncURLWindowControllerErrorDomain = @"io.realm.realmbro
 
 #pragma mark - Private
 
-- (void)loadRecentCredentials {
+- (void)loadRecentURL {
     self.url = [[NSUserDefaults standardUserDefaults] URLForKey:urlKey];
 }
 
-- (void)seaveRecentCredentials {
+- (void)seaveRecentURL {
     [[NSUserDefaults standardUserDefaults] setURL:self.url forKey:urlKey];
 }
 

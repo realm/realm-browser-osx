@@ -199,14 +199,14 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 }
 
 - (void)handleSyncCredentials {
-    self.credentialsController = [[RLMCredentialsWindowController alloc] initWithSyncURL:self.document.syncURL authServerURL:self.document.authServerURL];
+    self.credentialsController = [[RLMCredentialsWindowController alloc] init];
     self.credentialsController.credential = self.document.credential;
 
     [self.credentialsController showSheetForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseOK) {
             [self showLoadingIndicator];
 
-            [self.document loadWithCredential:self.credentialsController.credential authServerURL:self.credentialsController.authServerURL completionHandler:^(NSError *error) {
+            [self.document loadWithCredential:self.credentialsController.credential completionHandler:^(NSError *error) {
                 [self hideLoadingIndicator];
 
                 // TODO: handle error code properly

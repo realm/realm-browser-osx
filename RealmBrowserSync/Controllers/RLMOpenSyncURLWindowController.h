@@ -14,6 +14,5 @@
 
 @property (nonatomic, copy) NSURL *url;
 @property (nonatomic, strong, readonly) RLMSyncCredential *credential;
-@property (nonatomic, strong, readonly) NSURL* authServerURL;
 
 @end
