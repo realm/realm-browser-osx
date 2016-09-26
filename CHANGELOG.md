@@ -1,6 +1,9 @@
-x.x.x Release notes (yyyy-MM-dd)
+1.0.2 Release notes (2016-08-30)
 =============================================================
+* Updated Realm Browser app and file format icons to Realm's new look
 * Adding support for optional fields (Java exporter)
+* Improved Realm file discovery in "Open Common Location"
+* Added the ability for multiple CSV file importing
 
 0.103.1 Release notes (2016-05-20)
 =============================================================
