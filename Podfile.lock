@@ -16,30 +16,30 @@ PODS:
 
 DEPENDENCIES:
   - AppSandboxFileAccess
-  - Realm (from `git@github.com:realm/realm-cocoa-private.git`, branch `jp-avoid-deadlock-get-session`)
+  - Realm (from `https://github.com/realm/realm-cocoa.git`, tag `v2.0.0`)
   - RealmConverter
 
 EXTERNAL SOURCES:
   Realm:
-    :branch: jp-avoid-deadlock-get-session
-    :git: git@github.com:realm/realm-cocoa-private.git
+    :git: https://github.com/realm/realm-cocoa.git
     :submodules: true
+    :tag: v2.0.0
 
 CHECKOUT OPTIONS:
   Realm:
-    :commit: 8a1f37a49fb4108662c4f38adb58af64d6487a0f
-    :git: git@github.com:realm/realm-cocoa-private.git
+    :git: https://github.com/realm/realm-cocoa.git
     :submodules: true
+    :tag: v2.0.0
 
 SPEC CHECKSUMS:
   AppSandboxFileAccess: f3e10b0ba10bbaa6dc6996639ff47836050329c5
   CSwiftV: 2560532e2e5b04d95c36b0f49a8dc745071fa525
   PathKit: b224b6d2c4e75b87f08f45e1c0c610a3195c94e5
-  Realm: 4d9a563b620fa1cedededb6188315ad505a5daae
+  Realm: 6dda421ae4b3e9a09742fc2cf4b876d459cbedcd
   RealmConverter: 816ad9621bdd59702bc2825abbcc8cc77e2997b3
   SSZipArchive: '0847403f612553a361f9b44f1c7e135cefbc668d'
   TGSpreadsheetWriter: '09bbb2c18a111a11c94ff9c1af2320e2530c958e'
 
-PODFILE CHECKSUM: e7980d0a5542fd2255e9972bdf204f1b57c947f1
+PODFILE CHECKSUM: ae0b79f1a9a7aea1270edd781256e2bcf4ddcb0c
 
 COCOAPODS: 1.0.1
