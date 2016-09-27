@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="RLMWelcomeWindowController">
+            <connections>
+                <outlet property="versionLabel" destination="d8y-tU-We2" id="Ixo-dt-jlm"/>
+                <outlet property="window" destination="QvC-M9-y7g" id="tPn-hU-CKU"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="alertPanel" id="QvC-M9-y7g">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" fullSizeContentView="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="240" width="328" height="356"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <view key="contentView" id="EiT-Mj-1SZ">
+                <rect key="frame" x="0.0" y="0.0" width="328" height="356"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HT7-i3-OIV">
+                        <rect key="frame" x="100" y="208" width="128" height="128"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="128" id="31v-S2-i97"/>
+                            <constraint firstAttribute="height" constant="128" id="StA-4I-FIs"/>
+                        </constraints>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSApplicationIcon" id="WyG-Ay-hEy"/>
+                    </imageView>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gv9-Uj-hma">
+                        <rect key="frame" x="74" y="100" width="180" height="25"/>
+                        <buttonCell key="cell" type="roundTextured" title="Open Realm File" bezelStyle="texturedRounded" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="r7d-tb-9Z4">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="openRealmFile:" target="-2" id="ONh-eX-JOZ"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fja-zK-Fr7">
+                        <rect key="frame" x="74" y="70" width="180" height="25"/>
+                        <buttonCell key="cell" type="roundTextured" title="Open Realm URL" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="NTX-Yk-erf">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="openRealmURL:" target="-2" id="Nut-E7-DzJ"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Km5-cx-yXx">
+                        <rect key="frame" x="74" y="28" width="180" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="180" id="3jZ-Qi-YCW"/>
+                        </constraints>
+                        <buttonCell key="cell" type="roundTextured" title="Connect to Object Server" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pSs-le-9RI">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="connecToServer:" target="-2" id="aVy-d4-PAQ"/>
+                        </connections>
+                    </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nne-hB-R5G">
+                        <rect key="frame" x="26" y="161" width="277" height="27"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Welcome to Realm Browser" id="Kmz-bP-M1u">
+                            <font key="font" size="22" name="HelveticaNeue"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="d8y-tU-We2">
+                        <rect key="frame" x="148" y="144" width="32" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="1.0.2" id="irQ-aA-UVg">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="HT7-i3-OIV" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="6im-Ie-oiv"/>
+                    <constraint firstItem="nne-hB-R5G" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="CJa-Nv-yZa"/>
+                    <constraint firstItem="Km5-cx-yXx" firstAttribute="width" secondItem="Gv9-Uj-hma" secondAttribute="width" id="DsA-2P-Q7W"/>
+                    <constraint firstItem="fja-zK-Fr7" firstAttribute="top" secondItem="Gv9-Uj-hma" secondAttribute="bottom" constant="8" symbolic="YES" id="Irp-R2-u8n"/>
+                    <constraint firstItem="HT7-i3-OIV" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="Jew-t3-IrO"/>
+                    <constraint firstAttribute="bottom" secondItem="Km5-cx-yXx" secondAttribute="bottom" constant="30" id="LCG-fE-eV3"/>
+                    <constraint firstItem="Gv9-Uj-hma" firstAttribute="top" secondItem="d8y-tU-We2" secondAttribute="bottom" constant="20" id="MGq-YU-Djr"/>
+                    <constraint firstItem="d8y-tU-We2" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="SzY-aW-7Av"/>
+                    <constraint firstItem="HT7-i3-OIV" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="100" id="UYL-Mn-Afc"/>
+                    <constraint firstItem="d8y-tU-We2" firstAttribute="top" secondItem="nne-hB-R5G" secondAttribute="bottom" id="aLi-2a-h02"/>
+                    <constraint firstItem="Gv9-Uj-hma" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="jli-d5-B9X"/>
+                    <constraint firstItem="nne-hB-R5G" firstAttribute="top" secondItem="HT7-i3-OIV" secondAttribute="bottom" constant="20" id="lwI-45-UWG"/>
+                    <constraint firstItem="Km5-cx-yXx" firstAttribute="top" secondItem="fja-zK-Fr7" secondAttribute="bottom" constant="20" id="oHU-TY-cYN"/>
+                    <constraint firstItem="fja-zK-Fr7" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="oaw-4P-xkV"/>
+                    <constraint firstItem="fja-zK-Fr7" firstAttribute="width" secondItem="Gv9-Uj-hma" secondAttribute="width" id="sfZ-wF-rU5"/>
+                    <constraint firstItem="Km5-cx-yXx" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="zaQ-vZ-HyV"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="895" y="585"/>
+        </window>
+    </objects>
+    <resources>
+        <image name="NSApplicationIcon" width="128" height="128"/>
+    </resources>
+</document>

@@ -17,15 +17,22 @@
 ////////////////////////////////////////////////////////////////////////////
 
 @import Realm;
+@import Realm.Private;
 @import RealmConverter;
+@import AppSandboxFileAccess;
 
 #import "RLMBrowserConstants.h"
 #import "RLMApplicationDelegate.h"
+#import "RLMDocumentController.h"
+
 #import "RLMTestDataGenerator.h"
 #import "RLMUtils.h"
 #import "TestClasses.h"
 
-#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
+#import "RLMWelcomeWindowController.h"
+#import "RLMOpenSyncURLWindowController.h"
+#import "RLMConnectToServerWindowController.h"
+#import "RLMSyncServerBrowserWindowController.h"
 
 @interface RLMApplicationDelegate ()
 
@@ -36,52 +43,71 @@
 
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
-@property (nonatomic, assign) BOOL didLoadFile;
-
 @property (nonatomic, strong) NSMetadataQuery *realmQuery;
 @property (nonatomic, strong) NSMetadataQuery *appQuery;
 @property (nonatomic, strong) NSMetadataQuery *projQuery;
 @property (nonatomic, strong) NSArray *groupedFileItems;
 
+@property (nonatomic, strong) NSMutableArray *auxiliaryWindowControllers;
+
 @end
 
 @implementation RLMApplicationDelegate
+
+- (void)handleGetURLEvent:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
+    NSString* urlString = [event paramDescriptorForKeyword:keyDirectObject].stringValue;
+
+    NSURL *realmURL = [NSURL URLWithString:urlString];
+
+    [self openSyncURL:realmURL credential:nil authServerURL:nil];
+}
+
+- (void)applicationWillFinishLaunching:(NSNotification *)notification {
+    // Will set sharedController
+    [RLMDocumentController new];
+
+    [[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleGetURLEvent:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
+}
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification
 {
     [[NSUserDefaults standardUserDefaults] setObject:@(kTopTipDelay) forKey:@"NSInitialToolTipDelay"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-    if (!self.didLoadFile && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
-        [NSApp sendAction:self.openMenuItem.action to:self.openMenuItem.target from:self];
+    [RLMSyncManager sharedManager].disableSSLValidation = YES;
+    [RLMSyncManager sharedManager].errorHandler = ^(NSError *error, RLMSyncSession *session) {
+        [NSApp presentError:error];
+    };
 
-        self.realmQuery = [[NSMetadataQuery alloc] init];
-        [self.realmQuery setSortDescriptors:@[[[NSSortDescriptor alloc] initWithKey:(id)kMDItemContentModificationDate ascending:NO]]];
-        NSPredicate *realmPredicate = [NSPredicate predicateWithFormat:@"kMDItemFSName like[c] '*.realm'"];
-        self.realmQuery.predicate = realmPredicate;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(realmQueryNote:) name:nil object:self.realmQuery];
-        [self.realmQuery startQuery];
-        
-        self.appQuery = [[NSMetadataQuery alloc] init];
-        NSPredicate *appPredicate = [NSPredicate predicateWithFormat:@"kMDItemFSName like[c] '*.app'"];
-        self.appQuery.predicate = appPredicate;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(otherQueryNote:) name:nil object:self.appQuery];
+    self.realmQuery = [[NSMetadataQuery alloc] init];
+    [self.realmQuery setSortDescriptors:@[[[NSSortDescriptor alloc] initWithKey:(id)kMDItemContentModificationDate ascending:NO]]];
+    NSPredicate *realmPredicate = [NSPredicate predicateWithFormat:@"kMDItemFSName like[c] '*.realm'"];
+    self.realmQuery.predicate = realmPredicate;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(realmQueryNote:) name:nil object:self.realmQuery];
+    [self.realmQuery startQuery];
+    
+    self.appQuery = [[NSMetadataQuery alloc] init];
+    NSPredicate *appPredicate = [NSPredicate predicateWithFormat:@"kMDItemFSName like[c] '*.app'"];
+    self.appQuery.predicate = appPredicate;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(otherQueryNote:) name:nil object:self.appQuery];
 
-        self.projQuery = [[NSMetadataQuery alloc] init];
-        NSPredicate *projPredicate = [NSPredicate predicateWithFormat:@"kMDItemFSName like[c] '*.xcodeproj'"];
-        self.projQuery.predicate = projPredicate;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(otherQueryNote:) name:nil object:self.projQuery];
+    self.projQuery = [[NSMetadataQuery alloc] init];
+    NSPredicate *projPredicate = [NSPredicate predicateWithFormat:@"kMDItemFSName like[c] '*.xcodeproj'"];
+    self.projQuery.predicate = projPredicate;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(otherQueryNote:) name:nil object:self.projQuery];
 
-        self.dateFormatter = [[NSDateFormatter alloc] init];
-        self.dateFormatter.dateStyle = NSDateFormatterMediumStyle;
-        self.dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    self.dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+    self.dateFormatter.timeStyle = NSDateFormatterShortStyle;
+
+    if (NSApp.windows.count == 0 && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
+        [self showWelcomeWindow:nil];
     }
 }
 
 - (BOOL)application:(NSApplication *)application openFile:(NSString *)filename
 {
     [self openFileAtURL:[NSURL fileURLWithPath:filename]];
-    self.didLoadFile = YES;
 
     return YES;
 }
@@ -101,8 +127,7 @@
         if ([alert runModal] != NSAlertFirstButtonReturn)
             return;
     }
-    
-    self.didLoadFile = YES;
+
     for (NSString *filename in filenames)
         [self openFileAtURL:[NSURL fileURLWithPath:filename]];
 }
@@ -114,7 +139,24 @@
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)application hasVisibleWindows:(BOOL)flag
 {
+    if (!flag) {
+        [self showWelcomeWindow:nil];
+    }
+
     return NO;
+}
+
+#pragma mark - Welcome Window
+
+- (IBAction)showWelcomeWindow:(id)sender {
+    RLMWelcomeWindowController *welcomeWindowController = [[RLMWelcomeWindowController alloc] init];
+
+    [welcomeWindowController.window center];
+    [welcomeWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
+        [self removeAuxiliaryWindowController:welcomeWindowController];
+    }];
+
+    [self addAuxiliaryWindowController:welcomeWindowController];
 }
 
 #pragma mark - Event handling
@@ -513,18 +555,26 @@
 
 #pragma mark - Private methods
 
--(void)openFileWithMenuItem:(NSMenuItem *)menuItem
+- (void)openFileWithMenuItem:(NSMenuItem *)menuItem
 {
     [self openFileAtURL:menuItem.representedObject];
 }
 
--(void)openFileAtURL:(NSURL *)url
+- (void)openFileAtURL:(NSURL *)url
 {
-    NSDocumentController *documentController = [[NSDocumentController alloc] init];
-    [documentController openDocumentWithContentsOfURL:url
-                                              display:YES
-                                    completionHandler:^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error){
-                                    }];
+    [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:url display:YES completionHandler:^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error) {
+        if (error != nil) {
+            [NSApp presentError:error];
+        }
+    }];
+}
+
+- (void)openSyncURL:(NSURL *)syncURL credential:(RLMSyncCredential *)credential authServerURL:(NSURL *)authServerURL {
+    [(RLMDocumentController *)[NSDocumentController sharedDocumentController] openDocumentWithContentsOfSyncURL:syncURL credential:credential authServerURL:authServerURL display:YES completionHandler:^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error) {
+        if (error != nil) {
+            [NSApp presentError:error];
+        }
+    }];
 }
 
 - (void)showSavePanelStringFromDirectory:(NSURL *)directoryUrl completionHandler:(void(^)(BOOL userSelectesFile, NSURL *selectedFile))completion
@@ -555,6 +605,105 @@
         }
         else {
             completion(NO, nil);
+        }
+    }];
+}
+
+#pragma mark - Auxiliary Windows Management
+
+- (void)addAuxiliaryWindowController:(NSWindowController *)windowController {
+    if (self.auxiliaryWindowControllers == nil) {
+        self.auxiliaryWindowControllers = [NSMutableArray new];
+    }
+
+    [self.auxiliaryWindowControllers addObject:windowController];
+}
+
+- (void)removeAuxiliaryWindowController:(NSWindowController *)windowController {
+    [self.auxiliaryWindowControllers removeObject:windowController];
+}
+
+- (__kindof NSWindowController *)auxiliaryWindowControllerOfClass:(Class)windowControllerClass {
+    for (NSWindowController *windowController in self.auxiliaryWindowControllers) {
+        if ([windowController isKindOfClass:windowControllerClass]) {
+
+            return windowController;
+        }
+    }
+
+    return nil;
+}
+
+#pragma mark - Sync
+
+- (IBAction)openSyncURL:(id)sender {
+    RLMOpenSyncURLWindowController *openSyncURLWindowController = [self auxiliaryWindowControllerOfClass:[RLMOpenSyncURLWindowController class]];
+
+    if (openSyncURLWindowController != nil) {
+        [openSyncURLWindowController.window makeKeyAndOrderFront:sender];
+        return;
+    }
+
+    openSyncURLWindowController = [[RLMOpenSyncURLWindowController alloc] init];
+
+    [openSyncURLWindowController showWindow:sender completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode == NSModalResponseOK) {
+            [self openSyncURL:openSyncURLWindowController.url credential:openSyncURLWindowController.credential authServerURL:nil];
+        }
+
+        [self removeAuxiliaryWindowController:openSyncURLWindowController];
+    }];
+
+    [self addAuxiliaryWindowController:openSyncURLWindowController];
+}
+
+- (IBAction)connectToSyncServer:(id)sender {
+    RLMConnectToServerWindowController *connectToServerWindowController = [self auxiliaryWindowControllerOfClass:[RLMConnectToServerWindowController class]];
+
+    if (connectToServerWindowController != nil) {
+        [connectToServerWindowController.window makeKeyAndOrderFront:sender];
+        return;
+    }
+
+    connectToServerWindowController = [[RLMConnectToServerWindowController alloc] init];
+
+    [connectToServerWindowController showWindow:sender completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode == NSModalResponseOK) {
+            NSURL *serverURL = connectToServerWindowController.serverURL;
+            NSString *accessToken = connectToServerWindowController.adminAccessToken;
+
+            [self connectToServerAtURL:serverURL adminAccessToken:accessToken];
+        }
+
+        [self removeAuxiliaryWindowController:connectToServerWindowController];
+    }];
+
+    [self addAuxiliaryWindowController:connectToServerWindowController];
+}
+
+- (void)connectToServerAtURL:(NSURL *)serverURL adminAccessToken:(NSString *)adminAccessToken {
+    // FIXME: remove after it's possible to pass nil identity to create credential
+    NSString *identity = [NSUUID UUID].UUIDString;
+    RLMSyncCredential *credential = [RLMSyncCredential credentialWithAccessToken:adminAccessToken identity:identity];
+
+    // FIXME: remove after it's possible to pass nil for authServerURL to authenticate user
+    NSURL *fakeAuthServerURL = [NSURL URLWithString:@"http://fake-realm-auth-server"];
+
+    [RLMSyncUser authenticateWithCredential:credential authServerURL:fakeAuthServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
+        if (user == nil) {
+            [NSApp presentError:error];
+        } else {
+            RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] initWithServerURL:serverURL user:user];
+
+            [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
+                if (returnCode == NSModalResponseOK) {
+                    [self openSyncURL:browserWindowController.selectedURL credential:credential authServerURL:nil];
+                }
+
+                [self removeAuxiliaryWindowController:browserWindowController];
+            }];
+            
+            [self addAuxiliaryWindowController:browserWindowController];
         }
     }];
 }

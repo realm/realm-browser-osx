@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -22,11 +22,11 @@
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <menu title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
             <items>
-                <menuItem title="RealmBrowser" id="1Xt-HY-uBw">
+                <menuItem title="Realm Browser" id="1Xt-HY-uBw">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="RealmBrowser" systemMenu="apple" id="uQy-DD-JDr">
+                    <menu key="submenu" title="Realm Browser" systemMenu="apple" id="uQy-DD-JDr">
                         <items>
-                            <menuItem title="About RealmBrowser" id="5kV-Vb-QxS">
+                            <menuItem title="About Realm Browser" id="5kV-Vb-QxS">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="orderFrontStandardAboutPanel:" target="-1" id="Exp-CZ-Vem"/>
@@ -40,7 +40,7 @@
                                 <menu key="submenu" title="Services" systemMenu="services" id="hz9-B4-Xy5"/>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="4je-JR-u6R"/>
-                            <menuItem title="Hide RealmBrowser" keyEquivalent="h" id="Olw-nP-bQN">
+                            <menuItem title="Hide Realm Browser" keyEquivalent="h" id="Olw-nP-bQN">
                                 <connections>
                                     <action selector="hide:" target="-1" id="PnN-Uc-m68"/>
                                 </connections>
@@ -58,7 +58,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="kCx-OE-vgT"/>
-                            <menuItem title="Quit RealmBrowser" keyEquivalent="q" id="4sb-4s-VLi">
+                            <menuItem title="Quit Realm Browser" keyEquivalent="q" id="4sb-4s-VLi">
                                 <connections>
                                     <action selector="terminate:" target="-1" id="Te7-pn-YzF"/>
                                 </connections>
@@ -97,6 +97,17 @@
                                 </menu>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
+                            <menuItem title="Open Sync URL..." keyEquivalent="O" id="iTJ-09-gX5">
+                                <connections>
+                                    <action selector="openSyncURL:" target="PLw-ns-0qo" id="bt7-BD-wFI"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Connect to Object Server…" keyEquivalent="k" id="u5P-s1-qhf">
+                                <connections>
+                                    <action selector="connectToSyncServer:" target="PLw-ns-0qo" id="6MJ-bq-efe"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="9zf-QU-MRX"/>
                             <menuItem title="Close" keyEquivalent="w" id="DVo-aG-piG">
                                 <connections>
                                     <action selector="performClose:" target="-1" id="HmO-Ls-i7Q"/>
@@ -283,6 +294,13 @@ CA
                                     <action selector="performZoom:" target="-1" id="DIl-cC-cCs"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="AN0-IA-yWy"/>
+                            <menuItem title="Welcome to Realm Browser" id="du5-RL-cMe">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="showWelcomeWindow:" target="PLw-ns-0qo" id="Hcm-oE-HvR"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="eu3-7i-yIM"/>
                             <menuItem title="Bring All to Front" id="LE2-aR-0XJ">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -297,7 +315,7 @@ CA
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                         <items>
-                            <menuItem title="RealmBrowser Help" keyEquivalent="?" id="FKE-Sm-Kum">
+                            <menuItem title="Realm Browser Help" keyEquivalent="?" id="FKE-Sm-Kum">
                                 <connections>
                                     <action selector="showHelp:" target="-1" id="y7X-2Q-9no"/>
                                 </connections>

@@ -22,7 +22,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES" unifiedTitleAndToolbar="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
             <rect key="contentRect" x="247" y="192" width="977" height="476"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <value key="minSize" type="size" width="440" height="200"/>
             <view key="contentView" id="gIp-Ho-8D9">
                 <rect key="frame" x="0.0" y="0.0" width="977" height="476"/>
@@ -68,7 +68,7 @@
                                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="RE7-fm-65w">
                                                                             <rect key="frame" x="6" y="2" width="209" height="14"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Header" id="Z56-IJ-NgS">
-                                                                                <font key="font" metaFont="systemSemibold" size="11"/>
+                                                                                <font key="font" metaFont="systemBold" size="11"/>
                                                                                 <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>

@@ -17,12 +17,33 @@
 ////////////////////////////////////////////////////////////////////////////
 
 @import Cocoa;
+@import Realm;
 
 #import "RLMRealmNode.h"
 
+typedef NS_ENUM(NSInteger, RLMDocumentState) {
+    RLMDocumentStateRequiresFormatUpgrade,
+    RLMDocumentStateNeedsEncryptionKey,
+    RLMDocumentStateNeedsValidCredential,
+    RLMDocumentStateLoadingSchema,
+    RLMDocumentStateLoaded,
+    RLMDocumentStateUnrecoverableError
+};
+
 @interface RLMDocument : NSDocument
 
-@property (nonatomic, readonly) BOOL potentiallyEncrypted;
+@property (nonatomic, assign) RLMDocumentState state;
 @property (nonatomic, strong) IBOutlet RLMRealmNode *presentedRealm;
+
+@property (nonatomic, copy, readonly) NSURL *syncURL;
+@property (nonatomic, copy, readonly) NSURL *authServerURL;
+@property (nonatomic, strong, readonly) RLMSyncCredential *credential;
+
+- (instancetype)initWithContentsOfFileURL:(NSURL *)fileURL error:(NSError **)outError;
+- (instancetype)initWithContentsOfSyncURL:(NSURL *)syncURL credential:(RLMSyncCredential *)credential authServerURL:(NSURL *)authServerURL error:(NSError **)outError;
+
+- (BOOL)loadByPerformingFormatUpgradeWithError:(NSError * __autoreleasing *)error;
+- (BOOL)loadWithEncryptionKey:(NSData *)key error:(NSError * __autoreleasing *)error;
+- (void)loadWithCredential:(RLMSyncCredential *)credential completionHandler:(void (^)(NSError *error))completionHandler;
 
 @end

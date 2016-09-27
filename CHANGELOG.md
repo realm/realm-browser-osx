@@ -1,3 +1,12 @@
+2.0.0 Release notes (2016-09-27)
+=============================================================
+This release introduces support for the Realm Mobile Platform!
+See <https://realm.io/news/introducing-realm-mobile-platform/> for an overview
+of these great new features.
+
+* Support for Realm Mobile Platform
+* Fixed export to CSV files
+
 1.0.2 Release notes (2016-08-30)
 =============================================================
 * Updated Realm Browser app and file format icons to Realm's new look

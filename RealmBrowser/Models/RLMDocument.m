@@ -16,23 +16,23 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+@import AppSandboxFileAccess;
+
 #import "RLMDocument.h"
-
 #import "RLMBrowserConstants.h"
-#import "RLMClassNode.h"
-#import "RLMArrayNode.h"
-#import "RLMClassProperty.h"
-#import "RLMRealmOutlineNode.h"
+#import "RLMDynamicSchemaLoader.h"
 #import "RLMRealmBrowserWindowController.h"
-#import "RLMAlert.h"
-
-#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
 
 @interface RLMDocument ()
 
-@property (nonatomic, assign, readwrite) BOOL potentiallyEncrypted;
 @property (nonatomic, strong) NSURL *securityScopedURL;
-@property (nonatomic) RLMNotificationToken *changeNotificationToken;
+
+@property (nonatomic, copy) NSURL *syncURL;
+@property (nonatomic, copy) NSURL *authServerURL;
+@property (nonatomic, strong) RLMSyncCredential *credential;
+
+@property (nonatomic, strong) RLMSyncUser *user;
+@property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
 
 @end
 
@@ -40,133 +40,200 @@
 
 - (instancetype)initWithContentsOfURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError **)outError
 {
-    __block BOOL success = NO;
-    
-    if (self = [super init]) {
-        if (![[typeName lowercaseString] isEqualToString:kRealmUTIIdentifier]) {
-            return nil;
-        }
-        
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        if (![fileManager fileExistsAtPath:absoluteURL.path]) {
-            return nil;
-        }
-        NSString *lastComponent = [absoluteURL lastPathComponent];
-        NSString *extension = [absoluteURL pathExtension];
-        
-        if (![[extension lowercaseString] isEqualToString:kRealmFileExtension]) {
-            return nil;
-        }
-        
-        NSURL *folderURL = absoluteURL;
-        BOOL isDir = NO;
-        if (([[NSFileManager defaultManager] fileExistsAtPath:folderURL.path isDirectory:&isDir] && isDir == NO)) {
-            folderURL = [folderURL URLByDeletingLastPathComponent];
-        }
-        
-        AppSandboxFileAccess *sandBoxAccess = [AppSandboxFileAccess fileAccess];
-        [sandBoxAccess requestAccessPermissionsForFileURL:folderURL persistPermission:YES withBlock:^(NSURL *securityScopedFileURL, NSData *bookmarkData){
-            self.securityScopedURL = securityScopedFileURL;
-        }];
-        
-        if (self.securityScopedURL == nil)
-            return nil;
-        
-        NSArray *fileNameComponents = [lastComponent componentsSeparatedByString:@"."];
-        NSString *realmName = [fileNameComponents firstObject];
-        
-        RLMRealmNode *realmNode = [[RLMRealmNode alloc] initWithName:realmName url:absoluteURL.path];
-        __block __weak RLMDocument *ws = self;
-        
-        self.fileURL = absoluteURL;
-        
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            [self.securityScopedURL startAccessingSecurityScopedResource];
-            
-            //Check to see if first the Realm file needs upgrading, and
-            //if it does, prompt the user to confirm with proceeding
-            if ([realmNode realmFileRequiresFormatUpgrade]) {
-                if (![RLMAlert showFileFormatUpgradeDialogWithFileName:realmName]) {
-                    return;
-                }
+    if (![typeName.lowercaseString isEqualToString:kRealmUTIIdentifier]) {
+        return nil;
+    }
+
+    if (absoluteURL.isFileURL) {
+        return [self initWithContentsOfFileURL:absoluteURL error:outError];
+    } else {
+        return [self initWithContentsOfSyncURL:absoluteURL credential:nil authServerURL:nil error:outError];
+    }
+}
+
+- (instancetype)initWithContentsOfFileURL:(NSURL *)fileURL error:(NSError **)outError {
+    if (![fileURL.pathExtension.lowercaseString isEqualToString:kRealmFileExtension]) {
+        return nil;
+    }
+
+    BOOL isDir = NO;
+    if (!([[NSFileManager defaultManager] fileExistsAtPath:fileURL.path isDirectory:&isDir] && isDir == NO)) {
+        return nil;
+    }
+
+    NSURL *folderURL = fileURL.URLByDeletingLastPathComponent;
+
+    self = [super init];
+
+    if (self != nil) {
+        self.fileURL = fileURL;
+
+        // In case we're trying to open Realm file located in app's container directory there is no reason to ask access permissions
+        if (![[NSFileManager defaultManager] isWritableFileAtPath:folderURL.path]) {
+            [[AppSandboxFileAccess fileAccess] requestAccessPermissionsForFileURL:folderURL persistPermission:YES withBlock:^(NSURL *securityScopedFileURL, NSData *bookmarkData) {
+                self.securityScopedURL = securityScopedFileURL;
+            }];
+
+            if (self.securityScopedURL == nil) {
+                return nil;
             }
-            
+        }
+
+        [self.securityScopedURL startAccessingSecurityScopedResource];
+
+        self.presentedRealm = [[RLMRealmNode alloc] initWithFileURL:self.fileURL];
+
+        if ([self.presentedRealm realmFileRequiresFormatUpgrade]) {
+            self.state = RLMDocumentStateRequiresFormatUpgrade;
+        } else {
             NSError *error;
-            if ([realmNode connect:&error] || error.code == 2) {
-                if (error) {
-                    if (![RLMAlert showEncryptionConfirmationDialogWithFileName:realmName])
-                        return;
-                    
-                    ws.potentiallyEncrypted = YES;
-                }
-                    
-                ws.presentedRealm  = realmNode;
-                
-                ws.changeNotificationToken = [realmNode.realm addNotificationBlock:^(NSString *notification, RLMRealm *realm) {
-                    for (RLMRealmBrowserWindowController *windowController in ws.windowControllers) {
-                        [windowController reloadAfterEdit];
+            if (![self loadWithError:&error]) {
+                if (error.code == RLMErrorFileAccess) {
+                    self.state = RLMDocumentStateNeedsEncryptionKey;
+                } else {
+                    if (outError != nil) {
+                        *outError = error;
                     }
-                }];
-                
-                NSDocumentController *documentController = [NSDocumentController sharedDocumentController];
-                [documentController noteNewRecentDocumentURL:absoluteURL];
-                
-                for (RLMRealmBrowserWindowController *windowController in ws.windowControllers) {
-                    [windowController realmDidLoad];
+
+                    return nil;
                 }
-                
-                success = YES;
             }
-            else if (error) {
-                [[NSApplication sharedApplication] presentError:error];
-            }
+        }
+    }
+
+    return self;
+}
+
+- (instancetype)initWithContentsOfSyncURL:(NSURL *)syncURL credential:(RLMSyncCredential *)credential authServerURL:(NSURL *)authServerURL error:(NSError **)outError {
+    self = [super init];
+
+    if (self != nil) {
+        self.syncURL = syncURL;
+
+        if (authServerURL != nil) {
+            self.authServerURL = authServerURL;
+        } else {
+            NSURLComponents *authServerURLComponents = [[NSURLComponents alloc] init];
+
+            authServerURLComponents.scheme = [syncURL.scheme isEqualToString:kSecureRealmURLScheme] ? @"https" : @"http";
+            authServerURLComponents.host = syncURL.host;
+            authServerURLComponents.port = syncURL.port;
+
+            self.authServerURL = authServerURLComponents.URL;
+        }
+
+        self.state = RLMDocumentStateNeedsValidCredential;
+
+        if (credential != nil) {
+            [self loadWithCredential:credential completionHandler:nil];
+        }
+    }
+
+    return self;
+}
+
+- (void)dealloc {
+    [self.user logOut];
+
+    if (self.securityScopedURL != nil) {
+        //In certain instances, RLMRealm's C++ destructor method will attempt to clean up
+        //specific auxiliary files belonging to this realm file.
+        //If the destructor call occurs after the access to the sandbox resource has been released here,
+        //and it attempts to delete any files, RLMRealm will throw an exception.
+        //Mac OS X apps only have a finite number of open sandbox resources at any given time, so while it's not necessary
+        //to release them straight away, it is still good practice to do so eventually.
+        //As such, this will release the handle a minute, after closing the document.
+        NSURL *scopedURL = self.securityScopedURL;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(60 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [scopedURL stopAccessingSecurityScopedResource];
         });
     }
-    
-    return success ? self : nil;
 }
 
-- (id)initForURL:(NSURL *)urlOrNil withContentsOfURL:(NSURL *)contentsURL ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError
-{
-    return nil;
+- (BOOL)loadByPerformingFormatUpgradeWithError:(NSError **)error {
+    NSAssert(self.state == RLMDocumentStateRequiresFormatUpgrade, @"Invalid document state");
+
+    return [self loadWithError:error];
 }
 
-- (void)dealloc
-{
-    [self.changeNotificationToken stop];
-    
-    //In certain instances, RLMRealm's C++ destructor method will attempt to clean up
-    //specific auxiliary files belonging to this realm file.
-    //If the destructor call occurs after the access to the sandbox resource has been released here,
-    //and it attempts to delete any files, RLMRealm will throw an exception.
-    //Mac OS X apps only have a finite number of open sandbox resources at any given time, so while it's not necessary
-    //to release them straight away, it is still good practice to do so eventually.
-    //As such, this will release the handle a minute, after closing the document.
-    NSURL *scopedURL = self.securityScopedURL;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(60 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [scopedURL stopAccessingSecurityScopedResource];
-    });
+- (BOOL)loadWithEncryptionKey:(NSData *)key error:(NSError **)error {
+    NSAssert(self.state == RLMDocumentStateNeedsEncryptionKey, @"Invalid document state");
+
+    self.presentedRealm.encryptionKey = key;
+
+    return [self loadWithError:error];
 }
 
-#pragma mark - Public methods - NSDocument overrides - Creating and Managing Window Controllers
+- (void)loadWithCredential:(RLMSyncCredential *)credential completionHandler:(void (^)(NSError *error))completionHandler {
+    // Workaround for access token auth, state will be set to RLMDocumentStateUnrecoverableError in case of invalid token
+    NSAssert(self.state == RLMDocumentStateNeedsValidCredential || self.state == RLMDocumentStateUnrecoverableError, @"Invalid document state");
+
+    completionHandler = completionHandler ?: ^(NSError *error) {};
+
+    self.credential = credential;
+    self.state = RLMDocumentStateLoadingSchema;
+
+    [RLMSyncUser authenticateWithCredential:self.credential authServerURL:self.authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
+        if (user == nil) {
+            self.state = RLMDocumentStateNeedsValidCredential;
+
+            // FIXME: workaround for https://github.com/realm/realm-cocoa-private/issues/204
+            if (error.code == RLMSyncErrorHTTPStatusCodeError && [[error.userInfo valueForKey:@"statusCode"] integerValue] == 400) {
+                NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
+
+                [userInfo setValue:@"Invalid credentials." forKey:NSLocalizedDescriptionKey];
+                [userInfo setValue:@"Please check your authentication credentials and that you have an access to the specified URL." forKey:NSLocalizedRecoverySuggestionErrorKey];
+
+                NSError *authenticationError = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
+
+                error = authenticationError;
+            }
+
+            completionHandler(error);
+        } else {
+            self.user = user;
+
+            // FIXME: workaround for loading schema while using dynamic API
+            self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:self.user];
+
+            [self.schemaLoader loadSchemaWithCompletionHandler:^(NSError *error) {
+                self.schemaLoader = nil;
+
+                if (error == nil) {
+                    self.presentedRealm = [[RLMRealmNode alloc] initWithSyncURL:self.syncURL user:self.user];
+
+                    [self loadWithError:&error];
+                } else {
+                    self.state = RLMDocumentStateUnrecoverableError;
+                }
+                
+                completionHandler(error);
+            }];
+        }
+    }];
+}
+
+- (BOOL)loadWithError:(NSError **)error {
+    NSAssert(self.presentedRealm != nil, @"Presented Realm must be created before loading");
+
+    BOOL result = [self.presentedRealm connect:error];
+
+    self.state = result ? RLMDocumentStateLoaded : RLMDocumentStateUnrecoverableError;
+
+    return result;
+}
+
+#pragma mark NSDocument overrides
 
 - (void)makeWindowControllers
 {
     RLMRealmBrowserWindowController *windowController = [[RLMRealmBrowserWindowController alloc] initWithWindowNibName:self.windowNibName];
-    windowController.modelDocument = self;
     [self addWindowController:windowController];
 }
 
 - (NSString *)windowNibName
 {
     return @"RLMDocument";
-}
-
-#pragma mark - Public methods - NSDocument overrides - Loading Document Data
-
-+ (BOOL)canConcurrentlyReadDocumentsOfType:(NSString *)typeName
-{
-    return YES;
 }
 
 - (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError
@@ -183,15 +250,9 @@
     return YES;
 }
 
-#pragma mark - Public methods - NSDocument overrides - Managing Document Windows
-
 - (NSString *)displayName
 {
-    if (self.presentedRealm.name != nil) {
-        return self.presentedRealm.name;
-    }
-    
-    return [super displayName];
+    return self.syncURL ? self.syncURL.absoluteString : self.fileURL.lastPathComponent.stringByDeletingPathExtension;
 }
 
 @end

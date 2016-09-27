@@ -27,7 +27,8 @@ extern const NSUInteger kMaxNumberOfArrayEntriesInToolTip;
 @interface RLMRealmBrowserWindowController : NSWindowController
 
 @property (nonatomic, readonly) RLMNavigationState *currentState;
-@property (nonatomic, weak) RLMDocument *modelDocument;
+
+@property (atomic, assign) RLMDocument *document;
 
 @property (nonatomic, strong) IBOutlet RLMTypeOutlineViewController *outlineViewController;
 @property (nonatomic, strong) IBOutlet RLMInstanceTableViewController *tableViewController;
@@ -45,10 +46,6 @@ extern const NSUInteger kMaxNumberOfArrayEntriesInToolTip;
 
 - (void)newWindowWithNavigationState:(RLMNavigationState *)state;
 
-- (void)realmDidLoad;
-
 - (void)reloadAllWindows;
-
-- (void)reloadAfterEdit;
 
 @end
