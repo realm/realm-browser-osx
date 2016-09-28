@@ -164,7 +164,11 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 - (void)handleFormatUpgrade {
     if ([RLMAlert showFileFormatUpgradeDialogWithFileName:self.document.fileURL.lastPathComponent]) {
         NSError *error;
-        if (![self.document loadByPerformingFormatUpgradeWithError:&error]) {
+        if ([self.document loadByPerformingFormatUpgradeWithError:&error]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self handleDocumentState];
+            });
+        } else {
             [[NSAlert alertWithError:error] beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
                 [self.document close];
             }];
@@ -179,8 +183,16 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
     [self.window beginSheet:self.encryptionController.window completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseOK) {
-            // No errors shoud be here because currently RLMEncryptionKeyWindowController cares about the key
-            [self.document loadWithEncryptionKey:self.encryptionController.encryptionKey error:nil];
+            NSError *error;
+            if ([self.document loadWithEncryptionKey:self.encryptionController.encryptionKey error:&error]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self handleDocumentState];
+                });
+            } else {
+                [[NSAlert alertWithError:error] beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+                    [self.document close];
+                }];
+            }
         } else {
             [self.document close];
         }
@@ -215,7 +227,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
                         [self handleSyncCredentials];
                     }];
                 } else {
-                    [self realmDidLoad];
+                    [self handleDocumentState];
                 }
             }];
         } else {
@@ -677,6 +689,5 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     [self.navigationButtons setEnabled:[navigationStack canNavigateBackward] forSegment:0];
     [self.navigationButtons setEnabled:[navigationStack canNavigateForward] forSegment:1];
 }
-
 
 @end
