@@ -83,21 +83,8 @@
 
         self.presentedRealm = [[RLMRealmNode alloc] initWithFileURL:self.fileURL];
 
-        if ([self.presentedRealm realmFileRequiresFormatUpgrade]) {
-            self.state = RLMDocumentStateRequiresFormatUpgrade;
-        } else {
-            NSError *error;
-            if (![self loadWithError:&error]) {
-                if (error.code == RLMErrorFileAccess) {
-                    self.state = RLMDocumentStateNeedsEncryptionKey;
-                } else {
-                    if (outError != nil) {
-                        *outError = error;
-                    }
-
-                    return nil;
-                }
-            }
+        if (![self loadWithError:outError] && self.state == RLMDocumentStateUnrecoverableError) {
+            return nil;
         }
     }
 
@@ -152,6 +139,8 @@
 
 - (BOOL)loadByPerformingFormatUpgradeWithError:(NSError **)error {
     NSAssert(self.state == RLMDocumentStateRequiresFormatUpgrade, @"Invalid document state");
+
+    self.presentedRealm.disableFormatUpgrade = NO;
 
     return [self loadWithError:error];
 }
@@ -216,11 +205,32 @@
 - (BOOL)loadWithError:(NSError **)error {
     NSAssert(self.presentedRealm != nil, @"Presented Realm must be created before loading");
 
-    BOOL result = [self.presentedRealm connect:error];
+    NSError *loadError;
+    if ([self.presentedRealm connect:&loadError]) {
+        self.state = RLMDocumentStateLoaded;
 
-    self.state = result ? RLMDocumentStateLoaded : RLMDocumentStateUnrecoverableError;
+        return YES;
+    } else {
+        switch (loadError.code) {
+            case RLMErrorFileAccess:
+            self.state = RLMDocumentStateNeedsEncryptionKey;
+            break;
 
-    return result;
+            case RLMErrorFileFormatUpgradeRequired:
+            self.state = RLMDocumentStateRequiresFormatUpgrade;
+            break;
+            
+            default:
+            self.state = RLMDocumentStateUnrecoverableError;
+            break;
+        }
+
+        if (error != nil) {
+            *error = loadError;
+        }
+
+        return NO;
+    }
 }
 
 #pragma mark NSDocument overrides
