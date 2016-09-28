@@ -16,20 +16,8 @@ PODS:
 
 DEPENDENCIES:
   - AppSandboxFileAccess
-  - Realm (from `https://github.com/realm/realm-cocoa.git`, tag `v2.0.0`)
+  - Realm
   - RealmConverter
-
-EXTERNAL SOURCES:
-  Realm:
-    :git: https://github.com/realm/realm-cocoa.git
-    :submodules: true
-    :tag: v2.0.0
-
-CHECKOUT OPTIONS:
-  Realm:
-    :git: https://github.com/realm/realm-cocoa.git
-    :submodules: true
-    :tag: v2.0.0
 
 SPEC CHECKSUMS:
   AppSandboxFileAccess: f3e10b0ba10bbaa6dc6996639ff47836050329c5
@@ -40,6 +28,6 @@ SPEC CHECKSUMS:
   SSZipArchive: '0847403f612553a361f9b44f1c7e135cefbc668d'
   TGSpreadsheetWriter: '09bbb2c18a111a11c94ff9c1af2320e2530c958e'
 
-PODFILE CHECKSUM: ae0b79f1a9a7aea1270edd781256e2bcf4ddcb0c
+PODFILE CHECKSUM: 0d3eb80cdf1b8d6977350c7c5975e913ac207218
 
 COCOAPODS: 1.0.1
