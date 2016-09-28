@@ -30,6 +30,7 @@
 @property (nonatomic, copy) NSURL *syncURL;
 @property (nonatomic, copy) NSURL *authServerURL;
 @property (nonatomic, strong) RLMSyncCredential *credential;
+@property (nonatomic, strong) NSError *error;
 
 @property (nonatomic, strong) RLMSyncUser *user;
 @property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
@@ -202,16 +203,17 @@
     }];
 }
 
-- (BOOL)loadWithError:(NSError **)error {
+- (BOOL)loadWithError:(NSError **)outError {
     NSAssert(self.presentedRealm != nil, @"Presented Realm must be created before loading");
 
-    NSError *loadError;
-    if ([self.presentedRealm connect:&loadError]) {
+    NSError *error;
+    if ([self.presentedRealm connect:&error]) {
         self.state = RLMDocumentStateLoaded;
+        self.error = nil;
 
         return YES;
     } else {
-        switch (loadError.code) {
+        switch (error.code) {
             case RLMErrorFileAccess:
             self.state = RLMDocumentStateNeedsEncryptionKey;
             break;
@@ -225,8 +227,10 @@
             break;
         }
 
-        if (error != nil) {
-            *error = loadError;
+        self.error = error;
+
+        if (outError != nil) {
+            *outError = error;
         }
 
         return NO;
