@@ -23,7 +23,6 @@ def getVersion(String version){
   }
 }
 
-
 node('osx_vegas') {
   stage 'SCM'
   dir('realm-browser') {
@@ -47,20 +46,15 @@ node('osx_vegas') {
     def gitTag = readGitTag()
     echo archiveName
 
-    withEnv([
-      "DEVELOPER_DIR=/Applications/Xcode-7.3.1.app/Contents/Developer/"
-    ]) {
+    sh 'pod repo update'
+    sh 'pod install'
 
-      sh 'pod repo update'
-      sh 'pod install'
+    stage 'Test'
+    // FIXME Enable tests
+    //sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Debug -derivedDataPath 'build/DerivedData' DEVELOPMENT_TEAM=QX5CR2FTN2 CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO clean build test"
 
-      stage 'Test'
-      // FIXME Enable tests
-      //sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Debug -derivedDataPath 'build/DerivedData' CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO clean build test"
-
-      stage 'Build'
-      sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Release -derivedDataPath 'build/DerivedData' CODE_SIGN_IDENTITY='Developer ID Application' clean build"
-    }
+    stage 'Build'
+    sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Release -derivedDataPath 'build/DerivedData' DEVELOPMENT_TEAM=QX5CR2FTN2 CODE_SIGN_IDENTITY='Developer ID Application' clean build"
 
     stage 'Package'
     dir("build/DerivedData/Build/Products/Release/") {
