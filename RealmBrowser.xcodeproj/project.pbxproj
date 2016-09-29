@@ -21,7 +21,6 @@
 		22A55FF119D19842009178BC /* RLMDescriptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A55FF019D19842009178BC /* RLMDescriptions.m */; };
 		22D28EA71993AAAB00497FD3 /* RLMNumberTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D28EA61993AAAB00497FD3 /* RLMNumberTableCellView.m */; };
 		22D3AC8A19CC5D710042C1B2 /* RLMModelExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D3AC8919CC5D710042C1B2 /* RLMModelExporter.m */; };
-		22D9367D1BDC64CD0032DFFE /* RLMAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D9367C1BDC64CD0032DFFE /* RLMAlert.m */; };
 		22DC87E81B9808790024BA34 /* RLMExportIndicatorWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22DC87E71B9808790024BA34 /* RLMExportIndicatorWindowController.xib */; };
 		22E4737219924CF700EEF7C9 /* RLMBasicTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E4737119924CF700EEF7C9 /* RLMBasicTableCellView.m */; };
 		22E473791992562400EEF7C9 /* RLMBoolTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E473781992562400EEF7C9 /* RLMBoolTableCellView.m */; };
@@ -137,8 +136,6 @@
 		22D3AC8819CC5D710042C1B2 /* RLMModelExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMModelExporter.h; sourceTree = "<group>"; };
 		22D3AC8919CC5D710042C1B2 /* RLMModelExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMModelExporter.m; sourceTree = "<group>"; };
 		22D5FF911B0DBCC30090CFE6 /* Realm Browser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Realm Browser.entitlements"; sourceTree = "<group>"; };
-		22D9367B1BDC64CD0032DFFE /* RLMAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMAlert.h; sourceTree = "<group>"; };
-		22D9367C1BDC64CD0032DFFE /* RLMAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMAlert.m; sourceTree = "<group>"; };
 		22DC87E71B9808790024BA34 /* RLMExportIndicatorWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RLMExportIndicatorWindowController.xib; sourceTree = "<group>"; };
 		22E4737019924CF700EEF7C9 /* RLMBasicTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMBasicTableCellView.h; sourceTree = "<group>"; };
 		22E4737119924CF700EEF7C9 /* RLMBasicTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMBasicTableCellView.m; sourceTree = "<group>"; };
@@ -568,8 +565,6 @@
 				2234B66D1CF83F9600EAFDF0 /* RLMBrowserConstants.m */,
 				84925C5F195AD5B000EE27B1 /* NSColor+ByteSizeFactory.h */,
 				84925C60195AD5B000EE27B1 /* NSColor+ByteSizeFactory.m */,
-				22D9367B1BDC64CD0032DFFE /* RLMAlert.h */,
-				22D9367C1BDC64CD0032DFFE /* RLMAlert.m */,
 				22A55FEF19D19842009178BC /* RLMDescriptions.h */,
 				22A55FF019D19842009178BC /* RLMDescriptions.m */,
 				22D3AC8819CC5D710042C1B2 /* RLMModelExporter.h */,
@@ -870,7 +865,6 @@
 				22096B2719911F7300233D77 /* RLMBadgeTableCellView.m in Sources */,
 				228D1F871A1CAD660028562A /* RLMResultsNode.m in Sources */,
 				8457294D1962E3860076D4F1 /* RLMTableView.m in Sources */,
-				22D9367D1BDC64CD0032DFFE /* RLMAlert.m in Sources */,
 				22A55FF119D19842009178BC /* RLMDescriptions.m in Sources */,
 				C2AA0F631D634FBF00D5D7E6 /* RLMOpenSyncURLWindowController.m in Sources */,
 				84E35A49196AD991007F0344 /* RLMNavigationStack.m in Sources */,

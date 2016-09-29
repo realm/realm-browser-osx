@@ -1,14 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="RLMEncryptionKeyWindowController">
             <connections>
-                <outlet property="cancelButton" destination="767-HS-feX" id="qv3-gu-c3c"/>
-                <outlet property="errorTextField" destination="ujX-cG-WGk" id="QDU-OA-yB7"/>
                 <outlet property="keyTextField" destination="YEA-96-Ofv" id="g89-Gw-GuT"/>
                 <outlet property="okayButton" destination="McO-QZ-coV" id="EK4-Vm-sDT"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="ypd-fU-j9O"/>
@@ -19,46 +17,30 @@
         <window title="Enter Realm Encryption Key" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="564" y="438" width="422" height="230"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1577"/>
+            <rect key="contentRect" x="564" y="438" width="422" height="216"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="800"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="1" width="422" height="230"/>
+                <rect key="frame" x="0.0" y="0.0" width="422" height="216"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FwU-VW-Atp">
-                        <rect key="frame" x="18" y="185" width="368" height="25"/>
-                        <animations/>
-                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Please enter the encryption key for this Realm file." id="fT6-nk-ebe">
-                            <font key="font" metaFont="system"/>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FwU-VW-Atp">
+                        <rect key="frame" x="18" y="179" width="386" height="17"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Please enter a valid encryption key for this Realm file." id="fT6-nk-ebe">
+                            <font key="font" metaFont="systemBold"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DKP-My-LLz">
-                        <rect key="frame" x="18" y="154" width="386" height="28"/>
-                        <animations/>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DKP-My-LLz">
+                        <rect key="frame" x="18" y="143" width="386" height="28"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="The encryption key must be entered as a 128-character string of hexadecimal values." id="s3g-jW-WhF">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="767-HS-feX">
-                        <rect key="frame" x="251" y="13" width="83" height="32"/>
-                        <animations/>
-                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="RUG-OT-Xjr">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                            <string key="keyEquivalent">.</string>
-                            <modifierMask key="keyEquivalentModifierMask" command="YES"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="cancelButtonClicked:" target="-2" id="kQE-k4-JRe"/>
-                        </connections>
-                    </button>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="McO-QZ-coV">
-                        <rect key="frame" x="334" y="13" width="74" height="32"/>
-                        <animations/>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="McO-QZ-coV">
+                        <rect key="frame" x="335" y="13" width="73" height="32"/>
                         <buttonCell key="cell" type="push" title="Open" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ha8-hF-EnU">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -70,19 +52,13 @@ DQ
                             <action selector="okayButtonClicked:" target="-2" id="Ok0-Jw-dZk"/>
                         </connections>
                     </button>
-                    <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ujX-cG-WGk">
-                        <rect key="frame" x="18" y="21" width="219" height="17"/>
-                        <animations/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Decryption failed. Please try again." id="62r-2E-3vf">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" red="0.53217516450000002" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YEA-96-Ofv">
-                        <rect key="frame" x="20" y="55" width="382" height="88"/>
-                        <animations/>
-                        <textFieldCell key="cell" lineBreakMode="charWrapping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="efa373ad146cd28f..." drawsBackground="YES" id="IIl-JF-ZUE">
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YEA-96-Ofv">
+                        <rect key="frame" x="20" y="55" width="382" height="80"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="U1V-5V-BKD"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="iyh-7g-FXH"/>
+                        </constraints>
+                        <textFieldCell key="cell" lineBreakMode="charWrapping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" placeholderString="efa373ad146cd28f..." drawsBackground="YES" id="IIl-JF-ZUE">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -91,8 +67,39 @@ DQ
                             <outlet property="delegate" destination="-2" id="RbU-yc-Puc"/>
                         </connections>
                     </textField>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="767-HS-feX">
+                        <rect key="frame" x="252" y="13" width="83" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="71" id="mhj-IN-obk"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="RUG-OT-Xjr">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="closeWindow:" target="-2" id="Zp2-CA-8hU"/>
+                        </connections>
+                    </button>
                 </subviews>
-                <animations/>
+                <constraints>
+                    <constraint firstItem="767-HS-feX" firstAttribute="baseline" secondItem="McO-QZ-coV" secondAttribute="baseline" id="3i6-9B-N4z"/>
+                    <constraint firstItem="DKP-My-LLz" firstAttribute="top" secondItem="FwU-VW-Atp" secondAttribute="bottom" constant="8" symbolic="YES" id="4cb-U1-aJf"/>
+                    <constraint firstItem="YEA-96-Ofv" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="6LW-3I-i0m"/>
+                    <constraint firstItem="McO-QZ-coV" firstAttribute="top" secondItem="YEA-96-Ofv" secondAttribute="bottom" constant="14" id="FUh-eV-CMx"/>
+                    <constraint firstItem="FwU-VW-Atp" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="JtF-6g-qcD"/>
+                    <constraint firstItem="DKP-My-LLz" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="MM4-NZ-w3R"/>
+                    <constraint firstAttribute="bottom" secondItem="McO-QZ-coV" secondAttribute="bottom" constant="20" id="Mnd-Os-0tj"/>
+                    <constraint firstAttribute="trailing" secondItem="FwU-VW-Atp" secondAttribute="trailing" constant="20" symbolic="YES" id="cJa-b1-L5d"/>
+                    <constraint firstItem="YEA-96-Ofv" firstAttribute="top" secondItem="DKP-My-LLz" secondAttribute="bottom" constant="8" symbolic="YES" id="ch1-K2-dQV"/>
+                    <constraint firstAttribute="trailing" secondItem="DKP-My-LLz" secondAttribute="trailing" constant="20" symbolic="YES" id="eB5-1y-qDx"/>
+                    <constraint firstItem="FwU-VW-Atp" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="lRv-SX-GkM"/>
+                    <constraint firstAttribute="trailing" secondItem="YEA-96-Ofv" secondAttribute="trailing" constant="20" id="rya-MM-2MH"/>
+                    <constraint firstItem="McO-QZ-coV" firstAttribute="leading" secondItem="767-HS-feX" secondAttribute="trailing" constant="12" id="sHf-LN-97w"/>
+                    <constraint firstAttribute="trailing" secondItem="McO-QZ-coV" secondAttribute="trailing" constant="20" id="xvz-xQ-Hei"/>
+                </constraints>
             </view>
             <point key="canvasLocation" x="59" y="195"/>
         </window>

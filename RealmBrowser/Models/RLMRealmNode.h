@@ -28,12 +28,11 @@
 @property (nonatomic, readonly) NSArray *topLevelClasses;
 
 @property (nonatomic, strong) NSData *encryptionKey;
+@property (nonatomic, assign) BOOL disableFormatUpgrade;
 
 - (instancetype)initWithFileURL:(NSURL *)fileURL;
 - (instancetype)initWithSyncURL:(NSURL *)syncURL user:(RLMSyncUser *)user;
 
 - (BOOL)connect:(NSError **)error;
-
-- (BOOL)realmFileRequiresFormatUpgrade;
 
 @end

@@ -30,6 +30,7 @@
 @property (nonatomic, copy) NSURL *syncURL;
 @property (nonatomic, copy) NSURL *authServerURL;
 @property (nonatomic, strong) RLMSyncCredential *credential;
+@property (nonatomic, strong) NSError *error;
 
 @property (nonatomic, strong) RLMSyncUser *user;
 @property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
@@ -83,21 +84,8 @@
 
         self.presentedRealm = [[RLMRealmNode alloc] initWithFileURL:self.fileURL];
 
-        if ([self.presentedRealm realmFileRequiresFormatUpgrade]) {
-            self.state = RLMDocumentStateRequiresFormatUpgrade;
-        } else {
-            NSError *error;
-            if (![self loadWithError:&error]) {
-                if (error.code == RLMErrorFileAccess) {
-                    self.state = RLMDocumentStateNeedsEncryptionKey;
-                } else {
-                    if (outError != nil) {
-                        *outError = error;
-                    }
-
-                    return nil;
-                }
-            }
+        if (![self loadWithError:outError] && self.state == RLMDocumentStateUnrecoverableError) {
+            return nil;
         }
     }
 
@@ -152,6 +140,8 @@
 
 - (BOOL)loadByPerformingFormatUpgradeWithError:(NSError **)error {
     NSAssert(self.state == RLMDocumentStateRequiresFormatUpgrade, @"Invalid document state");
+
+    self.presentedRealm.disableFormatUpgrade = NO;
 
     return [self loadWithError:error];
 }
@@ -213,14 +203,38 @@
     }];
 }
 
-- (BOOL)loadWithError:(NSError **)error {
+- (BOOL)loadWithError:(NSError **)outError {
     NSAssert(self.presentedRealm != nil, @"Presented Realm must be created before loading");
 
-    BOOL result = [self.presentedRealm connect:error];
+    NSError *error;
+    if ([self.presentedRealm connect:&error]) {
+        self.state = RLMDocumentStateLoaded;
+        self.error = nil;
 
-    self.state = result ? RLMDocumentStateLoaded : RLMDocumentStateUnrecoverableError;
+        return YES;
+    } else {
+        switch (error.code) {
+            case RLMErrorFileAccess:
+            self.state = RLMDocumentStateNeedsEncryptionKey;
+            break;
 
-    return result;
+            case RLMErrorFileFormatUpgradeRequired:
+            self.state = RLMDocumentStateRequiresFormatUpgrade;
+            break;
+            
+            default:
+            self.state = RLMDocumentStateUnrecoverableError;
+            break;
+        }
+
+        self.error = error;
+
+        if (outError != nil) {
+            *outError = error;
+        }
+
+        return NO;
+    }
 }
 
 #pragma mark NSDocument overrides

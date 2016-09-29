@@ -33,6 +33,8 @@
     self = [super init];
 
     if (self) {
+        self.disableFormatUpgrade = YES;
+
         self.configuration = [[RLMRealmConfiguration alloc] init];
         self.configuration.dynamic = YES;
         self.configuration.fileURL = fileURL;
@@ -55,6 +57,7 @@
 
 - (BOOL)connect:(NSError **)error {
     self.configuration.encryptionKey = self.encryptionKey;
+    self.configuration.disableFormatUpgrade = self.disableFormatUpgrade;
 
     NSError *localError;
     _realm = [RLMRealm realmWithConfiguration:self.configuration error:&localError];
@@ -70,24 +73,6 @@
     }
 
     return !localError;
-}
-
-- (BOOL)realmFileRequiresFormatUpgrade
-{
-    NSError *localError;
-    
-    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-    configuration.disableFormatUpgrade = YES;
-    configuration.dynamic = YES;
-    configuration.encryptionKey = self.encryptionKey;
-    configuration.fileURL = self.configuration.fileURL;
-    [RLMRealm realmWithConfiguration:configuration error:&localError];
-    
-    if (localError && localError.code == RLMErrorFileFormatUpgradeRequired) {
-        return YES;
-    }
-    
-    return NO;
 }
 
 #pragma mark - RLMRealmOutlineNode implementation

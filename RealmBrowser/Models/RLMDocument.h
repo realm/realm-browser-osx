@@ -38,6 +38,7 @@ typedef NS_ENUM(NSInteger, RLMDocumentState) {
 @property (nonatomic, copy, readonly) NSURL *syncURL;
 @property (nonatomic, copy, readonly) NSURL *authServerURL;
 @property (nonatomic, strong, readonly) RLMSyncCredential *credential;
+@property (nonatomic, strong, readonly) NSError *error;
 
 - (instancetype)initWithContentsOfFileURL:(NSURL *)fileURL error:(NSError **)outError;
 - (instancetype)initWithContentsOfSyncURL:(NSURL *)syncURL credential:(RLMSyncCredential *)credential authServerURL:(NSURL *)authServerURL error:(NSError **)outError;

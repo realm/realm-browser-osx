@@ -16,92 +16,33 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-@import Realm;
-@import Realm.Dynamic;
-@import Realm.Private;
-
 #import "RLMEncryptionKeyWindowController.h"
-#import "RLMAlert.h"
 
 @interface RLMEncryptionKeyWindowController () <NSTextFieldDelegate>
 
-@property (nonatomic, strong) NSURL *realmFilePath;
-@property (nonatomic, strong, readwrite) NSData *encryptionKey;
+@property (nonatomic, weak) IBOutlet NSTextField *keyTextField;
+@property (nonatomic, weak) IBOutlet NSButton *okayButton;
 
-- (BOOL)testRealmFileWithEncryptionKey:(NSData *)keyData;
-- (NSData *)dataFromHexadecimalString:(NSString *)string;
+@property (nonatomic, strong) NSData *encryptionKey;
 
 @end
 
 @implementation RLMEncryptionKeyWindowController
 
-- (instancetype)initWithRealmFilePath:(NSURL *)realmFilePath
-{
-    if (self = [super initWithWindowNibName:@"EncryptionKeyWindow"]) {
-        _realmFilePath = realmFilePath;
-    }
-    
-    return self;
-}
-
 - (void)controlTextDidChange:(NSNotification *)notification {
     NSString *stringValue = self.keyTextField.stringValue;
-    
+
     //Ensure only hex-compatible characters have been entered
     NSCharacterSet *chars = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789ABCDEFabcdef"] invertedSet];
     BOOL isValid = (NSNotFound == [stringValue rangeOfCharacterFromSet:chars].location) && stringValue.length == 128;
     self.okayButton.enabled = isValid;
 }
 
-- (IBAction)okayButtonClicked:(id)sender
-{
+- (IBAction)okayButtonClicked:(id)sender {
     NSData *encryptionKey = [self dataFromHexadecimalString:self.keyTextField.stringValue];
-    if ([self testRealmFileWithEncryptionKey:encryptionKey] == NO) {
-        self.errorTextField.hidden = NO;
-        return;
-    }
-    
     self.encryptionKey = encryptionKey;
-    
-    [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
-}
 
-- (IBAction)cancelButtonClicked:(id)sender
-{
-    [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
-}
-
-#pragma mark - Encryption Testing -
-- (BOOL)testRealmFileWithEncryptionKey:(NSData *)keyData
-{
-    NSError *error = nil;
-    @autoreleasepool {
-        RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-        configuration.disableFormatUpgrade = YES;
-        configuration.dynamic = YES;
-        configuration.encryptionKey = keyData;
-        configuration.fileURL = self.realmFilePath;
-        [RLMRealm realmWithConfiguration:configuration error:&error];
-    }
-    
-    //If an error is thrown, it can either mean the encryption key was incorrect,
-    //or the file format requires upgrading
-    if (error) {
-        //If a format upgrade is required, prompt the user before proceeding
-        if (error.code == RLMErrorFileFormatUpgradeRequired) {
-            if (![RLMAlert showFileFormatUpgradeDialogWithFileName:[self.realmFilePath lastPathComponent]]) {
-                return NO;
-            }
-            
-            //The file format upgrade is allowed
-            return YES;
-        }
-        
-        //another error was thrown, which implies that the encryption key was invalid
-        return NO;
-    }
-    
-    return YES;
+    [self closeWithReturnCode:NSModalResponseOK];
 }
 
 // http://stackoverflow.com/a/13627835/599344

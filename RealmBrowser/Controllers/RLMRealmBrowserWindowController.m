@@ -29,7 +29,6 @@
 #import "RLMEncryptionKeyWindowController.h"
 #import "RLMCredentialsWindowController.h"
 #import "RLMConnectionIndicatorWindowController.h"
-#import "RLMAlert.h"
 
 NSString * const kRealmLockedImage = @"RealmLocked";
 NSString * const kRealmUnlockedImage = @"RealmUnlocked";
@@ -162,28 +161,41 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 }
 
 - (void)handleFormatUpgrade {
-    if ([RLMAlert showFileFormatUpgradeDialogWithFileName:self.document.fileURL.lastPathComponent]) {
-        NSError *error;
-        if (![self.document loadByPerformingFormatUpgradeWithError:&error]) {
-            [[NSAlert alertWithError:error] beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
-                [self.document close];
-            }];
-        }
-    } else {
-        [self.document close];
-    }
-}
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.messageText = [NSString stringWithFormat:@"\"%@\" is at an older file format version and must be upgraded before it can be opened. Would you like to proceed?", self.document.fileURL.lastPathComponent];
+    alert.informativeText = @"If the file is upgraded, it will no longer be compatible with older versions of Realm. File format upgrades are permanent and cannot be undone.";
 
-- (void)handleEncryption {
-    self.encryptionController = [[RLMEncryptionKeyWindowController alloc] initWithRealmFilePath:self.document.fileURL];
+    [alert addButtonWithTitle:@"Cancel"];
+    [alert addButtonWithTitle:@"Proceed with Upgrade"];
 
-    [self.window beginSheet:self.encryptionController.window completionHandler:^(NSModalResponse returnCode) {
-        if (returnCode == NSModalResponseOK) {
-            // No errors shoud be here because currently RLMEncryptionKeyWindowController cares about the key
-            [self.document loadWithEncryptionKey:self.encryptionController.encryptionKey error:nil];
+    [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode == NSAlertSecondButtonReturn) {
+            [self.document loadByPerformingFormatUpgradeWithError:nil];
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self handleDocumentState];
+            });
         } else {
             [self.document close];
         }
+    }];
+}
+
+- (void)handleEncryption {
+    self.encryptionController = [[RLMEncryptionKeyWindowController alloc] init];
+
+    [self.encryptionController showSheetForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode == NSModalResponseOK) {
+            [self.document loadWithEncryptionKey:self.encryptionController.encryptionKey error:nil];
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self handleDocumentState];
+            });
+        } else {
+            [self.document close];
+        }
+
+        self.encryptionController = nil;
     }];
 }
 
@@ -215,7 +227,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
                         [self handleSyncCredentials];
                     }];
                 } else {
-                    [self realmDidLoad];
+                    [self handleDocumentState];
                 }
             }];
         } else {
@@ -247,10 +259,16 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 }
 
 - (void)handleUnrecoverableError {
-    NSAlert *alert = [[NSAlert alloc] init];
+    NSAlert *alert;
 
-    alert.messageText = @"Realm couldn't be opened";
-    alert.alertStyle = NSCriticalAlertStyle;
+    if (self.document.error != nil) {
+        alert = [NSAlert alertWithError:self.document.error];
+    } else {
+        alert = [[NSAlert alloc] init];
+
+        alert.messageText = @"Realm couldn't be opened";
+        alert.alertStyle = NSCriticalAlertStyle;
+    }
 
     [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
         [self.document close];
@@ -677,6 +695,5 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     [self.navigationButtons setEnabled:[navigationStack canNavigateBackward] forSegment:0];
     [self.navigationButtons setEnabled:[navigationStack canNavigateForward] forSegment:1];
 }
-
 
 @end
