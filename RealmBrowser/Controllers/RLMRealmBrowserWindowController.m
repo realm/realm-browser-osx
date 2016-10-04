@@ -394,7 +394,17 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
             return;
         }
     }
-    
+
+    void (^closeExportWindowOnMainThreadAndShowError)(NSError *) = ^void(NSError *error) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self.window endSheet:self.exportWindowController.window];
+
+            if (error != nil) {
+                [NSApp presentError:error];
+            }
+        });
+    };
+
     //Display an 'exporting' progress indicator
     self.exportWindowController = [[RLMExportIndicatorWindowController alloc] init];
     [self.window beginSheet:self.exportWindowController.window completionHandler:nil];
@@ -402,35 +412,31 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     //Perform the export/compact operations on a background thread as they can potentially be time-consuming
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSError *error = nil;
-        [self.document.presentedRealm.realm writeCopyToURL:realmFileURL encryptionKey:nil error:&error];
-        if (error) {
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                [self.window endSheet:self.exportWindowController.window];
-                [NSApp presentError:error];
-            });
+
+        RLMRealm *currentThreadRealm = [RLMRealm realmWithConfiguration:self.document.presentedRealm.realm.configuration error:&error];
+        if (currentThreadRealm == nil) {
+            closeExportWindowOnMainThreadAndShowError(error);
             return;
         }
-        
-        @autoreleasepool {
-            RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-            configuration.fileURL = realmFileURL;
-            configuration.dynamic = YES;
-            configuration.customSchema = nil;
-            
-            RLMRealm *newRealm = [RLMRealm realmWithConfiguration:configuration error:&error];
-            if (error) {
-                dispatch_sync(dispatch_get_main_queue(), ^{
-                    [self.window endSheet:self.exportWindowController.window];
-                    [NSApp presentError:error];
-                });
-                return;
-            }
-            [newRealm compact];
+
+        if (![currentThreadRealm writeCopyToURL:realmFileURL encryptionKey:nil error:&error]) {
+            closeExportWindowOnMainThreadAndShowError(error);
+            return;
         }
+
+        RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+        configuration.fileURL = realmFileURL;
+        configuration.dynamic = YES;
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.window endSheet:self.exportWindowController.window];
-        });
+        RLMRealm *exportedRealm = [RLMRealm realmWithConfiguration:configuration error:&error];
+        if (exportedRealm == nil) {
+            closeExportWindowOnMainThreadAndShowError(error);
+            return;
+        }
+
+        [exportedRealm compact];
+
+        closeExportWindowOnMainThreadAndShowError(nil);
     });
 }
 
