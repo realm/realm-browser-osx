@@ -528,7 +528,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 - (void)addNewRows:(NSIndexSet *)rowIndexes
 {
     [self insertNewRowsInRealmAt:rowIndexes];
-    [self.parentWindowController insertNewRowsInTableViewForArrayNode:(RLMArrayNode *)self.displayedType at:rowIndexes];
 }
 
 // Operations on links in cells
@@ -786,23 +785,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     }];
     
     [realm commitWriteTransaction];
-}
-
-- (void)insertNewRowsInTableViewAt:(NSIndexSet *)rowIndexes
-{
-    if (rowIndexes.count == 0) {
-        rowIndexes = [NSIndexSet indexSetWithIndex:0];
-    }
-    
-    [self.tableView beginUpdates];
-    
-    [rowIndexes enumerateRangesWithOptions:NSEnumerationReverse usingBlock:^(NSRange range, BOOL *stop) {
-        NSIndexSet *indexSetForRange = [NSIndexSet indexSetWithIndexesInRange:range];
-        [self.tableView insertRowsAtIndexes:indexSetForRange withAnimation:NSTableViewAnimationEffectGap];
-    }];
-    
-    [self.tableView endUpdates];
-    [self updateArrayIndexColumn];
 }
 
 // Moving
