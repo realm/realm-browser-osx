@@ -462,29 +462,6 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
 #pragma mark - Public methods - Rearranging arrays
 
-- (void)removeRowsInTableViewForArrayNode:(RLMArrayNode *)arrayNode at:(NSIndexSet *)rowIndexes
-{
-    for (RLMRealmBrowserWindowController *wc in [self.document windowControllers]) {
-        if ([arrayNode isEqualTo:wc.tableViewController.displayedType]) {
-            [wc.tableViewController removeRowsInTableViewAt:rowIndexes];
-        }
-        [wc.outlineViewController.tableView reloadData];
-    }
-}
-
-- (void)deleteRowsInTableViewForArrayNode:(RLMArrayNode *)arrayNode at:(NSIndexSet *)rowIndexes
-{
-    for (RLMRealmBrowserWindowController *wc in [self.document windowControllers]) {
-        if ([arrayNode isEqualTo:wc.tableViewController.displayedType]) {
-            [wc.tableViewController deleteRowsInTableViewAt:rowIndexes];
-        }
-        else {
-            [wc reloadAfterEdit];
-        }
-        [wc.outlineViewController.tableView reloadData];
-    }
-}
-
 - (void)moveRowsInTableViewForArrayNode:(RLMArrayNode *)arrayNode from:(NSIndexSet *)sourceIndexes to:(NSUInteger)destination
 {
     for (RLMRealmBrowserWindowController *wc in [self.document windowControllers]) {

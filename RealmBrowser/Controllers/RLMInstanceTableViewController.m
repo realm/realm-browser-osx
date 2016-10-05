@@ -516,13 +516,11 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 - (void)removeRows:(NSIndexSet *)rowIndexes
 {
     [self removeRowsInRealmAt:rowIndexes];
-    [self.parentWindowController removeRowsInTableViewForArrayNode:(RLMArrayNode *)self.displayedType at:rowIndexes];
 }
 
 - (void)deleteRows:(NSIndexSet *)rowIndexes
 {
     [self deleteRowsInRealmAt:rowIndexes];
-    [self.parentWindowController deleteRowsInTableViewForArrayNode:(RLMArrayNode *)self.displayedType at:rowIndexes];
 }
 
 - (void)addNewRows:(NSIndexSet *)rowIndexes
