@@ -33,9 +33,6 @@ extern const NSUInteger kMaxNumberOfArrayEntriesInToolTip;
 @property (nonatomic, strong) IBOutlet RLMTypeOutlineViewController *outlineViewController;
 @property (nonatomic, strong) IBOutlet RLMInstanceTableViewController *tableViewController;
 
-- (void)moveRowsInTableViewForArrayNode:(RLMArrayNode *)arrayNode from:(NSIndexSet *)sourceIndexes to:(NSUInteger)destination;
-
-
 - (void)addNavigationState:(RLMNavigationState *)state fromViewController:(RLMViewController *)controller;
 
 - (void)newWindowWithNavigationState:(RLMNavigationState *)state;

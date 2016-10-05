@@ -460,17 +460,6 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     [self.tableViewController.tableView reloadData];
 }
 
-#pragma mark - Public methods - Rearranging arrays
-
-- (void)moveRowsInTableViewForArrayNode:(RLMArrayNode *)arrayNode from:(NSIndexSet *)sourceIndexes to:(NSUInteger)destination
-{
-    for (RLMRealmBrowserWindowController *wc in [self.document windowControllers]) {
-        if ([arrayNode isEqualTo:wc.tableViewController.displayedType]) {
-            [wc.tableViewController moveRowsInTableViewFrom:sourceIndexes to:destination];
-        }
-    }
-}
-
 #pragma mark - Public methods - Navigation
 
 - (void)addNavigationState:(RLMNavigationState *)state fromViewController:(RLMViewController *)controller

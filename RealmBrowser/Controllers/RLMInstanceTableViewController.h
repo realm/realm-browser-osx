@@ -33,8 +33,4 @@
 
 @property (nonatomic, copy) void(^didSelectedBlock)(RLMObject *rowObject);
 
-- (void)removeRowsInTableViewAt:(NSIndexSet *)rowIndexes;
-- (void)deleteRowsInTableViewAt:(NSIndexSet *)rowIndexes;
-- (void)moveRowsInTableViewFrom:(NSIndexSet *)sourceIndexes to:(NSUInteger)destination;
-
 @end
