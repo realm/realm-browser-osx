@@ -35,7 +35,7 @@
 
 - (void)clearSelection;
 
-- (void)setSelectionIndex:(NSUInteger)newIndex;
+- (void)setSelectionIndex:(NSInteger)newIndex;
 
 -(void)realmDidLoad;
 

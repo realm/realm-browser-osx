@@ -163,8 +163,12 @@
 
 - (void)performUpdateUsingState:(RLMNavigationState *)newState oldState:(RLMNavigationState *)oldState
 {
-    NSInteger typeIndex = [self.classesOutlineView rowForItem:newState.selectedType];
-    [self setSelectionIndex:typeIndex];
+    if ([newState isMemberOfClass:[RLMArrayNavigationState class]]) {
+        // Deselect everything in sidebar in case of swithing to array
+        [self setSelectionIndex:-1];
+    } else {
+        [self setSelectionIndex:[self.classesOutlineView rowForItem:newState.selectedType]];
+    }
 }
 
 - (void)outlineView:(NSOutlineView *)outlineView didAddRowView:(NSTableRowView *)rowView forRow:(NSInteger)row

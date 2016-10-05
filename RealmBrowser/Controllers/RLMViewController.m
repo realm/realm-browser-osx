@@ -67,18 +67,18 @@
     [self.tableView deselectAll:self];
 }
 
-- (void)setSelectionIndex:(NSUInteger)newIndex
+- (void)setSelectionIndex:(NSInteger)newIndex
 {
-    NSUInteger oldIndex = self.tableView.selectedRow;
+    NSInteger oldIndex = self.tableView.selectedRow;
+
     if (oldIndex != newIndex) {
-        if (newIndex == NSNotFound) {
+        if (newIndex == -1) {
             [self.tableView deselectAll:self];
-            [self.tableView scrollRowToVisible:0];
-        }
-        else {
+        } else {
             [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:newIndex] byExtendingSelection:NO];
-            [self.tableView scrollRowToVisible:newIndex];
         }
+
+        [self.tableView scrollRowToVisible:newIndex];
     }
 }
 
