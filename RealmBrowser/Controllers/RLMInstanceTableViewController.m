@@ -307,7 +307,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     
     RLMClassProperty *classProperty = self.displayedType.propertyColumns[propertyIndex];
     RLMObject *selectedInstance = [self.displayedType instanceAtIndex:rowIndex];
-    id propertyValue = [selectedInstance valueForKey:classProperty.name];
+    id propertyValue = selectedInstance[classProperty.name];
     RLMPropertyType type = classProperty.type;
     BOOL optional = classProperty.property.optional;
     NSString *reuseIdentifier = [NSString stringWithFormat:@"Property.%@.Optional.%d", [RLMDescriptions typeNameOfProperty:classProperty.property], optional];
