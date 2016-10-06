@@ -1,3 +1,13 @@
+2.0.1 Release notes (2016-10-06)
+=============================================================
+This release introduces support for the Realm Mobile Platform!
+See <https://realm.io/news/introducing-realm-mobile-platform/> for an overview
+of these great new features.
+
+* Fixed opening encryped Realms 
+* Fixed export to compressed Realm
+* Fixed some UI issues
+
 2.0.0 Release notes (2016-09-27)
 =============================================================
 This release introduces support for the Realm Mobile Platform!
