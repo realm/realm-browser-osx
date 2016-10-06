@@ -298,11 +298,16 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     
     // Array gutter
     if (propertyIndex == ARRAY_GUTTER_INDEX) {
-        RLMBasicTableCellView *basicCellView = [tableView makeViewWithIdentifier:@"IndexCell" owner:self];
-        basicCellView.textField.stringValue = [@(rowIndex) stringValue];
-        basicCellView.textField.editable = NO;
-        
-        return basicCellView;
+        RLMBasicTableCellView *gutterCellView = [tableView makeViewWithIdentifier:@"GutterCell" owner:self];
+
+        if (gutterCellView == nil) {
+            gutterCellView = [RLMBasicTableCellView viewWithIdentifier:@"GutterCell"];
+        }
+
+        gutterCellView.textField.stringValue = [@(rowIndex) stringValue];
+        gutterCellView.textField.editable = NO;
+
+        return gutterCellView;
     }
     
     RLMClassProperty *classProperty = self.displayedType.propertyColumns[propertyIndex];
