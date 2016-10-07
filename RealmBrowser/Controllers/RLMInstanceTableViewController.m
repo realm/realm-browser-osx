@@ -205,9 +205,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         
         // Performs the move in the realm
         [self moveRowsInRealmFrom:rowIndexes to:destination];
-
-        // Performs the move visually in all relevant windows
-        [self.parentWindowController moveRowsInTableViewForArrayNode:(RLMArrayNode *)self.displayedType from:rowIndexes to:destination];
         
         return YES;
     }
@@ -521,19 +518,16 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 - (void)removeRows:(NSIndexSet *)rowIndexes
 {
     [self removeRowsInRealmAt:rowIndexes];
-    [self.parentWindowController removeRowsInTableViewForArrayNode:(RLMArrayNode *)self.displayedType at:rowIndexes];
 }
 
 - (void)deleteRows:(NSIndexSet *)rowIndexes
 {
     [self deleteRowsInRealmAt:rowIndexes];
-    [self.parentWindowController deleteRowsInTableViewForArrayNode:(RLMArrayNode *)self.displayedType at:rowIndexes];
 }
 
 - (void)addNewRows:(NSIndexSet *)rowIndexes
 {
     [self insertNewRowsInRealmAt:rowIndexes];
-    [self.parentWindowController insertNewRowsInTableViewForArrayNode:(RLMArrayNode *)self.displayedType at:rowIndexes];
 }
 
 // Operations on links in cells
@@ -744,7 +738,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 
 #pragma mark - Rearranging objects in arrays - Private methods
 
-// Removing
 - (void)removeRowsInRealmAt:(NSIndexSet *)rowIndexes
 {
     RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
@@ -756,23 +749,11 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     [realm commitWriteTransaction];
 }
 
-- (void)removeRowsInTableViewAt:(NSIndexSet *)rowIndexes
-{
-    [self removeRowsInTableViewAtIndexes:rowIndexes];
-}
-
-// Deleting
 - (void)deleteRowsInRealmAt:(NSIndexSet *)rowIndexes
 {
     [self deleteObjectsInRealmAtIndexes:rowIndexes];
 }
 
-- (void)deleteRowsInTableViewAt:(NSIndexSet *)rowIndexes
-{
-    [self removeRowsInTableViewAtIndexes:rowIndexes];
-}
-
-// Inserting
 - (void)insertNewRowsInRealmAt:(NSIndexSet *)rowIndexes
 {
     if (rowIndexes.count == 0) {
@@ -793,24 +774,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     [realm commitWriteTransaction];
 }
 
-- (void)insertNewRowsInTableViewAt:(NSIndexSet *)rowIndexes
-{
-    if (rowIndexes.count == 0) {
-        rowIndexes = [NSIndexSet indexSetWithIndex:0];
-    }
-    
-    [self.tableView beginUpdates];
-    
-    [rowIndexes enumerateRangesWithOptions:NSEnumerationReverse usingBlock:^(NSRange range, BOOL *stop) {
-        NSIndexSet *indexSetForRange = [NSIndexSet indexSetWithIndexesInRange:range];
-        [self.tableView insertRowsAtIndexes:indexSetForRange withAnimation:NSTableViewAnimationEffectGap];
-    }];
-    
-    [self.tableView endUpdates];
-    [self updateArrayIndexColumn];
-}
-
-// Moving
 - (void)moveRowsInRealmFrom:(NSIndexSet *)sourceIndexes to:(NSUInteger)destination
 {
     RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
@@ -831,44 +794,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     [realm commitWriteTransaction];
 }
 
-- (void)moveRowsInTableViewFrom:(NSIndexSet *)sourceIndexes to:(NSUInteger)destination
-{
-    NSMutableArray *sources = [self arrayWithIndexSet:sourceIndexes];
-    
-    [self.tableView beginUpdates];
-    
-    // Iterate through the array, representing source row indices
-    for (NSUInteger i = 0; i < sources.count; i++) {
-        NSUInteger source = [sources[i] unsignedIntegerValue];
-        
-        NSInteger tableViewDestination = destination > source ? destination - 1 : destination;
-        [self.tableView moveRowAtIndex:source toIndex:tableViewDestination];
-
-        [self updateSourceIndices:sources afterIndex:i withSource:source destination:&destination];
-    }
-    
-    [self.tableView endUpdates];
-    [self updateArrayIndexColumn];
-}
-
-#pragma mark - Rearranging objects - Helper methods
-
-// Updates the index column in arrays after rearranging rows
--(void)updateArrayIndexColumn
-{
-    for (NSUInteger k = 0; k < self.tableView.numberOfRows; k++) {
-        NSTableRowView *rowView = [self.tableView rowViewAtRow:k makeIfNecessary:NO];
-        RLMTableCellView *cell = [rowView viewAtColumn:0];
-        cell.textField.stringValue = [@(k) stringValue];
-    }
-}
-
-- (void)removeRowsInTableViewAtIndexes:(NSIndexSet *)rowIndexes
-{
-    [self.tableView deselectAll:self];
-    [self.tableView removeRowsAtIndexes:rowIndexes withAnimation:NSTableViewAnimationEffectGap];
-    [self updateArrayIndexColumn];
-}
 
 - (void)deleteObjectsInRealmAtIndexes:(NSIndexSet *)rowIndexes
 {

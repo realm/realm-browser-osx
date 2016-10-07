@@ -360,7 +360,9 @@ const NSInteger NOT_A_COLUMN = -1;
 - (IBAction)addRowsToArrayAction:(id)sender
 {
     if (self.realmDelegate.displaysArray && !self.realmDelegate.realmIsLocked) {
-        [self.realmDelegate addNewRows:self.selectedRowIndexes];
+        NSInteger index = self.selectedRowIndexes.count > 0 ? self.selectedRowIndexes.lastIndex + 1 : self.numberOfRows;
+
+        [self.realmDelegate addNewRows:[NSIndexSet indexSetWithIndex:index]];
     }
 }
 
