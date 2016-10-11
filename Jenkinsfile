@@ -51,10 +51,10 @@ node('osx_vegas') {
 
     stage 'Test'
     // FIXME Enable tests
-    //sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Debug -derivedDataPath 'build/DerivedData' DEVELOPMENT_TEAM=QX5CR2FTN2 CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO clean build test"
+    //sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Debug -derivedDataPath 'build/DerivedData' DEVELOPMENT_TEAM=QX5CR2FTN2 CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO PROVISIONING_PROFILE_SPECIFIER='' clean test"
 
     stage 'Build'
-    sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Release -derivedDataPath 'build/DerivedData' DEVELOPMENT_TEAM=QX5CR2FTN2 CODE_SIGN_IDENTITY='Developer ID Application' clean build"
+    sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Release -derivedDataPath 'build/DerivedData' DEVELOPMENT_TEAM=QX5CR2FTN2 CODE_SIGN_IDENTITY='Developer ID Application' PROVISIONING_PROFILE_SPECIFIER='' clean build"
 
     stage 'Package'
     dir("build/DerivedData/Build/Products/Release/") {
