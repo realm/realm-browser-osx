@@ -21,8 +21,10 @@
 @import RealmConverter;
 @import AppSandboxFileAccess;
 
-#import "RLMBrowserConstants.h"
 #import "RLMApplicationDelegate.h"
+#import "RLMApplicationDelegate+CrashReporting.h"
+
+#import "RLMBrowserConstants.h"
 #import "RLMDocumentController.h"
 
 #import "RLMTestDataGenerator.h"
@@ -71,6 +73,8 @@
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification
 {
+    [self setupCrashReporting];
+
     [[NSUserDefaults standardUserDefaults] setObject:@(kTopTipDelay) forKey:@"NSInitialToolTipDelay"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
