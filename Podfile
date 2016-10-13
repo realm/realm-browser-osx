@@ -7,6 +7,7 @@ target 'RealmBrowser' do
     pod 'AppSandboxFileAccess'
     pod 'Realm'
     pod 'RealmConverter'
+    pod 'HockeySDK-Mac'
 
     target 'RealmBrowserTests' do
       # It looks like that inheritance via search paths is still broken with frameworks, see https://github.com/CocoaPods/CocoaPods/issues/4944
