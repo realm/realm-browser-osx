@@ -1,5 +1,7 @@
 language: objective-c
 osx_image: xcode8
 before_install:
-- pod repo update
-script: xcodebuild -workspace "RealmBrowser.xcworkspace" -scheme "Realm Browser" test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty
+- gem uninstall cocoapods --all
+- gem install cocoapods --pre
+- pod repo update --silent
+script: set -o pipefail && xcodebuild -workspace "RealmBrowser.xcworkspace" -scheme "Realm Browser" clean test | xcpretty
