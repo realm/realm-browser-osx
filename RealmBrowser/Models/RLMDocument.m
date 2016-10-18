@@ -22,6 +22,7 @@
 #import "RLMBrowserConstants.h"
 #import "RLMDynamicSchemaLoader.h"
 #import "RLMRealmBrowserWindowController.h"
+#import "RLMSyncUtils.h"
 
 @interface RLMDocument ()
 
@@ -97,19 +98,7 @@
 
     if (self != nil) {
         self.syncURL = syncURL;
-
-        if (authServerURL != nil) {
-            self.authServerURL = authServerURL;
-        } else {
-            NSURLComponents *authServerURLComponents = [[NSURLComponents alloc] init];
-
-            authServerURLComponents.scheme = [syncURL.scheme isEqualToString:kSecureRealmURLScheme] ? @"https" : @"http";
-            authServerURLComponents.host = syncURL.host;
-            authServerURLComponents.port = syncURL.port;
-
-            self.authServerURL = authServerURLComponents.URL;
-        }
-
+        self.authServerURL = authServerURL ?: authServerURLForSyncURL(syncURL);
         self.state = RLMDocumentStateNeedsValidCredential;
 
         if (credential != nil) {
