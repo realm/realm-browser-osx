@@ -24,7 +24,7 @@ extern RLMIdentityProvider const RLMIdentityProviderAccessToken;
 @class RLMCredentialsViewController;
 
 @protocol RLMCredentialsViewControllerDelegate<NSObject>
-
+@optional
 - (BOOL)credentialsViewController:(RLMCredentialsViewController *)controller shoudShowCredentialViewForIdentityProvider:(RLMIdentityProvider)provider;
 - (NSString *)credentialsViewController:(RLMCredentialsViewController *)controller labelForIdentityProvider:(RLMIdentityProvider)provider;
 - (void)credentialsViewControllerDidChangeCredential:(RLMCredentialsViewController *)controller;
