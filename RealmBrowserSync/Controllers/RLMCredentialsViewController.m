@@ -24,7 +24,9 @@
 #import "RLMCloudKitCredentialViewController.h"
 #import "RLMAccessTokenCredentialViewController.h"
 
-@interface RLMCredentialsViewController ()
+RLMIdentityProvider const RLMIdentityProviderAccessToken = @"accessToken";
+
+@interface RLMCredentialsViewController ()<NSTabViewDelegate>
 
 @property (nonatomic, weak) IBOutlet NSTabView *tabView;
 
@@ -58,20 +60,38 @@
     return [super initWithNibName:@"CredentialsView" bundle:nil];
 }
 
+- (void)dealloc {
+    [self.selectedCredentialViewController removeObserver:self forKeyPath:@"credential"];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tabView.delegate = self;
+    [self reloadCredentialViews];
+}
 
+- (void)reloadCredentialViews {
     for (NSTabViewItem *item in self.tabView.tabViewItems) {
         [self.tabView removeTabViewItem:item];
     }
 
     for (RLMIdentityProvider provider in [self.class supportedIdentityProviders]) {
+        if ([self.delegate respondsToSelector:@selector(credentialsViewController:shoudShowCredentialViewForIdentityProvider:)]) {
+            if (![self.delegate credentialsViewController:self shoudShowCredentialViewForIdentityProvider:provider]) {
+                continue;
+            }
+        }
+
         Class viewControllerClass = [self.class credentialViewControllerClassForIdentityProvider:provider];
 
         RLMCredentialViewController *credentialController = [[viewControllerClass alloc] init];
 
         NSTabViewItem *item = [NSTabViewItem tabViewItemWithViewController:credentialController];
         item.identifier = provider;
+
+        if ([self.delegate respondsToSelector:@selector(credentialsViewController:labelForIdentityProvider:)]) {
+            item.label = [self.delegate credentialsViewController:self labelForIdentityProvider:provider] ?: item.label;
+        }
 
         [self.tabView addTabViewItem:item];
     }
@@ -97,6 +117,28 @@
 
 - (RLMCredentialViewController *)selectedCredentialViewController {
     return (RLMCredentialViewController *)self.tabView.selectedTabViewItem.viewController;
+}
+
+#pragma mark - NSTabViewDelegate
+
+- (void)tabView:(NSTabView *)tabView willSelectTabViewItem:(NSTabViewItem *)tabViewItem {
+    [self.selectedCredentialViewController removeObserver:self forKeyPath:@"credential"];
+}
+
+- (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem {
+    [self.selectedCredentialViewController addObserver:self forKeyPath:@"credential" options:NSKeyValueObservingOptionInitial context:nil];
+}
+
+#pragma make - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    if (object == self.selectedCredentialViewController) {
+        if ([self.delegate respondsToSelector:@selector(credentialsViewControllerDidChangeCredential:)]) {
+            [self.delegate credentialsViewControllerDidChangeCredential:self];
+        }
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 @end
