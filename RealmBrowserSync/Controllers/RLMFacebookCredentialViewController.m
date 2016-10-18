@@ -17,6 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #import "RLMFacebookCredentialViewController.h"
+#import "RLMCredentialViewController+Private.h"
 
 @interface RLMFacebookCredentialViewController ()
 
@@ -28,6 +29,10 @@
 
 - (NSString *)title {
     return @"Facebook";
+}
+
+- (NSArray *)textFieldsForCredential {
+    return @[self.tokenTextField];
 }
 
 - (RLMSyncCredential *)credential {

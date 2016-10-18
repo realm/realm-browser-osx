@@ -17,8 +17,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #import "RLMAccessTokenCredentialViewController.h"
+#import "RLMCredentialViewController+Private.h"
 
-@interface RLMAccessTokenCredentialViewController () <NSTextFieldDelegate>
+@interface RLMAccessTokenCredentialViewController ()
 
 @property (nonatomic, weak) IBOutlet NSTextField *tokenTextField;
 
@@ -30,10 +31,8 @@
     return @"Access Token";
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-
-    self.tokenTextField.delegate = self;
+- (NSArray *)textFieldsForCredential {
+    return @[self.tokenTextField];
 }
 
 - (RLMSyncCredential *)credential {
@@ -51,14 +50,6 @@
 
 - (void)setCredential:(RLMSyncCredential *)credential {
     self.tokenTextField.stringValue = credential.token;
-}
-
-#pragma mark - NSTextFieldDelegate
-
-- (void)controlTextDidChange:(NSNotification *)obj {
-    // Trigger KVO notification for credential
-    [self willChangeValueForKey:@"credential"];
-    [self didChangeValueForKey:@"credential"];
 }
 
 @end

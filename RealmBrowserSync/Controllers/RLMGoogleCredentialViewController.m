@@ -17,6 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #import "RLMGoogleCredentialViewController.h"
+#import "RLMCredentialViewController+Private.h"
 
 @interface RLMGoogleCredentialViewController ()
 
@@ -28,6 +29,10 @@
 
 - (NSString *)title {
     return @"Google";
+}
+
+- (NSArray *)textFieldsForCredential {
+    return @[self.tokenTextField];
 }
 
 - (RLMSyncCredential *)credential {

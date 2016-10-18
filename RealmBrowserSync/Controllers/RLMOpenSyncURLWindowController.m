@@ -25,7 +25,7 @@ static NSString * const urlKey = @"URL";
 
 NSString * const RLMOpenSyncURLWindowControllerErrorDomain = @"io.realm.realmbrowser.sync-open-sync-url-window";
 
-@interface RLMOpenSyncURLWindowController ()
+@interface RLMOpenSyncURLWindowController ()<RLMCredentialsViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet NSTextField *urlTextField;
 @property (nonatomic, weak) IBOutlet NSView *credentialsContainerView;
@@ -46,6 +46,7 @@ NSString * const RLMOpenSyncURLWindowControllerErrorDomain = @"io.realm.realmbro
     }
 
     self.credentialsViewController = [[RLMCredentialsViewController alloc] init];
+    self.credentialsViewController.delegate = self;
 
     [self.credentialsContainerView addContentSubview:self.credentialsViewController.view];
 }
@@ -61,7 +62,7 @@ NSString * const RLMOpenSyncURLWindowControllerErrorDomain = @"io.realm.realmbro
         return NO;
     }
 
-    return YES;
+    return self.credential != nil;
 }
 
 - (void)setUrl:(NSURL *)url {
@@ -91,6 +92,12 @@ NSString * const RLMOpenSyncURLWindowControllerErrorDomain = @"io.realm.realmbro
 
 - (IBAction)cancel:(id)sender {
     [self closeWithReturnCode:NSModalResponseCancel];
+}
+
+#pragma mark - RLMCredentialsViewControllerDelegate
+
+- (void)credentialsViewControllerDidChangeCredential:(RLMCredentialsViewController *)controller {
+    [self updateUI];
 }
 
 #pragma mark - Private
