@@ -16,11 +16,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+@import Realm;
 #import "RLMWindowController.h"
 
 @interface RLMConnectToServerWindowController : RLMWindowController
 
 @property (nonatomic, copy) NSURL *serverURL;
-@property (nonatomic, copy) NSString *adminAccessToken;
+@property (nonatomic, strong, readonly) RLMSyncCredential *credential;
 
 @end

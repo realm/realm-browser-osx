@@ -35,6 +35,7 @@
 #import "RLMOpenSyncURLWindowController.h"
 #import "RLMConnectToServerWindowController.h"
 #import "RLMSyncServerBrowserWindowController.h"
+#import "RLMSyncUtils.h"
 
 @interface RLMApplicationDelegate ()
 
@@ -674,9 +675,9 @@
     [connectToServerWindowController showWindow:sender completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseOK) {
             NSURL *serverURL = connectToServerWindowController.serverURL;
-            NSString *accessToken = connectToServerWindowController.adminAccessToken;
+            RLMSyncCredential *credential = connectToServerWindowController.credential;
 
-            [self connectToServerAtURL:serverURL adminAccessToken:accessToken];
+            [self connectToServerAtURL:serverURL withAdminCredential:credential];
         }
 
         [self removeAuxiliaryWindowController:connectToServerWindowController];
@@ -685,15 +686,10 @@
     [self addAuxiliaryWindowController:connectToServerWindowController];
 }
 
-- (void)connectToServerAtURL:(NSURL *)serverURL adminAccessToken:(NSString *)adminAccessToken {
-    // FIXME: remove after it's possible to pass nil identity to create credential
-    NSString *identity = [NSUUID UUID].UUIDString;
-    RLMSyncCredential *credential = [RLMSyncCredential credentialWithAccessToken:adminAccessToken identity:identity];
+- (void)connectToServerAtURL:(NSURL *)serverURL withAdminCredential:(RLMSyncCredential *)credential {
+    NSURL *authServerURL = authServerURLForSyncURL(serverURL);
 
-    // FIXME: remove after it's possible to pass nil for authServerURL to authenticate user
-    NSURL *fakeAuthServerURL = [NSURL URLWithString:@"http://fake-realm-auth-server"];
-
-    [RLMSyncUser authenticateWithCredential:credential authServerURL:fakeAuthServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
+    [RLMSyncUser authenticateWithCredential:credential authServerURL:authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
         if (user == nil) {
             [NSApp presentError:error];
         } else {
@@ -701,7 +697,7 @@
 
             [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
                 if (returnCode == NSModalResponseOK) {
-                    [self openSyncURL:browserWindowController.selectedURL credential:credential authServerURL:nil];
+                    [self openSyncURL:browserWindowController.selectedURL credential:credential authServerURL:authServerURL];
                 }
 
                 [self removeAuxiliaryWindowController:browserWindowController];

@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="RLMConnectToServerWindowController">
             <connections>
                 <outlet property="connectButton" destination="uRt-4w-Mjf" id="Cau-IC-MEI"/>
+                <outlet property="credentialsContainerView" destination="WTR-Iv-dY5" id="mCH-JO-F2d"/>
                 <outlet property="serverURLTextField" destination="2i7-01-DBe" id="O9C-SE-ATR"/>
-                <outlet property="tokenTextField" destination="No9-zG-MQB" id="0hc-34-OPN"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="Bb2-l8-4UY"/>
             </connections>
         </customObject>
@@ -18,14 +18,14 @@
         <window title="Connect to Object Server" allowsToolTipsWhenApplicationIsInactive="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="648" height="247"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <rect key="contentRect" x="196" y="240" width="500" height="247"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="800"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="648" height="247"/>
+                <rect key="frame" x="0.0" y="0.0" width="500" height="247"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uRt-4w-Mjf">
-                        <rect key="frame" x="542" y="13" width="92" height="32"/>
+                        <rect key="frame" x="394" y="13" width="92" height="32"/>
                         <buttonCell key="cell" type="push" title="Connect" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="JEs-vy-Tnj">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -51,7 +51,7 @@ Gw
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2i7-01-DBe">
-                        <rect key="frame" x="20" y="180" width="608" height="22"/>
+                        <rect key="frame" x="20" y="180" width="460" height="22"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="BfJ-SJ-6Xg"/>
                         </constraints>
@@ -83,47 +83,25 @@ Gw
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField translatesAutoresizingMaskIntoConstraints="NO" id="No9-zG-MQB">
-                        <rect key="frame" x="20" y="49" width="608" height="98"/>
-                        <textFieldCell key="cell" lineBreakMode="charWrapping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="4YA-fG-iKt">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                        <connections>
-                            <binding destination="-2" name="value" keyPath="adminAccessToken" id="Mqb-89-sqG">
-                                <dictionary key="options">
-                                    <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                    <bool key="NSConditionallySetsEditable" value="NO"/>
-                                    <bool key="NSContinuouslyUpdatesValue" value="YES"/>
-                                    <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                </dictionary>
-                            </binding>
-                        </connections>
-                    </textField>
-                    <textField horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="3oF-u7-GvT">
-                        <rect key="frame" x="18" y="155" width="133" height="17"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Admin Access Token:" id="YzO-5t-hgw">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
+                    <customView verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WTR-Iv-dY5">
+                        <rect key="frame" x="0.0" y="61" width="500" height="99"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="450" id="vgg-8V-Imx"/>
+                        </constraints>
+                    </customView>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="trailing" secondItem="WTR-Iv-dY5" secondAttribute="trailing" id="0vs-av-bAt"/>
                     <constraint firstAttribute="trailing" secondItem="uRt-4w-Mjf" secondAttribute="trailing" constant="20" id="1na-Ks-Ygl"/>
                     <constraint firstItem="2i7-01-DBe" firstAttribute="top" secondItem="6SF-Re-3zi" secondAttribute="bottom" constant="8" symbolic="YES" id="4CO-EI-gu4"/>
                     <constraint firstItem="2i7-01-DBe" firstAttribute="leading" secondItem="6SF-Re-3zi" secondAttribute="leading" id="4pz-qB-dSh"/>
+                    <constraint firstItem="WTR-Iv-dY5" firstAttribute="top" secondItem="2i7-01-DBe" secondAttribute="bottom" constant="20" id="BpY-lD-vd4"/>
                     <constraint firstAttribute="bottom" secondItem="HTQ-E5-jlI" secondAttribute="bottom" constant="20" id="EVL-d7-yn1"/>
                     <constraint firstItem="HTQ-E5-jlI" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="Mfw-uP-JGL"/>
-                    <constraint firstAttribute="trailing" secondItem="No9-zG-MQB" secondAttribute="trailing" constant="20" symbolic="YES" id="Pxa-pt-ub4"/>
+                    <constraint firstItem="HTQ-E5-jlI" firstAttribute="top" secondItem="WTR-Iv-dY5" secondAttribute="bottom" constant="20" id="Ox7-6E-3iD"/>
                     <constraint firstItem="2i7-01-DBe" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="Wl2-ic-T4S"/>
-                    <constraint firstItem="No9-zG-MQB" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="ZB4-ni-DJr"/>
-                    <constraint firstItem="No9-zG-MQB" firstAttribute="top" secondItem="3oF-u7-GvT" secondAttribute="bottom" constant="8" symbolic="YES" id="aEI-5d-IFj"/>
+                    <constraint firstItem="WTR-Iv-dY5" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="Y1J-3f-pt1"/>
                     <constraint firstItem="6SF-Re-3zi" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" symbolic="YES" id="kP2-zU-mee"/>
-                    <constraint firstItem="HTQ-E5-jlI" firstAttribute="top" secondItem="No9-zG-MQB" secondAttribute="bottom" constant="8" symbolic="YES" id="sXo-2s-d6i"/>
-                    <constraint firstItem="No9-zG-MQB" firstAttribute="leading" secondItem="3oF-u7-GvT" secondAttribute="leading" id="tX3-1F-t0Z"/>
-                    <constraint firstItem="3oF-u7-GvT" firstAttribute="top" secondItem="2i7-01-DBe" secondAttribute="bottom" constant="8" symbolic="YES" id="whi-Gl-1m8"/>
                     <constraint firstAttribute="bottom" secondItem="uRt-4w-Mjf" secondAttribute="bottom" constant="20" id="yBx-lO-Pak"/>
                     <constraint firstAttribute="trailing" secondItem="2i7-01-DBe" secondAttribute="trailing" constant="20" symbolic="YES" id="yMj-9p-GGe"/>
                 </constraints>
