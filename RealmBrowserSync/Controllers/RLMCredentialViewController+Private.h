@@ -16,8 +16,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-@interface RLMCredentialViewController ()
+@interface RLMCredentialViewController ()<NSTextFieldDelegate>
 
 + (NSString *)defaultNibName;
+
+- (NSArray *)textFieldsForCredential;
 
 @end

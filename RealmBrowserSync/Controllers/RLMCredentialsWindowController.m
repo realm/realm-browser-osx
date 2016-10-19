@@ -20,10 +20,11 @@
 #import "RLMCredentialsViewController.h"
 #import "NSView+RLMExtensions.h"
 
-@interface RLMCredentialsWindowController ()
+@interface RLMCredentialsWindowController ()<RLMCredentialsViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet NSTextField *messageLabel;
 @property (nonatomic, weak) IBOutlet NSView *credentialsContainerView;
+@property (nonatomic, weak) IBOutlet NSButton *okButton;
 
 @property (nonatomic, strong) RLMCredentialsViewController *credentialsViewController;
 
@@ -36,6 +37,7 @@
 
     if (self != nil) {
         self.credentialsViewController = [[RLMCredentialsViewController alloc] init];
+        self.credentialsViewController.delegate = self;
     }
 
     return self;
@@ -45,6 +47,12 @@
     [super windowDidLoad];
 
     [self.credentialsContainerView addContentSubview:self.credentialsViewController.view];
+
+    [self updateUI];
+}
+
+- (void)updateUI {
+    self.okButton.enabled = self.credential != nil;
 }
 
 - (NSString *)message {
@@ -61,6 +69,8 @@
 
 - (void)setCredential:(RLMSyncCredential *)credential {
     self.credentialsViewController.credential = credential;
+
+    [self updateUI];
 }
 
 - (IBAction)ok:(id)sender {
@@ -71,6 +81,12 @@
 
 - (IBAction)cancel:(id)sender {
     [self closeWithReturnCode:NSModalResponseCancel];
+}
+
+#pragma mark - RLMCredentialsViewControllerDelegate
+
+- (void)credentialsViewControllerDidChangeCredential:(RLMCredentialsViewController *)controller {
+    [self updateUI];
 }
 
 @end

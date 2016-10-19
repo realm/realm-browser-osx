@@ -42,4 +42,24 @@ static NSString * const RLMCredentialViewControllerClassSyffix = @"Controller";
     return [self initWithNibName:[self.class defaultNibName] bundle:nil];
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    for (NSTextField *textField in [self textFieldsForCredential]) {
+        textField.delegate = self;
+    }
+}
+
+- (NSArray *)textFieldsForCredential {
+    return nil;
+}
+
+#pragma mark - NSTextFieldDelegate
+
+- (void)controlTextDidChange:(NSNotification *)obj {
+    // Trigger KVO notification for credential
+    [self willChangeValueForKey:@"credential"];
+    [self didChangeValueForKey:@"credential"];
+}
+
 @end

@@ -17,6 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #import "RLMCloudKitCredentialViewController.h"
+#import "RLMCredentialViewController+Private.h"
 
 @interface RLMCloudKitCredentialViewController ()
 
@@ -28,6 +29,10 @@
 
 - (NSString *)title {
     return @"CloudKit";
+}
+
+- (NSArray *)textFieldsForCredential {
+    return @[self.tokenTextField];
 }
 
 - (RLMSyncCredential *)credential {

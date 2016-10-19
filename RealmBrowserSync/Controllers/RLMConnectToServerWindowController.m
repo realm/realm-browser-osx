@@ -16,20 +16,24 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#import "RLMConnectToServerWindowController.h"
 #import "RLMBrowserConstants.h"
+#import "RLMConnectToServerWindowController.h"
+#import "RLMCredentialsViewController.h"
+#import "NSView+RLMExtensions.h"
 
 static NSString * const serverURLKey = @"ServerURL";
 static NSString * const adminAccessTokenKey = @"AdminAccessToken";
 
 NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.realmbrowser.sync-connect-to-server-window";
 
-@interface RLMConnectToServerWindowController ()
+@interface RLMConnectToServerWindowController ()<RLMCredentialsViewControllerDelegate>
 
-@property (weak) IBOutlet NSTextField *serverURLTextField;
-@property (weak) IBOutlet NSTextField *tokenTextField;
+@property (nonatomic, weak) IBOutlet NSView *credentialsContainerView;
+@property (nonatomic, weak) IBOutlet NSTextField *serverURLTextField;
+@property (nonatomic, weak) IBOutlet NSTextField *tokenTextField;
+@property (nonatomic, weak) IBOutlet NSButton *connectButton;
 
-@property (weak) IBOutlet NSButton *connectButton;
+@property (nonatomic, strong) RLMCredentialsViewController *credentialsViewController;
 
 @end
 
@@ -38,9 +42,14 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
 - (void)windowDidLoad {
     [super windowDidLoad];
 
-    if (self.serverURL == nil && self.adminAccessToken == nil) {
+    if (self.serverURL == nil && self.credential == nil) {
         [self loadRecentCredentials];
     }
+
+    self.credentialsViewController = [[RLMCredentialsViewController alloc] init];
+    self.credentialsViewController.delegate = self;
+
+    [self.credentialsContainerView addContentSubview:self.credentialsViewController.view];
 }
 
 - (BOOL)validateCredentials:(NSError *__autoreleasing *)error {
@@ -54,12 +63,7 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
         return NO;
     }
 
-    if ([self.adminAccessToken componentsSeparatedByString:@":"].count != 2) {
-        *error = [self errorWithCode:1 description:@"Invalid Access Token" recoverySuggestion:@"Provide a valid Access Token in format:\n \"IDENTITY:SIGNATURE\" or leave it empty."];
-        return NO;
-    }
-
-    return YES;
+    return self.credential != nil;
 }
 
 - (void)setServerURL:(NSURL *)url {
@@ -72,18 +76,38 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
     [self updateUI];
 }
 
-- (void)setAdminAccessToken:(NSString *)token {
-    if ([token isEqualToString:self.adminAccessToken]) {
-        return;
-    }
+- (RLMSyncCredential *)credential {
+    return self.credentialsViewController.credential;
+}
 
-    _adminAccessToken = [token copy];
+- (void)setCredential:(RLMSyncCredential *)credential {
+    self.credentialsViewController.credential = credential;
 
     [self updateUI];
 }
 
 - (void)updateUI {
     self.connectButton.enabled = [self validateCredentials:nil];
+}
+
+#pragma mark - RLMCredentialsViewControllerDelegate
+
+- (BOOL)credentialsViewController:(RLMCredentialsViewController *)controller shoudShowCredentialViewForIdentityProvider:(RLMIdentityProvider)provider {
+    return provider == RLMIdentityProviderAccessToken || provider == RLMIdentityProviderUsernamePassword;
+}
+
+- (NSString *)credentialsViewController:(RLMCredentialsViewController *)controller labelForIdentityProvider:(RLMIdentityProvider)provider {
+    if (provider == RLMIdentityProviderAccessToken) {
+        return @"Admin Access Token";
+    } else if (provider == RLMIdentityProviderUsernamePassword) {
+        return @"Admin Username";
+    }
+
+    return nil;
+}
+
+- (void)credentialsViewControllerDidChangeCredential:(RLMCredentialsViewController *)controller {
+    [self updateUI];
 }
 
 #pragma mark - Actions
@@ -102,12 +126,10 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
 
 - (void)loadRecentCredentials {
     self.serverURL = [[NSUserDefaults standardUserDefaults] URLForKey:serverURLKey];
-    self.adminAccessToken = [[NSUserDefaults standardUserDefaults] stringForKey:adminAccessTokenKey];
 }
 
 - (void)seaveRecentCredentials {
     [[NSUserDefaults standardUserDefaults] setURL:self.serverURL forKey:serverURLKey];
-    [[NSUserDefaults standardUserDefaults] setObject:self.adminAccessToken forKey:adminAccessTokenKey];
 }
 
 - (NSError *)errorWithCode:(NSInteger)code description:(NSString *)description recoverySuggestion:(NSString *)recoverySuggestion {

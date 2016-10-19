@@ -19,8 +19,23 @@
 @import Cocoa;
 @import Realm;
 
+extern RLMIdentityProvider const RLMIdentityProviderAccessToken;
+
+@class RLMCredentialsViewController;
+
+@protocol RLMCredentialsViewControllerDelegate<NSObject>
+@optional
+- (BOOL)credentialsViewController:(RLMCredentialsViewController *)controller shoudShowCredentialViewForIdentityProvider:(RLMIdentityProvider)provider;
+- (NSString *)credentialsViewController:(RLMCredentialsViewController *)controller labelForIdentityProvider:(RLMIdentityProvider)provider;
+- (void)credentialsViewControllerDidChangeCredential:(RLMCredentialsViewController *)controller;
+
+@end
+
 @interface RLMCredentialsViewController : NSViewController
 
+@property (nonatomic, weak) id<RLMCredentialsViewControllerDelegate> delegate;
 @property (nonatomic, strong) RLMSyncCredential *credential;
+
+- (void)reloadCredentialViews;
 
 @end

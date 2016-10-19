@@ -16,37 +16,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#import "RLMFacebookCredentialViewController.h"
-#import "RLMCredentialViewController+Private.h"
+#import "RLMSyncUtils.h"
+#import "RLMBrowserConstants.h"
 
-@interface RLMFacebookCredentialViewController ()
+NSURL *authServerURLForSyncURL(NSURL *syncURL) {
+    NSURLComponents *authServerURLComponents = [[NSURLComponents alloc] init];
 
-@property (nonatomic, weak) IBOutlet NSTextField *tokenTextField;
+    authServerURLComponents.scheme = [syncURL.scheme isEqualToString:kSecureRealmURLScheme] ? @"https" : @"http";
+    authServerURLComponents.host = syncURL.host;
+    authServerURLComponents.port = syncURL.port;
 
-@end
-
-@implementation RLMFacebookCredentialViewController
-
-- (NSString *)title {
-    return @"Facebook";
+    return authServerURLComponents.URL;
 }
-
-- (NSArray *)textFieldsForCredential {
-    return @[self.tokenTextField];
-}
-
-- (RLMSyncCredential *)credential {
-    NSString *token = self.tokenTextField.stringValue;
-
-    if (token.length > 0) {
-        return [RLMSyncCredential credentialWithFacebookToken:token];
-    }
-
-    return nil;
-}
-
-- (void)setCredential:(RLMSyncCredential *)credential {
-    self.tokenTextField.stringValue = credential.token;
-}
-
-@end

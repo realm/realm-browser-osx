@@ -17,8 +17,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #import "RLMUsernameCredentialViewController.h"
+#import "RLMCredentialViewController+Private.h"
 
-@interface RLMUsernameCredentialViewController () <NSTextFieldDelegate>
+@interface RLMUsernameCredentialViewController ()
 
 @property (nonatomic, weak) IBOutlet NSTextField *usernameTextField;
 @property (nonatomic, weak) IBOutlet NSTextField *passwordTextField;
@@ -31,11 +32,8 @@
     return @"Username";
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-
-    self.usernameTextField.delegate = self;
-    self.passwordTextField.delegate = self;
+- (NSArray *)textFieldsForCredential {
+    return @[self.usernameTextField, self.passwordTextField];
 }
 
 - (RLMSyncCredential *)credential {
@@ -51,14 +49,6 @@
 
 - (void)setCredential:(RLMSyncCredential *)credential {
     self.usernameTextField.stringValue = credential.token;
-}
-
-#pragma mark - NSTextFieldDelegate
-
-- (void)controlTextDidChange:(NSNotification *)obj {
-    // Trigger KVO notification for credential
-    [self willChangeValueForKey:@"credential"];
-    [self didChangeValueForKey:@"credential"];
 }
 
 @end
