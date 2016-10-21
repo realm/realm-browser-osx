@@ -59,7 +59,7 @@ node('osx_vegas') {
     stage 'Package'
     dir("build/DerivedData/Build/Products/Release/") {
       sh "ls -alh"
-      sh "zip --symlinks -r ${archiveName} 'Realm Browser.app'"
+      sh "zip --symlinks -r ${archiveName} 'Realm Browser.app' 'Realm Browser.app.dSYM'"
 
       archive "${archiveName}"
 
