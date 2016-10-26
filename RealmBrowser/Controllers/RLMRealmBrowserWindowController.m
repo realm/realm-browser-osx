@@ -318,7 +318,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     [self saveModelsForLanguage:RLMModelExporterLanguageSwift];
 }
 
-- (IBAction)saveCopy:(id)sender
+- (IBAction)exportToCompactedRealm:(id)sender
 {
     NSString *fileName = self.document.fileURL.lastPathComponent ?: self.document.syncURL.lastPathComponent ?: @"Compacted";
 
@@ -330,16 +330,15 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     panel.canCreateDirectories = YES;
     panel.nameFieldStringValue = fileName;
     [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
-        if (result != NSFileHandlingPanelOKButton)
+        if (result != NSFileHandlingPanelOKButton || !panel.URL) {
             return;
+        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSURL *fileURL = [panel URL];
-            
             AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
             [fileAccess requestAccessPermissionsForFileURL:panel.URL persistPermission:YES withBlock:^(NSURL *securelyScopedURL, NSData *bookmarkData) {
                 [securelyScopedURL startAccessingSecurityScopedResource];
-                [self exportAndCompactCopyOfRealmFileAtURL:fileURL];
+                [self exportAndCompactCopyOfRealmFileAtURL:panel.URL];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [securelyScopedURL stopAccessingSecurityScopedResource];
                 }); 
