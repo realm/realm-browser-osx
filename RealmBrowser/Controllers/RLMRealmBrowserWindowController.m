@@ -29,6 +29,7 @@
 #import "RLMEncryptionKeyWindowController.h"
 #import "RLMCredentialsWindowController.h"
 #import "RLMConnectionIndicatorWindowController.h"
+#import "RLMBrowserConstants.h"
 
 NSString * const kRealmLockedImage = @"RealmLocked";
 NSString * const kRealmUnlockedImage = @"RealmUnlocked";
@@ -319,7 +320,12 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
 - (IBAction)saveCopy:(id)sender
 {
-    NSString *fileName = [self.document.fileURL.path lastPathComponent];
+    NSString *fileName = self.document.fileURL.lastPathComponent ?: self.document.syncURL.lastPathComponent ?: @"Compacted";
+
+    if (![fileName.pathExtension isEqualToString:kRealmFileExtension]) {
+        fileName = [fileName.stringByDeletingPathExtension stringByAppendingPathExtension:kRealmFileExtension];
+    }
+
     NSSavePanel *panel = [NSSavePanel savePanel];
     panel.canCreateDirectories = YES;
     panel.nameFieldStringValue = fileName;
