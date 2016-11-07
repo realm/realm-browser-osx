@@ -6,7 +6,7 @@ PODS:
   - Realm (2.0.3):
     - Realm/Headers (= 2.0.3)
   - Realm/Headers (2.0.3)
-  - RealmConverter (0.2.0):
+  - RealmConverter (0.2.1):
     - CSwiftV
     - PathKit (~> 0.6.0)
     - Realm
@@ -27,7 +27,7 @@ SPEC CHECKSUMS:
   HockeySDK-Mac: c849a264e4f5f43520f7eec7d3f8b921cfc6e63b
   PathKit: b224b6d2c4e75b87f08f45e1c0c610a3195c94e5
   Realm: 5f008bfe3c8c47142eddfc30b8c1584cde22db24
-  RealmConverter: 816ad9621bdd59702bc2825abbcc8cc77e2997b3
+  RealmConverter: 3a0ff752b3f699d64ad56a10d571471ccb3c7af3
   SSZipArchive: 428eb1ac8d37dd133404d30f422b23958c1f9acc
   TGSpreadsheetWriter: '09bbb2c18a111a11c94ff9c1af2320e2530c958e'
 
