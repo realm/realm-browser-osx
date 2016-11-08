@@ -1,3 +1,9 @@
+2.1.0 Release notes (2016-10-28)
+=============================================================
+* Added in-app crash reporting
+* Added the ability to connect to Realm Object Server with admin username/password
+* Fixed export to Compacted Realm
+
 2.0.1 Release notes (2016-10-06)
 =============================================================
 This release introduces support for the Realm Mobile Platform!
