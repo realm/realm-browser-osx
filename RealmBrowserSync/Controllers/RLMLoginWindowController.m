@@ -16,11 +16,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#import "RLMCredentialsWindowController.h"
+#import "RLMLoginWindowController.h"
 #import "RLMCredentialsViewController.h"
 #import "NSView+RLMExtensions.h"
 
-@interface RLMCredentialsWindowController ()<RLMCredentialsViewControllerDelegate>
+@interface RLMLoginWindowController ()<RLMCredentialsViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet NSTextField *messageLabel;
 @property (nonatomic, weak) IBOutlet NSView *credentialsContainerView;
@@ -30,7 +30,7 @@
 
 @end
 
-@implementation RLMCredentialsWindowController
+@implementation RLMLoginWindowController
 
 - (instancetype)init {
     self = [super init];

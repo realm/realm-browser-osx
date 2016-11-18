@@ -89,8 +89,8 @@
 		C2B7CAC01D11A0C900049C32 /* ConnectToServerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2B7CABF1D11A0C900049C32 /* ConnectToServerWindow.xib */; };
 		C2CA58F01DAE3B6B0052BAAA /* RLMApplicationDelegate+CrashReporting.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CA58EF1DAE3B6B0052BAAA /* RLMApplicationDelegate+CrashReporting.m */; };
 		C2D302DC1D6DF63700E091DF /* RLMDocumentController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D302DB1D6DF63700E091DF /* RLMDocumentController.m */; };
-		C2D302E41D74528800E091DF /* RLMCredentialsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D302E31D74528800E091DF /* RLMCredentialsWindowController.m */; };
-		C2D302E61D7455B600E091DF /* CredentialsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2D302E51D7455B600E091DF /* CredentialsWindow.xib */; };
+		C2D302E41D74528800E091DF /* RLMLoginWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D302E31D74528800E091DF /* RLMLoginWindowController.m */; };
+		C2D302E61D7455B600E091DF /* LoginWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2D302E51D7455B600E091DF /* LoginWindow.xib */; };
 		C2D302E81D7478AC00E091DF /* OpenSyncURLWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2D302E71D7478AC00E091DF /* OpenSyncURLWindow.xib */; };
 		C2D302EB1D747BF600E091DF /* RLMSyncURLValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D302EA1D747BF600E091DF /* RLMSyncURLValueTransformer.m */; };
 		C2D302EE1D75A2E100E091DF /* RLMWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D302ED1D75A2E100E091DF /* RLMWindowController.m */; };
@@ -257,9 +257,9 @@
 		C2CA58EF1DAE3B6B0052BAAA /* RLMApplicationDelegate+CrashReporting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RLMApplicationDelegate+CrashReporting.m"; sourceTree = "<group>"; };
 		C2D302DA1D6DF63700E091DF /* RLMDocumentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMDocumentController.h; sourceTree = "<group>"; };
 		C2D302DB1D6DF63700E091DF /* RLMDocumentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMDocumentController.m; sourceTree = "<group>"; };
-		C2D302E21D74528800E091DF /* RLMCredentialsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMCredentialsWindowController.h; sourceTree = "<group>"; };
-		C2D302E31D74528800E091DF /* RLMCredentialsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMCredentialsWindowController.m; sourceTree = "<group>"; };
-		C2D302E51D7455B600E091DF /* CredentialsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CredentialsWindow.xib; sourceTree = "<group>"; };
+		C2D302E21D74528800E091DF /* RLMLoginWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMLoginWindowController.h; sourceTree = "<group>"; };
+		C2D302E31D74528800E091DF /* RLMLoginWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMLoginWindowController.m; sourceTree = "<group>"; };
+		C2D302E51D7455B600E091DF /* LoginWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginWindow.xib; sourceTree = "<group>"; };
 		C2D302E71D7478AC00E091DF /* OpenSyncURLWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OpenSyncURLWindow.xib; sourceTree = "<group>"; };
 		C2D302E91D747BF600E091DF /* RLMSyncURLValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMSyncURLValueTransformer.h; sourceTree = "<group>"; };
 		C2D302EA1D747BF600E091DF /* RLMSyncURLValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMSyncURLValueTransformer.m; sourceTree = "<group>"; };
@@ -332,8 +332,8 @@
 				C27E17391D5CC0EF0095259A /* RLMSyncServerBrowserWindowController.m */,
 				C2AA0F611D634FBF00D5D7E6 /* RLMOpenSyncURLWindowController.h */,
 				C2AA0F621D634FBF00D5D7E6 /* RLMOpenSyncURLWindowController.m */,
-				C2D302E21D74528800E091DF /* RLMCredentialsWindowController.h */,
-				C2D302E31D74528800E091DF /* RLMCredentialsWindowController.m */,
+				C2D302E21D74528800E091DF /* RLMLoginWindowController.h */,
+				C2D302E31D74528800E091DF /* RLMLoginWindowController.m */,
 				C29CC7C41D76DE9600186B29 /* RLMCredentialsViewController.h */,
 				C29CC7C51D76DE9600186B29 /* RLMCredentialsViewController.m */,
 				C29CC7B41D76D4E300186B29 /* RLMCredentialViewController.h */,
@@ -363,7 +363,7 @@
 				C2D302E71D7478AC00E091DF /* OpenSyncURLWindow.xib */,
 				C2B7CABF1D11A0C900049C32 /* ConnectToServerWindow.xib */,
 				C27E173B1D5CC1070095259A /* SyncServerBrowserWindow.xib */,
-				C2D302E51D7455B600E091DF /* CredentialsWindow.xib */,
+				C2D302E51D7455B600E091DF /* LoginWindow.xib */,
 				C29CC7C21D76DE0900186B29 /* CredentialsView.xib */,
 				C29CC7BE1D76DC5900186B29 /* AccessTokenCredentialView.xib */,
 				C29CC7C01D76DD4500186B29 /* UsernameCredentialView.xib */,
@@ -731,7 +731,7 @@
 				36B669CB1B8B057F00F04AE1 /* RLMObjectLinkSelectionViewController.xib in Resources */,
 				C277A6EF1D7EC1AF00DED239 /* GoogleCredentialView.xib in Resources */,
 				C29CC7C31D76DE0900186B29 /* CredentialsView.xib in Resources */,
-				C2D302E61D7455B600E091DF /* CredentialsWindow.xib in Resources */,
+				C2D302E61D7455B600E091DF /* LoginWindow.xib in Resources */,
 				C2D302E81D7478AC00E091DF /* OpenSyncURLWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -883,7 +883,7 @@
 				22A55FF119D19842009178BC /* RLMDescriptions.m in Sources */,
 				C2AA0F631D634FBF00D5D7E6 /* RLMOpenSyncURLWindowController.m in Sources */,
 				84E35A49196AD991007F0344 /* RLMNavigationStack.m in Sources */,
-				C2D302E41D74528800E091DF /* RLMCredentialsWindowController.m in Sources */,
+				C2D302E41D74528800E091DF /* RLMLoginWindowController.m in Sources */,
 				36B669CE1B8B096A00F04AE1 /* RLMObjectLinkSelectionViewController.m in Sources */,
 				C29CC7BC1D76D8C100186B29 /* RLMUsernameCredentialViewController.m in Sources */,
 				84925C67195AE9AD00EE27B1 /* RLMSidebarTableCellView.m in Sources */,

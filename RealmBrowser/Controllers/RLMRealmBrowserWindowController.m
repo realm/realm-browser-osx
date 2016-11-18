@@ -27,7 +27,7 @@
 #import "RLMModelExporter.h"
 #import "RLMExportIndicatorWindowController.h"
 #import "RLMEncryptionKeyWindowController.h"
-#import "RLMCredentialsWindowController.h"
+#import "RLMLoginWindowController.h"
 #import "RLMConnectionIndicatorWindowController.h"
 #import "RLMBrowserConstants.h"
 
@@ -55,7 +55,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
 @property (nonatomic, strong) RLMExportIndicatorWindowController *exportWindowController;
 @property (nonatomic, strong) RLMEncryptionKeyWindowController *encryptionController;
-@property (nonatomic, strong) RLMCredentialsWindowController *credentialsController;
+@property (nonatomic, strong) RLMLoginWindowController *loginWindowController;
 @property (nonatomic, strong) RLMConnectionIndicatorWindowController *connectionIndicatorWindowController;
 
 @property (nonatomic, strong) RLMNotificationToken *documentNotificationToken;
@@ -212,14 +212,14 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 }
 
 - (void)handleSyncCredentials {
-    self.credentialsController = [[RLMCredentialsWindowController alloc] init];
-    self.credentialsController.credentials = self.document.credentials;
+    self.loginWindowController = [[RLMLoginWindowController alloc] init];
+    self.loginWindowController.credentials = self.document.credentials;
 
-    [self.credentialsController showSheetForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+    [self.loginWindowController showSheetForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseOK) {
             [self showLoadingIndicator];
 
-            [self.document loadWithCredentials:self.credentialsController.credentials completionHandler:^(NSError *error) {
+            [self.document loadWithCredentials:self.loginWindowController.credentials completionHandler:^(NSError *error) {
                 [self hideLoadingIndicator];
 
                 // TODO: handle error code properly
@@ -235,7 +235,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
             [self.document close];
         }
 
-        self.credentialsController = nil;
+        self.loginWindowController = nil;
     }];
 }
 

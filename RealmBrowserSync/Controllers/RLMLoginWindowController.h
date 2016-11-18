@@ -20,7 +20,7 @@
 
 #import "RLMWindowController.h"
 
-@interface RLMCredentialsWindowController : RLMWindowController
+@interface RLMLoginWindowController : RLMWindowController
 
 @property (nonatomic, copy) NSString *message;
 @property (nonatomic, strong) RLMSyncCredentials *credentials;
