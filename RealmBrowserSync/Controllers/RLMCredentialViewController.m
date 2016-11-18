@@ -58,8 +58,8 @@ static NSString * const RLMCredentialViewControllerClassSyffix = @"Controller";
 
 - (void)controlTextDidChange:(NSNotification *)obj {
     // Trigger KVO notification for credential
-    [self willChangeValueForKey:@"credential"];
-    [self didChangeValueForKey:@"credential"];
+    [self willChangeValueForKey:@"credentials"];
+    [self didChangeValueForKey:@"credentials"];
 }
 
 @end

@@ -85,7 +85,7 @@
 
 #pragma mark - RLMCredentialsViewControllerDelegate
 
-- (void)credentialsViewControllerDidChangeCredential:(RLMCredentialsViewController *)controller {
+- (void)credentialsViewControllerDidChangeCredentials:(RLMCredentialsViewController *)controller {
     [self updateUI];
 }
 

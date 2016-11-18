@@ -106,7 +106,7 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
     return nil;
 }
 
-- (void)credentialsViewControllerDidChangeCredential:(RLMCredentialsViewController *)controller {
+- (void)credentialsViewControllerDidChangeCredentials:(RLMCredentialsViewController *)controller {
     [self updateUI];
 }
 
