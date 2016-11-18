@@ -52,7 +52,7 @@
 }
 
 - (void)updateUI {
-    self.okButton.enabled = self.credential != nil;
+    self.okButton.enabled = self.credentials != nil;
 }
 
 - (NSString *)message {
@@ -63,18 +63,18 @@
     self.messageLabel.stringValue = message;
 }
 
-- (RLMSyncCredential *)credential {
-    return self.credentialsViewController.credential;
+- (RLMSyncCredentials *)credentials {
+    return self.credentialsViewController.credentials;
 }
 
-- (void)setCredential:(RLMSyncCredential *)credential {
-    self.credentialsViewController.credential = credential;
+- (void)setCredentials:(RLMSyncCredentials *)credentials {
+    self.credentialsViewController.credentials = credentials;
 
     [self updateUI];
 }
 
 - (IBAction)ok:(id)sender {
-    if (self.credential != nil) {
+    if (self.credentials != nil) {
         [self closeWithReturnCode:NSModalResponseOK];
     }
 }

@@ -20,6 +20,6 @@
 
 + (NSString *)defaultNibName;
 
-- (NSArray *)textFieldsForCredential;
+- (NSArray *)textFieldsForCredentials;
 
 @end

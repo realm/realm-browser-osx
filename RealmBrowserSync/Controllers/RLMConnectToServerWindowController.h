@@ -22,6 +22,6 @@
 @interface RLMConnectToServerWindowController : RLMWindowController
 
 @property (nonatomic, copy) NSURL *serverURL;
-@property (nonatomic, strong, readonly) RLMSyncCredential *credential;
+@property (nonatomic, strong, readonly) RLMSyncCredentials *credentials;
 
 @end

@@ -31,22 +31,22 @@
     return @"Facebook";
 }
 
-- (NSArray *)textFieldsForCredential {
+- (NSArray *)textFieldsForCredentials {
     return @[self.tokenTextField];
 }
 
-- (RLMSyncCredential *)credential {
+- (RLMSyncCredentials *)credentials {
     NSString *token = self.tokenTextField.stringValue;
 
     if (token.length > 0) {
-        return [RLMSyncCredential credentialWithFacebookToken:token];
+        return [RLMSyncCredentials credentialsWithFacebookToken:token];
     }
 
     return nil;
 }
 
-- (void)setCredential:(RLMSyncCredential *)credential {
-    self.tokenTextField.stringValue = credential.token;
+- (void)setCredentials:(RLMSyncCredentials *)credentials {
+    self.tokenTextField.stringValue = credentials.token;
 }
 
 @end

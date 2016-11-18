@@ -23,6 +23,6 @@
 @interface RLMCredentialsWindowController : RLMWindowController
 
 @property (nonatomic, copy) NSString *message;
-@property (nonatomic, strong) RLMSyncCredential *credential;
+@property (nonatomic, strong) RLMSyncCredentials *credentials;
 
 @end

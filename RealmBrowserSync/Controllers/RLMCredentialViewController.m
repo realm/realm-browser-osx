@@ -45,12 +45,12 @@ static NSString * const RLMCredentialViewControllerClassSyffix = @"Controller";
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    for (NSTextField *textField in [self textFieldsForCredential]) {
+    for (NSTextField *textField in [self textFieldsForCredentials]) {
         textField.delegate = self;
     }
 }
 
-- (NSArray *)textFieldsForCredential {
+- (NSArray *)textFieldsForCredentials {
     return nil;
 }
 

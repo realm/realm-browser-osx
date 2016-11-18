@@ -115,7 +115,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
             [self waitForDocumentSchemaLoad];
             break;
 
-        case RLMDocumentStateNeedsValidCredential:
+        case RLMDocumentStateNeedsValidCredentials:
             [self handleSyncCredentials];
             break;
 
@@ -213,13 +213,13 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
 - (void)handleSyncCredentials {
     self.credentialsController = [[RLMCredentialsWindowController alloc] init];
-    self.credentialsController.credential = self.document.credential;
+    self.credentialsController.credentials = self.document.credentials;
 
     [self.credentialsController showSheetForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseOK) {
             [self showLoadingIndicator];
 
-            [self.document loadWithCredential:self.credentialsController.credential completionHandler:^(NSError *error) {
+            [self.document loadWithCredentials:self.credentialsController.credentials completionHandler:^(NSError *error) {
                 [self hideLoadingIndicator];
 
                 // TODO: handle error code properly

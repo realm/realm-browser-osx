@@ -62,7 +62,7 @@ NSString * const RLMOpenSyncURLWindowControllerErrorDomain = @"io.realm.realmbro
         return NO;
     }
 
-    return self.credential != nil;
+    return self.credentials != nil;
 }
 
 - (void)setUrl:(NSURL *)url {
@@ -75,8 +75,8 @@ NSString * const RLMOpenSyncURLWindowControllerErrorDomain = @"io.realm.realmbro
     [self updateUI];
 }
 
-- (RLMSyncCredential *)credential {
-    return self.credentialsViewController.credential;
+- (RLMSyncCredentials *)credentials {
+    return self.credentialsViewController.credentials;
 }
 
 - (void)updateUI {

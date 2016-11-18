@@ -32,23 +32,23 @@
     return @"Username";
 }
 
-- (NSArray *)textFieldsForCredential {
+- (NSArray *)textFieldsForCredentials {
     return @[self.usernameTextField, self.passwordTextField];
 }
 
-- (RLMSyncCredential *)credential {
+- (RLMSyncCredentials *)credentials {
     NSString *username = self.usernameTextField.stringValue;
     NSString *password = self.passwordTextField.stringValue;
 
     if (username.length > 0 && password.length > 0) {
-        return [RLMSyncCredential credentialWithUsername:username password:password actions:RLMAuthenticationActionsUseExistingAccount];
+        return [RLMSyncCredentials credentialsWithUsername:username password:password register:NO];
     }
 
     return nil;
 }
 
-- (void)setCredential:(RLMSyncCredential *)credential {
-    self.usernameTextField.stringValue = credential.token;
+- (void)setCredentials:(RLMSyncCredentials *)credentials {
+    self.usernameTextField.stringValue = credentials.token;
 }
 
 @end

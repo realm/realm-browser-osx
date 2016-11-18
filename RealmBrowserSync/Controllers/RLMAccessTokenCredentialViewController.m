@@ -31,25 +31,25 @@
     return @"Access Token";
 }
 
-- (NSArray *)textFieldsForCredential {
+- (NSArray *)textFieldsForCredentials {
     return @[self.tokenTextField];
 }
 
-- (RLMSyncCredential *)credential {
+- (RLMSyncCredentials *)credentials {
     NSString *token = self.tokenTextField.stringValue;
 
     if (token.length > 0) {
         // FIXME: remove after it's possible to pass nil identity to create credential
         NSString *identity = [NSUUID UUID].UUIDString;
 
-        return [RLMSyncCredential credentialWithAccessToken:token identity:identity];
+        return [RLMSyncCredentials credentialsWithAccessToken:token identity:identity];
     }
 
     return nil;
 }
 
-- (void)setCredential:(RLMSyncCredential *)credential {
-    self.tokenTextField.stringValue = credential.token;
+- (void)setCredentials:(RLMSyncCredentials *)credentials {
+    self.tokenTextField.stringValue = credentials.token;
 }
 
 @end

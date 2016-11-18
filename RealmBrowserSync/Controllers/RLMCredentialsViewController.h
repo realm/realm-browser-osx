@@ -25,16 +25,16 @@ extern RLMIdentityProvider const RLMIdentityProviderAccessToken;
 
 @protocol RLMCredentialsViewControllerDelegate<NSObject>
 @optional
-- (BOOL)credentialsViewController:(RLMCredentialsViewController *)controller shoudShowCredentialViewForIdentityProvider:(RLMIdentityProvider)provider;
+- (BOOL)credentialsViewController:(RLMCredentialsViewController *)controller shoudShowCredentialsViewForIdentityProvider:(RLMIdentityProvider)provider;
 - (NSString *)credentialsViewController:(RLMCredentialsViewController *)controller labelForIdentityProvider:(RLMIdentityProvider)provider;
-- (void)credentialsViewControllerDidChangeCredential:(RLMCredentialsViewController *)controller;
+- (void)credentialsViewControllerDidChangeCredentials:(RLMCredentialsViewController *)controller;
 
 @end
 
 @interface RLMCredentialsViewController : NSViewController
 
 @property (nonatomic, weak) id<RLMCredentialsViewControllerDelegate> delegate;
-@property (nonatomic, strong) RLMSyncCredential *credential;
+@property (nonatomic, strong) RLMSyncCredentials *credentials;
 
 - (void)reloadCredentialViews;
 
