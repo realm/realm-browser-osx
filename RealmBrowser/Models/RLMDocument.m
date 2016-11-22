@@ -30,7 +30,7 @@
 
 @property (nonatomic, copy) NSURL *syncURL;
 @property (nonatomic, copy) NSURL *authServerURL;
-@property (nonatomic, strong) RLMSyncCredential *credential;
+@property (nonatomic, strong) RLMSyncCredentials *credentials;
 @property (nonatomic, strong) NSError *error;
 
 @property (nonatomic, strong) RLMSyncUser *user;
@@ -49,7 +49,7 @@
     if (absoluteURL.isFileURL) {
         return [self initWithContentsOfFileURL:absoluteURL error:outError];
     } else {
-        return [self initWithContentsOfSyncURL:absoluteURL credential:nil authServerURL:nil error:outError];
+        return [self initWithContentsOfSyncURL:absoluteURL credentials:nil authServerURL:nil error:outError];
     }
 }
 
@@ -93,16 +93,16 @@
     return self;
 }
 
-- (instancetype)initWithContentsOfSyncURL:(NSURL *)syncURL credential:(RLMSyncCredential *)credential authServerURL:(NSURL *)authServerURL error:(NSError **)outError {
+- (instancetype)initWithContentsOfSyncURL:(NSURL *)syncURL credentials:(RLMSyncCredentials *)credentials authServerURL:(NSURL *)authServerURL error:(NSError **)outError {
     self = [super init];
 
     if (self != nil) {
         self.syncURL = syncURL;
         self.authServerURL = authServerURL ?: authServerURLForSyncURL(syncURL);
-        self.state = RLMDocumentStateNeedsValidCredential;
+        self.state = RLMDocumentStateNeedsValidCredentials;
 
-        if (credential != nil) {
-            [self loadWithCredential:credential completionHandler:nil];
+        if (credentials != nil) {
+            [self loadWithCredentials:credentials completionHandler:nil];
         }
     }
 
@@ -143,18 +143,18 @@
     return [self loadWithError:error];
 }
 
-- (void)loadWithCredential:(RLMSyncCredential *)credential completionHandler:(void (^)(NSError *error))completionHandler {
+- (void)loadWithCredentials:(RLMSyncCredentials *)credentials completionHandler:(void (^)(NSError *error))completionHandler {
     // Workaround for access token auth, state will be set to RLMDocumentStateUnrecoverableError in case of invalid token
-    NSAssert(self.state == RLMDocumentStateNeedsValidCredential || self.state == RLMDocumentStateUnrecoverableError, @"Invalid document state");
+    NSAssert(self.state == RLMDocumentStateNeedsValidCredentials || self.state == RLMDocumentStateUnrecoverableError, @"Invalid document state");
 
     completionHandler = completionHandler ?: ^(NSError *error) {};
 
-    self.credential = credential;
+    self.credentials = credentials;
     self.state = RLMDocumentStateLoadingSchema;
 
-    [RLMSyncUser authenticateWithCredential:self.credential authServerURL:self.authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
+    [RLMSyncUser logInWithCredentials:self.credentials authServerURL:self.authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
         if (user == nil) {
-            self.state = RLMDocumentStateNeedsValidCredential;
+            self.state = RLMDocumentStateNeedsValidCredentials;
 
             // FIXME: workaround for https://github.com/realm/realm-cocoa-private/issues/204
             if (error.code == RLMSyncErrorHTTPStatusCodeError && [[error.userInfo valueForKey:@"statusCode"] integerValue] == 400) {

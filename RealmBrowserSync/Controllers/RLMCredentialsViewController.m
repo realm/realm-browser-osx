@@ -61,7 +61,7 @@ RLMIdentityProvider const RLMIdentityProviderAccessToken = @"accessToken";
 }
 
 - (void)dealloc {
-    [self.selectedCredentialViewController removeObserver:self forKeyPath:@"credential"];
+    [self.selectedCredentialViewController removeObserver:self forKeyPath:@"credentials"];
 }
 
 - (void)viewDidLoad {
@@ -76,8 +76,8 @@ RLMIdentityProvider const RLMIdentityProviderAccessToken = @"accessToken";
     }
 
     for (RLMIdentityProvider provider in [self.class supportedIdentityProviders]) {
-        if ([self.delegate respondsToSelector:@selector(credentialsViewController:shoudShowCredentialViewForIdentityProvider:)]) {
-            if (![self.delegate credentialsViewController:self shoudShowCredentialViewForIdentityProvider:provider]) {
+        if ([self.delegate respondsToSelector:@selector(credentialsViewController:shoudShowCredentialsViewForIdentityProvider:)]) {
+            if (![self.delegate credentialsViewController:self shoudShowCredentialsViewForIdentityProvider:provider]) {
                 continue;
             }
         }
@@ -97,22 +97,22 @@ RLMIdentityProvider const RLMIdentityProviderAccessToken = @"accessToken";
     }
 }
 
-- (RLMSyncCredential *)credential {
-    return self.selectedCredentialViewController.credential;
+- (RLMSyncCredentials *)credentials {
+    return self.selectedCredentialViewController.credentials;
 }
 
-- (void)setCredential:(RLMSyncCredential *)credential {
-    if (![[self.class supportedIdentityProviders] containsObject:credential.provider]) {
+- (void)setCredentials:(RLMSyncCredentials *)credentials {
+    if (![[self.class supportedIdentityProviders] containsObject:credentials.provider]) {
         return;
     }
 
     // Force load view if it's not loaded yet
     [self view];
 
-    [self.tabView selectTabViewItemWithIdentifier:credential.provider];
+    [self.tabView selectTabViewItemWithIdentifier:credentials.provider];
     [self.view layoutSubtreeIfNeeded];
 
-    self.selectedCredentialViewController.credential = credential;
+    self.selectedCredentialViewController.credentials = credentials;
 }
 
 - (RLMCredentialViewController *)selectedCredentialViewController {
@@ -122,19 +122,19 @@ RLMIdentityProvider const RLMIdentityProviderAccessToken = @"accessToken";
 #pragma mark - NSTabViewDelegate
 
 - (void)tabView:(NSTabView *)tabView willSelectTabViewItem:(NSTabViewItem *)tabViewItem {
-    [self.selectedCredentialViewController removeObserver:self forKeyPath:@"credential"];
+    [self.selectedCredentialViewController removeObserver:self forKeyPath:@"credentials"];
 }
 
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem {
-    [self.selectedCredentialViewController addObserver:self forKeyPath:@"credential" options:NSKeyValueObservingOptionInitial context:nil];
+    [self.selectedCredentialViewController addObserver:self forKeyPath:@"credentials" options:NSKeyValueObservingOptionInitial context:nil];
 }
 
 #pragma make - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     if (object == self.selectedCredentialViewController) {
-        if ([self.delegate respondsToSelector:@selector(credentialsViewControllerDidChangeCredential:)]) {
-            [self.delegate credentialsViewControllerDidChangeCredential:self];
+        if ([self.delegate respondsToSelector:@selector(credentialsViewControllerDidChangeCredentials:)]) {
+            [self.delegate credentialsViewControllerDidChangeCredentials:self];
         }
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];

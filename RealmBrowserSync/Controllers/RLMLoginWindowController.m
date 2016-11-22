@@ -16,11 +16,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#import "RLMCredentialsWindowController.h"
+#import "RLMLoginWindowController.h"
 #import "RLMCredentialsViewController.h"
 #import "NSView+RLMExtensions.h"
 
-@interface RLMCredentialsWindowController ()<RLMCredentialsViewControllerDelegate>
+@interface RLMLoginWindowController ()<RLMCredentialsViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet NSTextField *messageLabel;
 @property (nonatomic, weak) IBOutlet NSView *credentialsContainerView;
@@ -30,7 +30,7 @@
 
 @end
 
-@implementation RLMCredentialsWindowController
+@implementation RLMLoginWindowController
 
 - (instancetype)init {
     self = [super init];
@@ -52,7 +52,7 @@
 }
 
 - (void)updateUI {
-    self.okButton.enabled = self.credential != nil;
+    self.okButton.enabled = self.credentials != nil;
 }
 
 - (NSString *)message {
@@ -63,18 +63,18 @@
     self.messageLabel.stringValue = message;
 }
 
-- (RLMSyncCredential *)credential {
-    return self.credentialsViewController.credential;
+- (RLMSyncCredentials *)credentials {
+    return self.credentialsViewController.credentials;
 }
 
-- (void)setCredential:(RLMSyncCredential *)credential {
-    self.credentialsViewController.credential = credential;
+- (void)setCredentials:(RLMSyncCredentials *)credentials {
+    self.credentialsViewController.credentials = credentials;
 
     [self updateUI];
 }
 
 - (IBAction)ok:(id)sender {
-    if (self.credential != nil) {
+    if (self.credentials != nil) {
         [self closeWithReturnCode:NSModalResponseOK];
     }
 }
@@ -85,7 +85,7 @@
 
 #pragma mark - RLMCredentialsViewControllerDelegate
 
-- (void)credentialsViewControllerDidChangeCredential:(RLMCredentialsViewController *)controller {
+- (void)credentialsViewControllerDidChangeCredentials:(RLMCredentialsViewController *)controller {
     [self updateUI];
 }
 

@@ -42,7 +42,7 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
 - (void)windowDidLoad {
     [super windowDidLoad];
 
-    if (self.serverURL == nil && self.credential == nil) {
+    if (self.serverURL == nil && self.credentials == nil) {
         [self loadRecentCredentials];
     }
 
@@ -63,7 +63,7 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
         return NO;
     }
 
-    return self.credential != nil;
+    return self.credentials != nil;
 }
 
 - (void)setServerURL:(NSURL *)url {
@@ -76,12 +76,12 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
     [self updateUI];
 }
 
-- (RLMSyncCredential *)credential {
-    return self.credentialsViewController.credential;
+- (RLMSyncCredentials *)credentials {
+    return self.credentialsViewController.credentials;
 }
 
-- (void)setCredential:(RLMSyncCredential *)credential {
-    self.credentialsViewController.credential = credential;
+- (void)setCredentials:(RLMSyncCredentials *)credentials {
+    self.credentialsViewController.credentials = credentials;
 
     [self updateUI];
 }
@@ -106,7 +106,7 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
     return nil;
 }
 
-- (void)credentialsViewControllerDidChangeCredential:(RLMCredentialsViewController *)controller {
+- (void)credentialsViewControllerDidChangeCredentials:(RLMCredentialsViewController *)controller {
     [self updateUI];
 }
 

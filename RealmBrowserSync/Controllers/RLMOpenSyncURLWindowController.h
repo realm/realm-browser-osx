@@ -23,6 +23,6 @@
 @interface RLMOpenSyncURLWindowController : RLMWindowController
 
 @property (nonatomic, copy) NSURL *url;
-@property (nonatomic, strong, readonly) RLMSyncCredential *credential;
+@property (nonatomic, strong, readonly) RLMSyncCredentials *credentials;
 
 @end
