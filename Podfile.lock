@@ -18,8 +18,20 @@ PODS:
 DEPENDENCIES:
   - AppSandboxFileAccess
   - HockeySDK-Mac
-  - Realm
+  - Realm (from `https://github.com/realm/realm-cocoa.git`, commit `8606d5b42daf6eb9ad845bcbe0b7a1b8a46e665b`)
   - RealmConverter
+
+EXTERNAL SOURCES:
+  Realm:
+    :commit: 8606d5b42daf6eb9ad845bcbe0b7a1b8a46e665b
+    :git: https://github.com/realm/realm-cocoa.git
+    :submodules: true
+
+CHECKOUT OPTIONS:
+  Realm:
+    :commit: 8606d5b42daf6eb9ad845bcbe0b7a1b8a46e665b
+    :git: https://github.com/realm/realm-cocoa.git
+    :submodules: true
 
 SPEC CHECKSUMS:
   AppSandboxFileAccess: f3e10b0ba10bbaa6dc6996639ff47836050329c5
@@ -31,6 +43,6 @@ SPEC CHECKSUMS:
   SSZipArchive: 428eb1ac8d37dd133404d30f422b23958c1f9acc
   TGSpreadsheetWriter: '09bbb2c18a111a11c94ff9c1af2320e2530c958e'
 
-PODFILE CHECKSUM: 9ba80cdf314e7a2c4e1ea544b4b89d260dd0ed79
+PODFILE CHECKSUM: 3135190d298474ad4a703e5930593948e45bf00d
 
 COCOAPODS: 1.1.1
