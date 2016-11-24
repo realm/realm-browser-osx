@@ -1,4 +1,4 @@
-2.1.0 Release notes (2016-11-23)
+2.1.0 Release notes (2016-11-24)
 =============================================================
 * Added in-app crash reporting
 * Added the ability to connect to Realm Object Server with admin username/password
