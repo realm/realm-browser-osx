@@ -5,7 +5,7 @@ use_frameworks!
 
 target 'RealmBrowser' do
     pod 'AppSandboxFileAccess'
-    pod 'Realm', git: 'https://github.com/realm/realm-cocoa.git', commit: '8606d5b42daf6eb9ad845bcbe0b7a1b8a46e665b', submodules: true
+    pod 'Realm', git: 'https://github.com/realm/realm-cocoa.git', commit: '293e3f3b09b2ed800dab6ee8138eb32de2224d5f', submodules: true
     pod 'RealmConverter'
     pod 'HockeySDK-Mac'
 
