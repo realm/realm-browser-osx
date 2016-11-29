@@ -92,7 +92,7 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
 
 #pragma mark - RLMCredentialsViewControllerDelegate
 
-- (BOOL)credentialsViewController:(RLMCredentialsViewController *)controller shoudShowCredentialViewForIdentityProvider:(RLMIdentityProvider)provider {
+- (BOOL)credentialsViewController:(RLMCredentialsViewController *)controller shoudShowCredentialsViewForIdentityProvider:(RLMIdentityProvider)provider {
     return provider == RLMIdentityProviderAccessToken || provider == RLMIdentityProviderUsernamePassword;
 }
 

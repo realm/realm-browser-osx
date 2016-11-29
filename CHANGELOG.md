@@ -1,8 +1,10 @@
-2.1.0 Release notes (2016-10-28)
+2.1.0 Release notes (2016-11-24)
 =============================================================
 * Added in-app crash reporting
 * Added the ability to connect to Realm Object Server with admin username/password
+* Improved property type detection when import from CSV files
 * Fixed export to Compacted Realm
+* Fixed crash related to sync metadata reset
 
 2.0.1 Release notes (2016-10-06)
 =============================================================
