@@ -72,7 +72,7 @@
     [[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleGetURLEvent:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
 }
 
--(void)applicationDidFinishLaunching:(NSNotification *)notification
+- (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
     [self setupCrashReporting];
 
@@ -105,7 +105,7 @@
     self.dateFormatter.dateStyle = NSDateFormatterMediumStyle;
     self.dateFormatter.timeStyle = NSDateFormatterShortStyle;
 
-    if (NSApp.windows.count == 0 && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
+    if ([notification.userInfo[NSApplicationLaunchIsDefaultLaunchKey] boolValue] && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
         [self showWelcomeWindow:nil];
     }
 }
