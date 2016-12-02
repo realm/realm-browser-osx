@@ -458,7 +458,9 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
 - (void)reloadAfterEdit
 {
+    NSInteger row = self.outlineViewController.tableView.selectedRow;
     [self.outlineViewController.tableView reloadData];
+    [self.outlineViewController.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
     
     NSString *realmPath = self.document.fileURL.path;
     NSString *key = [NSString stringWithFormat:kRealmKeyIsLockedForRealm, realmPath];
