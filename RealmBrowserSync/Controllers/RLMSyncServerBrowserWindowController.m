@@ -22,24 +22,21 @@
 #import "RLMSyncServerBrowserWindowController.h"
 #import "RLMDynamicSchemaLoader.h"
 
-static  NSString * const RLMAdminRealmServerPath = @"__admin";
+static NSString * const RLMAdminRealmServerPath = @"__admin";
+static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
 
 @interface RLMSyncServerBrowserWindowController ()<NSTableViewDataSource, NSTableViewDelegate>
 
 @property (nonatomic, weak) IBOutlet NSTableView *tableView;
 @property (nonatomic, weak) IBOutlet NSProgressIndicator *progressIndicator;
 
-@property (nonatomic, strong) NSURL *selectedURL;
-
 @property (nonatomic, strong) NSURL *serverURL;
-
-@property (nonatomic, strong) NSURL *adminRealmSyncURL;
-
 @property (nonatomic, strong) RLMSyncUser *user;
-
 @property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
 @property (nonatomic, strong) RLMNotificationToken *notificationToken;
-@property (nonatomic, strong) RLMResults *realmFiles;
+
+@property (nonatomic, strong) RLMResults *serverRealmFiles;
+@property (nonatomic, strong) NSURL *selectedURL;
 
 @end
 
@@ -50,9 +47,7 @@ static  NSString * const RLMAdminRealmServerPath = @"__admin";
 
     if (self != nil) {
         self.serverURL = serverURL;
-        self.adminRealmSyncURL = [serverURL URLByAppendingPathComponent:RLMAdminRealmServerPath];
         self.user = user;
-        self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.adminRealmSyncURL user:self.user];
     }
 
     return self;
@@ -66,12 +61,18 @@ static  NSString * const RLMAdminRealmServerPath = @"__admin";
     [super windowDidLoad];
 
     self.tableView.hidden = YES;
+    self.tableView.target = self;
+    self.tableView.doubleAction = @selector(tableViewDoubleAction:);
 }
 
 - (void)showWindow:(id)sender {
     [super showWindow:sender];
 
     [self.progressIndicator startAnimation:nil];
+
+    NSURL *adminRealmURL = [self.serverURL URLByAppendingPathComponent:RLMAdminRealmServerPath];
+
+    self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:adminRealmURL user:self.user];
 
     __weak typeof(self) weakSelf = self;
     [self.schemaLoader loadSchemaWithCompletionHandler:^(NSError *error) {
@@ -83,15 +84,15 @@ static  NSString * const RLMAdminRealmServerPath = @"__admin";
                 [weakSelf close];
             }];
         } else {
-            [weakSelf openAdminRealmWithUser:weakSelf.user];
+            [weakSelf openAdminRealmAtURL:adminRealmURL withUser:weakSelf.user];
         }
     }];
 }
 
-- (void)openAdminRealmWithUser:(RLMSyncUser *)user {
+- (void)openAdminRealmAtURL:(NSURL *)adminRealmURL withUser:(RLMSyncUser *)user {
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
     configuration.dynamic = YES;
-    configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:user realmURL:self.adminRealmSyncURL];
+    configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:user realmURL:adminRealmURL];
 
     RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:nil];
 
@@ -100,13 +101,19 @@ static  NSString * const RLMAdminRealmServerPath = @"__admin";
         [weekSelf.tableView reloadData];
     }];
 
-    self.realmFiles = [realm allObjects:@"RealmFile"];
+    self.serverRealmFiles = [realm allObjects:RLMAdminRealmRealmFileClassName];
 
     [self.progressIndicator stopAnimation:nil];
     self.progressIndicator.hidden = YES;
 
     self.tableView.hidden = NO;
     [self.tableView reloadData];
+}
+
+- (IBAction)tableViewDoubleAction:(id)sender {
+    if (self.tableView.clickedRow == self.tableView.selectedRow) {
+        [self open:sender];
+    }
 }
 
 - (IBAction)open:(id)sender {
@@ -116,7 +123,7 @@ static  NSString * const RLMAdminRealmServerPath = @"__admin";
 #pragma mark - NSTableViewDataSource
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-    return self.realmFiles.count;
+    return self.serverRealmFiles.count;
 }
 
 #pragma mark - NSTableViewDelegate
@@ -124,13 +131,13 @@ static  NSString * const RLMAdminRealmServerPath = @"__admin";
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     NSTableCellView *cellView = [tableView makeViewWithIdentifier:@"PathCell" owner:self];
 
-    cellView.textField.stringValue = [self.realmFiles[row] valueForKey:@"path"];
+    cellView.textField.stringValue = [self.serverRealmFiles[row] valueForKey:@"path"];
 
     return cellView;
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
-    self.selectedURL = self.tableView.selectedRow >= 0 ? [[NSURL alloc] initWithString:[self.realmFiles[self.tableView.selectedRow] valueForKey:@"path"] relativeToURL:self.serverURL] : nil;
+    self.selectedURL = self.tableView.selectedRow >= 0 ? [[NSURL alloc] initWithString:[self.serverRealmFiles[self.tableView.selectedRow] valueForKey:@"path"] relativeToURL:self.serverURL] : nil;
 }
 
 @end
