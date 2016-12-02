@@ -151,6 +151,19 @@
     return NO;
 }
 
+- (NSError *)application:(NSApplication *)application willPresentError:(NSError *)error {
+    NSError *underlyingError = error.userInfo[NSUnderlyingErrorKey];
+    if (!underlyingError || error.userInfo[NSLocalizedRecoverySuggestionErrorKey]) {
+        return error;
+    }
+
+    // Add recovery suggestion from underlaying error
+    NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
+    userInfo[NSLocalizedRecoverySuggestionErrorKey] = underlyingError.userInfo[NSLocalizedDescriptionKey];
+
+    return [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
+}
+
 #pragma mark - Welcome Window
 
 - (IBAction)showWelcomeWindow:(id)sender {
