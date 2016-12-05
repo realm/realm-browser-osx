@@ -25,10 +25,11 @@
 static NSString * const RLMAdminRealmServerPath = @"__admin";
 static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
 
-@interface RLMSyncServerBrowserWindowController ()<NSTableViewDataSource, NSTableViewDelegate>
+@interface RLMSyncServerBrowserWindowController ()<NSSearchFieldDelegate, NSTableViewDataSource, NSTableViewDelegate>
 
+@property (nonatomic, weak) IBOutlet NSTextField *titleLabel;
+@property (nonatomic, weak) IBOutlet NSSearchField *searchField;
 @property (nonatomic, weak) IBOutlet NSTableView *tableView;
-@property (nonatomic, weak) IBOutlet NSProgressIndicator *progressIndicator;
 
 @property (nonatomic, strong) NSURL *serverURL;
 @property (nonatomic, strong) RLMSyncUser *user;
@@ -36,6 +37,7 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
 @property (nonatomic, strong) RLMNotificationToken *notificationToken;
 
 @property (nonatomic, strong) RLMResults *serverRealmFiles;
+@property (nonatomic, strong) RLMResults *filteredServerRealmFiles;
 @property (nonatomic, strong) NSURL *selectedURL;
 
 @end
@@ -60,15 +62,18 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
 - (void)windowDidLoad {
     [super windowDidLoad];
 
-    self.tableView.hidden = YES;
+    if ([self.window respondsToSelector:@selector(titleVisibility)]) {
+        self.window.titleVisibility = NSWindowTitleHidden;
+    }
+
+    self.titleLabel.stringValue = self.serverURL.absoluteString;
+
     self.tableView.target = self;
     self.tableView.doubleAction = @selector(tableViewDoubleAction:);
 }
 
 - (void)showWindow:(id)sender {
     [super showWindow:sender];
-
-    [self.progressIndicator startAnimation:nil];
 
     NSURL *adminRealmURL = [self.serverURL URLByAppendingPathComponent:RLMAdminRealmServerPath];
 
@@ -77,9 +82,6 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
     __weak typeof(self) weakSelf = self;
     [self.schemaLoader loadSchemaWithCompletionHandler:^(NSError *error) {
         if (error != nil) {
-            [weakSelf.progressIndicator stopAnimation:nil];
-            weakSelf.progressIndicator.hidden = YES;
-
             [[NSAlert alertWithError:error] beginSheetModalForWindow:weakSelf.window completionHandler:^(NSModalResponse returnCode) {
                 [weakSelf close];
             }];
@@ -96,34 +98,53 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
 
     RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:nil];
 
+    self.serverRealmFiles = [realm allObjects:RLMAdminRealmRealmFileClassName];
+    self.filteredServerRealmFiles = self.serverRealmFiles;
+
     __weak typeof(self) weekSelf = self;
-    self.notificationToken = [realm addNotificationBlock:^(RLMNotification  _Nonnull notification, RLMRealm * _Nonnull realm) {
+    self.notificationToken = [self.serverRealmFiles addNotificationBlock:^(RLMResults *results, RLMCollectionChange *change, NSError *error) {
         [weekSelf.tableView reloadData];
     }];
-
-    self.serverRealmFiles = [realm allObjects:RLMAdminRealmRealmFileClassName];
-
-    [self.progressIndicator stopAnimation:nil];
-    self.progressIndicator.hidden = YES;
-
-    self.tableView.hidden = NO;
-    [self.tableView reloadData];
 }
 
-- (IBAction)tableViewDoubleAction:(id)sender {
+#pragma mark - Actions
+
+- (void)tableViewDoubleAction:(id)sender {
     if (self.tableView.clickedRow == self.tableView.selectedRow) {
-        [self open:sender];
+        [self closeWithReturnCode:NSModalResponseOK];
     }
 }
 
-- (IBAction)open:(id)sender {
-    [self closeWithReturnCode:NSModalResponseOK];
+- (void)keyDown:(NSEvent *)event {
+    unichar key = [event.charactersIgnoringModifiers characterAtIndex:0];
+
+    if (key == NSCarriageReturnCharacter) {
+        [self closeWithReturnCode:NSModalResponseOK];
+    } else {
+        [super keyDown:event];
+    }
+}
+
+- (void)cancel:(id)sender {
+    [self closeWithReturnCode:NSModalResponseCancel];
+}
+
+#pragma mark - NSSearchFieldDelegate
+
+- (void)controlTextDidChange:(NSNotification *)obj {
+    self.filteredServerRealmFiles = [self.serverRealmFiles objectsWhere:@"path CONTAINS %@", self.searchField.stringValue];
+    [self.tableView reloadData];
+}
+
+- (void)searchFieldDidEndSearching:(NSSearchField *)sender {
+    self.filteredServerRealmFiles = self.serverRealmFiles;
+    [self.tableView reloadData];
 }
 
 #pragma mark - NSTableViewDataSource
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-    return self.serverRealmFiles.count;
+    return self.filteredServerRealmFiles.count;
 }
 
 #pragma mark - NSTableViewDelegate
@@ -131,7 +152,7 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     NSTableCellView *cellView = [tableView makeViewWithIdentifier:@"PathCell" owner:self];
 
-    cellView.textField.stringValue = [self.serverRealmFiles[row] valueForKey:@"path"];
+    cellView.textField.stringValue = self.filteredServerRealmFiles[row][@"path"];
 
     return cellView;
 }
