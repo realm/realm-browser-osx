@@ -153,42 +153,44 @@
     self.state = RLMDocumentStateLoadingSchema;
 
     [RLMSyncUser logInWithCredentials:self.credentials authServerURL:self.authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
-        if (user == nil) {
-            self.state = RLMDocumentStateNeedsValidCredentials;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (user == nil) {
+                self.state = RLMDocumentStateNeedsValidCredentials;
 
-            // FIXME: workaround for https://github.com/realm/realm-cocoa-private/issues/204
-            if (error.code == RLMSyncErrorHTTPStatusCodeError && [[error.userInfo valueForKey:@"statusCode"] integerValue] == 400) {
-                NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
+                // FIXME: workaround for https://github.com/realm/realm-cocoa-private/issues/204
+                if (error.code == RLMSyncErrorHTTPStatusCodeError && [[error.userInfo valueForKey:@"statusCode"] integerValue] == 400) {
+                    NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
 
-                [userInfo setValue:@"Invalid credentials." forKey:NSLocalizedDescriptionKey];
-                [userInfo setValue:@"Please check your authentication credentials and that you have an access to the specified URL." forKey:NSLocalizedRecoverySuggestionErrorKey];
+                    [userInfo setValue:@"Invalid credentials." forKey:NSLocalizedDescriptionKey];
+                    [userInfo setValue:@"Please check your authentication credentials and that you have an access to the specified URL." forKey:NSLocalizedRecoverySuggestionErrorKey];
 
-                NSError *authenticationError = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
+                    NSError *authenticationError = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
 
-                error = authenticationError;
-            }
-
-            completionHandler(error);
-        } else {
-            self.user = user;
-
-            // FIXME: workaround for loading schema while using dynamic API
-            self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:self.user];
-
-            [self.schemaLoader loadSchemaWithCompletionHandler:^(NSError *error) {
-                self.schemaLoader = nil;
-
-                if (error == nil) {
-                    self.presentedRealm = [[RLMRealmNode alloc] initWithSyncURL:self.syncURL user:self.user];
-
-                    [self loadWithError:&error];
+                    completionHandler(authenticationError);
                 } else {
-                    self.state = RLMDocumentStateUnrecoverableError;
+                    completionHandler(error);
                 }
-                
-                completionHandler(error);
-            }];
-        }
+            } else {
+                self.user = user;
+
+                // FIXME: workaround for loading schema while using dynamic API
+                self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:self.user];
+
+                [self.schemaLoader loadSchemaWithCompletionHandler:^(NSError *error) {
+                    self.schemaLoader = nil;
+
+                    if (error == nil) {
+                        self.presentedRealm = [[RLMRealmNode alloc] initWithSyncURL:self.syncURL user:self.user];
+
+                        [self loadWithError:&error];
+                    } else {
+                        self.state = RLMDocumentStateUnrecoverableError;
+                    }
+                    
+                    completionHandler(error);
+                }];
+            }
+        });
     }];
 }
 
