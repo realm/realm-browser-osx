@@ -29,6 +29,7 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
 
 @property (nonatomic, weak) IBOutlet NSTextField *titleLabel;
 @property (nonatomic, weak) IBOutlet NSSearchField *searchField;
+@property (nonatomic, weak) IBOutlet NSProgressIndicator *progressIndicator;
 @property (nonatomic, weak) IBOutlet NSTableView *tableView;
 
 @property (nonatomic, strong) NSURL *serverURL;
@@ -67,9 +68,10 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
     }
 
     self.titleLabel.stringValue = self.serverURL.absoluteString;
-
     self.tableView.target = self;
     self.tableView.doubleAction = @selector(tableViewDoubleAction:);
+    self.tableView.hidden = YES;
+    self.searchField.enabled = NO;
 }
 
 - (void)showWindow:(id)sender {
@@ -89,6 +91,8 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
             [weakSelf openAdminRealmAtURL:adminRealmURL withUser:weakSelf.user];
         }
     }];
+
+    [self.progressIndicator startAnimation:nil];
 }
 
 - (void)openAdminRealmAtURL:(NSURL *)adminRealmURL withUser:(RLMSyncUser *)user {
@@ -105,6 +109,10 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
     self.notificationToken = [self.serverRealmFiles addNotificationBlock:^(RLMResults *results, RLMCollectionChange *change, NSError *error) {
         [weekSelf.tableView reloadData];
     }];
+
+    [self.progressIndicator removeFromSuperview];
+    self.tableView.hidden = NO;
+    self.searchField.enabled = YES;
 }
 
 #pragma mark - Actions

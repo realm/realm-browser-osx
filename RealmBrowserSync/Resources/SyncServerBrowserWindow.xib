@@ -8,6 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="RLMSyncServerBrowserWindowController">
             <connections>
+                <outlet property="progressIndicator" destination="BoE-8t-oiM" id="YhJ-Px-cpK"/>
                 <outlet property="searchField" destination="JBB-tN-O6v" id="FKp-ud-Ude"/>
                 <outlet property="tableView" destination="pZo-lC-m6V" id="dUy-gb-E2f"/>
                 <outlet property="titleLabel" destination="JTo-IS-gwL" id="4lT-FW-OmN"/>
@@ -108,12 +109,17 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
+                    <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="BoE-8t-oiM">
+                        <rect key="frame" x="309" y="142" width="32" height="32"/>
+                    </progressIndicator>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="BoE-8t-oiM" firstAttribute="centerY" secondItem="EiT-Mj-1SZ" secondAttribute="centerY" id="ULz-JI-mtN"/>
                     <constraint firstAttribute="trailing" secondItem="LOf-5a-tzi" secondAttribute="trailing" id="VdF-Ev-Xij"/>
                     <constraint firstItem="LOf-5a-tzi" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="gcG-vi-K7D"/>
                     <constraint firstItem="LOf-5a-tzi" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="nY2-jD-jPG"/>
                     <constraint firstAttribute="bottom" secondItem="LOf-5a-tzi" secondAttribute="bottom" id="wCa-lF-A0l"/>
+                    <constraint firstItem="BoE-8t-oiM" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="z8U-Qn-18F"/>
                 </constraints>
             </view>
             <toolbar key="toolbar" implicitIdentifier="4E8F7D04-C6F6-4332-9275-2E196CE4C00D" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="efW-Dl-DKe">
