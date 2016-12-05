@@ -927,10 +927,15 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     }
     
     if (result || optionalValue) {
+        NSError *error;
         RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
+
         [realm beginWriteTransaction];
         selectedInstance[propertyNode.name] = result;
-        [realm commitWriteTransaction];
+
+        if (![realm commitWriteTransaction:&error]) {
+            [NSApp presentError:error];
+        }
     }
     
     [self.parentWindowController reloadAllWindows];
