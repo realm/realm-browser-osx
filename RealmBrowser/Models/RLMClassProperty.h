@@ -24,8 +24,9 @@
 @property (nonatomic, readonly) RLMProperty *property;
 @property (nonatomic, readonly) NSString *name;
 @property (nonatomic, readonly) RLMPropertyType type;
+@property (nonatomic, readonly) BOOL isPrimaryKey;
 @property (nonatomic, readonly) Class class;
 
-- (instancetype)initWithProperty:(RLMProperty *)property;
+- (instancetype)initWithProperty:(RLMProperty *)property isPrimaryKey:(BOOL)flag;
 
 @end

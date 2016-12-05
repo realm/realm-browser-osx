@@ -16,16 +16,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#import "RLMClassProperty.h"
-
 #import "RLMClassNode.h"
+#import "RLMClassProperty.h"
 
 @implementation RLMClassProperty
 
-- (instancetype)initWithProperty:(RLMProperty *)property;
+- (instancetype)initWithProperty:(RLMProperty *)property isPrimaryKey:(BOOL)flag;
 {
     if (self = [super init]) {
         _property = property;
+        _isPrimaryKey = flag;
     }
     return self;
 }

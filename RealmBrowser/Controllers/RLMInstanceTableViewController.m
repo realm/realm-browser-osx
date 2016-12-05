@@ -389,7 +389,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 
             numberCellView.optional = optional;
             numberCellView.textField.objectValue = propertyValue;            
-            numberCellView.textField.editable = !self.realmIsLocked;
+            numberCellView.textField.editable = !self.realmIsLocked && !classProperty.isPrimaryKey;
 
             cellView = numberCellView;
             
@@ -429,7 +429,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             }
             basicCellView.optional = optional;
             basicCellView.textField.stringValue = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
-            basicCellView.textField.editable = !self.realmIsLocked && type != RLMPropertyTypeData;
+            basicCellView.textField.editable = !self.realmIsLocked && type != RLMPropertyTypeData && !classProperty.isPrimaryKey;
 
             cellView = basicCellView;
             
