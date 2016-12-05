@@ -464,7 +464,7 @@ const NSInteger NOT_A_COLUMN = -1;
         RLMTableHeaderCell *headerCell = [[RLMTableHeaderCell alloc] init];
         headerCell.wraps = YES;
         headerCell.firstLine = propertyColumn.name;
-        headerCell.secondLine = [RLMDescriptions typeNameOfProperty:propertyColumn.property];
+        headerCell.secondLine = [NSString stringWithFormat:@"%@%@", [RLMDescriptions typeNameOfProperty:propertyColumn.property], propertyColumn.isPrimaryKey ? @", Primary Key" :@""];
         tableColumn.headerCell = headerCell;
         tableColumn.minWidth = 26.0;
         
