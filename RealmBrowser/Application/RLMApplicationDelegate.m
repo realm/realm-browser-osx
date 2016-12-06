@@ -157,7 +157,7 @@
         return error;
     }
 
-    // Add recovery suggestion from underlaying error
+    // Add recovery suggestion from underlying error
     NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
     userInfo[NSLocalizedRecoverySuggestionErrorKey] = underlyingError.userInfo[NSLocalizedDescriptionKey];
 
