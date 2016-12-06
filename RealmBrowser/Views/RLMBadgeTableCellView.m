@@ -32,6 +32,10 @@
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.buttonType = NSMomentaryPushInButton;
     button.bezelStyle = NSInlineBezelStyle;
+
+    if ([button respondsToSelector:@selector(setLineBreakMode:)]) {
+        button.lineBreakMode = NSLineBreakByTruncatingTail;
+    }
     
     self.badge = button;
     [self addSubview:button];
@@ -44,56 +48,50 @@
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:self
                                                      attribute:NSLayoutAttributeLeading
-                                                    multiplier:1.0
-                                                      constant:0.0]];
+                                                    multiplier:1
+                                                      constant:0]];
     
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.textField
                                                      attribute:NSLayoutAttributeTop
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:self
                                                      attribute:NSLayoutAttributeTop
-                                                    multiplier:1.0
-                                                      constant:0.0]];
+                                                    multiplier:1
+                                                      constant:0]];
     
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.textField
                                                      attribute:NSLayoutAttributeBottom
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:self
                                                      attribute:NSLayoutAttributeBottom
-                                                    multiplier:1.0
-                                                      constant:0.0]];
+                                                    multiplier:1
+                                                      constant:0]];
     
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.textField
-                                                     attribute:NSLayoutAttributeTrailing
-                                                     relatedBy:NSLayoutRelationLessThanOrEqual
-                                                        toItem:self.badge
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.badge
                                                      attribute:NSLayoutAttributeLeading
-                                                    multiplier:1.0
-                                                      constant:-3.0]];
+                                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                        toItem:self.textField
+                                                     attribute:NSLayoutAttributeTrailing
+                                                    multiplier:1
+                                                      constant:4]];
     
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.badge
                                                      attribute:NSLayoutAttributeTrailing
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:self
                                                      attribute:NSLayoutAttributeTrailing
-                                                    multiplier:1.0
-                                                      constant:-3.0]];
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.badge
-                                                     attribute:NSLayoutAttributeWidth
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:nil
-                                                     attribute:0
-                                                    multiplier:1.0
-                                                      constant:20.0]];
-    
+                                                    multiplier:1
+                                                      constant:0]];
+
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.badge
                                                      attribute:NSLayoutAttributeCenterY
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:self
                                                      attribute:NSLayoutAttributeCenterY
-                                                    multiplier:1.0
-                                                      constant:0.0]];
+                                                    multiplier:1
+                                                      constant:0]];
+
+    [self.badge setContentCompressionResistancePriority:NSLayoutPriorityRequired forOrientation:NSLayoutConstraintOrientationHorizontal];
     
     return self;
 }

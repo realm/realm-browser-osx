@@ -72,7 +72,7 @@
     [[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleGetURLEvent:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
 }
 
--(void)applicationDidFinishLaunching:(NSNotification *)notification
+- (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
     [self setupCrashReporting];
 
@@ -105,7 +105,7 @@
     self.dateFormatter.dateStyle = NSDateFormatterMediumStyle;
     self.dateFormatter.timeStyle = NSDateFormatterShortStyle;
 
-    if (NSApp.windows.count == 0 && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
+    if ([notification.userInfo[NSApplicationLaunchIsDefaultLaunchKey] boolValue] && ![[NSProcessInfo processInfo] environment][@"TESTING"]) {
         [self showWelcomeWindow:nil];
     }
 }
@@ -149,6 +149,19 @@
     }
 
     return NO;
+}
+
+- (NSError *)application:(NSApplication *)application willPresentError:(NSError *)error {
+    NSError *underlyingError = error.userInfo[NSUnderlyingErrorKey];
+    if (!underlyingError || error.userInfo[NSLocalizedRecoverySuggestionErrorKey]) {
+        return error;
+    }
+
+    // Add recovery suggestion from underlaying error
+    NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
+    userInfo[NSLocalizedRecoverySuggestionErrorKey] = underlyingError.userInfo[NSLocalizedDescriptionKey];
+
+    return [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
 }
 
 #pragma mark - Welcome Window
@@ -690,21 +703,23 @@
     NSURL *authServerURL = authServerURLForSyncURL(serverURL);
 
     [RLMSyncUser logInWithCredentials:credentials authServerURL:authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
-        if (user == nil) {
-            [NSApp presentError:error];
-        } else {
-            RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] initWithServerURL:serverURL user:user];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (user == nil) {
+                [NSApp presentError:error];
+            } else {
+                RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] initWithServerURL:serverURL user:user];
 
-            [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
-                if (returnCode == NSModalResponseOK) {
-                    [self openSyncURL:browserWindowController.selectedURL credentials:credentials authServerURL:authServerURL];
-                }
+                [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
+                    if (returnCode == NSModalResponseOK) {
+                        [self openSyncURL:browserWindowController.selectedURL credentials:credentials authServerURL:authServerURL];
+                    }
 
-                [self removeAuxiliaryWindowController:browserWindowController];
-            }];
-            
-            [self addAuxiliaryWindowController:browserWindowController];
-        }
+                    [self removeAuxiliaryWindowController:browserWindowController];
+                }];
+
+                [self addAuxiliaryWindowController:browserWindowController];
+            }
+        });
     }];
 }
 

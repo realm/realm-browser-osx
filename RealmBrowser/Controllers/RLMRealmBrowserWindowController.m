@@ -91,6 +91,9 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     NSString *realmPath = self.document.fileURL.path;
     [self setWindowFrameAutosaveName:[NSString stringWithFormat:kRealmKeyWindowFrameForRealm, realmPath]];
     [self.splitView setAutosaveName:[NSString stringWithFormat:kRealmKeyOutlineWidthForRealm, realmPath]];
+
+    // Modify responder chain to handle shortcuts for table view (workaround for https://github.com/realm/realm-browser-osx/issues/241)
+    self.outlineViewController.nextResponder = self.tableViewController.tableView;
 }
 
 - (IBAction)showWindow:(id)sender
@@ -458,7 +461,9 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
 - (void)reloadAfterEdit
 {
+    NSInteger row = self.outlineViewController.tableView.selectedRow;
     [self.outlineViewController.tableView reloadData];
+    [self.outlineViewController.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
     
     NSString *realmPath = self.document.fileURL.path;
     NSString *key = [NSString stringWithFormat:kRealmKeyIsLockedForRealm, realmPath];

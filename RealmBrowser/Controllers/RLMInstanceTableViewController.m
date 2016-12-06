@@ -415,7 +415,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 
             break;
         }
-            // Intentional fallthrough
+        // Intentional fallthrough
         case RLMPropertyTypeLinkingObjects:
         case RLMPropertyTypeData:
         case RLMPropertyTypeAny:
@@ -427,9 +427,10 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
                 basicCellView.textField.target = self;
                 basicCellView.textField.action = @selector(editedTextField:);
             }
+
             basicCellView.optional = optional;
             basicCellView.textField.stringValue = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
-            basicCellView.textField.editable = !self.realmIsLocked && type != RLMPropertyTypeData && !classProperty.isPrimaryKey;
+            basicCellView.textField.editable = !self.realmIsLocked && type == RLMPropertyTypeString && !classProperty.isPrimaryKey;
 
             cellView = basicCellView;
             
@@ -887,6 +888,12 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 - (IBAction)editedTextField:(NSTextField *)sender {
     NSInteger row = [self.tableView rowForView:sender];
     NSInteger column = [self.tableView columnForView:sender];
+
+    if (row < 0 || column < 0) {
+        // Table view was reloaded during editing
+        return;
+    }
+
     NSInteger propertyIndex = [self propertyIndexForColumn:column];
 
     RLMTypeNode *displayedType = self.displayedType;
