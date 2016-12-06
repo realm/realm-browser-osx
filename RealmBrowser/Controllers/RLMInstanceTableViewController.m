@@ -888,6 +888,12 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 - (IBAction)editedTextField:(NSTextField *)sender {
     NSInteger row = [self.tableView rowForView:sender];
     NSInteger column = [self.tableView columnForView:sender];
+
+    if (row < 0 || column < 0) {
+        // Table view was reloaded during editing
+        return;
+    }
+
     NSInteger propertyIndex = [self propertyIndexForColumn:column];
 
     RLMTypeNode *displayedType = self.displayedType;
