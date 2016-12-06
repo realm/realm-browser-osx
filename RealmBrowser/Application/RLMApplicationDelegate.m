@@ -703,21 +703,23 @@
     NSURL *authServerURL = authServerURLForSyncURL(serverURL);
 
     [RLMSyncUser logInWithCredentials:credentials authServerURL:authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
-        if (user == nil) {
-            [NSApp presentError:error];
-        } else {
-            RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] initWithServerURL:serverURL user:user];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (user == nil) {
+                [NSApp presentError:error];
+            } else {
+                RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] initWithServerURL:serverURL user:user];
 
-            [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
-                if (returnCode == NSModalResponseOK) {
-                    [self openSyncURL:browserWindowController.selectedURL credentials:credentials authServerURL:authServerURL];
-                }
+                [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
+                    if (returnCode == NSModalResponseOK) {
+                        [self openSyncURL:browserWindowController.selectedURL credentials:credentials authServerURL:authServerURL];
+                    }
 
-                [self removeAuxiliaryWindowController:browserWindowController];
-            }];
-            
-            [self addAuxiliaryWindowController:browserWindowController];
-        }
+                    [self removeAuxiliaryWindowController:browserWindowController];
+                }];
+
+                [self addAuxiliaryWindowController:browserWindowController];
+            }
+        });
     }];
 }
 
