@@ -389,7 +389,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 
             numberCellView.optional = optional;
             numberCellView.textField.objectValue = propertyValue;            
-            numberCellView.textField.editable = !self.realmIsLocked;
+            numberCellView.textField.editable = !self.realmIsLocked && !classProperty.isPrimaryKey;
 
             cellView = numberCellView;
             
@@ -430,7 +430,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 
             basicCellView.optional = optional;
             basicCellView.textField.stringValue = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
-            basicCellView.textField.editable = !self.realmIsLocked && type == RLMPropertyTypeString;
+            basicCellView.textField.editable = !self.realmIsLocked && type == RLMPropertyTypeString && !classProperty.isPrimaryKey;
 
             cellView = basicCellView;
             
@@ -934,10 +934,15 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     }
     
     if (result || optionalValue) {
+        NSError *error;
         RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
+
         [realm beginWriteTransaction];
         selectedInstance[propertyNode.name] = result;
-        [realm commitWriteTransaction];
+
+        if (![realm commitWriteTransaction:&error]) {
+            [NSApp presentError:error];
+        }
     }
     
     [self.parentWindowController reloadAllWindows];

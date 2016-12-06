@@ -100,8 +100,9 @@
     
     NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:propertyCount];
     for (NSUInteger index = 0; index < propertyCount; index++) {
-        RLMProperty *property = properties[index];        
-        RLMClassProperty *tableColumn = [[RLMClassProperty alloc] initWithProperty:property];
+        RLMProperty *property = properties[index];
+        BOOL isPrimaryKey = [schema.primaryKeyProperty isEqualToProperty:property];
+        RLMClassProperty *tableColumn = [[RLMClassProperty alloc] initWithProperty:property isPrimaryKey:isPrimaryKey];
         [result addObject:tableColumn];
     }
     
