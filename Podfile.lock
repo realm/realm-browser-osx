@@ -1,7 +1,7 @@
 PODS:
   - AppSandboxFileAccess (1.0.14)
   - CSwiftV (0.0.5)
-  - HockeySDK-Mac (4.1.1)
+  - HockeySDK-Mac (4.1.2)
   - PathKit (0.6.0)
   - Realm (2.1.1):
     - Realm/Headers (= 2.1.1)
@@ -24,7 +24,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AppSandboxFileAccess: f3e10b0ba10bbaa6dc6996639ff47836050329c5
   CSwiftV: 2560532e2e5b04d95c36b0f49a8dc745071fa525
-  HockeySDK-Mac: c19aec63894d716ad48fba9f121921e5f4f2ca39
+  HockeySDK-Mac: f067286d489181dd3c43c14395a6570f3caf4704
   PathKit: b224b6d2c4e75b87f08f45e1c0c610a3195c94e5
   Realm: a55959c0b171a5fe5267406d17f314fec3cefaae
   RealmConverter: 3a0ff752b3f699d64ad56a10d571471ccb3c7af3
