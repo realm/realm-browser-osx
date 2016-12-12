@@ -5,7 +5,7 @@
 * Disabled editing values for primary key properties
 * Fixed crash when removed object is being edited while table view reloading
 * Fixed multiline text editing
-* Fexed dates editing
+* Fixed dates editing
 * Fixed other UI issues
 
 2.1.1 Release notes (2016-11-29)
