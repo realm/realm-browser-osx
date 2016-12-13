@@ -1,3 +1,13 @@
+2.1.2 Release notes (2016-12-09)
+=============================================================
+* Added the ability to filter Realms on Realm Object Server
+* Improved error description if Realm file failed to open and for other errors
+* Disabled editing values for primary key properties
+* Fixed crash when removed object is being edited while table view reloading
+* Fixed multiline text editing
+* Fixed dates editing
+* Fixed other UI issues
+
 2.1.1 Release notes (2016-11-29)
 =============================================================
 * Added in-app crash reporting
