@@ -46,14 +46,14 @@ node('osx_vegas') {
     def gitTag = readGitTag()
     echo archiveName
 
-    bundle install
+    sh "bundle install"
 
     stage 'Test'
     // FIXME Enable tests
     //sh "xcodebuild -workspace RealmBrowser.xcworkspace -scheme 'Realm Browser' -configuration Debug -derivedDataPath 'build/DerivedData' DEVELOPMENT_TEAM=QX5CR2FTN2 CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO PROVISIONING_PROFILE_SPECIFIER='' clean test"
 
     stage 'Build'
-    bundle exec fastlane build
+    sh "bundle exec fastlane build"
 
     stage 'Package'
     dir("build/DerivedData/Build/Products/Release/") {

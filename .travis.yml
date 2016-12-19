@@ -1,4 +1,3 @@
 language: objective-c
 osx_image: xcode8
-before_install: bundle install
 script: bundle exec fastlane test
