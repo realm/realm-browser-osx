@@ -11,7 +11,7 @@ end
 
 desc "Build the new realease for MAS and GitHub, submit build to ITC and upload dSYM files to HockeyApp"
 lane :build do |options|
-  releaseDir = "release"
+  buildDir = "build"
   versionNumber = get_version_number
   gitHubArchiveName = "RealmBrowser-#{versionNumber}.zip"
   dSymArhiveName = "Realm Browser.app.dSYM.zip"
@@ -20,33 +20,34 @@ lane :build do |options|
   gym(
     scheme: "Realm Browser",
     clean: true,
-    output_directory: releaseDir,
-    buildlog_path: releaseDir,
+    output_directory: buildDir,
+    buildlog_path: buildDir,
   )
 
   # export pkg for ITC
-  xcexport({export_options_plist: {method: "app-store"}, export_path: releaseDir})
+  xcexport({export_options_plist: {method: "app-store"}, export_path: buildDir})
 
   # export Developer ID signed app for GitHub release
-  xcexport({export_options_plist: {method: "developer-id"}, export_path: releaseDir})
+  xcexport({export_options_plist: {method: "developer-id"}, export_path: buildDir})
 
   # archive the Developer ID signed app
-  Dir.chdir "../#{releaseDir}" do
-    zip("Realm Browser.app", gitHubArchiveName, true)
+  Dir.chdir "../#{buildDir}" do
+    sh("zip --symlinks -r \"#{gitHubArchiveName}\" \"Realm Browser.app\"")
+    sh("rm -rf \"Realm Browser.app\"")
   end
   
   # delete incorrect ipa path in lane context
   Actions.lane_context[SharedValues::IPA_OUTPUT_PATH] = nil
 
   # fix dSYM path
-  Actions.lane_context[SharedValues::DSYM_OUTPUT_PATH] = "#{releaseDir}/#{dSymArhiveName}"
+  Actions.lane_context[SharedValues::DSYM_OUTPUT_PATH] = "#{buildDir}/#{dSymArhiveName}"
   
   if options[:submit_to_hockey]
     hockey(
       api_token: ENV['HOCKEY_API_TOKEN'],
       public_identifier: ENV['HOCKEY_APP_ID'],
-      ipa: "#{releaseDir}/#{gitHubArchiveName}", # should be specified to create a new version
-      dsym: "#{releaseDir}/#{dSymArhiveName}",
+      ipa: "#{buildDir}/#{gitHubArchiveName}", # should be specified to create a new version
+      dsym: "#{buildDir}/#{dSymArhiveName}",
       strategy: "replace" # this will not replace symbols but add the new ones, we don're really care about app itself anyway
     )
   end
@@ -55,21 +56,9 @@ lane :build do |options|
     deliver(
       username: ENV['ITC_USERNAME'],
       app_version: "#{versionNumber}",
-      pkg: "#{releaseDir}/Realm Browser.pkg",
+      pkg: "#{buildDir}/Realm Browser.pkg",
       skip_screenshots: true,
       skip_metadata: true
     )
-  end
-  
-  Dir.chdir ".." do
-    zip(releaseDir, releaseDir, true)
-  end
-end
-
-def zip(source_path, output_path, remove_source_path)
-  sh("zip --symlinks -r \"#{output_path}.zip\" \"#{source_path}\"")
-
-  if remove_source_path
-    sh("rm -rf \"#{source_path}\"")
   end
 end
