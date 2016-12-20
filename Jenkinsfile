@@ -12,57 +12,61 @@ def readGitSha() {
   return sha
 }
 
-def getVersion(String version){
+def getVersion(String version) {
   def gitTag = readGitTag()
   def gitSha = readGitSha()
+  
   if (gitTag == "") {
     return "${version}-g${gitSha}"
-  }
-  else {
+  } else {
     return version
   }
 }
 
 node('osx_vegas') {
-  stage 'SCM'
   dir('realm-browser') {
-    checkout([
-      $class: 'GitSCM',
-      branches: scm.branches,
-      gitTool: 'native git',
-      extensions: scm.extensions + [[$class: 'CleanCheckout']],
-      userRemoteConfigs: scm.userRemoteConfigs
-    ])
-  }
+    wrap([$class: 'AnsiColorBuildWrapper']) {
+      stage('SCM') {
+        checkout([
+          $class: 'GitSCM',
+          branches: scm.branches,
+          gitTool: 'native git',
+          extensions: scm.extensions + [[$class: 'CleanCheckout']],
+          userRemoteConfigs: scm.userRemoteConfigs
+        ])
+      }
 
-  sh '''
-    awk  '/<key>CFBundleShortVersionString<\\/key>/ { getline; gsub("<[^>]*>", ""); gsub(/\\t/,""); print $0 }'  realm-browser/RealmBrowser/Supporting\\ Files/RealmBrowser-Info.plist > currentversion
-  '''
-  def currentVersionNumber = readFile('currentversion').readLines()[0]
+      sh '''
+        awk  '/<key>CFBundleShortVersionString<\\/key>/ { getline; gsub("<[^>]*>", ""); gsub(/\\t/,""); print $0 }' RealmBrowser/Supporting\\ Files/RealmBrowser-Info.plist > currentversion
+      '''
+      def currentVersionNumber = readFile('currentversion').readLines()[0]
+      def currentVersion = 'v' + getVersion(currentVersionNumber)
+      def archiveName = "realm_browser_${currentVersion}.zip"
+      def gitTag = readGitTag()
+      echo archiveName
 
-  dir('realm-browser') {
-    def currentVersion = 'v' + getVersion(currentVersionNumber)
-    def archiveName = "realm_browser_${currentVersion}.zip"
-    def gitTag = readGitTag()
-    echo archiveName
+      sh "bundle install"
 
-    sh "bundle install"
+      stage('Test') {
+        sh "bundle exec fastlane test"
+      }
 
-    stage 'Test'
-    sh "bundle exec fastlane test"
+      stage('Build') {
+        sh "bundle exec fastlane build"
+      }
 
-    stage 'Build'
-    sh "bundle exec fastlane build"
-
-    stage 'Package'
-    dir("build") {
-      sh "zip --symlinks -r ${archiveName} *"
-      archive "${archiveName}"
-
+      stage('Package') {
+        dir("build") {
+          sh "zip --symlinks -r ${archiveName} *"
+          archive "${archiveName}"
+        }
+      }
+    
       if (gitTag != "") {
-        stage 'trigger release'
-        sh "/usr/local/bin/s3cmd put ${archiveName} 's3://realm-ci-artifacts/browser/${currentVersionNumber.split('_')[0]}/cocoa/'"
-        echo "Uploaded to 's3://realm-ci-artifacts/browser/${currentVersionNumber.split('_')[0]}/cocoa/'"
+        stage('Upload to S3') {
+          sh "/usr/local/bin/s3cmd put ${archiveName} 's3://realm-ci-artifacts/browser/${currentVersionNumber.split('_')[0]}/cocoa/'"
+          echo "Uploaded to 's3://realm-ci-artifacts/browser/${currentVersionNumber.split('_')[0]}/cocoa/'"
+        }
       }
     }
   }
