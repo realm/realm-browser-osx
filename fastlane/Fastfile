@@ -1,3 +1,12 @@
+# Make sure that the environment variable below are defined before
+# running :build with submit_to_XXX arguments
+#
+# HOCKEY_API_TOKEN – HockeyApp API token that has persimmision to upload builds
+# HOCKEY_APP_ID – HockeyApp public application identifier, optional while all apps have different bundle ids
+#
+# FASTLANE_USERNAME and FASTLANE_PASSWORD should be set to iTunes Connect credentials
+#
+
 fastlane_version "2.1.1"
 
 before_all do
