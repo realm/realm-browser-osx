@@ -1,0 +1,73 @@
+# Make sure that the environment variable below are defined before
+# running :build with submit_to_XXX arguments
+#
+# HOCKEY_API_TOKEN – HockeyApp API token that has persimmision to upload builds
+# HOCKEY_APP_ID – HockeyApp public application identifier, optional while all apps have different bundle ids
+#
+# FASTLANE_USERNAME and FASTLANE_PASSWORD should be set to iTunes Connect credentials
+#
+
+fastlane_version "2.1.1"
+
+before_all do
+  cocoapods(repo_update: true)
+end
+
+desc "Runs all the tests"
+lane :test do
+  scan(scheme: "Realm Browser")
+end
+
+desc "Build the new realease for MAS and GitHub, submit build to ITC and upload dSYM files to HockeyApp"
+lane :build do |options|
+  buildDir = "build"
+  versionNumber = get_version_number
+  gitHubArchiveName = "RealmBrowser-#{versionNumber}.zip"
+  dSymArhiveName = "Realm Browser.app.dSYM.zip"
+
+  # build an archive and export dSYM files
+  gym(
+    scheme: "Realm Browser",
+    clean: true,
+    output_directory: buildDir,
+    buildlog_path: buildDir,
+  )
+
+  # export pkg for ITC
+  xcexport({export_options_plist: {method: "app-store"}, export_path: buildDir})
+
+  # export Developer ID signed app for GitHub release
+  xcexport({export_options_plist: {method: "developer-id"}, export_path: buildDir})
+
+  # archive the Developer ID signed app
+  Dir.chdir "../#{buildDir}" do
+    sh("zip --symlinks -r \"#{gitHubArchiveName}\" \"Realm Browser.app\"")
+    sh("rm -rf \"Realm Browser.app\"")
+  end
+  
+  # delete incorrect ipa path in lane context
+  Actions.lane_context[SharedValues::IPA_OUTPUT_PATH] = nil
+
+  # fix dSYM path
+  Actions.lane_context[SharedValues::DSYM_OUTPUT_PATH] = "#{buildDir}/#{dSymArhiveName}"
+  
+  if options[:submit_to_hockey]
+    hockey(
+      api_token: ENV['HOCKEY_API_TOKEN'],
+      public_identifier: ENV['HOCKEY_APP_ID'],
+      ipa: "#{buildDir}/#{gitHubArchiveName}", # should be specified to create a new version
+      dsym: "#{buildDir}/#{dSymArhiveName}",
+      strategy: "replace" # this will not replace symbols but add the new ones, we don're really care about app itself anyway
+    )
+  end
+  
+  if options[:submit_to_itc]
+    deliver(
+      username: ENV['ITC_USERNAME'],
+      app_version: "#{versionNumber}",
+      pkg: "#{buildDir}/Realm Browser.pkg",
+      skip_screenshots: true,
+      skip_metadata: true
+    )
+  end
+end
