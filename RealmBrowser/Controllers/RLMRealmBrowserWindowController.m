@@ -41,10 +41,6 @@ NSString * const kRealmKeyOutlineWidthForRealm = @"OutlineWidthForRealm:%@";
 
 static void const *kWaitForDocumentSchemaLoadObservationContext;
 
-@interface RLMRealm ()
-- (BOOL)compact;
-@end
-
 @interface RLMRealmBrowserWindowController()<NSWindowDelegate>
 
 @property (atomic, weak) IBOutlet NSSplitView *splitView;
@@ -373,8 +369,6 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
 - (void)exportAndCompactCopyOfRealmFileAtURL:(NSURL *)realmFileURL
 {
-    NSError *error = nil;
-    
     //Check that this won't end up overwriting the original file
     if ([realmFileURL.path.lowercaseString isEqualToString:self.document.fileURL.path.lowercaseString]) {
         NSAlert *alert = [[NSAlert alloc] init];
@@ -386,9 +380,9 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     
     //Ensure a file with the same name doesn't already exist
     BOOL directory = NO;
-    
     if ([[NSFileManager defaultManager] fileExistsAtPath:realmFileURL.path isDirectory:&directory] && !directory) {
-        if (![[NSFileManager defaultManager] removeItemAtPath:realmFileURL.path error:&error]) {
+        NSError *error = nil;
+        if (![[NSFileManager defaultManager] removeItemAtURL:realmFileURL error:&error]) {
             [NSApp presentError:error];
             return;
         }
@@ -422,18 +416,6 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
             closeExportWindowOnMainThreadAndShowError(error);
             return;
         }
-
-        RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-        configuration.fileURL = realmFileURL;
-        configuration.dynamic = YES;
-        
-        RLMRealm *exportedRealm = [RLMRealm realmWithConfiguration:configuration error:&error];
-        if (exportedRealm == nil) {
-            closeExportWindowOnMainThreadAndShowError(error);
-            return;
-        }
-
-        [exportedRealm compact];
 
         closeExportWindowOnMainThreadAndShowError(nil);
     });
