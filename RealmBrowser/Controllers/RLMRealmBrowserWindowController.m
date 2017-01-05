@@ -394,6 +394,8 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
             if (error != nil) {
                 [NSApp presentError:error];
+            } else {
+                [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:@[realmFileURL]];
             }
         });
     };
