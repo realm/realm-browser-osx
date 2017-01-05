@@ -39,7 +39,7 @@ RLMIdentityProvider const RLMIdentityProviderAccessToken = @"accessToken";
         RLMIdentityProviderUsernamePassword,
         RLMIdentityProviderFacebook,
         RLMIdentityProviderGoogle,
-        RLMIdentityProviderICloud,
+        RLMIdentityProviderCloudKit,
         @"accessToken"
     ];
 }
@@ -49,7 +49,7 @@ RLMIdentityProvider const RLMIdentityProviderAccessToken = @"accessToken";
         RLMIdentityProviderUsernamePassword: [RLMUsernameCredentialViewController class],
         RLMIdentityProviderFacebook: [RLMFacebookCredentialViewController class],
         RLMIdentityProviderGoogle: [RLMGoogleCredentialViewController class],
-        RLMIdentityProviderICloud: [RLMCloudKitCredentialViewController class],
+        RLMIdentityProviderCloudKit: [RLMCloudKitCredentialViewController class],
         @"accessToken": [RLMAccessTokenCredentialViewController class],
     };
 

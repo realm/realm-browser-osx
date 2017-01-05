@@ -365,15 +365,19 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
         AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
         [fileAccess requestAccessPermissionsForFileURL:panel.URL persistPermission:YES withBlock:^(NSURL *securelyScopedURL, NSData *bookmarkData) {
             [securelyScopedURL startAccessingSecurityScopedResource];
-            
-            NSString *folderPath = panel.URL.path;
-            NSString *realmFolderPath = self.document.fileURL.path;
-            RLMCSVDataExporter *exporter = [[RLMCSVDataExporter alloc] initWithRealmFileAtPath:realmFolderPath];
+
+            RLMCSVDataExporter *exporter = [[RLMCSVDataExporter alloc] initWithRealm:self.document.presentedRealm.realm];
+
             NSError *error = nil;
+            NSString *folderPath = panel.URL.path;
             [exporter exportToFolderAtPath:folderPath withError:&error];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [securelyScopedURL stopAccessingSecurityScopedResource];
+
+                if (error != nil) {
+                    [NSApp presentError:error];
+                }
             });
         }];
     }];
