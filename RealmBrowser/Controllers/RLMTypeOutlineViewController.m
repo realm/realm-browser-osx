@@ -29,6 +29,7 @@
 @interface RLMTypeOutlineViewController ()
 
 @property (nonatomic, strong) IBOutlet NSOutlineView *classesOutlineView;
+@property (nonatomic) BOOL skipSelectionChangeHandling;
 
 @end
 
@@ -45,6 +46,16 @@
         // We want the class outline to be expanded as default
         [self.classesOutlineView expandItem:firstItem expandChildren:YES];
     }
+}
+
+- (void)reloadData {
+    NSInteger row = self.tableView.selectedRow;
+    [self.tableView reloadData];
+
+    self.skipSelectionChangeHandling = YES;
+    // selectRowIndexes:byExtendingSelection: notifies delegate but this notification should be skipped.
+    [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+    self.skipSelectionChangeHandling = NO;
 }
 
 #pragma mark - NSOutlineViewDataSource implementation
@@ -125,6 +136,10 @@
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification
 {
+    if (self.skipSelectionChangeHandling) {
+        return;
+    }
+
     NSOutlineView *outlineView = notification.object;
     if (outlineView == self.classesOutlineView) {
         NSInteger row = [outlineView selectedRow];
