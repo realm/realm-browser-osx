@@ -20,7 +20,6 @@
 @import Realm.Private;
 @import Realm.Dynamic;
 @import RealmConverter;
-@import AppSandboxFileAccess;
 
 #import "RLMRealmBrowserWindowController.h"
 #import "RLMNavigationStack.h"
@@ -332,21 +331,16 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     NSSavePanel *panel = [NSSavePanel savePanel];
     panel.canCreateDirectories = YES;
     panel.nameFieldStringValue = fileName;
+    panel.prompt = @"Export";
+
     [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
-        if (result != NSFileHandlingPanelOKButton || !panel.URL) {
+        if (result != NSFileHandlingPanelOKButton) {
             return;
         }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
-            [fileAccess requestAccessPermissionsForFileURL:panel.URL persistPermission:YES withBlock:^(NSURL *securelyScopedURL, NSData *bookmarkData) {
-                [securelyScopedURL startAccessingSecurityScopedResource];
-                [self exportAndCompactCopyOfRealmFileAtURL:panel.URL];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [securelyScopedURL stopAccessingSecurityScopedResource];
-                }); 
-            }];
-        });
+
+        [panel orderOut:nil];
+
+        [self exportAndCompactCopyOfRealmFileAtURL:panel.URL];
     }];
 }
 
@@ -357,29 +351,23 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     panel.canChooseDirectories = YES;
     panel.canChooseFiles = NO;
     panel.message = @"Choose the directory in which to save the CSV files generated from this Realm file.";
+    panel.prompt = @"Export";
+
     [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
         if (result != NSFileHandlingPanelOKButton) {
             return;
         }
-    
-        AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
-        [fileAccess requestAccessPermissionsForFileURL:panel.URL persistPermission:YES withBlock:^(NSURL *securelyScopedURL, NSData *bookmarkData) {
-            [securelyScopedURL startAccessingSecurityScopedResource];
 
-            RLMCSVDataExporter *exporter = [[RLMCSVDataExporter alloc] initWithRealm:self.document.presentedRealm.realm];
+        [panel orderOut:nil];
 
-            NSError *error = nil;
-            NSString *folderPath = panel.URL.path;
-            [exporter exportToFolderAtPath:folderPath withError:&error];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [securelyScopedURL stopAccessingSecurityScopedResource];
+        RLMCSVDataExporter *exporter = [[RLMCSVDataExporter alloc] initWithRealm:self.document.presentedRealm.realm];
 
-                if (error != nil) {
-                    [NSApp presentError:error];
-                }
-            });
-        }];
+        NSError *error = nil;
+        if (![exporter exportToFolderAtPath:panel.URL.path withError:&error]) {
+            [NSApp presentError:error];
+        } else {
+            [[NSWorkspace sharedWorkspace] openURL:panel.URL];
+        }
     }];
 }
 
@@ -400,8 +388,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     BOOL directory = NO;
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:realmFileURL.path isDirectory:&directory] && !directory) {
-        [[NSFileManager defaultManager] removeItemAtPath:realmFileURL.path error:&error];
-        if (error) {
+        if (![[NSFileManager defaultManager] removeItemAtPath:realmFileURL.path error:&error]) {
             [NSApp presentError:error];
             return;
         }
