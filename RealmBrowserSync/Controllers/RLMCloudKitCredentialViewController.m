@@ -39,7 +39,7 @@
     NSString *token = self.tokenTextField.stringValue;
 
     if (token.length > 0) {
-        return [[RLMSyncCredentials alloc] initWithCustomToken:token provider:RLMIdentityProviderICloud userInfo:nil];
+        return [[RLMSyncCredentials alloc] initWithCustomToken:token provider:RLMIdentityProviderCloudKit userInfo:nil];
     }
 
     return nil;
