@@ -45,14 +45,14 @@ GEM
       netrc (= 0.7.8)
     cocoapods-try (1.1.0)
     colored (1.2)
-    commander (4.4.1)
+    commander (4.4.3)
       highline (~> 1.7.2)
     domain_name (0.5.20161129)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.1.1)
     escape (0.0.4)
     excon (0.54.0)
-    faraday (0.10.0)
+    faraday (0.10.1)
       multipart-post (>= 1.2, < 3)
     faraday-cookie_jar (0.0.6)
       faraday (>= 0.7.4)
@@ -61,7 +61,7 @@ GEM
       faraday (>= 0.7.4, < 1.0)
     fastimage (2.0.1)
       addressable (~> 2)
-    fastlane (2.1.1)
+    fastlane (2.6.0)
       activesupport (< 5)
       addressable (>= 2.3, < 3.0.0)
       babosa (>= 1.0.2, < 2.0.0)
@@ -75,7 +75,7 @@ GEM
       faraday_middleware (~> 0.9)
       fastimage (>= 1.6)
       gh_inspector (>= 1.0.1, < 2.0.0)
-      google-api-client (~> 0.9.1)
+      google-api-client (~> 0.9.2)
       highline (>= 1.7.2, < 2.0.0)
       json (< 3.0.0)
       mini_magick (~> 4.5.1)
@@ -139,7 +139,7 @@ GEM
     netrc (0.7.8)
     os (0.9.6)
     plist (3.2.0)
-    public_suffix (2.0.4)
+    public_suffix (2.0.5)
     representable (2.3.0)
       uber (~> 0.0.7)
     retriable (2.1.0)
@@ -183,4 +183,4 @@ DEPENDENCIES
   fastlane
 
 BUNDLED WITH
-   1.13.6
+   1.13.7
