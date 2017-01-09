@@ -46,5 +46,5 @@ def getVersion() {
   sh "git rev-parse HEAD | cut -b1-8 > sha.txt"
   def sha = readFile('sha.txt').readLines().last().trim()
 
-  return "${version}-${sha}"
+  return "${versionNumber}-${sha}"
 }
