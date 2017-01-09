@@ -4,7 +4,7 @@
 # HOCKEY_API_TOKEN – HockeyApp API token that has persimmision to upload builds
 # HOCKEY_APP_ID – HockeyApp public application identifier, optional while all apps have different bundle ids
 #
-# FASTLANE_USERNAME and FASTLANE_PASSWORD should be set to iTunes Connect credentials
+# ITC_USERNAME and FASTLANE_PASSWORD should be set to iTunes Connect credentials
 #
 
 fastlane_version "2.1.1"
@@ -44,22 +44,12 @@ lane :build do |options|
     sh("zip --symlinks -r \"#{gitHubArchiveName}\" \"Realm Browser.app\"")
     sh("rm -rf \"Realm Browser.app\"")
   end
-  
+
   # delete incorrect ipa path in lane context
   Actions.lane_context[SharedValues::IPA_OUTPUT_PATH] = nil
 
   # fix dSYM path
   Actions.lane_context[SharedValues::DSYM_OUTPUT_PATH] = "#{buildDir}/#{dSymArhiveName}"
-  
-  if options[:submit_to_hockey]
-    hockey(
-      api_token: ENV['HOCKEY_API_TOKEN'],
-      public_identifier: ENV['HOCKEY_APP_ID'],
-      ipa: "#{buildDir}/#{gitHubArchiveName}", # should be specified to create a new version
-      dsym: "#{buildDir}/#{dSymArhiveName}",
-      strategy: "replace" # this will not replace symbols but add the new ones, we don're really care about app itself anyway
-    )
-  end
   
   if options[:submit_to_itc]
     deliver(
@@ -68,6 +58,15 @@ lane :build do |options|
       pkg: "#{buildDir}/Realm Browser.pkg",
       skip_screenshots: true,
       skip_metadata: true
+    )
+  end
+
+  if options[:submit_to_hockey]
+    hockey(
+      api_token: ENV['HOCKEY_API_TOKEN'],
+      ipa: "#{buildDir}/#{gitHubArchiveName}", # should be specified to create a new version
+      dsym: "#{buildDir}/#{dSymArhiveName}",
+      strategy: "replace" # this will not replace symbols but add the new ones, we don're really care about app itself anyway
     )
   end
 end
