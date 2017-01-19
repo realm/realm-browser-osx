@@ -49,7 +49,7 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
 }
 
 - (void)dealloc {
-    [self.notificationToken stop];
+    [self cancelSchemaLoading];
 }
 
 - (void)loadSchemaWithCompletionHandler:(RLMSchemaLoadCompletionHandler)handler {
@@ -80,6 +80,11 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
     }];
 
     [self performSelector:@selector(schemaLoadingTimeout) withObject:nil afterDelay:schemaLoadTimeout];
+}
+
+- (void)cancelSchemaLoading {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self.notificationToken stop];
 }
 
 - (void)schemaDidLoadWithError:(NSError *)error {
