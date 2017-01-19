@@ -25,5 +25,6 @@ typedef void (^RLMSchemaLoadCompletionHandler)(NSError *error);
 - (instancetype)initWithSyncURL:(NSURL *)syncURL user:(RLMSyncUser *)user;
 
 - (void)loadSchemaWithCompletionHandler:(RLMSchemaLoadCompletionHandler)handler;
+- (void)cancelSchemaLoading;
 
 @end

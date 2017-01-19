@@ -228,6 +228,11 @@
     }
 }
 
+- (void)close {
+    [self.schemaLoader cancelSchemaLoading];
+    [super close];
+}
+
 #pragma mark NSDocument overrides
 
 - (void)makeWindowControllers
