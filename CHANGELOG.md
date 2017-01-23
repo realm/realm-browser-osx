@@ -1,3 +1,8 @@
+2.1.3 Release notes (2017-01-17)
+=============================================================
+* Fixed CSV export of synced realms
+* Stability and performance improvements
+
 2.1.2 Release notes (2016-12-09)
 =============================================================
 * Added the ability to filter Realms on Realm Object Server

@@ -25,8 +25,8 @@ node('osx_vegas') {
       }
 
       stage('Archive') {
-        def currentVersion = 'v' + getVersion()
-        def archiveName = "realm_browser_${currentVersion}.zip"
+        def currentVersion = getVersion()
+        def archiveName = "realm-browser-${currentVersion}-build-artifacts.zip"
 
         dir("build") {
           sh "zip --symlinks -r ${archiveName} *"
