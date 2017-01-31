@@ -1,4 +1,4 @@
-2.1.3 Release notes (2017-01-17)
+2.1.4 Release notes (2017-01-31)
 =============================================================
 * Updated to Realm 2.4.1 that fixes an authentication issue when working with synced Realms.
 
