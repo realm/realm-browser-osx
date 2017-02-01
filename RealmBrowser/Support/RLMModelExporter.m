@@ -577,7 +577,11 @@
     int count = (int)[props count],
         check = 0;
     for (NSString* key in props) {
-        [definition appendFormat:@" %@: '%@'%@", key, [props objectForKey:key], (++check == count) ? @" }" : @", "];
+        NSString* value = [NSString stringWithFormat:@"'%@'", [props objectForKey:key]];
+        if ([key isEqualToString:@"indexed"] || [key isEqualToString:@"optional"]) {
+            value = [props objectForKey:key];
+        }
+        [definition appendFormat:@" %@: %@%@", key, value, (++check == count) ? @" }" : @", "];
     }
     
     return definition;
