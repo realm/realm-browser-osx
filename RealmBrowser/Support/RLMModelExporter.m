@@ -560,11 +560,11 @@
         return [NSString stringWithFormat:@"    %@: '%@'", property.name, [props objectForKey:@"type"]];
     }
     
-    NSMutableString* definition = [NSMutableString stringWithFormat:@"    %@: {", property.name];
+    NSMutableString *definition = [NSMutableString stringWithFormat:@"    %@: {", property.name];
     int count = (int)[props count],
         check = 0;
-    for (NSString* key in props) {
-        NSString* value = [NSString stringWithFormat:@"'%@'", [props objectForKey:key]];
+    for (NSString *key in props) {
+        NSString *value = [NSString stringWithFormat:@"'%@'", [props objectForKey:key]];
         if ([key isEqualToString:@"indexed"] || [key isEqualToString:@"optional"]) {
             value = [props objectForKey:key];
         }
