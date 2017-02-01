@@ -469,16 +469,17 @@
 
 + (NSArray *)javascriptModelsOfSchemas:(NSArray *)schemas withFileName:(NSString *)fileName
 {
-    NSMutableString *contents = [NSMutableString stringWithString:@"\n\n"];
-    NSMutableArray<NSString *> *schemaNames = [NSMutableArray array];
+    NSMutableString *contents = [NSMutableString stringWithString:@"\n"];
+    NSMutableString *exports = [NSMutableString stringWithString:@"module.exports = {\n"];
     
     for (RLMObjectSchema *schema in schemas) {
         NSString* schemaName = [NSString stringWithFormat:@"%@Schema", schema.className];
-        [schemaNames addObject:schemaName];
+        [exports appendFormat:@"  %@", schemaName];
+        [exports appendFormat:@"%@", (schema != [schemas lastObject]) ? @",\n" : @"\n"];
         
         [contents appendFormat:@"const %@ {\n", schemaName];
         [contents appendFormat:@"  name: '%@',\n", schema.className];
-        NSMutableArray<RLMProperty *> *allProperties = [NSMutableArray array];
+        NSMutableString *properties = [NSMutableString stringWithString:@"  properties: {\n"];
         NSString *primaryKey = nil;
         
         for (RLMProperty *property in schema.properties) {
@@ -487,37 +488,23 @@
                 primaryKey = property.name;
             }
             
-            [allProperties addObject:property];
+            [properties appendString:[self javascriptDefinitionForProperty:property]];
+            [properties appendFormat:@"%@", (property != [schema.properties lastObject]) ? @",\n" : @"\n"];
+            
         }
+        
+        [properties appendString:@"  }\n"];
         
         if (primaryKey) {
             [contents appendFormat:@"  primaryKey: '%@',\n", primaryKey];
         }
         
-        [contents appendString:@"  properties: {\n"];
-        
-        for (RLMProperty *property in schema.properties) {
-            [contents appendString:[self javascriptDefinitionForProperty:property]];
-            if (property != [schema.properties lastObject]) {
-                [contents appendString:@",\n"];
-            } else {
-                [contents appendString:@"\n"];
-            }
-        }
-        
-        [contents appendString:@"  }\n};\n\n\n"];
+        [contents appendString:properties];
+        [contents appendString:@"};\n\n\n"];
     }
     
-    [contents appendString:@"module.exports = {\n"];
-    for (NSString *name in schemaNames) {
-        [contents appendFormat:@"  %@", name];
-        if (name != [schemaNames lastObject]) {
-            [contents appendString:@",\n"];
-        } else {
-            [contents appendString:@"\n"];
-        }
-    }
-    [contents appendString:@"};"];
+    [exports appendString:@"};"];
+    [contents appendString:exports];
     
     // An array of a single model array with filename and contents
     return @[@[[fileName stringByAppendingPathExtension:@"js"], contents]];
@@ -587,69 +574,5 @@
     return definition;
     
 }
-
-//+ (NSString *)swiftDefinitionForProperty:(RLMProperty *)property
-//{
-//    NSString *(^namedProperty)(NSString *) = ^NSString *(NSString *formatString) {
-//        return [NSString stringWithFormat:formatString, property.name];
-//    };
-//    NSString *(^objectClassProperty)(NSString *) = ^NSString *(NSString *formatString) {
-//        return [NSString stringWithFormat:formatString, property.name, property.objectClassName];
-//    };
-//    
-//    if (property.optional) {
-//        switch (property.type) {
-//            case RLMPropertyTypeBool:
-//                return namedProperty(@"let %@ = RealmOptional<Bool>()");
-//            case RLMPropertyTypeInt:
-//                return namedProperty(@"let %@ = RealmOptional<Int>()");
-//            case RLMPropertyTypeFloat:
-//                return namedProperty(@"let %@ = RealmOptional<Float>()");
-//            case RLMPropertyTypeDouble:
-//                return namedProperty(@"let %@ = RealmOptional<Double>()");
-//            case RLMPropertyTypeString:
-//                return namedProperty(@"dynamic var %@: String?");
-//            case RLMPropertyTypeData:
-//                return namedProperty(@"dynamic var %@: NSData?");
-//            case RLMPropertyTypeAny:
-//                return @"/* Error! 'Any' properties are unsupported in Swift. */";
-//            case RLMPropertyTypeDate:
-//                return namedProperty(@"dynamic var %@: NSDate?");
-//            case RLMPropertyTypeArray:
-//                return @"/* Error! 'List' properties should never be optional. Please report this by emailing help@realm.io. */";
-//            case RLMPropertyTypeObject:
-//                return objectClassProperty(@"dynamic var %@: %@?");
-//            case RLMPropertyTypeLinkingObjects:
-//                return @"";
-//        }
-//    }
-//    
-//    switch (property.type) {
-//        case RLMPropertyTypeBool:
-//            return namedProperty(@"dynamic var %@ = false");
-//        case RLMPropertyTypeInt:
-//            return namedProperty(@"dynamic var %@ = 0");
-//        case RLMPropertyTypeFloat:
-//            return namedProperty(@"dynamic var %@: Float = 0");
-//        case RLMPropertyTypeDouble:
-//            return namedProperty(@"dynamic var %@: Double = 0");
-//        case RLMPropertyTypeString:
-//            return namedProperty(@"dynamic var %@ = \"\"");
-//        case RLMPropertyTypeData:
-//            return namedProperty(@"dynamic var %@ = NSData()");
-//        case RLMPropertyTypeAny:
-//            return @"/* Error! 'Any' properties are unsupported in Swift. */";
-//        case RLMPropertyTypeDate:
-//            return namedProperty(@"dynamic var %@ = NSDate()");
-//        case RLMPropertyTypeArray:
-//            return objectClassProperty(@"let %@ = List<%@>()");
-//        case RLMPropertyTypeObject:
-//            return @"/* Error! 'Object' properties should always be optional. Please report this by emailing help@realm.io. */";
-//        case RLMPropertyTypeLinkingObjects:
-//            return @"";
-//    }
-//    
-//    return nil;
-//}
 
 @end
