@@ -477,7 +477,7 @@
         [exports appendFormat:@"  %@", schemaName];
         [exports appendFormat:@"%@", (schema != [schemas lastObject]) ? @",\n" : @"\n"];
         
-        [contents appendFormat:@"const %@ {\n", schemaName];
+        [contents appendFormat:@"const %@ = {\n", schemaName];
         [contents appendFormat:@"  name: '%@',\n", schema.className];
         NSMutableString *properties = [NSMutableString stringWithString:@"  properties: {\n"];
         NSString *primaryKey = nil;
