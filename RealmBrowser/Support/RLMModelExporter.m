@@ -74,7 +74,7 @@
             });
             break;
         }
-        case RLMModelExporterLanguageJavascript:
+        case RLMModelExporterLanguageJavaScript:
         {
             saveSingleFile(^(NSString *fileName){
                 return [self javaScriptModelsOfSchemas:objectSchemas withFileName:fileName];
@@ -465,7 +465,7 @@
     return nil;
 }
 
-#pragma mark - Private methods - Javascript helpers
+#pragma mark - Private methods - JavaScript helpers
 
 + (NSArray *)javaScriptModelsOfSchemas:(NSArray *)schemas withFileName:(NSString *)fileName
 {
