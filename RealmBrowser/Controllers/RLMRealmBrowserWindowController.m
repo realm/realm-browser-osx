@@ -316,7 +316,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     [self saveModelsForLanguage:RLMModelExporterLanguageSwift];
 }
 
-- (IBAction)saveJavascriptModels:(id)sender
+- (IBAction)saveJavaScriptModels:(id)sender
 {
     [self saveModelsForLanguage:RLMModelExporterLanguageJavascript];
 }

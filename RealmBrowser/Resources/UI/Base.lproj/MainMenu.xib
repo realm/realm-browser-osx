@@ -136,10 +136,10 @@
                                                 <action selector="saveSwiftModels:" target="-1" id="7le-yg-BNa"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Save Javascript definitions..." id="YBd-iW-lGC">
+                                        <menuItem title="Save JavaScript definitions..." id="YBd-iW-lGC">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="saveJavascriptModels:" target="-1" id="fc9-Au-OUZ"/>
+                                                <action selector="saveJavaScriptModels:" target="-1" id="HHN-6e-uP7"/>
                                             </connections>
                                         </menuItem>
                                     </items>

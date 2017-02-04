@@ -77,7 +77,7 @@
         case RLMModelExporterLanguageJavascript:
         {
             saveSingleFile(^(NSString *fileName){
-                return [self javascriptModelsOfSchemas:objectSchemas withFileName:fileName];
+                return [self javaScriptModelsOfSchemas:objectSchemas withFileName:fileName];
             });
             break;
         }
@@ -467,13 +467,13 @@
 
 #pragma mark - Private methods - Javascript helpers
 
-+ (NSArray *)javascriptModelsOfSchemas:(NSArray *)schemas withFileName:(NSString *)fileName
++ (NSArray *)javaScriptModelsOfSchemas:(NSArray *)schemas withFileName:(NSString *)fileName
 {
-    NSMutableString *contents = [NSMutableString stringWithString:@"\n"];
+    NSMutableString *contents = [NSMutableString string];
     NSMutableString *exports = [NSMutableString stringWithString:@"module.exports = {\n"];
     
     for (RLMObjectSchema *schema in schemas) {
-        NSString* schemaName = [NSString stringWithFormat:@"%@Schema", schema.className];
+        NSString *schemaName = [schema.className stringByAppendingString:@"Schema"];
         [exports appendFormat:@"  %@", schemaName];
         [exports appendFormat:@"%@", (schema != [schemas lastObject]) ? @",\n" : @"\n"];
         
@@ -483,12 +483,10 @@
         NSString *primaryKey = nil;
         
         for (RLMProperty *property in schema.properties) {
-            
             if (property.isPrimary) {
                 primaryKey = property.name;
             }
-            
-            [properties appendString:[self javascriptDefinitionForProperty:property]];
+            [properties appendString:[self javaScriptDefinitionForProperty:property]];
             [properties appendFormat:@"%@", (property != [schema.properties lastObject]) ? @",\n" : @"\n"];
             
         }
@@ -500,71 +498,70 @@
         }
         
         [contents appendString:properties];
-        [contents appendString:@"};\n\n\n"];
+        [contents appendString:@"};\n\n"];
     }
     
-    [exports appendString:@"};"];
+    [exports appendString:@"};\n"];
     [contents appendString:exports];
     
     // An array of a single model array with filename and contents
     return @[@[[fileName stringByAppendingPathExtension:@"js"], contents]];
 }
 
-+ (NSString *)javascriptDefinitionForProperty:(RLMProperty *)property
++ (NSString *)javaScriptDefinitionForProperty:(RLMProperty *)property
 {
     NSMutableDictionary *props = [NSMutableDictionary dictionary];
     
     switch (property.type) {
         case RLMPropertyTypeBool:
-            [props setValue:@"bool" forKey:@"type"];
+            props[@"type"] = @"bool";
             break;
         case RLMPropertyTypeInt:
-            [props setValue:@"int" forKey:@"type"];
+            props[@"type"] = @"int";
             break;
         case RLMPropertyTypeFloat:
-            [props setValue:@"float" forKey:@"type"];
+            props[@"type"] = @"float";
             break;
         case RLMPropertyTypeDouble:
-            [props setValue:@"double" forKey:@"type"];
+            props[@"type"] = @"double";
             break;
         case RLMPropertyTypeString:
-            [props setValue:@"string" forKey:@"type"];
+            props[@"type"] = @"string";
             break;
         case RLMPropertyTypeData:
-            [props setValue:@"data" forKey:@"type"];
+            props[@"type"] = @"data";
             break;
         case RLMPropertyTypeAny:
             break;
         case RLMPropertyTypeDate:
-            [props setValue:@"date" forKey:@"type"];
+            props[@"type"] = @"date";
             break;
         case RLMPropertyTypeArray:
-            [props setValue:@"list" forKey:@"type"];
-            [props setValue:property.objectClassName forKey:@"objectType"];
+            props[@"type"] = @"list";
+            props[@"objectType"] = property.objectClassName;
             break;
         case RLMPropertyTypeObject:
         case RLMPropertyTypeLinkingObjects:
-            [props setValue:property.objectClassName forKey:@"type"];
+            props[@"type"] = property.objectClassName;
             break;
     }
     
     if (property.indexed && !property.isPrimary) {
-        [props setValue:@"true" forKey:@"indexed"];
+        props[@"indexed"] = @"true";
     }
     
     if (property.optional) {
-        [props setValue:@"true" forKey:@"optional"];
+        props[@"optional"] = @"true";
     }
     
     if ([props count] == 1) {
-        return [NSString stringWithFormat:@"    %@: '%@'", property.name, [props objectForKey:@"type"]];
+        return [NSString stringWithFormat:@"    %@: '%@'", property.name, props[@"type"]];
     }
     
     NSMutableString *definition = [NSMutableString stringWithFormat:@"    %@: {", property.name];
-    int count = (int)[props count],
-        check = 0;
+    NSInteger count = props.count, check = 0;
     for (NSString *key in props) {
-        NSString *value = [NSString stringWithFormat:@"'%@'", [props objectForKey:key]];
+        NSString *value = [NSString stringWithFormat:@"'%@'", props[key]];
         if ([key isEqualToString:@"indexed"] || [key isEqualToString:@"optional"]) {
             value = [props objectForKey:key];
         }
