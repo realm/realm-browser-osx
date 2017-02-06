@@ -116,7 +116,7 @@
         case RLMModelExporterLanguageJava: return @"Java";
         case RLMModelExporterLanguageObjectiveC: return @"Objective-C";
         case RLMModelExporterLanguageSwift: return @"Swift";
-        case RLMModelExporterLanguageJavascript: return @"Javascript";
+        case RLMModelExporterLanguageJavascript: return @"JavaScript";
     }
 }
 
