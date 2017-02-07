@@ -74,6 +74,13 @@
             });
             break;
         }
+        case RLMModelExporterLanguageJavaScript:
+        {
+            saveSingleFile(^(NSString *fileName){
+                return [self javaScriptModelsOfSchemas:objectSchemas withFileName:fileName];
+            });
+            break;
+        }
     }
 }
 
@@ -109,6 +116,7 @@
         case RLMModelExporterLanguageJava: return @"Java";
         case RLMModelExporterLanguageObjectiveC: return @"Objective-C";
         case RLMModelExporterLanguageSwift: return @"Swift";
+        case RLMModelExporterLanguageJavaScript: return @"JavaScript";
     }
 }
 
@@ -455,6 +463,113 @@
     }
     
     return nil;
+}
+
+#pragma mark - Private methods - JavaScript helpers
+
++ (NSArray *)javaScriptModelsOfSchemas:(NSArray *)schemas withFileName:(NSString *)fileName
+{
+    NSMutableString *contents = [NSMutableString string];
+    NSMutableString *exports = [NSMutableString stringWithString:@"module.exports = {\n"];
+    
+    for (RLMObjectSchema *schema in schemas) {
+        NSString *schemaName = [schema.className stringByAppendingString:@"Schema"];
+        [exports appendFormat:@"  %@", schemaName];
+        [exports appendFormat:@"%@", (schema != [schemas lastObject]) ? @",\n" : @"\n"];
+        
+        [contents appendFormat:@"const %@ = {\n", schemaName];
+        [contents appendFormat:@"  name: '%@',\n", schema.className];
+        NSMutableString *properties = [NSMutableString stringWithString:@"  properties: {\n"];
+        NSString *primaryKey = nil;
+        
+        for (RLMProperty *property in schema.properties) {
+            if (property.isPrimary) {
+                primaryKey = property.name;
+            }
+            [properties appendString:[self javaScriptDefinitionForProperty:property]];
+            [properties appendFormat:@"%@", (property != [schema.properties lastObject]) ? @",\n" : @"\n"];
+            
+        }
+        
+        [properties appendString:@"  }\n"];
+        
+        if (primaryKey) {
+            [contents appendFormat:@"  primaryKey: '%@',\n", primaryKey];
+        }
+        
+        [contents appendString:properties];
+        [contents appendString:@"};\n\n"];
+    }
+    
+    [exports appendString:@"};\n"];
+    [contents appendString:exports];
+    
+    // An array of a single model array with filename and contents
+    return @[@[[fileName stringByAppendingPathExtension:@"js"], contents]];
+}
+
++ (NSString *)javaScriptDefinitionForProperty:(RLMProperty *)property
+{
+    NSMutableDictionary *props = [NSMutableDictionary dictionary];
+    
+    switch (property.type) {
+        case RLMPropertyTypeBool:
+            props[@"type"] = @"bool";
+            break;
+        case RLMPropertyTypeInt:
+            props[@"type"] = @"int";
+            break;
+        case RLMPropertyTypeFloat:
+            props[@"type"] = @"float";
+            break;
+        case RLMPropertyTypeDouble:
+            props[@"type"] = @"double";
+            break;
+        case RLMPropertyTypeString:
+            props[@"type"] = @"string";
+            break;
+        case RLMPropertyTypeData:
+            props[@"type"] = @"data";
+            break;
+        case RLMPropertyTypeAny:
+            break;
+        case RLMPropertyTypeDate:
+            props[@"type"] = @"date";
+            break;
+        case RLMPropertyTypeArray:
+            props[@"type"] = @"list";
+            props[@"objectType"] = property.objectClassName;
+            break;
+        case RLMPropertyTypeObject:
+        case RLMPropertyTypeLinkingObjects:
+            props[@"type"] = property.objectClassName;
+            break;
+    }
+    
+    if (property.indexed && !property.isPrimary) {
+        props[@"indexed"] = @"true";
+    }
+    
+    if (property.optional) {
+        props[@"optional"] = @"true";
+    }
+    
+    if ([props count] == 1) {
+        return [NSString stringWithFormat:@"    %@: '%@'", property.name, props[@"type"]];
+    }
+    
+    NSMutableString *definition = [NSMutableString stringWithFormat:@"    %@: {", property.name];
+    NSInteger count = props.count, check = 0;
+    for (NSString *key in props) {
+        NSString *value = [NSString stringWithFormat:@"'%@'", props[key]];
+        if ([key isEqualToString:@"indexed"] || [key isEqualToString:@"optional"]) {
+            value = [props objectForKey:key];
+        }
+        [definition appendFormat:@" %@: %@%@", key, value, (++check == count) ? @" }" : @", "];
+    }
+    
+    return definition;
+    
 }
 
 @end
