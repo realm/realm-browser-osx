@@ -60,6 +60,8 @@ typedef struct {
 
 - (void)deleteObjects:(NSIndexSet *)rowIndexes;
 
+- (void)copyValueFromRow:(NSInteger)row column:(NSInteger)column;
+
 // RLMArray operations
 - (void)removeRows:(NSIndexSet *)rowIndexes;
 
