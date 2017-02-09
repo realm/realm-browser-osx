@@ -118,31 +118,31 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Save Model Definitions" id="YSO-b8-a2a">
                                     <items>
-                                        <menuItem title="Save Java definitions..." id="kuf-fu-JL0">
+                                        <menuItem title="Java..." id="kuf-fu-JL0">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="saveJavaModels:" target="-1" id="6op-mb-kj6"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Save Objective-C definitions..." id="yRS-DK-aHw">
+                                        <menuItem title="Objective-C..." id="yRS-DK-aHw">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="saveObjcModels:" target="-1" id="6Rj-7H-W6J"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Save Swift definitions..." id="Nxi-3A-mZH">
+                                        <menuItem title="Swift..." id="Nxi-3A-mZH">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="saveSwiftModels:" target="-1" id="7le-yg-BNa"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Save JavaScript definitions..." id="YBd-iW-lGC">
+                                        <menuItem title="JavaScript..." id="YBd-iW-lGC">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="saveJavaScriptModels:" target="-1" id="HHN-6e-uP7"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Save C# definitions..." id="IEI-T6-yOj">
+                                        <menuItem title="C#..." id="IEI-T6-yOj">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="saveCSharpModels:" target="-1" id="6CY-YI-2fe"/>
