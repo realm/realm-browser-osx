@@ -142,6 +142,12 @@
                                                 <action selector="saveJavaScriptModels:" target="-1" id="HHN-6e-uP7"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Save C# definitions..." id="IEI-T6-yOj">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="saveCSharpModels:" target="-1" id="6CY-YI-2fe"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

@@ -321,6 +321,11 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     [self saveModelsForLanguage:RLMModelExporterLanguageJavaScript];
 }
 
+- (IBAction)saveCSharpModels:(id)sender
+{
+    [self saveModelsForLanguage:RLMModelExporterLanguageCSharp];
+}
+
 - (IBAction)exportToCompactedRealm:(id)sender
 {
     NSString *fileName = self.document.fileURL.lastPathComponent ?: self.document.syncURL.lastPathComponent ?: @"Compacted";
