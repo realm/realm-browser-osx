@@ -28,6 +28,6 @@ typedef NS_ENUM(NSInteger, RLMModelExporterLanguage) {
 
 @interface RLMModelExporter : NSObject
 
-+ (void)saveModelsForSchemas:(NSArray *)objectSchemas inLanguage:(RLMModelExporterLanguage)language;
++ (void)saveModelsForSchemas:(NSArray *)objectSchemas inLanguage:(RLMModelExporterLanguage)language window:(NSWindow *)window;
 
 @end

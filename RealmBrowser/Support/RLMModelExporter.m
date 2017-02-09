@@ -40,12 +40,10 @@
 
 #pragma mark - Public methods
 
-+ (void)saveModelsForSchemas:(NSArray *)objectSchemas inLanguage:(RLMModelExporterLanguage)language
++ (void)saveModelsForSchemas:(NSArray *)objectSchemas inLanguage:(RLMModelExporterLanguage)language window:(NSWindow *)window
 {
     void(^saveMultipleFiles)(NSSavePanel *, void(^)()) = ^void(NSSavePanel *panel, void(^completionBlock)()) {
-        panel.canCreateDirectories = YES;
-        panel.title = [NSString stringWithFormat:@"Save %@ model definitions", [RLMModelExporter stringForLanguage:language]];
-        [panel beginWithCompletionHandler:^(NSInteger result) {
+        [panel beginSheetModalForWindow:window completionHandler:^(NSInteger result) {
             if (result == NSFileHandlingPanelOKButton) {
                 [panel orderOut:self];
                 completionBlock(panel);
@@ -57,6 +55,7 @@
         NSSavePanel *panel = [NSSavePanel savePanel];
         panel.prompt = @"Save";
         panel.nameFieldStringValue = @"RealmModels";
+
         saveMultipleFiles(panel, ^{
             NSString *fileName = [[panel.URL lastPathComponent] stringByDeletingPathExtension];
             [self saveModels:modelsWithFileName(fileName) toFolder:[panel.URL URLByDeletingLastPathComponent]];
@@ -68,8 +67,10 @@
         {
             NSOpenPanel *panel = [NSOpenPanel openPanel];
             panel.prompt = @"Select folder";
+            panel.canCreateDirectories = YES;
             panel.canChooseDirectories = YES;
             panel.canChooseFiles = NO;
+
             saveMultipleFiles(panel, ^{
                 [self saveModels:[self javaModelsOfSchemas:objectSchemas] toFolder:panel.URL];
             });
@@ -131,18 +132,6 @@
         [securityScopedURL stopAccessingSecurityScopedResource];
     }];
 }
-
-+ (NSString *)stringForLanguage:(RLMModelExporterLanguage)language
-{
-    switch (language) {
-        case RLMModelExporterLanguageJava: return @"Java";
-        case RLMModelExporterLanguageObjectiveC: return @"Objective-C";
-        case RLMModelExporterLanguageSwift: return @"Swift";
-        case RLMModelExporterLanguageJavaScript: return @"JavaScript";
-        case RLMModelExporterLanguageCSharp: return @"C#";
-    }
-}
-
 
 #pragma mark - Private methods - Java helpers
 

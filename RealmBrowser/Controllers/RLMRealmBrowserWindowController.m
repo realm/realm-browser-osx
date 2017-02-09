@@ -298,7 +298,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 - (void)saveModelsForLanguage:(RLMModelExporterLanguage)language
 {
     NSArray *objectSchemas = self.document.presentedRealm.realm.schema.objectSchema;
-    [RLMModelExporter saveModelsForSchemas:objectSchemas inLanguage:language];
+    [RLMModelExporter saveModelsForSchemas:objectSchemas inLanguage:language window:self.window];
 }
 
 - (IBAction)saveJavaModels:(id)sender
