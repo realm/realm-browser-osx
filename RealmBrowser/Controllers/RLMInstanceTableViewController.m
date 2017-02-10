@@ -493,6 +493,19 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     [self.parentWindowController reloadAllWindows];
 }
 
+- (void)copyValueFromRow:(NSInteger)row column:(NSInteger)column {
+    NSInteger propertyIndex = [self propertyIndexForColumn:column];
+    RLMClassProperty *classProperty = self.displayedType.propertyColumns[propertyIndex];
+    RLMObject *selectedInstance = [self.displayedType instanceAtIndex:row];
+    id propertyValue = selectedInstance[classProperty.name];
+    RLMPropertyType type = classProperty.type;
+    NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
+    
+    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+    [pasteboard clearContents];
+    [pasteboard writeObjects:@[ string ]];
+}
+
 - (void)addNewObjects:(NSIndexSet *)rowIndexes
 {
     RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;

@@ -36,6 +36,7 @@ const NSInteger NOT_A_COLUMN = -1;
     NSMenuItem *clickLockItem;
 
     NSMenuItem *deleteObjectItem;
+    NSMenuItem *copyValueItem;
 
     NSMenuItem *removeFromArrayItem;
     NSMenuItem *deleteRowItem;
@@ -102,6 +103,11 @@ const NSInteger NOT_A_COLUMN = -1;
                                                   action:@selector(deleteObjectsAction:)
                                            keyEquivalent:@""];
     deleteObjectItem.tag = 200;
+    
+    copyValueItem = [[NSMenuItem alloc] initWithTitle:@"Copy value"
+                                                  action:@selector(copyValueAction:)
+                                           keyEquivalent:@""];
+    copyValueItem.tag = 201;
 
     // Operations on objects in arrays
     removeFromArrayItem = [[NSMenuItem alloc] initWithTitle:@"Remove objects from array"
@@ -184,6 +190,7 @@ const NSInteger NOT_A_COLUMN = -1;
     }
     else {
         [self.menu addItem:deleteObjectItem];
+        [self.menu addItem:copyValueItem];
     }
     
     if (!actualColumn) {
@@ -330,6 +337,12 @@ const NSInteger NOT_A_COLUMN = -1;
     if (!self.realmDelegate.displaysArray && !self.realmDelegate.realmIsLocked) {
         [self.realmDelegate deleteObjects:self.selectedRowIndexes];
     }
+}
+
+// Copies the value from the cell that was right-clicked
+- (IBAction)copyValueAction:(id)sender
+{
+    [self.realmDelegate copyValueFromRow:self.clickedRow column:self.clickedColumn];
 }
 
 // Add objects of the current type, according to number of selected rows
