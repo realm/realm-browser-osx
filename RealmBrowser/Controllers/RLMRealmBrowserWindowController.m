@@ -88,7 +88,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     [self.splitView setAutosaveName:[NSString stringWithFormat:kRealmKeyOutlineWidthForRealm, realmPath]];
 
     // Modify responder chain to handle shortcuts for table view (workaround for https://github.com/realm/realm-browser-osx/issues/241)
-    self.outlineViewController.nextResponder = self.tableViewController.tableView;
+    self.outlineViewController.tableView.enclosingScrollView.nextResponder = self.tableViewController.tableView;
 }
 
 - (IBAction)showWindow:(id)sender
