@@ -1,6 +1,6 @@
 2.1.5 Release notes (2017-02-10)
 =============================================================
-* Added the ability to save C# and JaveScript (@ksibod) model difinitions
+* Added the ability to save C# and JavaScript (@ksibod) model definitions
 * Added an option to copy object's property value in context menu (@fergusean)
 * Fixed compatibility issue with OS X 10.9
 * Minor UI improvements
