@@ -17,20 +17,33 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #import "RLMModelExporter.h"
+
+@import AppSandboxFileAccess;
 @import Realm;
 @import Realm.Private;
-#import <AppSandboxFileAccess/AppSandboxFileAccess.h>
+
+@implementation NSString (Indentation)
+
+- (NSString *)indentedBy:(NSInteger)indent {
+    if (indent <= 0) {
+        return self;
+    }
+
+    NSString *tmp = [self stringByReplacingOccurrencesOfString:@"\n" withString:@"\n "];
+
+    return [[@" " stringByAppendingString:tmp] indentedBy:indent - 1];
+}
+
+@end
 
 @implementation RLMModelExporter
 
 #pragma mark - Public methods
 
-+ (void)saveModelsForSchemas:(NSArray *)objectSchemas inLanguage:(RLMModelExporterLanguage)language
++ (void)saveModelsForSchemas:(NSArray *)objectSchemas inLanguage:(RLMModelExporterLanguage)language window:(NSWindow *)window
 {
     void(^saveMultipleFiles)(NSSavePanel *, void(^)()) = ^void(NSSavePanel *panel, void(^completionBlock)()) {
-        panel.canCreateDirectories = YES;
-        panel.title = [NSString stringWithFormat:@"Save %@ model definitions", [RLMModelExporter stringForLanguage:language]];
-        [panel beginWithCompletionHandler:^(NSInteger result) {
+        [panel beginSheetModalForWindow:window completionHandler:^(NSInteger result) {
             if (result == NSFileHandlingPanelOKButton) {
                 [panel orderOut:self];
                 completionBlock(panel);
@@ -40,8 +53,9 @@
 
     void(^saveSingleFile)(NSArray *(^)(NSString *)) = ^void(NSArray *(^modelsWithFileName)(NSString *fileName)) {
         NSSavePanel *panel = [NSSavePanel savePanel];
-        panel.prompt = @"Save as filename";
+        panel.prompt = @"Save";
         panel.nameFieldStringValue = @"RealmModels";
+
         saveMultipleFiles(panel, ^{
             NSString *fileName = [[panel.URL lastPathComponent] stringByDeletingPathExtension];
             [self saveModels:modelsWithFileName(fileName) toFolder:[panel.URL URLByDeletingLastPathComponent]];
@@ -53,8 +67,10 @@
         {
             NSOpenPanel *panel = [NSOpenPanel openPanel];
             panel.prompt = @"Select folder";
+            panel.canCreateDirectories = YES;
             panel.canChooseDirectories = YES;
             panel.canChooseFiles = NO;
+
             saveMultipleFiles(panel, ^{
                 [self saveModels:[self javaModelsOfSchemas:objectSchemas] toFolder:panel.URL];
             });
@@ -81,12 +97,19 @@
             });
             break;
         }
+        case RLMModelExporterLanguageCSharp:
+        {
+            saveSingleFile(^(NSString *fileName){
+                return [self cSharpModelsOfSchemas:objectSchemas withFileName:fileName];
+            });
+            break;
+        }
     }
 }
 
 #pragma mark - Private methods - Helpers
 
-+(void)saveModels:(NSArray *)models toFolder:(NSURL *)url
++ (void)saveModels:(NSArray *)models toFolder:(NSURL *)url
 {
     AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
     [fileAccess requestAccessPermissionsForFileURL:url persistPermission:YES withBlock:^(NSURL *securityScopedURL, NSData *bookmarkData) {
@@ -109,17 +132,6 @@
         [securityScopedURL stopAccessingSecurityScopedResource];
     }];
 }
-
-+ (NSString *)stringForLanguage:(RLMModelExporterLanguage)language
-{
-    switch (language) {
-        case RLMModelExporterLanguageJava: return @"Java";
-        case RLMModelExporterLanguageObjectiveC: return @"Objective-C";
-        case RLMModelExporterLanguageSwift: return @"Swift";
-        case RLMModelExporterLanguageJavaScript: return @"JavaScript";
-    }
-}
-
 
 #pragma mark - Private methods - Java helpers
 
@@ -569,7 +581,104 @@
     }
     
     return definition;
-    
+}
+
+#pragma mark - Private methods - C# helpers
+
++ (NSArray *)cSharpModelsOfSchemas:(NSArray *)schemas withFileName:(NSString *)fileName {
+    NSMutableString *contents = [NSMutableString stringWithString:@"using System;\nusing System.Collections.Generic;\nusing Realms;\n\n"];
+
+    for (RLMObjectSchema *schema in schemas) {
+        [contents appendFormat:@"public class %@ : RealmObject\n{\n", schema.className];
+
+        for (RLMProperty *property in schema.properties) {
+            [contents appendFormat:@"%@\n\n", [[self cSharpDefinitionForProperty:property] indentedBy:4]];
+        }
+
+        // Delete extra newline
+        [contents deleteCharactersInRange:NSMakeRange(contents.length - 1, 1)];
+
+        [contents appendString:@"}\n\n"];
+    }
+
+    // Delete extra newline
+    [contents deleteCharactersInRange:NSMakeRange(contents.length - 1, 1)];
+
+    return @[@[[fileName stringByAppendingPathExtension:@"cs"], contents]];
+}
+
++ (NSString *)cSharpDefinitionForProperty:(RLMProperty *)property {
+    NSMutableString *definition = [NSMutableString string];
+
+    BOOL(^typeOptionalByDefault)(RLMPropertyType) = ^BOOL(RLMPropertyType type) {
+        switch (type) {
+            case RLMPropertyTypeString:
+            case RLMPropertyTypeData:
+            case RLMPropertyTypeObject:
+                return true;
+            default:
+                return false;
+        }
+    };
+
+    NSString *(^valueType)(NSString *, BOOL) = ^NSString *(NSString *typename, BOOL optional) {
+        return [typename stringByAppendingString:optional ? @"?" : @""];
+    };
+
+    if (property.isPrimary) {
+        [definition appendString:@"[PrimaryKey]\n"];
+    }
+
+    if (property.type == RLMPropertyTypeLinkingObjects) {
+        [definition appendFormat:@"[Backlink(nameof(%@.%@))]\n", property.objectClassName, property.linkOriginPropertyName];
+    }
+
+    if (!property.optional && typeOptionalByDefault(property.type)) {
+        [definition appendString:@"[Required]\n"];
+    }
+
+    NSString *type;
+    NSString *access = @"get; set;";
+
+    switch (property.type) {
+        case RLMPropertyTypeBool:
+            type = valueType(@"bool", property.optional);
+            break;
+        case RLMPropertyTypeInt:
+            type = valueType(@"long", property.optional);
+            break;
+        case RLMPropertyTypeFloat:
+            type = valueType(@"float", property.optional);
+            break;
+        case RLMPropertyTypeDouble:
+            type = valueType(@"double", property.optional);
+            break;
+        case RLMPropertyTypeString:
+            type = @"string";
+            break;
+        case RLMPropertyTypeData:
+            type = @"byte[]";
+            break;
+        case RLMPropertyTypeAny:
+            break;
+        case RLMPropertyTypeDate:
+            type = valueType(@"DateTimeOffset", property.optional);
+            break;
+        case RLMPropertyTypeObject:
+            type = property.objectClassName;
+        case RLMPropertyTypeArray:
+            type = [NSString stringWithFormat:@"IList<%@>", property.objectClassName];
+            access = @"get;";
+            break;
+        case RLMPropertyTypeLinkingObjects:
+            type = [NSString stringWithFormat:@"IQueryable<%@>", property.objectClassName];
+            access = @"get;";
+            break;
+    }
+
+    [definition appendFormat:@"public %@ %@ { %@ }", type, property.name, access];
+
+    return definition;
 }
 
 @end

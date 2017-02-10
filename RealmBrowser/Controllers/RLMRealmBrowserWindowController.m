@@ -298,7 +298,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 - (void)saveModelsForLanguage:(RLMModelExporterLanguage)language
 {
     NSArray *objectSchemas = self.document.presentedRealm.realm.schema.objectSchema;
-    [RLMModelExporter saveModelsForSchemas:objectSchemas inLanguage:language];
+    [RLMModelExporter saveModelsForSchemas:objectSchemas inLanguage:language window:self.window];
 }
 
 - (IBAction)saveJavaModels:(id)sender
@@ -319,6 +319,11 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 - (IBAction)saveJavaScriptModels:(id)sender
 {
     [self saveModelsForLanguage:RLMModelExporterLanguageJavaScript];
+}
+
+- (IBAction)saveCSharpModels:(id)sender
+{
+    [self saveModelsForLanguage:RLMModelExporterLanguageCSharp];
 }
 
 - (IBAction)exportToCompactedRealm:(id)sender

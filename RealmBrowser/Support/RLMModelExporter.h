@@ -22,11 +22,12 @@ typedef NS_ENUM(NSInteger, RLMModelExporterLanguage) {
     RLMModelExporterLanguageJava,
     RLMModelExporterLanguageObjectiveC,
     RLMModelExporterLanguageSwift,
-    RLMModelExporterLanguageJavaScript
+    RLMModelExporterLanguageJavaScript,
+    RLMModelExporterLanguageCSharp
 };
 
 @interface RLMModelExporter : NSObject
 
-+ (void)saveModelsForSchemas:(NSArray *)objectSchemas inLanguage:(RLMModelExporterLanguage)language;
++ (void)saveModelsForSchemas:(NSArray *)objectSchemas inLanguage:(RLMModelExporterLanguage)language window:(NSWindow *)window;
 
 @end
