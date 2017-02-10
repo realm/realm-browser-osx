@@ -87,10 +87,10 @@
 
 - (void)configurePlaceholderStringHighlighted:(BOOL)highlighted
 {
-    if (_optional == NO || self.textField == nil) {
+    if (!_optional || ![self.textField respondsToSelector:@selector(placeholderAttributedString)]) {
         return;
     }
-    
+
     if (self.highlightedPlaceholderString == nil || self.defaultPlaceholderString == nil) {
         NSDictionary *highlightedAttributes = @{NSForegroundColorAttributeName:[NSColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f]};
         self.highlightedPlaceholderString = [[NSAttributedString alloc] initWithString:@"nil" attributes:highlightedAttributes];
