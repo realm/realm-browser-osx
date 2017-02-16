@@ -1,3 +1,10 @@
+2.1.5 Release notes (2017-02-10)
+=============================================================
+* Added the ability to save C# and JavaScript (@ksibod) model definitions
+* Added an option to copy object's property value in context menu (@fergusean)
+* Fixed compatibility issue with OS X 10.9
+* Minor UI improvements
+
 2.1.4 Release notes (2017-01-31)
 =============================================================
 * Updated to Realm 2.4.1 that fixes an authentication issue when working with synced Realms.
