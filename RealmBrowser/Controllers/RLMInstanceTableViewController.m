@@ -902,7 +902,8 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     NSInteger row = [self.tableView rowForView:sender];
     NSInteger column = [self.tableView columnForView:sender];
 
-    if (row < 0 || column < 0) {
+    RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
+    if (row < 0 || column < 0 || realm.inWriteTransaction) {
         // Table view was reloaded during editing
         return;
     }
@@ -948,7 +949,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     
     if (result || optionalValue) {
         NSError *error;
-        RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
 
         [realm beginWriteTransaction];
         selectedInstance[propertyNode.name] = result;
