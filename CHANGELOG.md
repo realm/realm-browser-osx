@@ -1,6 +1,6 @@
 2.1.6 Release notes (2017-03-02)
 =============================================================
-* Updated to Realm 2.4.3
+* Fixed an issue with token expiration for Realms opened from Realm Mobile Platform
 * Stability improvements
 
 2.1.5 Release notes (2017-02-10)
