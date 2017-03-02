@@ -1,3 +1,8 @@
+2.1.6 Release notes (2017-03-02)
+=============================================================
+* Updated Realm to 2.4.3
+* Stability improvements
+
 2.1.5 Release notes (2017-02-10)
 =============================================================
 * Added the ability to save C# and JavaScript (@ksibod) model definitions
