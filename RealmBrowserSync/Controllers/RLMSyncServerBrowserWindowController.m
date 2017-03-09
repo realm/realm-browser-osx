@@ -166,7 +166,12 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
-    self.selectedURL = self.tableView.selectedRow >= 0 ? [[NSURL alloc] initWithString:[self.serverRealmFiles[self.tableView.selectedRow] valueForKey:@"path"] relativeToURL:self.serverURL] : nil;
+    if (self.tableView.selectedRow >= 0) {
+        NSString *realmPath = [self.filteredServerRealmFiles[self.tableView.selectedRow] valueForKey:@"path"];
+        self.selectedURL = [[NSURL alloc] initWithString:realmPath relativeToURL:self.serverURL];
+    } else {
+        self.selectedURL = nil;
+    }
 }
 
 @end
