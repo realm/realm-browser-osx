@@ -21,7 +21,11 @@ node('osx_vegas') {
       }
 
       stage('Build') {
-        sh "bundle exec fastlane build"
+        withEnv([
+          'DEVELOPER_DIR=/Applications/Xcode-8.2.app/Contents/Developer/'
+        ]) {
+          sh "bundle exec fastlane build"
+        }
       }
 
       stage('Archive') {
