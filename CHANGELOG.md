@@ -1,3 +1,8 @@
+2.1.7 Release notes (2017-03-29)
+=============================================================
+* Updated to Realm 2.5 to support new file format
+* Fixed the issue with selection when filter realms on Realm Object Server
+
 2.1.6 Release notes (2017-03-02)
 =============================================================
 * Fixed an issue with token expiration for Realms opened from Realm Mobile Platform
