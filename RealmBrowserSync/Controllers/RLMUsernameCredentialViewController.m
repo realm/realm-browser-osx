@@ -19,6 +19,8 @@
 #import "RLMUsernameCredentialViewController.h"
 #import "RLMCredentialViewController+Private.h"
 
+extern NSString *const kRLMSyncPasswordKey;
+
 @interface RLMUsernameCredentialViewController ()
 
 @property (nonatomic, weak) IBOutlet NSTextField *usernameTextField;
@@ -49,6 +51,9 @@
 
 - (void)setCredentials:(RLMSyncCredentials *)credentials {
     self.usernameTextField.stringValue = credentials.token;
+    
+    NSString *password = [credentials.userInfo objectForKey:kRLMSyncPasswordKey];
+    if (password) self.passwordTextField.stringValue = password;
 }
 
 @end

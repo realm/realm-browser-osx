@@ -21,6 +21,10 @@
 #import "RLMCredentialsViewController.h"
 #import "NSView+RLMExtensions.h"
 
+#import "RLMKeychainStore.h"
+#import "RLMKeychainInfo.h"
+#import "RLMKeychainInfo+RLMSyncCredentials.h"
+
 static NSString * const serverURLKey = @"ServerURL";
 static NSString * const adminAccessTokenKey = @"AdminAccessToken";
 
@@ -32,6 +36,10 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
 @property (nonatomic, weak) IBOutlet NSTextField *serverURLTextField;
 @property (nonatomic, weak) IBOutlet NSTextField *tokenTextField;
 @property (nonatomic, weak) IBOutlet NSButton *connectButton;
+@property (weak) IBOutlet NSButton *saveCredentialsCheckBox;
+
+@property (nonatomic, readonly) BOOL shouldSaveCredentials;
+@property (nonatomic, strong) RLMKeychainStore *keychainStore;
 
 @property (nonatomic, strong) RLMCredentialsViewController *credentialsViewController;
 
@@ -41,15 +49,15 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
 
 - (void)windowDidLoad {
     [super windowDidLoad];
-
-    if (self.serverURL == nil && self.credentials == nil) {
-        [self loadRecentCredentials];
-    }
-
+    
     self.credentialsViewController = [[RLMCredentialsViewController alloc] init];
     self.credentialsViewController.delegate = self;
 
     [self.credentialsContainerView addContentSubview:self.credentialsViewController.view];
+    
+    if (self.serverURL == nil && self.credentials == nil) {
+        [self loadRecentCredentials];
+    }
 }
 
 - (BOOL)validateCredentials:(NSError *__autoreleasing *)error {
@@ -113,7 +121,7 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
 #pragma mark - Actions
 
 - (IBAction)connect:(id)sender {
-    [self seaveRecentCredentials];
+    [self saveRecentCredentials];
 
     [self closeWithReturnCode:NSModalResponseOK];
 }
@@ -124,12 +132,32 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
 
 #pragma mark - Private
 
-- (void)loadRecentCredentials {
-    self.serverURL = [[NSUserDefaults standardUserDefaults] URLForKey:serverURLKey];
+- (BOOL)shouldSaveCredentials
+{
+    return self.saveCredentialsCheckBox.state == NSOnState;
 }
 
-- (void)seaveRecentCredentials {
+- (RLMKeychainStore *)keychainStore
+{
+    if (!_keychainStore) _keychainStore = [RLMKeychainStore new];
+    
+    return _keychainStore;
+}
+
+- (void)loadRecentCredentials {
+    self.serverURL = [[NSUserDefaults standardUserDefaults] URLForKey:serverURLKey];
+    
+    RLMKeychainInfo *info = [self.keychainStore savedCredentialsForServer:self.serverURL];
+    RLMSyncCredentials *savedCredentials = info.credentials;
+    
+    if (!savedCredentials) return;
+    
+    self.credentials = savedCredentials;
+}
+
+- (void)saveRecentCredentials {
     [[NSUserDefaults standardUserDefaults] setURL:self.serverURL forKey:serverURLKey];
+    [self.keychainStore saveCredentials:self.credentials forServer:self.serverURL];
 }
 
 - (NSError *)errorWithCode:(NSInteger)code description:(NSString *)description recoverySuggestion:(NSString *)recoverySuggestion {
