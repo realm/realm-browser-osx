@@ -165,6 +165,9 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
 
 - (void)saveRecentCredentials {
     [[NSUserDefaults standardUserDefaults] setURL:self.serverURL forKey:serverURLKey];
+    
+    if (!self.shouldSaveCredentials) return;
+    
     [self.keychainStore saveCredentials:self.credentials forServer:self.serverURL];
 }
 
