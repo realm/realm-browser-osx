@@ -481,7 +481,7 @@
         [securelyScopedURL startAccessingSecurityScopedResource];
     
         @autoreleasepool {
-            RLMImportSchemaGenerator *schemaGenerator = [[RLMImportSchemaGenerator alloc] initWithFile:targetFileURL.path encoding:EncodingUTF8];
+            RLMImportSchemaGenerator *schemaGenerator = [[RLMImportSchemaGenerator alloc] initWithFile:targetFileURL.path encoding:EncodingUtf8];
             RLMImportSchema *schema = [schemaGenerator generatedSchemaWithError:nil];
             
             if (schema == nil) {
@@ -490,7 +490,7 @@
                 return;
             }
             
-            RLMXLSXDataImporter *importer = [[RLMXLSXDataImporter alloc] initWithFile:targetFileURL.path encoding:EncodingUTF8];
+            RLMXLSXDataImporter *importer = [[RLMXLSXDataImporter alloc] initWithFile:targetFileURL.path encoding:EncodingUtf8];
             [importer importToPath:targetDirectoryURL.path withSchema:schema error:nil];
         }
         
@@ -554,7 +554,7 @@
         [securelyScopedURL startAccessingSecurityScopedResource];
     
         @autoreleasepool {
-            RLMImportSchemaGenerator *schemaGenerator = [[RLMImportSchemaGenerator alloc] initWithFiles:filePaths encoding:EncodingUTF8];
+            RLMImportSchemaGenerator *schemaGenerator = [[RLMImportSchemaGenerator alloc] initWithFiles:filePaths encoding:EncodingUtf8];
             RLMImportSchema *schema = [schemaGenerator generatedSchemaWithError:nil];
             
             if (schema == nil) {
@@ -563,7 +563,7 @@
                 return;
             }
             
-            RLMCSVDataImporter *importer = [[RLMCSVDataImporter alloc] initWithFiles:filePaths encoding:EncodingUTF8];
+            RLMCSVDataImporter *importer = [[RLMCSVDataImporter alloc] initWithFiles:filePaths encoding:EncodingUtf8];
             [importer importToPath:targetDirectoryURL.path withSchema:schema error:nil];
         }
         
