@@ -25,4 +25,19 @@
     }
 }
 
++ (RLMSyncCredentials *)emptyCredentialsWithProvider:(RLMIdentityProvider)provider
+{
+    if ([provider isEqualToString:RLMIdentityProviderUsernamePassword]) {
+        return [RLMSyncCredentials credentialsWithUsername:@"" password:@"" register:NO];
+    } else if ([provider isEqualToString:RLMIdentityProviderGoogle]) {
+        return [RLMSyncCredentials credentialsWithGoogleToken:@""];
+    } else if ([provider isEqualToString:RLMIdentityProviderCloudKit]) {
+        return [RLMSyncCredentials credentialsWithCloudKitToken:@""];
+    } else if ([provider isEqualToString:RLMIdentityProviderFacebook]) {
+        return [RLMSyncCredentials credentialsWithFacebookToken:@""];
+    } else {
+        return [RLMSyncCredentials credentialsWithAccessToken:@"" identity:[NSUUID UUID].UUIDString];
+    }
+}
+
 @end

@@ -81,6 +81,8 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
 
     _serverURL = [url copy];
 
+    [self loadKeychainCredentials];
+    
     [self updateUI];
 }
 
@@ -147,10 +149,16 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
 - (void)loadRecentCredentials {
     self.serverURL = [[NSUserDefaults standardUserDefaults] URLForKey:serverURLKey];
     
+    [self loadKeychainCredentials];
+}
+
+- (void)loadKeychainCredentials {
     RLMKeychainInfo *info = [self.keychainStore savedCredentialsForServer:self.serverURL];
     RLMSyncCredentials *savedCredentials = info.credentials;
     
-    if (!savedCredentials) return;
+    if (!savedCredentials) {
+        savedCredentials = [RLMKeychainInfo emptyCredentialsWithProvider:self.credentials.provider];
+    }
     
     self.credentials = savedCredentials;
 }
