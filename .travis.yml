@@ -1,6 +1,4 @@
 language: objective-c
 osx_image: xcode8.3
-install:
-  - bundle install
-  - pod repo update --silent
+install: bundle install
 script: bundle exec fastlane test
