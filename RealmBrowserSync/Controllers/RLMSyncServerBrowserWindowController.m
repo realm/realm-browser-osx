@@ -79,7 +79,7 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
 
     NSURL *adminRealmURL = [self.serverURL URLByAppendingPathComponent:RLMAdminRealmServerPath];
 
-    self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:adminRealmURL user:self.user];
+    self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:adminRealmURL localURL:nil user:self.user];
 
     __weak typeof(self) weakSelf = self;
     [self.schemaLoader loadSchemaWithCompletionHandler:^(NSError *error) {

@@ -173,14 +173,16 @@
             } else {
                 self.user = user;
 
-                // FIXME: workaround for loading schema while using dynamic API
-                self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:self.user];
+                NSString *path = [[NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+                NSURL *localURL = [NSURL fileURLWithPath:[path stringByAppendingPathComponent:[[NSUUID UUID] UUIDString]]];
+
+                self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL localURL:localURL user:self.user];
 
                 [self.schemaLoader loadSchemaWithCompletionHandler:^(NSError *error) {
                     self.schemaLoader = nil;
 
                     if (error == nil) {
-                        self.presentedRealm = [[RLMRealmNode alloc] initWithSyncURL:self.syncURL user:self.user];
+                        self.presentedRealm = [[RLMRealmNode alloc] initWithSyncURL:self.syncURL localURL:localURL user:self.user];
 
                         [self loadWithError:&error];
                     } else {

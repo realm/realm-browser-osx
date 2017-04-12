@@ -31,7 +31,7 @@
 @property (nonatomic, assign) BOOL disableFormatUpgrade;
 
 - (instancetype)initWithFileURL:(NSURL *)fileURL;
-- (instancetype)initWithSyncURL:(NSURL *)syncURL user:(RLMSyncUser *)user;
+- (instancetype)initWithSyncURL:(NSURL *)syncURL localURL:(NSURL *)localURL user:(RLMSyncUser *)user;
 
 - (BOOL)connect:(NSError **)error;
 
