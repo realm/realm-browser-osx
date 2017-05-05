@@ -158,7 +158,7 @@
                 self.state = RLMDocumentStateNeedsValidCredentials;
 
                 // FIXME: workaround for https://github.com/realm/realm-cocoa-private/issues/204
-                if (error.code == RLMSyncErrorHTTPStatusCodeError && [[error.userInfo valueForKey:@"statusCode"] integerValue] == 400) {
+                if (error.code == RLMSyncAuthErrorHTTPStatusCodeError && [[error.userInfo valueForKey:@"statusCode"] integerValue] == 400) {
                     NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
 
                     [userInfo setValue:@"Invalid credentials." forKey:NSLocalizedDescriptionKey];
