@@ -666,6 +666,7 @@
             break;
         case RLMPropertyTypeObject:
             type = property.objectClassName;
+            break;
         case RLMPropertyTypeArray:
             type = [NSString stringWithFormat:@"IList<%@>", property.objectClassName];
             access = @"get;";
