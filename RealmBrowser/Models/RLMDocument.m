@@ -173,7 +173,7 @@
             } else {
                 self.user = user;
 
-                NSString *path = [[NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+                NSString *path = [[NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"realm-object-server"];
                 NSURL *localURL = [NSURL fileURLWithPath:[path stringByAppendingPathComponent:[[NSUUID UUID] UUIDString]]];
 
                 self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL localURL:localURL user:self.user];
