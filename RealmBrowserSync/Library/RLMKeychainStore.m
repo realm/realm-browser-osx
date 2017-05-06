@@ -9,6 +9,7 @@
 #import "RLMKeychainStore.h"
 
 #import "RLMKeychainInfo.h"
+#import "RLMKeychainInfo+RLMSyncCredentials.h"
 
 @import Security;
 @import Realm;
@@ -40,14 +41,34 @@ NSString * const kRLMKeychainProviderKey = @"provider";
     
     if (!plist) return;
     
-    SecKeychainAddGenericPassword(NULL,
-                                  (UInt32)strlen(kRLMKeychainServiceName),
-                                  kRLMKeychainServiceName,
-                                  serverAddressLength,
-                                  serverAddress,
-                                  (UInt32)plist.length,
-                                  plist.bytes,
-                                  NULL);
+    RLMKeychainInfo *existingInfo = [self savedCredentialsForServer:serverURL];
+    
+    if (existingInfo != nil) {
+        if (![existingInfo isEqualToCredentials:credentials]) {
+            // credentials already existed and have changed, update
+            [self updateCredentialsForServerWithAddressLength:serverAddressLength address:serverAddress propertyList:plist];
+        }
+    } else {
+        // no previous credentials, add new
+        SecKeychainAddGenericPassword(NULL,
+                                      (UInt32)strlen(kRLMKeychainServiceName),
+                                      kRLMKeychainServiceName,
+                                      serverAddressLength,
+                                      serverAddress,
+                                      (UInt32)plist.length,
+                                      plist.bytes,
+                                      NULL);
+    }
+}
+
+- (void)updateCredentialsForServerWithAddressLength:(UInt32)serverAddressLength address:(const char *)serverAddress propertyList:(NSData *)plist
+{
+    SecKeychainItemRef item;
+    OSStatus result = SecKeychainFindGenericPassword(NULL, (UInt32)strlen(kRLMKeychainServiceName), kRLMKeychainServiceName, serverAddressLength, serverAddress, NULL, NULL, &item);
+    
+    if (result != noErr || !item) return;
+    
+    SecKeychainItemModifyContent(item, NULL, (UInt32)plist.length, plist.bytes);
 }
 
 - (RLMKeychainInfo *)savedCredentialsForServer:(NSURL *)serverURL

@@ -40,4 +40,11 @@
     }
 }
 
+- (BOOL)isEqualToCredentials:(RLMSyncCredentials *)credentials
+{
+    return [credentials.provider isEqualToString:self.provider]
+            && [credentials.token isEqualToString:self.token]
+            && [credentials.userInfo[@"password"] isEqualToString:self.password];
+}
+
 @end

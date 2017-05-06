@@ -15,5 +15,6 @@
 @property (nonatomic, readonly) RLMSyncCredentials *credentials;
 
 + (RLMSyncCredentials *)emptyCredentialsWithProvider:(RLMIdentityProvider)provider;
+- (BOOL)isEqualToCredentials:(RLMSyncCredentials *)credentials;
 
 @end
