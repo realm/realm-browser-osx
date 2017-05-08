@@ -709,11 +709,11 @@
             } else {
                 RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] initWithServerURL:serverURL user:user];
 
-                [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
-                    if (returnCode == NSModalResponseOK) {
-                        [self openSyncURL:browserWindowController.selectedURL credentials:credentials authServerURL:authServerURL];
-                    }
+                browserWindowController.onSelectURL = ^(NSURL *url) {
+                    [self openSyncURL:url credentials:credentials authServerURL:authServerURL];
+                };
 
+                [browserWindowController showWindow:nil completionHandler:^(NSModalResponse returnCode) {
                     [self removeAuxiliaryWindowController:browserWindowController];
                 }];
 

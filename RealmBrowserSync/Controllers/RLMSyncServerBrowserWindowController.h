@@ -22,6 +22,7 @@
 
 @interface RLMSyncServerBrowserWindowController : RLMWindowController
 
+@property (nonatomic, copy) void (^onSelectURL)(NSURL *);
 @property (nonatomic, readonly) NSURL *selectedURL;
 
 - (instancetype)initWithServerURL:(NSURL *)serverURL user:(RLMSyncUser *)user;
