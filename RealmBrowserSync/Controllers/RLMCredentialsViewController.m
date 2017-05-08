@@ -24,7 +24,7 @@
 #import "RLMCloudKitCredentialViewController.h"
 #import "RLMAccessTokenCredentialViewController.h"
 
-RLMIdentityProvider const RLMIdentityProviderAccessToken = @"accessToken";
+RLMIdentityProvider const RLMIdentityProviderAccessToken = @"_access_token";
 
 @interface RLMCredentialsViewController ()<NSTabViewDelegate>
 
@@ -40,7 +40,7 @@ RLMIdentityProvider const RLMIdentityProviderAccessToken = @"accessToken";
         RLMIdentityProviderFacebook,
         RLMIdentityProviderGoogle,
         RLMIdentityProviderCloudKit,
-        @"accessToken"
+        RLMIdentityProviderAccessToken
     ];
 }
 
@@ -50,7 +50,7 @@ RLMIdentityProvider const RLMIdentityProviderAccessToken = @"accessToken";
         RLMIdentityProviderFacebook: [RLMFacebookCredentialViewController class],
         RLMIdentityProviderGoogle: [RLMGoogleCredentialViewController class],
         RLMIdentityProviderCloudKit: [RLMCloudKitCredentialViewController class],
-        @"accessToken": [RLMAccessTokenCredentialViewController class],
+        RLMIdentityProviderAccessToken: [RLMAccessTokenCredentialViewController class],
     };
 
     return classByProvider[provider];
