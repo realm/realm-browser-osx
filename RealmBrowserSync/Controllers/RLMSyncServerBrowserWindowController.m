@@ -119,7 +119,9 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
 
 - (void)tableViewDoubleAction:(id)sender {
     if (self.tableView.clickedRow == self.tableView.selectedRow) {
-        [self closeWithReturnCode:NSModalResponseOK];
+        if (self.onSelectURL) {
+            self.onSelectURL(self.selectedURL);
+        }
     }
 }
 
@@ -127,7 +129,9 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
     unichar key = [event.charactersIgnoringModifiers characterAtIndex:0];
 
     if (key == NSCarriageReturnCharacter) {
-        [self closeWithReturnCode:NSModalResponseOK];
+        if (self.onSelectURL) {
+            self.onSelectURL(self.selectedURL);
+        }
     } else {
         [super keyDown:event];
     }
