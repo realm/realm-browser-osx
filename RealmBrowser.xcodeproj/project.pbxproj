@@ -94,6 +94,9 @@
 		C2D302E81D7478AC00E091DF /* OpenSyncURLWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2D302E71D7478AC00E091DF /* OpenSyncURLWindow.xib */; };
 		C2D302EB1D747BF600E091DF /* RLMSyncURLValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D302EA1D747BF600E091DF /* RLMSyncURLValueTransformer.m */; };
 		C2D302EE1D75A2E100E091DF /* RLMWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D302ED1D75A2E100E091DF /* RLMWindowController.m */; };
+		DD2F4D631E9DCE10008EA2FB /* RLMKeychainInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2F4D621E9DCE10008EA2FB /* RLMKeychainInfo.m */; };
+		DD2F4D661E9DD1E5008EA2FB /* RLMKeychainInfo+RLMSyncCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2F4D651E9DD1E5008EA2FB /* RLMKeychainInfo+RLMSyncCredentials.m */; };
+		DD70EFFF1E9D9FC00074C115 /* RLMKeychainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70EFFE1E9D9FC00074C115 /* RLMKeychainStore.m */; };
 		E84EB8291A2FC38C00EB780E /* RLMTestObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = E84EB8281A2FC38C00EB780E /* RLMTestObjects.m */; };
 /* End PBXBuildFile section */
 
@@ -266,6 +269,12 @@
 		C2D302EC1D75A2E100E091DF /* RLMWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMWindowController.h; sourceTree = "<group>"; };
 		C2D302ED1D75A2E100E091DF /* RLMWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMWindowController.m; sourceTree = "<group>"; };
 		C686DBCA1CE3F34837DB465F /* Pods-RealmBrowser-RealmBrowserTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmBrowser-RealmBrowserTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RealmBrowser-RealmBrowserTests/Pods-RealmBrowser-RealmBrowserTests.release.xcconfig"; sourceTree = "<group>"; };
+		DD2F4D611E9DCE10008EA2FB /* RLMKeychainInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMKeychainInfo.h; sourceTree = "<group>"; };
+		DD2F4D621E9DCE10008EA2FB /* RLMKeychainInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMKeychainInfo.m; sourceTree = "<group>"; };
+		DD2F4D641E9DD1E5008EA2FB /* RLMKeychainInfo+RLMSyncCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RLMKeychainInfo+RLMSyncCredentials.h"; sourceTree = "<group>"; };
+		DD2F4D651E9DD1E5008EA2FB /* RLMKeychainInfo+RLMSyncCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RLMKeychainInfo+RLMSyncCredentials.m"; sourceTree = "<group>"; };
+		DD70EFFD1E9D9FC00074C115 /* RLMKeychainStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMKeychainStore.h; sourceTree = "<group>"; };
+		DD70EFFE1E9D9FC00074C115 /* RLMKeychainStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMKeychainStore.m; sourceTree = "<group>"; };
 		E84EB8271A2FC38C00EB780E /* RLMTestObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMTestObjects.h; sourceTree = "<group>"; };
 		E84EB8281A2FC38C00EB780E /* RLMTestObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMTestObjects.m; sourceTree = "<group>"; };
 		EB46D9299721CA4725D511E6 /* Pods_RealmBrowser_RealmBrowserTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RealmBrowser_RealmBrowserTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -488,6 +497,7 @@
 		C23F6A3D1D648AA3003C4E71 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				DD2F4D601E9DCDFC008EA2FB /* Keychain */,
 				C2644B051D6491F900DBAC67 /* RLMDynamicSchemaLoader.h */,
 				C2644B061D6491F900DBAC67 /* RLMDynamicSchemaLoader.m */,
 				C2D302E91D747BF600E091DF /* RLMSyncURLValueTransformer.h */,
@@ -500,6 +510,19 @@
 				C26CC79F1DB6497900EE549D /* RLMSyncUtils.m */,
 			);
 			path = Library;
+			sourceTree = "<group>";
+		};
+		DD2F4D601E9DCDFC008EA2FB /* Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				DD2F4D611E9DCE10008EA2FB /* RLMKeychainInfo.h */,
+				DD2F4D621E9DCE10008EA2FB /* RLMKeychainInfo.m */,
+				DD70EFFD1E9D9FC00074C115 /* RLMKeychainStore.h */,
+				DD70EFFE1E9D9FC00074C115 /* RLMKeychainStore.m */,
+				DD2F4D641E9DD1E5008EA2FB /* RLMKeychainInfo+RLMSyncCredentials.h */,
+				DD2F4D651E9DD1E5008EA2FB /* RLMKeychainInfo+RLMSyncCredentials.m */,
+			);
+			name = Keychain;
 			sourceTree = "<group>";
 		};
 		E83626C41CE35C4300E9493D /* Application */ = {
@@ -873,6 +896,7 @@
 				C2CA58F01DAE3B6B0052BAAA /* RLMApplicationDelegate+CrashReporting.m in Sources */,
 				84E35A4D196B021B007F0344 /* RLMArrayNavigationState.m in Sources */,
 				C2D302EE1D75A2E100E091DF /* RLMWindowController.m in Sources */,
+				DD2F4D661E9DD1E5008EA2FB /* RLMKeychainInfo+RLMSyncCredentials.m in Sources */,
 				84446534195891AA00CEEA5B /* RLMViewController.m in Sources */,
 				C29CC7CA1D76F57F00186B29 /* NSView+RLMExtensions.m in Sources */,
 				84D7990C19388E8900FC76A0 /* RLMClassProperty.m in Sources */,
@@ -897,12 +921,14 @@
 				C26CC7A01DB6497900EE549D /* RLMSyncUtils.m in Sources */,
 				8474E2B419544D8000BCA755 /* RLMTypeOutlineViewController.m in Sources */,
 				2249D9B219A62EBD00A31104 /* RLMTableColumn.m in Sources */,
+				DD2F4D631E9DCE10008EA2FB /* RLMKeychainInfo.m in Sources */,
 				C277A6EA1D7D9A0100DED239 /* RLMFacebookCredentialViewController.m in Sources */,
 				220D382819B639D700F79496 /* RLMTestDataGenerator.m in Sources */,
 				84E35A42196A9F3B007F0344 /* RLMNavigationState.m in Sources */,
 				C277A6ED1D7EC03B00DED239 /* RLMGoogleCredentialViewController.m in Sources */,
 				84D7990D19388E8900FC76A0 /* RLMRealmNode.m in Sources */,
 				22565D6719C1BCF400C8C8EC /* RLMLinkTableCellView.m in Sources */,
+				DD70EFFF1E9D9FC00074C115 /* RLMKeychainStore.m in Sources */,
 				221322FA19954AB100D25737 /* RLMImageTableCellView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
