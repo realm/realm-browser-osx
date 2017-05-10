@@ -596,7 +596,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
                 break;
             }
-            //case RLMPropertyTypeFloat: // search on float columns disabled until bug is fixed in binding
+            case RLMPropertyTypeFloat:
             case RLMPropertyTypeDouble: {
                 NSNumber *value = [floatFormatter numberFromString:searchText];
                 if (value) {
