@@ -558,6 +558,10 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
     NSMutableArray *predicates = [NSMutableArray array];
 
+    NSNumberFormatter *floatFormatter = [[NSNumberFormatter alloc] init];
+    NSNumberFormatter *integerFormatter = [[NSNumberFormatter alloc] init];
+    integerFormatter.allowsFloats = NO;
+
     for (NSUInteger index = 0; index < columnCount; index++) {
 
         RLMClassProperty *property = columns[index];
@@ -579,17 +583,10 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
                 break;
             }
             case RLMPropertyTypeInt: {
-                long long value;
-                if ([searchText isEqualToString:@"0"]) {
-                    value = 0;
+                NSNumber *value = [integerFormatter numberFromString:searchText];
+                if (value) {
+                    valueExpression = [NSExpression expressionForConstantValue:value];
                 }
-                else {
-                    value = [searchText longLongValue];
-                    if (value == 0)
-                        break;
-                }
-
-                valueExpression = [NSExpression expressionForConstantValue:@(value)];
                 break;
             }
             case RLMPropertyTypeString: {
@@ -601,19 +598,10 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
             }
             //case RLMPropertyTypeFloat: // search on float columns disabled until bug is fixed in binding
             case RLMPropertyTypeDouble: {
-                double value;
-
-                if ([searchText isEqualToString:@"0"] ||
-                    [searchText isEqualToString:@"0.0"]) {
-                    value = 0.0;
+                NSNumber *value = [floatFormatter numberFromString:searchText];
+                if (value) {
+                    valueExpression = [NSExpression expressionForConstantValue:value];
                 }
-                else {
-                    value = [searchText doubleValue];
-                    if (value == 0.0)
-                        break;
-                }
-
-                valueExpression = [NSExpression expressionForConstantValue:@(value)];
                 break;
             }
             default:
