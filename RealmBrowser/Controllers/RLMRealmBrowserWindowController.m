@@ -556,85 +556,73 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     NSUInteger columnCount = columns.count;
     RLMRealm *realm = self.document.presentedRealm.realm;
 
-    NSString *predicate = @"";
+    NSMutableArray *predicates = [NSMutableArray array];
+
+    NSNumberFormatter *floatFormatter = [[NSNumberFormatter alloc] init];
+    NSNumberFormatter *integerFormatter = [[NSNumberFormatter alloc] init];
+    integerFormatter.allowsFloats = NO;
 
     for (NSUInteger index = 0; index < columnCount; index++) {
 
         RLMClassProperty *property = columns[index];
-        NSString *columnName = property.name;
+        NSExpression *propertyExpression = [NSExpression expressionForKeyPath:property.name];
+        NSExpression *valueExpression;
+        NSPredicateOperatorType comparisonOperator = NSEqualToPredicateOperatorType;
+        NSComparisonPredicateOptions comparisonOptions = 0;
 
         switch (property.type) {
             case RLMPropertyTypeBool: {
                 if ([searchText caseInsensitiveCompare:@"true"] == NSOrderedSame ||
                     [searchText caseInsensitiveCompare:@"YES"] == NSOrderedSame) {
-                    if (predicate.length != 0) {
-                        predicate = [predicate stringByAppendingString:@" OR "];
-                    }
-                    predicate = [predicate stringByAppendingFormat:@"%@ = YES", columnName];
+                    valueExpression = [NSExpression expressionForConstantValue:@YES];
                 }
                 else if ([searchText caseInsensitiveCompare:@"false"] == NSOrderedSame ||
                          [searchText caseInsensitiveCompare:@"NO"] == NSOrderedSame) {
-                    if (predicate.length != 0) {
-                        predicate = [predicate stringByAppendingString:@" OR "];
-                    }
-                    predicate = [predicate stringByAppendingFormat:@"%@ = NO", columnName];
+                    valueExpression = [NSExpression expressionForConstantValue:@NO];
                 }
                 break;
             }
             case RLMPropertyTypeInt: {
-                int value;
-                if ([searchText isEqualToString:@"0"]) {
-                    value = 0;
+                NSNumber *value = [integerFormatter numberFromString:searchText];
+                if (value) {
+                    valueExpression = [NSExpression expressionForConstantValue:value];
                 }
-                else {
-                    value = [searchText intValue];
-                    if (value == 0)
-                        break;
-                }
-
-                if (predicate.length != 0) {
-                    predicate = [predicate stringByAppendingString:@" OR "];
-                }
-                predicate = [predicate stringByAppendingFormat:@"%@ = %d", columnName, (int)value];
                 break;
             }
             case RLMPropertyTypeString: {
-                if (predicate.length != 0) {
-                    predicate = [predicate stringByAppendingString:@" OR "];
-                }
-                predicate = [predicate stringByAppendingFormat:@"%@ CONTAINS[c] '%@'", columnName, searchText];
+                valueExpression = [NSExpression expressionForConstantValue:searchText];
+                comparisonOperator = NSContainsPredicateOperatorType;
+                comparisonOptions = NSCaseInsensitivePredicateOption;
+
                 break;
             }
-            //case RLMPropertyTypeFloat: // search on float columns disabled until bug is fixed in binding
+            case RLMPropertyTypeFloat:
             case RLMPropertyTypeDouble: {
-                double value;
-
-                if ([searchText isEqualToString:@"0"] ||
-                    [searchText isEqualToString:@"0.0"]) {
-                    value = 0.0;
+                NSNumber *value = [floatFormatter numberFromString:searchText];
+                if (value) {
+                    valueExpression = [NSExpression expressionForConstantValue:value];
                 }
-                else {
-                    value = [searchText doubleValue];
-                    if (value == 0.0)
-                        break;
-                }
-
-                if (predicate.length != 0) {
-                    predicate = [predicate stringByAppendingString:@" OR "];
-                }
-                predicate = [predicate stringByAppendingFormat:@"%@ = %f", columnName, value];
                 break;
             }
             default:
                 break;
         }
+
+        if (!valueExpression) {
+            // We were unable to convert the search text into a predicate for this property type.
+            continue;
+        }
+
+        NSPredicate *predicate = [NSComparisonPredicate predicateWithLeftExpression:propertyExpression
+                                                                    rightExpression:valueExpression
+                                                                           modifier:NSDirectPredicateModifier
+                                                                               type:comparisonOperator
+                                                                            options:comparisonOptions];
+        [predicates addObject:predicate];
     }
 
-    RLMResults *result;
-    
-    if (predicate.length != 0) {
-        result = [realm objects:typeNode.name where:predicate];
-    }
+    NSPredicate *predicate = [NSCompoundPredicate orPredicateWithSubpredicates:predicates];
+    RLMResults *result = [realm objects:typeNode.name withPredicate:predicate];
 
     RLMQueryNavigationState *state = [[RLMQueryNavigationState alloc] initWithQuery:searchText type:typeNode results:result];
     [self addNavigationState:state fromViewController:self.tableViewController];
