@@ -19,8 +19,6 @@ lane :next_version do |options|
     bump_type: options[:type],
     version_number: options[:version_number]
   )
-  
-  commit_version_bump
 end
 
 desc "Runs all the tests"
