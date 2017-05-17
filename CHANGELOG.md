@@ -1,3 +1,11 @@
+2.1.8 Release notes (2017-05-17)
+=============================================================
+* Fixed crash when opening realms from Object Server
+* Fixed crash when searching for special characters
+* Fixed C# model definitions export
+* Save credentials when connecting to Object Server
+* Object Server Browser window doesn’t close after opening realm
+
 2.1.7 Release notes (2017-03-29)
 =============================================================
 * Updated to Realm 2.5 to support new file format
