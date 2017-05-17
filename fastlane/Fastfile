@@ -9,12 +9,23 @@
 
 fastlane_version "2.1.1"
 
-before_all do
-  cocoapods(repo_update: true)
+desc "Increments version and build number"
+lane :next_version do |options|
+  increment_build_number(
+    build_number: options[:build_number]
+  )
+  
+  increment_version_number(
+    bump_type: options[:type],
+    version_number: options[:version_number]
+  )
+  
+  commit_version_bump
 end
 
 desc "Runs all the tests"
 lane :test do
+  cocoapods(repo_update: true)
   scan(scheme: "Realm Browser")
 end
 
@@ -24,6 +35,8 @@ lane :build do |options|
   versionNumber = get_version_number
   gitHubArchiveName = "RealmBrowser-#{versionNumber}.zip"
   dSymArhiveName = "Realm Browser.app.dSYM.zip"
+  
+  cocoapods(repo_update: true)
 
   # build an archive and export dSYM files
   gym(
