@@ -19,19 +19,31 @@ PODS:
 DEPENDENCIES:
   - AppSandboxFileAccess
   - HockeySDK-Mac
-  - Realm
+  - Realm (from `https://github.com/realm/realm-cocoa`, branch `do-browser-2.1.8`)
   - RealmConverter
+
+EXTERNAL SOURCES:
+  Realm:
+    :branch: do-browser-2.1.8
+    :git: https://github.com/realm/realm-cocoa
+    :submodules: true
+
+CHECKOUT OPTIONS:
+  Realm:
+    :commit: bb80b38301251fe6c4938b6b4839255bd94f834c
+    :git: https://github.com/realm/realm-cocoa
+    :submodules: true
 
 SPEC CHECKSUMS:
   AppSandboxFileAccess: f3e10b0ba10bbaa6dc6996639ff47836050329c5
   CSwiftV: 602a0cb1df5f758d6005eacb6472c9bc752a7e7c
   HockeySDK-Mac: 0cec57089b79293b7057aa4174ce07fd6935ae70
   PathKit: dcab05d701474011aae0e40cf892298a831f63d6
-  Realm: 07e5d3a9e0e41d65fd5f9f05150ed6295d0f093b
+  Realm: 7c40ec576cb8c7766215eb8c81459400b956b2b0
   RealmConverter: c4e234707844c669930a652de34ebdb9b8ced38a
   SSZipArchive: 04547dfa448be5ed7ecbaf7eaf8a6e9eb9b42997
   TGSpreadsheetWriter: '09bbb2c18a111a11c94ff9c1af2320e2530c958e'
 
-PODFILE CHECKSUM: 5cd2a5d1718f788c14393e563ba2ae374f258424
+PODFILE CHECKSUM: e508edfcf51075d4765357ef5c56d729269d7b8f
 
 COCOAPODS: 1.2.1
