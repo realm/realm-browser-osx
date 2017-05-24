@@ -273,13 +273,18 @@
     }
     [hContents appendString:@"\n\n"];
     
+    [hContents appendString:@"NS_ASSUME_NONNULL_BEGIN\n\n"];
+    
     for (RLMObjectSchema *schema in schemas) {
         [hContents appendFormat:@"@interface %@()\n\n", schema.className];
         for (RLMProperty *property in schema.properties) {
-            [hContents appendFormat:@"@property %@%@;\n", [self objcNameForProperty:property], property.name];
+            [hContents appendFormat:@"@property %@%@%@;\n", property.optional ? @"(nullable) " : @"", [self objcNameForProperty:property], property.name];
         }
-        [hContents appendString:@"\n@end\n\n\n"];
+        [hContents appendString:@"\n@end\n\n"];
     }
+    
+    [hContents appendString:@"NS_ASSUME_NONNULL_END\n"];
+    
     // An array with filename and contents for the h-file model
     NSArray *hModel = @[hFilename, hContents];
     
