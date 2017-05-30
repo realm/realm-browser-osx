@@ -151,10 +151,13 @@
     self.credentials = credentials;
     self.state = RLMDocumentStateLoadingSchema;
 
+    __weak typeof(self) weakSelf = self;
     [RLMSyncUser logInWithCredentials:self.credentials authServerURL:self.authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (user == nil) {
-                self.state = RLMDocumentStateNeedsValidCredentials;
+            if (!weakSelf) {
+                return;
+            } else if (user == nil) {
+                weakSelf.state = RLMDocumentStateNeedsValidCredentials;
 
                 // FIXME: workaround for https://github.com/realm/realm-cocoa-private/issues/204
                 if (error.code == RLMSyncAuthErrorHTTPStatusCodeError && [[error.userInfo valueForKey:@"statusCode"] integerValue] == 400) {
@@ -170,15 +173,16 @@
                     completionHandler(error);
                 }
             } else {
-                self.user = user;
+                weakSelf.user = user;
 
                 RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
                 configuration.dynamic = YES;
-                configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:self.user realmURL:self.syncURL];
+                configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:weakSelf.user realmURL:weakSelf.syncURL];
 
-                __weak typeof(self) weakSelf = self;
                 [RLMRealm asyncOpenWithConfiguration:configuration callbackQueue:dispatch_get_main_queue() callback:^(RLMRealm *realm, NSError *error) {
-                    if (error) {
+                    if (!weakSelf) {
+                        return;
+                    } else if (error) {
                         weakSelf.state = RLMDocumentStateUnrecoverableError;
                     } else {
                         weakSelf.presentedRealm = [[RLMRealmNode alloc] initWithConfiguration:configuration];

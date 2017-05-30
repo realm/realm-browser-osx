@@ -203,6 +203,10 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     [self.document addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:&kWaitForDocumentSchemaLoadObservationContext];
 }
 
+- (void)cancelDocumentSchemaLoading {
+    [self.document removeObserver:self forKeyPath:@"state"];
+}
+
 - (void)documentSchemaLoaded {
     [self.document removeObserver:self forKeyPath:@"state"];
     [self hideLoadingIndicator];
@@ -246,6 +250,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
     [self.connectionIndicatorWindowController showSheetForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseCancel) {
+            [self cancelDocumentSchemaLoading];
             [self.document close];
         }
 
