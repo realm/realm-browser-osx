@@ -29,30 +29,36 @@
 
 @implementation RLMRealmNode
 
-- (instancetype)initWithFileURL:(NSURL *)fileURL {
+- (instancetype)initWithConfiguration:(RLMRealmConfiguration *)configuration {
     self = [super init];
 
     if (self) {
-        self.disableFormatUpgrade = YES;
+        self.configuration = configuration;
+    }
 
-        self.configuration = [[RLMRealmConfiguration alloc] init];
-        self.configuration.dynamic = YES;
-        self.configuration.fileURL = fileURL;
+    return self;
+}
+
+- (instancetype)initWithFileURL:(NSURL *)fileURL {
+    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+    configuration.dynamic = YES;
+    configuration.fileURL = fileURL;
+
+    self = [self initWithConfiguration:configuration];
+
+    if (self) {
+        self.disableFormatUpgrade = YES;
     }
 
     return self;
 }
 
 - (instancetype)initWithSyncURL:(NSURL *)syncURL user:(RLMSyncUser *)user {
-    self = [super init];
+    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+    configuration.dynamic = YES;
+    configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:user realmURL:syncURL];
 
-    if (self) {
-        self.configuration = [[RLMRealmConfiguration alloc] init];
-        self.configuration.dynamic = YES;
-        self.configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:user realmURL:syncURL];
-    }
-
-    return self;
+    return [self initWithConfiguration:configuration];
 }
 
 - (BOOL)connect:(NSError **)error {

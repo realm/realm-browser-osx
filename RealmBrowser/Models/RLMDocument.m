@@ -17,10 +17,10 @@
 ////////////////////////////////////////////////////////////////////////////
 
 @import AppSandboxFileAccess;
+@import Realm.Private;
 
 #import "RLMDocument.h"
 #import "RLMBrowserConstants.h"
-#import "RLMDynamicSchemaLoader.h"
 #import "RLMRealmBrowserWindowController.h"
 #import "RLMSyncUtils.h"
 
@@ -34,7 +34,6 @@
 @property (nonatomic, strong) NSError *error;
 
 @property (nonatomic, strong) RLMSyncUser *user;
-@property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
 
 @end
 
@@ -173,20 +172,20 @@
             } else {
                 self.user = user;
 
-                // FIXME: workaround for loading schema while using dynamic API
-                self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:self.user];
+                RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+                configuration.dynamic = YES;
+                configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:self.user realmURL:self.syncURL];
 
-                [self.schemaLoader loadSchemaWithCompletionHandler:^(NSError *error) {
-                    self.schemaLoader = nil;
-
-                    if (error == nil) {
-                        self.presentedRealm = [[RLMRealmNode alloc] initWithSyncURL:self.syncURL user:self.user];
-
-                        [self loadWithError:&error];
+                __weak typeof(self) weakSelf = self;
+                [RLMRealm asyncOpenWithConfiguration:configuration callbackQueue:dispatch_get_main_queue() callback:^(RLMRealm *realm, NSError *error) {
+                    if (error) {
+                        weakSelf.state = RLMDocumentStateUnrecoverableError;
                     } else {
-                        self.state = RLMDocumentStateUnrecoverableError;
+                        weakSelf.presentedRealm = [[RLMRealmNode alloc] initWithConfiguration:configuration];
+
+                        [weakSelf loadWithError:&error];
                     }
-                    
+
                     completionHandler(error);
                 }];
             }
@@ -226,11 +225,6 @@
 
         return NO;
     }
-}
-
-- (void)close {
-    [self.schemaLoader cancelSchemaLoading];
-    [super close];
 }
 
 #pragma mark NSDocument overrides
