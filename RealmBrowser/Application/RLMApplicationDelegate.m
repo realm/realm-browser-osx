@@ -72,12 +72,13 @@
     [[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleGetURLEvent:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
 }
 
-- (void)applicationDidFinishLaunching:(NSNotification *)notification
-{
+- (void)applicationDidFinishLaunching:(NSNotification *)notification {
     [self setupCrashReporting];
 
     [[NSUserDefaults standardUserDefaults] setObject:@(kTopTipDelay) forKey:@"NSInitialToolTipDelay"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+    [self logOutSyncUsers];
 
     [RLMSyncManager sharedManager].disableSSLValidation = YES;
     [RLMSyncManager sharedManager].errorHandler = ^(NSError *error, RLMSyncSession *session) {
@@ -110,8 +111,11 @@
     }
 }
 
-- (BOOL)application:(NSApplication *)application openFile:(NSString *)filename
-{
+- (void)applicationWillTerminate:(NSNotification *)notification {
+    [self logOutSyncUsers];
+}
+
+- (BOOL)application:(NSApplication *)application openFile:(NSString *)filename {
     [self openFileAtURL:[NSURL fileURLWithPath:filename]];
 
     return YES;
@@ -720,6 +724,13 @@
                 [self addAuxiliaryWindowController:browserWindowController];
             }
         });
+    }];
+}
+
+- (void)logOutSyncUsers {
+    // Log out all the logged in users to cleanup chached realms
+    [[RLMSyncUser allUsers] enumerateKeysAndObjectsUsingBlock:^(NSString *key, RLMSyncUser *user, BOOL *stop) {
+        [user logOut];
     }];
 }
 

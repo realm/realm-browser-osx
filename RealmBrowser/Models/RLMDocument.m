@@ -110,8 +110,6 @@
 }
 
 - (void)dealloc {
-    [self.user logOut];
-
     if (self.securityScopedURL != nil) {
         //In certain instances, RLMRealm's C++ destructor method will attempt to clean up
         //specific auxiliary files belonging to this realm file.
