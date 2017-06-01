@@ -79,6 +79,11 @@
     [[NSUserDefaults standardUserDefaults] setObject:@(kTopTipDelay) forKey:@"NSInitialToolTipDelay"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) firstObject]
+                      stringByAppendingPathComponent:@"realm-object-server"];
+
+    [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+
     [RLMSyncManager sharedManager].disableSSLValidation = YES;
     [RLMSyncManager sharedManager].errorHandler = ^(NSError *error, RLMSyncSession *session) {
         [NSApp presentError:error];

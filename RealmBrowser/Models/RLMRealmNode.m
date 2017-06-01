@@ -43,13 +43,17 @@
     return self;
 }
 
-- (instancetype)initWithSyncURL:(NSURL *)syncURL user:(RLMSyncUser *)user {
+- (instancetype)initWithSyncURL:(NSURL *)syncURL localURL:(NSURL *)localURL user:(RLMSyncUser *)user {
     self = [super init];
 
     if (self) {
         self.configuration = [[RLMRealmConfiguration alloc] init];
         self.configuration.dynamic = YES;
-        self.configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:user realmURL:syncURL];
+
+        RLMSyncConfiguration *syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:user realmURL:syncURL];
+        syncConfiguration.customFileURL = localURL;
+
+        self.configuration.syncConfiguration = syncConfiguration;
     }
 
     return self;
