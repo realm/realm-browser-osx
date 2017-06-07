@@ -22,7 +22,7 @@ typedef void (^RLMSchemaLoadCompletionHandler)(NSError *error);
 
 @interface RLMDynamicSchemaLoader : NSObject
 
-- (instancetype)initWithSyncURL:(NSURL *)syncURL user:(RLMSyncUser *)user;
+- (instancetype)initWithSyncURL:(NSURL *)syncURL localURL:(NSURL *)localURL user:(RLMSyncUser *)user;
 
 - (void)loadSchemaWithCompletionHandler:(RLMSchemaLoadCompletionHandler)handler;
 - (void)cancelSchemaLoading;

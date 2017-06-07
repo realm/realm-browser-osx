@@ -34,7 +34,7 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
 
 @implementation RLMDynamicSchemaLoader
 
-- (instancetype)initWithSyncURL:(NSURL *)syncURL user:(RLMSyncUser *)user {
+- (instancetype)initWithSyncURL:(NSURL *)syncURL localURL:(NSURL *)localURL user:(RLMSyncUser *)user {
     NSAssert(user.state == RLMSyncUserStateActive, @"User must be logged in");
 
     self = [super init];
@@ -42,7 +42,11 @@ NSString * const errorDomain = @"RLMDynamicSchemaLoader";
     if (self != nil) {
         self.configuration = [[RLMRealmConfiguration alloc] init];
         self.configuration.dynamic = YES;
-        self.configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:user realmURL:syncURL];
+
+        RLMSyncConfiguration *syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:user realmURL:syncURL];
+        syncConfiguration.customFileURL = localURL;
+
+        self.configuration.syncConfiguration = syncConfiguration;
     }
 
     return self;
