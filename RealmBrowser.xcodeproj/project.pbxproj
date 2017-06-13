@@ -55,7 +55,6 @@
 		84E35A49196AD991007F0344 /* RLMNavigationStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E35A48196AD991007F0344 /* RLMNavigationStack.m */; };
 		84E35A4D196B021B007F0344 /* RLMArrayNavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E35A4C196B021B007F0344 /* RLMArrayNavigationState.m */; };
 		9D25DD9EEFA4ED17DD9B0B58 /* Pods_RealmBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A5C7B6B3C4F4B2895F8110D /* Pods_RealmBrowser.framework */; };
-		C2644B071D6491F900DBAC67 /* RLMDynamicSchemaLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C2644B061D6491F900DBAC67 /* RLMDynamicSchemaLoader.m */; };
 		C26CC7A01DB6497900EE549D /* RLMSyncUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C26CC79F1DB6497900EE549D /* RLMSyncUtils.m */; };
 		C27721DA1D92D6CA00DEBF75 /* RLMCloudKitCredentialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C27721D91D92D6CA00DEBF75 /* RLMCloudKitCredentialViewController.m */; };
 		C27721DC1D92D6FE00DEBF75 /* CloudKitCredentialView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C27721DB1D92D6FE00DEBF75 /* CloudKitCredentialView.xib */; };
@@ -206,8 +205,6 @@
 		84E35A48196AD991007F0344 /* RLMNavigationStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMNavigationStack.m; sourceTree = "<group>"; };
 		84E35A4B196B021B007F0344 /* RLMArrayNavigationState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMArrayNavigationState.h; sourceTree = "<group>"; };
 		84E35A4C196B021B007F0344 /* RLMArrayNavigationState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMArrayNavigationState.m; sourceTree = "<group>"; };
-		C2644B051D6491F900DBAC67 /* RLMDynamicSchemaLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMDynamicSchemaLoader.h; sourceTree = "<group>"; };
-		C2644B061D6491F900DBAC67 /* RLMDynamicSchemaLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMDynamicSchemaLoader.m; sourceTree = "<group>"; };
 		C26624291DA66378001102F4 /* RLMInstanceTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RLMInstanceTableViewController.h; sourceTree = "<group>"; };
 		C26CC79E1DB6497900EE549D /* RLMSyncUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMSyncUtils.h; sourceTree = "<group>"; };
 		C26CC79F1DB6497900EE549D /* RLMSyncUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMSyncUtils.m; sourceTree = "<group>"; };
@@ -498,8 +495,6 @@
 			isa = PBXGroup;
 			children = (
 				DD2F4D601E9DCDFC008EA2FB /* Keychain */,
-				C2644B051D6491F900DBAC67 /* RLMDynamicSchemaLoader.h */,
-				C2644B061D6491F900DBAC67 /* RLMDynamicSchemaLoader.m */,
 				C2D302E91D747BF600E091DF /* RLMSyncURLValueTransformer.h */,
 				C2D302EA1D747BF600E091DF /* RLMSyncURLValueTransformer.m */,
 				C2D302EC1D75A2E100E091DF /* RLMWindowController.h */,
@@ -874,7 +869,6 @@
 				84AA41B01949CD7700A50F03 /* RLMArrayNode.m in Sources */,
 				22E4737219924CF700EEF7C9 /* RLMBasicTableCellView.m in Sources */,
 				22E473791992562400EEF7C9 /* RLMBoolTableCellView.m in Sources */,
-				C2644B071D6491F900DBAC67 /* RLMDynamicSchemaLoader.m in Sources */,
 				2234B66E1CF83F9600EAFDF0 /* RLMBrowserConstants.m in Sources */,
 				C2986A8B1D6C8257005A2CD6 /* RLMOptionalBoolTableCellView.m in Sources */,
 				C29CC7D21D79CA5800186B29 /* RLMWelcomeWindowController.m in Sources */,

@@ -30,6 +30,7 @@
 @property (nonatomic, strong) NSData *encryptionKey;
 @property (nonatomic, assign) BOOL disableFormatUpgrade;
 
+- (instancetype)initWithConfiguration:(RLMRealmConfiguration *)configuration;
 - (instancetype)initWithFileURL:(NSURL *)fileURL;
 - (instancetype)initWithSyncURL:(NSURL *)syncURL user:(RLMSyncUser *)user;
 

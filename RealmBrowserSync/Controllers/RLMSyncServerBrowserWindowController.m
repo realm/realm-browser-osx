@@ -20,7 +20,6 @@
 @import Realm.Private;
 
 #import "RLMSyncServerBrowserWindowController.h"
-#import "RLMDynamicSchemaLoader.h"
 
 static NSString * const RLMAdminRealmServerPath = @"__admin";
 static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
@@ -34,7 +33,6 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
 
 @property (nonatomic, strong) NSURL *serverURL;
 @property (nonatomic, strong) RLMSyncUser *user;
-@property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
 @property (nonatomic, strong) RLMNotificationToken *notificationToken;
 
 @property (nonatomic, strong) RLMResults *serverRealmFiles;
@@ -79,29 +77,28 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
 
     NSURL *adminRealmURL = [self.serverURL URLByAppendingPathComponent:RLMAdminRealmServerPath];
 
-    self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:adminRealmURL user:self.user];
+    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+    configuration.dynamic = YES;
+    configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:self.user realmURL:adminRealmURL];
 
     __weak typeof(self) weakSelf = self;
-    [self.schemaLoader loadSchemaWithCompletionHandler:^(NSError *error) {
-        if (error != nil) {
+    [RLMRealm asyncOpenWithConfiguration:configuration callbackQueue:dispatch_get_main_queue() callback:^(RLMRealm *realm, NSError *error) {
+        if (!weakSelf || !weakSelf.window.isVisible) {
+            // A window has been closed before realm is loaded
+            return;
+        } else if (error) {
             [[NSAlert alertWithError:error] beginSheetModalForWindow:weakSelf.window completionHandler:^(NSModalResponse returnCode) {
                 [weakSelf close];
             }];
         } else {
-            [weakSelf openAdminRealmAtURL:adminRealmURL withUser:weakSelf.user];
+            [weakSelf didOpenAdminRealm:realm];
         }
     }];
 
     [self.progressIndicator startAnimation:nil];
 }
 
-- (void)openAdminRealmAtURL:(NSURL *)adminRealmURL withUser:(RLMSyncUser *)user {
-    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-    configuration.dynamic = YES;
-    configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:user realmURL:adminRealmURL];
-
-    RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:nil];
-
+- (void)didOpenAdminRealm:(RLMRealm *)realm {
     self.serverRealmFiles = [realm allObjects:RLMAdminRealmRealmFileClassName];
     self.filteredServerRealmFiles = self.serverRealmFiles;
 

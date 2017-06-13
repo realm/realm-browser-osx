@@ -17,10 +17,10 @@
 ////////////////////////////////////////////////////////////////////////////
 
 @import AppSandboxFileAccess;
+@import Realm.Private;
 
 #import "RLMDocument.h"
 #import "RLMBrowserConstants.h"
-#import "RLMDynamicSchemaLoader.h"
 #import "RLMRealmBrowserWindowController.h"
 #import "RLMSyncUtils.h"
 
@@ -34,7 +34,6 @@
 @property (nonatomic, strong) NSError *error;
 
 @property (nonatomic, strong) RLMSyncUser *user;
-@property (nonatomic, strong) RLMDynamicSchemaLoader *schemaLoader;
 
 @end
 
@@ -152,10 +151,13 @@
     self.credentials = credentials;
     self.state = RLMDocumentStateLoadingSchema;
 
+    __weak typeof(self) weakSelf = self;
     [RLMSyncUser logInWithCredentials:self.credentials authServerURL:self.authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (user == nil) {
-                self.state = RLMDocumentStateNeedsValidCredentials;
+            if (!weakSelf) {
+                return;
+            } else if (user == nil) {
+                weakSelf.state = RLMDocumentStateNeedsValidCredentials;
 
                 // FIXME: workaround for https://github.com/realm/realm-cocoa-private/issues/204
                 if (error.code == RLMSyncAuthErrorHTTPStatusCodeError && [[error.userInfo valueForKey:@"statusCode"] integerValue] == 400) {
@@ -171,22 +173,23 @@
                     completionHandler(error);
                 }
             } else {
-                self.user = user;
+                weakSelf.user = user;
 
-                // FIXME: workaround for loading schema while using dynamic API
-                self.schemaLoader = [[RLMDynamicSchemaLoader alloc] initWithSyncURL:self.syncURL user:self.user];
+                RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
+                configuration.dynamic = YES;
+                configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:weakSelf.user realmURL:weakSelf.syncURL];
 
-                [self.schemaLoader loadSchemaWithCompletionHandler:^(NSError *error) {
-                    self.schemaLoader = nil;
-
-                    if (error == nil) {
-                        self.presentedRealm = [[RLMRealmNode alloc] initWithSyncURL:self.syncURL user:self.user];
-
-                        [self loadWithError:&error];
+                [RLMRealm asyncOpenWithConfiguration:configuration callbackQueue:dispatch_get_main_queue() callback:^(RLMRealm *realm, NSError *error) {
+                    if (!weakSelf) {
+                        return;
+                    } else if (error) {
+                        weakSelf.state = RLMDocumentStateUnrecoverableError;
                     } else {
-                        self.state = RLMDocumentStateUnrecoverableError;
+                        weakSelf.presentedRealm = [[RLMRealmNode alloc] initWithConfiguration:configuration];
+
+                        [weakSelf loadWithError:&error];
                     }
-                    
+
                     completionHandler(error);
                 }];
             }
@@ -226,11 +229,6 @@
 
         return NO;
     }
-}
-
-- (void)close {
-    [self.schemaLoader cancelSchemaLoading];
-    [super close];
 }
 
 #pragma mark NSDocument overrides
