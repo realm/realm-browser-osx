@@ -1,3 +1,8 @@
+2.1.9 Release notes (2017-06-13)
+=============================================================
+* Fixed several issues related to opening and displaying synced realms after schema migration
+* Fixed issue with logging out the user when working with multiple realms simultaneously
+
 2.1.8 Release notes (2017-05-17)
 =============================================================
 * Fixed crash when opening realms from Object Server
