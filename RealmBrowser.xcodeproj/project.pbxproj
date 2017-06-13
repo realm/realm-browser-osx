@@ -1100,7 +1100,7 @@
 				CODE_SIGN_ENTITLEMENTS = "RealmBrowser/Supporting Files/Realm Browser.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 92;
+				CURRENT_PROJECT_VERSION = 93;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RealmBrowser/Supporting Files/RealmBrowser-Prefix.pch";
@@ -1132,7 +1132,7 @@
 				CODE_SIGN_ENTITLEMENTS = "RealmBrowser/Supporting Files/Realm Browser.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 92;
+				CURRENT_PROJECT_VERSION = 93;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RealmBrowser/Supporting Files/RealmBrowser-Prefix.pch";
