@@ -91,16 +91,14 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
                 [weakSelf close];
             }];
         } else {
-            [weakSelf openAdminRealmWithConfiguration:configuration];
+            [weakSelf didOpenAdminRealm:realm];
         }
     }];
 
     [self.progressIndicator startAnimation:nil];
 }
 
-- (void)openAdminRealmWithConfiguration:(RLMRealmConfiguration *)configuration {
-    RLMRealm *realm = [RLMRealm realmWithConfiguration:configuration error:nil];
-
+- (void)didOpenAdminRealm:(RLMRealm *)realm {
     self.serverRealmFiles = [realm allObjects:RLMAdminRealmRealmFileClassName];
     self.filteredServerRealmFiles = self.serverRealmFiles;
 
