@@ -86,7 +86,7 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
         if (!weakSelf || !weakSelf.window.isVisible) {
             // A window has been closed before realm is loaded
             return;
-        }else if (error) {
+        } else if (error) {
             [[NSAlert alertWithError:error] beginSheetModalForWindow:weakSelf.window completionHandler:^(NSModalResponse returnCode) {
                 [weakSelf close];
             }];
