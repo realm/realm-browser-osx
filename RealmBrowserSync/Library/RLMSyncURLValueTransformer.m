@@ -35,7 +35,13 @@
 }
 
 - (nullable id)reverseTransformedValue:(nullable id)value {
-    return [NSURL URLWithString:value];
+    NSString *urlString = value;
+
+    if (urlString && ![urlString containsString:@"://"]) {
+        urlString = [@"realm://" stringByAppendingString:urlString];
+    }
+
+    return [NSURL URLWithString:urlString];
 }
 
 @end
