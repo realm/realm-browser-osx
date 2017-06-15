@@ -495,7 +495,11 @@
             }
             
             RLMXLSXDataImporter *importer = [[RLMXLSXDataImporter alloc] initWithFile:targetFileURL.path encoding:EncodingUtf8];
-            [importer importToPath:targetDirectoryURL.path withSchema:schema error:nil];
+
+            NSError *error;
+            if (![importer importToPath:targetDirectoryURL.path withSchema:schema error:&error]) {
+                [NSApp presentError:error];
+            }
         }
         
         [securelyScopedURL stopAccessingSecurityScopedResource];
