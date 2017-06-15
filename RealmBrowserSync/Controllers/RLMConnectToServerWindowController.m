@@ -32,15 +32,13 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
 
 @interface RLMConnectToServerWindowController ()<RLMCredentialsViewControllerDelegate>
 
-@property (nonatomic, weak) IBOutlet NSView *credentialsContainerView;
 @property (nonatomic, weak) IBOutlet NSTextField *serverURLTextField;
-@property (nonatomic, weak) IBOutlet NSTextField *tokenTextField;
+@property (nonatomic, weak) IBOutlet NSView *credentialsContainerView;
+@property (nonatomic, weak) IBOutlet NSButton *saveCredentialsCheckBox;
 @property (nonatomic, weak) IBOutlet NSButton *connectButton;
-@property (weak) IBOutlet NSButton *saveCredentialsCheckBox;
 
 @property (nonatomic, readonly) BOOL shouldSaveCredentials;
 @property (nonatomic, strong) RLMKeychainStore *keychainStore;
-
 @property (nonatomic, strong) RLMCredentialsViewController *credentialsViewController;
 
 @end
@@ -67,7 +65,7 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
     }
 
     if (!(([self.serverURL.scheme isEqualToString:kRealmURLScheme] || [self.serverURL.scheme isEqualToString:kSecureRealmURLScheme]) && self.serverURL.host.length > 0 && self.serverURL.path.length < 2)) {
-        *error = [self errorWithCode:0 description:@"Invalid Object Server URL" recoverySuggestion:@"Provide a valid URL"];
+        *error = [self errorWithCode:0 description:@"Invalid Object Server URL" recoverySuggestion:@"Provide a valid URL in format:\n'realm://HOST_NAME:PORT_NUMBER'."];
         return NO;
     }
 
@@ -82,7 +80,6 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
     _serverURL = [url copy];
 
     [self loadKeychainCredentials];
-    
     [self updateUI];
 }
 
@@ -97,7 +94,7 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
 }
 
 - (void)updateUI {
-    self.connectButton.enabled = [self validateCredentials:nil];
+    self.connectButton.enabled = self.serverURL && self.credentials;
 }
 
 #pragma mark - RLMCredentialsViewControllerDelegate
@@ -123,8 +120,14 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
 #pragma mark - Actions
 
 - (IBAction)connect:(id)sender {
-    [self saveRecentCredentials];
+    NSError *error = nil;
 
+    if (![self validateCredentials:&error]) {
+        [NSApp presentError:error modalForWindow:self.window delegate:nil didPresentSelector:nil contextInfo:nil];
+        return;
+    }
+
+    [self saveRecentCredentials];
     [self closeWithReturnCode:NSModalResponseOK];
 }
 
@@ -156,14 +159,14 @@ NSString * const RLMConnectToServerWindowControllerErrorDomain = @"io.realm.real
     RLMKeychainInfo *info = [self.keychainStore savedCredentialsForServer:self.serverURL];
     RLMSyncCredentials *savedCredentials = info.credentials;
     
-    if (!savedCredentials) {
-        savedCredentials = [RLMKeychainInfo emptyCredentialsWithProvider:self.credentials.provider];
-    }
-    
     self.credentials = savedCredentials;
 }
 
 - (void)saveRecentCredentials {
+    if (!self.serverURL) {
+        return;
+    }
+
     [[NSUserDefaults standardUserDefaults] setURL:self.serverURL forKey:serverURLKey];
     
     if (!self.shouldSaveCredentials) return;
