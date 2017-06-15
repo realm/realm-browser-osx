@@ -710,6 +710,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if (user == nil) {
                 [NSApp presentError:error];
+                [self connectToSyncServer:nil];
             } else {
                 RLMSyncServerBrowserWindowController *browserWindowController = [[RLMSyncServerBrowserWindowController alloc] initWithServerURL:serverURL user:user];
 

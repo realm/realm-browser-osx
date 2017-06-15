@@ -109,8 +109,8 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
             [self handleEncryption];
             break;
 
-        case RLMDocumentStateLoadingSchema:
-            [self waitForDocumentSchemaLoad];
+        case RLMDocumentStateLoading:
+            [self waitForDocumentLoaded];
             break;
 
         case RLMDocumentStateNeedsValidCredentials:
@@ -198,16 +198,16 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     }];
 }
 
-- (void)waitForDocumentSchemaLoad {
+- (void)waitForDocumentLoaded {
     [self showLoadingIndicator];
     [self.document addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:&kWaitForDocumentSchemaLoadObservationContext];
 }
 
-- (void)cancelDocumentSchemaLoading {
+- (void)cancelDocumentLoading {
     [self.document removeObserver:self forKeyPath:@"state"];
 }
 
-- (void)documentSchemaLoaded {
+- (void)documentLoaded {
     [self.document removeObserver:self forKeyPath:@"state"];
     [self hideLoadingIndicator];
     [self handleDocumentState];
@@ -250,7 +250,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
     [self.connectionIndicatorWindowController showSheetForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseCancel) {
-            [self cancelDocumentSchemaLoading];
+            [self cancelDocumentLoading];
             [self.document close];
         }
 
@@ -283,8 +283,8 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
     if (context == &kWaitForDocumentSchemaLoadObservationContext) {
-        if (self.document.state != RLMDocumentStateLoadingSchema) {
-            [self documentSchemaLoaded];
+        if (self.document.state != RLMDocumentStateLoading) {
+            [self documentLoaded];
         }
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
