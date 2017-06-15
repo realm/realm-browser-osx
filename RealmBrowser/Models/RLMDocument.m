@@ -147,7 +147,7 @@
     completionHandler = completionHandler ?: ^(NSError *error) {};
 
     self.credentials = credentials;
-    self.state = RLMDocumentStateLoadingSchema;
+    self.state = RLMDocumentStateLoading;
 
     __weak typeof(self) weakSelf = self;
     [RLMSyncUser logInWithCredentials:self.credentials authServerURL:self.authServerURL onCompletion:^(RLMSyncUser *user, NSError *error) {

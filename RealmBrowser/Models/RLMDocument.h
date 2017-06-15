@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, RLMDocumentState) {
     RLMDocumentStateRequiresFormatUpgrade,
     RLMDocumentStateNeedsEncryptionKey,
     RLMDocumentStateNeedsValidCredentials,
-    RLMDocumentStateLoadingSchema,
+    RLMDocumentStateLoading,
     RLMDocumentStateLoaded,
     RLMDocumentStateUnrecoverableError
 };
