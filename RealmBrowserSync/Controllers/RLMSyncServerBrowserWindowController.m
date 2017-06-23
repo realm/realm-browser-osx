@@ -23,6 +23,9 @@
 
 static NSString * const RLMAdminRealmServerPath = @"__admin";
 static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
+static NSString * const RLMAdminRealmRealmFilesDefaultPredicate = @"(path != '/__admin') AND \
+                                                                     NOT (path ENDSWITH '__permission') AND \
+                                                                     NOT (path ENDSWITH '__management')";
 
 @interface RLMSyncServerBrowserWindowController ()<NSSearchFieldDelegate, NSTableViewDataSource, NSTableViewDelegate>
 
@@ -99,7 +102,7 @@ static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
 }
 
 - (void)didOpenAdminRealm:(RLMRealm *)realm {
-    self.serverRealmFiles = [realm allObjects:RLMAdminRealmRealmFileClassName];
+    self.serverRealmFiles = [realm objects:RLMAdminRealmRealmFileClassName where:RLMAdminRealmRealmFilesDefaultPredicate];
     self.filteredServerRealmFiles = self.serverRealmFiles;
 
     __weak typeof(self) weekSelf = self;
