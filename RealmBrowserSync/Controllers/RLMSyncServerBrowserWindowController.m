@@ -23,7 +23,9 @@
 
 static NSString * const RLMAdminRealmServerPath = @"__admin";
 static NSString * const RLMAdminRealmRealmFileClassName = @"RealmFile";
-static NSString * const RLMAdminRealmRealmFilesDefaultPredicate = @"(path != '/__admin') AND NOT (path ENDSWITH '__permission')";
+static NSString * const RLMAdminRealmRealmFilesDefaultPredicate = @"(path != '/__admin') AND \
+                                                                     NOT (path ENDSWITH '__permission') AND \
+                                                                     NOT (path ENDSWITH '__management')";
 
 @interface RLMSyncServerBrowserWindowController ()<NSSearchFieldDelegate, NSTableViewDataSource, NSTableViewDelegate>
 
