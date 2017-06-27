@@ -544,14 +544,55 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     [self insertNewRowsInRealmAt:rowIndexes];
 }
 
-// Operations on links in cells
-
-- (void)setObjectLinkAtRows:(NSIndexSet *)rowIndexes column:(NSInteger)columnIndex {
+- (void)presentListPopoverIn:(CGRect)rect nodeType:(RLMTypeNode *)node transaction:(void (^)(RLMObject *))block
+{
     RLMObjectLinkSelectionViewController *popoverContent = [RLMObjectLinkSelectionViewController loadInstance];
     NSPopover *popover = [[NSPopover alloc] init];
     popover.contentViewController = popoverContent;
     popover.behavior = NSPopoverBehaviorTransient;
-    
+
+    popoverContent.displayedType = node;
+
+    __weak typeof(self) weakSelf = self;
+    __weak typeof(popover) weakPopover = popover;
+
+    popoverContent.didSelectedBlock = ^(RLMObject *object) {
+        RLMRealm *realm = weakSelf.parentWindowController.document.presentedRealm.realm;
+        [realm beginWriteTransaction];
+
+        block(object);
+
+        [realm commitWriteTransaction];
+        [weakPopover close];
+    };
+
+    [popover showRelativeToRect:rect ofView:self.tableView preferredEdge:NSMaxYEdge];
+}
+
+- (void)insertLinks:(NSIndexSet *)rowIndexes column:(NSInteger)columnIndex
+{
+    NSArray *topLevelClasses = self.parentWindowController.document.presentedRealm.topLevelClasses;
+    NSString *containedClassName = [(RLMArrayNode *)self.displayedType objectClassName];
+
+    RLMTypeNode *node = nil;
+    for (RLMClassNode *classNode in topLevelClasses) {
+        if ([classNode.name isEqualToString:containedClassName]) {
+            node = classNode;
+        }
+    }
+    if (node == nil) return;
+
+    NSRect cellRect = [self.tableView frameOfCellAtColumn:columnIndex row:rowIndexes.firstIndex];
+
+    __weak typeof(self) weakSelf = self;
+    [self presentListPopoverIn:cellRect nodeType:node transaction: ^(RLMObject *object) {
+        [(RLMArrayNode *)weakSelf.displayedType insertInstance:object atIndex:rowIndexes.firstIndex];
+    }];
+}
+
+// Operations on links in cells
+
+- (void)setObjectLinkAtRows:(NSIndexSet *)rowIndexes column:(NSInteger)columnIndex {
     NSArray *topLevelClasses = self.parentWindowController.document.presentedRealm.topLevelClasses;
     
     RLMObject *selectedInstance = [self.displayedType instanceAtIndex:rowIndexes.firstIndex];
@@ -560,32 +601,25 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     RLMObjectSchema *objectSchema = [realm.schema schemaForClassName:self.displayedType.name];
     RLMProperty *property = objectSchema.properties[propertyIndex];
-    
+
+    RLMTypeNode *node = nil;
     for (RLMClassNode *classNode in topLevelClasses) {
         if ([classNode.name isEqualToString:property.objectClassName]) {
-            [popoverContent setDisplayedType:classNode];
+            node = classNode;
         }
     }
-    
-    __weak typeof(self) weakSelf = self;
-    __weak typeof(popover) weakPopover = popover;
-    
-    popoverContent.didSelectedBlock = ^(RLMObject *object) {
-        RLMRealm *realm = weakSelf.parentWindowController.document.presentedRealm.realm;
-        [realm beginWriteTransaction];
+    if (node == nil) return;
 
-        if ([self propertyTypeForColumn: columnIndex] == RLMPropertyTypeArray) {
+    NSRect cellRect = [self.tableView frameOfCellAtColumn:columnIndex row:rowIndexes.firstIndex];
+
+    __weak typeof(self) weakSelf = self;
+    [self presentListPopoverIn:cellRect nodeType:node transaction:^(RLMObject *object) {
+        if ([weakSelf propertyTypeForColumn: columnIndex] == RLMPropertyTypeArray) {
             [(RLMArray*)selectedInstance[property.name] addObject:object];
         } else {
             selectedInstance[property.name] = object;
         }
-
-        [realm commitWriteTransaction];
-        [weakPopover close];
-    };
-    
-    NSRect cellRect = [self.tableView frameOfCellAtColumn:columnIndex row:rowIndexes.firstIndex];
-    [popover showRelativeToRect:cellRect ofView:self.tableView preferredEdge:NSMaxYEdge];
+    }];
 }
 
 - (void)removeObjectLinksAtRows:(NSIndexSet *)rowIndexes column:(NSInteger)columnIndex
