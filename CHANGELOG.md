@@ -1,3 +1,8 @@
+2.1.10 Release notes (2017-06-27)
+=============================================================
+* Improved user experience when connect to the Realm Object Server
+* Hide internal realms from server browser window
+
 2.1.9 Release notes (2017-06-13)
 =============================================================
 * Fixed several issues related to opening and displaying synced realms after schema migration
