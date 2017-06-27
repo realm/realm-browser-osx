@@ -573,9 +573,13 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     popoverContent.didSelectedBlock = ^(RLMObject *object) {
         RLMRealm *realm = weakSelf.parentWindowController.document.presentedRealm.realm;
         [realm beginWriteTransaction];
-        
-        selectedInstance[property.name] = object;
-        
+
+        if ([self propertyTypeForColumn: columnIndex] == RLMPropertyTypeArray) {
+            [(RLMArray*)selectedInstance[property.name] addObject:object];
+        } else {
+            selectedInstance[property.name] = object;
+        }
+
         [realm commitWriteTransaction];
         [weakPopover close];
     };

@@ -160,6 +160,7 @@ const NSInteger NOT_A_COLUMN = -1;
     // Menu items that are independent on the realm lock
     if (actualColumn && [self.realmDelegate containsArrayInRows:self.selectedRowIndexes column:self.clickedColumn]) {
         [self.menu addItem:openArrayInNewWindowItem];
+        [self.menu addItem:setLinkToObjectItem];
     }
     
     // If it is locked, show the unlock hint menu item and return
