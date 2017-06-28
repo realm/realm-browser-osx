@@ -41,7 +41,8 @@ const NSInteger NOT_A_COLUMN = -1;
     NSMenuItem *removeFromArrayItem;
     NSMenuItem *deleteRowItem;
     NSMenuItem *insertIntoArrayItem;
-    
+    NSMenuItem *insertLinkInArray;
+
     NSMenuItem *setLinkToObjectItem;
     NSMenuItem *removeLinkToObjectItem;
     NSMenuItem *removeLinkToArrayItem;
@@ -124,7 +125,12 @@ const NSInteger NOT_A_COLUMN = -1;
                                                      action:@selector(addRowsToArrayAction:)
                                               keyEquivalent:@""];
     insertIntoArrayItem.tag = 212;
-    
+
+    insertLinkInArray = [[NSMenuItem alloc] initWithTitle:@"Add existing object to array"
+                                                     action:@selector(insertRowsToArrayAction:)
+                                              keyEquivalent:@""];
+    insertLinkInArray.tag = 213;
+
     // Operations on links in cells
     setLinkToObjectItem = [[NSMenuItem alloc] initWithTitle:@"Add link to object"
                                                      action:@selector(setObjectLinkAction:)
@@ -160,6 +166,7 @@ const NSInteger NOT_A_COLUMN = -1;
     // Menu items that are independent on the realm lock
     if (actualColumn && [self.realmDelegate containsArrayInRows:self.selectedRowIndexes column:self.clickedColumn]) {
         [self.menu addItem:openArrayInNewWindowItem];
+        [self.menu addItem:insertLinkInArray];
     }
     
     // If it is locked, show the unlock hint menu item and return
@@ -172,6 +179,7 @@ const NSInteger NOT_A_COLUMN = -1;
     
     if (self.realmDelegate.displaysArray) {
         [self.menu addItem:insertIntoArrayItem];
+        [self.menu addItem:insertLinkInArray];
     }
     
     if (actualColumn && [self.realmDelegate isColumnObjectType:self.clickedColumn]) {
@@ -311,6 +319,11 @@ const NSInteger NOT_A_COLUMN = -1;
         case 212: // Context -> Insert object into array
             menuItem.title = [NSString stringWithFormat:@"Add new object%@ to array", numberModifier];
             return unlocked && displaysArray;
+
+        case 113: // Edit -> Add existing object to array
+        case 213: // Context -> Add existing object to array
+            menuItem.title = [NSString stringWithFormat:@"Add existing object%@ to array", numberModifier];
+            return unlocked && displaysArray;
             
         case 220: // Context -> Remove links to object
             menuItem.title = [NSString stringWithFormat:@"Remove link%@ to object%@", numberModifier, numberModifier];
@@ -376,6 +389,16 @@ const NSInteger NOT_A_COLUMN = -1;
         NSInteger index = self.selectedRowIndexes.count > 0 ? self.selectedRowIndexes.lastIndex + 1 : self.numberOfRows;
 
         [self.realmDelegate addNewRows:[NSIndexSet indexSetWithIndex:index]];
+    }
+}
+
+// Insert link into array
+- (IBAction)insertRowsToArrayAction:(id)sender
+{
+    if (self.realmDelegate.displaysArray && !self.realmDelegate.realmIsLocked) {
+        NSInteger index = self.selectedRowIndexes.count > 0 ? self.selectedRowIndexes.lastIndex + 1 : self.numberOfRows;
+
+        [self.realmDelegate insertLinks:[NSIndexSet indexSetWithIndex:index] column:self.clickedColumn];
     }
 }
 

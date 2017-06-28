@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12121"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -250,10 +250,16 @@ CA
                                     <action selector="deleteRowsFromArrayAction:" target="-1" id="cOY-tf-Nwc"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Add New Objects to Array" tag="112" keyEquivalent="+" id="NDc-iI-dKd">
+                            <menuItem title="Add New Object to Array" tag="112" keyEquivalent="+" id="NDc-iI-dKd">
                                 <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                 <connections>
                                     <action selector="addRowsToArrayAction:" target="-1" id="v6Y-zi-8rX"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Add Existing Object to Array" tag="113" keyEquivalent="+" id="OUC-JK-qjs">
+                                <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
+                                <connections>
+                                    <action selector="insertRowsToArrayAction:" target="-1" id="Yxs-Xk-68j"/>
                                 </connections>
                             </menuItem>
                         </items>

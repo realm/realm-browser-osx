@@ -69,6 +69,8 @@ typedef struct {
 
 - (void)addNewRows:(NSIndexSet *)rowIndexes;
 
+- (void)insertLinks:(NSIndexSet *)rowIndexes column:(NSInteger)columnIndex;
+
 // Operations on links in cells
 - (void)setObjectLinkAtRows:(NSIndexSet *)rowIndexes column:(NSInteger)columnIndex;
 

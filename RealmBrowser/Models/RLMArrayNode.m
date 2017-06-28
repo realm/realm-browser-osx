@@ -107,6 +107,11 @@
     return YES;
 }
 
+- (NSString *)objectClassName
+{
+    return [displayedArray.objectClassName copy];
+}
+
 #pragma mark - RLMTypeNode Overrides
 
 - (NSString *)name
