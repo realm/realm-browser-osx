@@ -319,6 +319,11 @@ const NSInteger NOT_A_COLUMN = -1;
         case 212: // Context -> Insert object into array
             menuItem.title = [NSString stringWithFormat:@"Add new object%@ to array", numberModifier];
             return unlocked && displaysArray;
+
+        case 113: // Edit -> Add existing object to array
+        case 213: // Context -> Add existing object to array
+            menuItem.title = [NSString stringWithFormat:@"Add existing object%@ to array", numberModifier];
+            return unlocked && displaysArray;
             
         case 220: // Context -> Remove links to object
             menuItem.title = [NSString stringWithFormat:@"Remove link%@ to object%@", numberModifier, numberModifier];
