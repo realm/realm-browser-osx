@@ -2,6 +2,7 @@
 =============================================================
 * Improved user experience when connect to the Realm Object Server
 * Hide internal realms from server browser window
+* Adds an ability to add object links to lists
 
 2.1.9 Release notes (2017-06-13)
 =============================================================
