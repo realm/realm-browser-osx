@@ -30,6 +30,8 @@
 @property (nonatomic, readonly) NSArray *propertyColumns;
 @property (nonatomic, readonly) NSUInteger instanceCount;
 
+@property (nonatomic, readonly) BOOL isInvalidated;
+
 - (instancetype)initWithSchema:(RLMObjectSchema *)schema inRealm:(RLMRealm *)realm;
 
 - (RLMObject *)instanceAtIndex:(NSUInteger)index;

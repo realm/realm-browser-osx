@@ -127,6 +127,11 @@
     return displayedArray.count;
 }
 
+- (BOOL)isInvalidated
+{
+    return displayedArray.isInvalidated;
+}
+
 - (RLMObject *)instanceAtIndex:(NSUInteger)index
 {
     return displayedArray[index];
