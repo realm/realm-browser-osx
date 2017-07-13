@@ -33,6 +33,12 @@
     return  self;
 }
 
+- (void)reset
+{
+    [stack removeAllObjects];
+    index = -1;
+}
+
 - (RLMNavigationState *)currentState
 {
     if (0 <= index && index < stack.count ) {

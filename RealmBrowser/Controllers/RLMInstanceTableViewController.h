@@ -33,4 +33,6 @@
 
 @property (nonatomic, copy) void(^didSelectedBlock)(RLMObject *rowObject);
 
+- (void)reloadData;
+
 @end

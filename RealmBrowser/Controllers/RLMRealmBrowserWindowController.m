@@ -130,6 +130,8 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 - (void)startObservingDocument {
     __weak typeof(self) weakSelf = self;
 
+    [self.documentNotificationToken stop];
+
     self.documentNotificationToken = [self.document.presentedRealm.realm addNotificationBlock:^(RLMNotification notification, RLMRealm *realm) {
         // Send notifications to all document's window controllers
         [weakSelf.document.windowControllers makeObjectsPerformSelector:@selector(handleDocumentChange)];
@@ -460,8 +462,13 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
     self.tableViewController.realmIsLocked = realmIsLocked;
     self.lockRealmButton.image = [NSImage imageNamed:realmIsLocked ? kRealmLockedImage : kRealmUnlockedImage];
     self.lockRealmButton.toolTip = realmIsLocked ? kRealmLockedTooltip : kRealmUnlockedTooltip;
-    
-    [self.tableViewController.tableView reloadData];
+
+    if (self.tableViewController.displayedType.isInvalidated) {
+        [navigationStack reset];
+        [self realmDidLoad];
+    } else {
+        [self.tableViewController reloadData];
+    }
 }
 
 #pragma mark - Public methods - Navigation

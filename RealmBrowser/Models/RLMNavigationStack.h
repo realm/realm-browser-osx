@@ -26,6 +26,8 @@
 
 @property (nonatomic, readonly) RLMNavigationState *currentState;
 
+- (void)reset;
+
 - (RLMNavigationState *)pushStateWithTypeNode:(RLMTypeNode *)typeNode index:(NSInteger)selectionIndex;
 
 - (RLMArrayNavigationState *)pushStateWithTypeNode:(RLMTypeNode *)typeNode index:(NSInteger)selectionIndex property:(RLMProperty *)property;

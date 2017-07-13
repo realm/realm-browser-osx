@@ -79,6 +79,11 @@
     return 0; // Default implementation - should be overridden by subclasses.
 }
 
+- (BOOL)isInvalidated
+{
+    return NO;
+}
+
 #pragma mark - Public methods
 
 - (RLMObject *)instanceAtIndex:(NSUInteger)index

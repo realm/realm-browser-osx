@@ -95,6 +95,10 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     awake = YES;
 }
 
+- (void)reloadData {
+    [self.tableView reloadData];
+}
+
 #pragma mark - Public methods - Accessors
 
 - (RLMTableView *)realmTableView
