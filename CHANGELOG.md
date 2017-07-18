@@ -1,3 +1,9 @@
+2.1.11 Release notes (2017-07-17)
+=============================================================
+* Fix crash when import from CSV/XLSX
+* Fix crash when deleting currently displayed array from another process
+* Fix crash when open realm while Simulator startup
+
 2.1.10 Release notes (2017-06-27)
 =============================================================
 * Improved user experience when connect to the Realm Object Server
