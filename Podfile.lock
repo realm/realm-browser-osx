@@ -3,16 +3,16 @@ PODS:
   - CSwiftV (0.0.7)
   - HockeySDK-Mac (4.1.4)
   - PathKit (0.8.0)
-  - Realm (2.8.3):
-    - Realm/Headers (= 2.8.3)
-  - Realm/Headers (2.8.3)
+  - Realm (2.9.0):
+    - Realm/Headers (= 2.9.0)
+  - Realm/Headers (2.9.0)
   - RealmConverter (0.4.1):
     - CSwiftV
     - PathKit
     - Realm
     - SSZipArchive
     - TGSpreadsheetWriter
-  - SSZipArchive (1.8.1)
+  - SSZipArchive (2.0.2)
   - TGSpreadsheetWriter (1.0.2):
     - SSZipArchive
 
@@ -27,9 +27,9 @@ SPEC CHECKSUMS:
   CSwiftV: 602a0cb1df5f758d6005eacb6472c9bc752a7e7c
   HockeySDK-Mac: 963ce83ffcbc0e0297a63d2a4fc4d84c103f9280
   PathKit: dcab05d701474011aae0e40cf892298a831f63d6
-  Realm: 3601ef091c8c499a31101d8563b991e75546cdce
+  Realm: f14ab1673502559cb16592ddb8f383c474c13e05
   RealmConverter: ea2c483fa5a584eb58e409cf6615808dd86a8dcc
-  SSZipArchive: 04547dfa448be5ed7ecbaf7eaf8a6e9eb9b42997
+  SSZipArchive: 5fdf578dbbb60000b23439f80fa04e81d00740ee
   TGSpreadsheetWriter: '09bbb2c18a111a11c94ff9c1af2320e2530c958e'
 
 PODFILE CHECKSUM: 5cd2a5d1718f788c14393e563ba2ae374f258424
