@@ -1,3 +1,7 @@
+2.1.12 Release notes (2017-07-27)
+=============================================================
+* Update to Realm 2.9.0 that fixes an issue connecting to multiple servers with the same user. 
+
 2.1.11 Release notes (2017-07-17)
 =============================================================
 * Fix crash when import from CSV/XLSX
