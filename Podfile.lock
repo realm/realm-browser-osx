@@ -12,7 +12,7 @@ PODS:
     - Realm
     - SSZipArchive
     - TGSpreadsheetWriter
-  - SSZipArchive (1.8.1)
+  - SSZipArchive (2.0.2)
   - TGSpreadsheetWriter (1.0.2):
     - SSZipArchive
 
@@ -29,7 +29,7 @@ SPEC CHECKSUMS:
   PathKit: dcab05d701474011aae0e40cf892298a831f63d6
   Realm: 7b77385c9132bab2cbe65cdb76f316da43ce3b2d
   RealmConverter: ea2c483fa5a584eb58e409cf6615808dd86a8dcc
-  SSZipArchive: 04547dfa448be5ed7ecbaf7eaf8a6e9eb9b42997
+  SSZipArchive: 5fdf578dbbb60000b23439f80fa04e81d00740ee
   TGSpreadsheetWriter: '09bbb2c18a111a11c94ff9c1af2320e2530c958e'
 
 PODFILE CHECKSUM: 4b207e24034fb2306d43c1ae525c3f8895cb4b16
