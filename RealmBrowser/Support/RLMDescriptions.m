@@ -46,6 +46,7 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
 };
 
 @implementation RLMDescriptions {
+    NSByteCountFormatter *byteCountFormatter;
     NSDateFormatter *dateFormatter;
     NSNumberFormatter *integerFormatter;
     NSNumberFormatter *floatingPointFormatter;
@@ -59,6 +60,8 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
         dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.dateStyle = NSDateFormatterMediumStyle;
         dateFormatter.timeStyle = NSDateFormatterMediumStyle;
+        
+        byteCountFormatter = [[NSByteCountFormatter alloc] init];
         
         integerFormatter = [[NSNumberFormatter alloc] init];
         integerFormatter.numberStyle = NSNumberFormatterDecimalStyle;
@@ -128,9 +131,12 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
         case RLMPropertyTypeDate:
             return [dateFormatter stringFromDate:(NSDate *)propertyValue];
             
-        case RLMPropertyTypeData:
-            return @"<Data>";
+        case RLMPropertyTypeData: {
+            NSString *formattedSize = [byteCountFormatter stringFromByteCount:[(NSData *)propertyValue length]];
             
+            return [NSString stringWithFormat:@"<Data: %@>", formattedSize];
+        }
+        
         case RLMPropertyTypeAny:
             return @"<Any>";
         
