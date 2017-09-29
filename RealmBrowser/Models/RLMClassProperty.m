@@ -54,7 +54,6 @@
             return [NSDate class];
         case RLMPropertyTypeData:
         case RLMPropertyTypeObject:
-        case RLMPropertyTypeArray:
         case RLMPropertyTypeAny:
             return [RLMClassNode class];
         default:

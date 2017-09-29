@@ -144,9 +144,9 @@
         NSMutableOrderedSet *realmImports = [NSMutableOrderedSet orderedSetWithArray:@[@"io.realm.RealmObject"]];
         NSMutableOrderedSet *objectImports = [NSMutableOrderedSet orderedSet];
         for (RLMProperty *property in schema.properties) {
-            if (property.type == RLMPropertyTypeArray) {
+            if (property.array) {
                 [realmImports addObject:@"io.realm.RealmList"];
-                [objectImports addObject:property.objectClassName];
+                [objectImports addObject:property.objectClassName]; // FIXME: arrays of primitives
             } else if (property.type == RLMPropertyTypeObject) {
                 [objectImports addObject:property.objectClassName];
             }
@@ -205,6 +205,10 @@
 
 + (NSString *)javaNameForProperty:(RLMProperty *)property
 {
+    // FIXME: arrays of primitives
+    if (property.array) {
+        return [NSString stringWithFormat:@"RealmList<%@>", property.objectClassName];
+    }
     switch (property.type) {
         case RLMPropertyTypeBool:
             return property.optional ? @"Boolean" : @"boolean";
@@ -222,8 +226,6 @@
             return @"Any";  // FIXME: we don't support it
         case RLMPropertyTypeDate:
             return @"Date";
-        case RLMPropertyTypeArray:
-            return [NSString stringWithFormat:@"RealmList<%@>", property.objectClassName];
         case RLMPropertyTypeObject:
             return property.objectClassName;
         case RLMPropertyTypeLinkingObjects:
@@ -240,7 +242,6 @@
         case RLMPropertyTypeInt:
         case RLMPropertyTypeFloat:
         case RLMPropertyTypeDouble:
-        case RLMPropertyTypeArray:
         case RLMPropertyTypeObject:
             return NO;
         case RLMPropertyTypeString:
@@ -330,6 +331,10 @@
 
 + (NSString *)objcNameForProperty:(RLMProperty *)property
 {
+    if (property.array) {
+        // FIXME: arrays of primitives
+        return [NSString stringWithFormat:@"RLMArray<%@ *><%@> *", property.objectClassName, property.objectClassName];
+    }
     switch (property.type) {
         case RLMPropertyTypeBool:
             return property.optional ? @"NSNumber<RLMBool> *" : @"BOOL ";
@@ -347,8 +352,6 @@
             return @"id ";
         case RLMPropertyTypeDate:
             return @"NSDate *";
-        case RLMPropertyTypeArray:
-            return [NSString stringWithFormat:@"RLMArray<%@ *><%@> *", property.objectClassName, property.objectClassName];
         case RLMPropertyTypeObject:
             return [NSString stringWithFormat:@"%@ *", property.objectClassName];
         case RLMPropertyTypeLinkingObjects:
@@ -363,7 +366,6 @@
         case RLMPropertyTypeInt:
         case RLMPropertyTypeFloat:
         case RLMPropertyTypeDouble:
-        case RLMPropertyTypeArray:
             return NO;
         case RLMPropertyTypeString:
         case RLMPropertyTypeData:
@@ -427,6 +429,24 @@
         return [NSString stringWithFormat:formatString, property.name, property.objectClassName];
     };
 
+    if (property.array) {
+        NSString *type;
+        switch (property.type) {
+            case RLMPropertyTypeBool:   type = @"Bool"; break;
+            case RLMPropertyTypeInt:    type = @"Int"; break;
+            case RLMPropertyTypeFloat:  type = @"Float"; break;
+            case RLMPropertyTypeDouble: type = @"Double"; break;
+            case RLMPropertyTypeString: type = @"String"; break;
+            case RLMPropertyTypeData:   type = @"NSData"; break;
+            case RLMPropertyTypeDate:   type = @"NSDate"; break;
+            case RLMPropertyTypeObject: type = property.objectClassName;
+            case RLMPropertyTypeAny: return @"/* Error! 'Any' properties are unsupported in Swift. */";
+            case RLMPropertyTypeLinkingObjects: return @"";
+        }
+        return [NSString stringWithFormat:@"let %@ = List<%@%s>()", property.name, type,
+                property.optional && property.type != RLMPropertyTypeObject ? "?" : ""];
+    }
+
     if (property.optional) {
         switch (property.type) {
             case RLMPropertyTypeBool:
@@ -445,8 +465,6 @@
                 return @"/* Error! 'Any' properties are unsupported in Swift. */";
             case RLMPropertyTypeDate:
                 return namedProperty(@"dynamic var %@: NSDate?");
-            case RLMPropertyTypeArray:
-                return @"/* Error! 'List' properties should never be optional. Please report this by emailing help@realm.io. */";
             case RLMPropertyTypeObject:
                 return objectClassProperty(@"dynamic var %@: %@?");
             case RLMPropertyTypeLinkingObjects:
@@ -471,8 +489,6 @@
             return @"/* Error! 'Any' properties are unsupported in Swift. */";
         case RLMPropertyTypeDate:
             return namedProperty(@"dynamic var %@ = NSDate()");
-        case RLMPropertyTypeArray:
-            return objectClassProperty(@"let %@ = List<%@>()");
         case RLMPropertyTypeObject:
             return @"/* Error! 'Object' properties should always be optional. Please report this by emailing help@realm.io. */";
         case RLMPropertyTypeLinkingObjects:
@@ -553,14 +569,14 @@
         case RLMPropertyTypeDate:
             props[@"type"] = @"date";
             break;
-        case RLMPropertyTypeArray:
-            props[@"type"] = @"list";
-            props[@"objectType"] = property.objectClassName;
-            break;
         case RLMPropertyTypeObject:
         case RLMPropertyTypeLinkingObjects:
             props[@"type"] = property.objectClassName;
             break;
+    }
+
+    if (property.array) {
+        props[@"type"] = [props[@"type"] stringByAppendingString:@"[]"];
     }
     
     if (property.indexed && !property.isPrimary) {
@@ -672,14 +688,14 @@
         case RLMPropertyTypeObject:
             type = property.objectClassName;
             break;
-        case RLMPropertyTypeArray:
-            type = [NSString stringWithFormat:@"IList<%@>", property.objectClassName];
-            access = @"get;";
-            break;
         case RLMPropertyTypeLinkingObjects:
             type = [NSString stringWithFormat:@"IQueryable<%@>", property.objectClassName];
             access = @"get;";
             break;
+    }
+    if (property.array && property.type != RLMPropertyTypeLinkingObjects) {
+        type = [NSString stringWithFormat:@"IList<%@>", type];
+        access = @"get;";
     }
 
     [definition appendFormat:@"public %@ %@ { %@ }", type, property.name, access];

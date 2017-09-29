@@ -121,6 +121,11 @@ const NSUInteger kMaxItemsInTestArray = 12;
     
     // Go through properties and fill with random values
     for (RLMProperty *property in objectSchema.properties) {
+        // FIXME: arrays of primitives
+        if (property.array) {
+            [propertyValues addObject:[self randomArrayWithObjectsOfClass:NSClassFromString(property.objectClassName) inRealm:realm]];
+            continue;
+        }
         id propertyValue;
         
         switch (property.type) {
@@ -146,10 +151,6 @@ const NSUInteger kMaxItemsInTestArray = 12;
                 
             case RLMPropertyTypeString:
                 propertyValue = [self randomString];
-                break;
-                
-            case RLMPropertyTypeArray:
-                propertyValue = [self randomArrayWithObjectsOfClass:NSClassFromString(property.objectClassName) inRealm:realm];
                 break;
                 
             case RLMPropertyTypeData:

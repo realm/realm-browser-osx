@@ -176,6 +176,7 @@
                 RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
                 configuration.dynamic = YES;
                 configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:weakSelf.user realmURL:weakSelf.syncURL];
+                configuration.syncConfiguration.enableSSLValidation = NO;
 
                 [RLMRealm asyncOpenWithConfiguration:configuration callbackQueue:dispatch_get_main_queue() callback:^(RLMRealm *realm, NSError *error) {
                     if (!weakSelf) {

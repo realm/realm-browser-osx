@@ -130,7 +130,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 - (void)startObservingDocument {
     __weak typeof(self) weakSelf = self;
 
-    [self.documentNotificationToken stop];
+    [self.documentNotificationToken invalidate];
 
     self.documentNotificationToken = [self.document.presentedRealm.realm addNotificationBlock:^(RLMNotification notification, RLMRealm *realm) {
         // Send notifications to all document's window controllers
@@ -143,7 +143,7 @@ static void const *kWaitForDocumentSchemaLoadObservationContext;
 }
 
 - (void)stopObservingDocument {
-    [self.documentNotificationToken stop];
+    [self.documentNotificationToken invalidate];
 }
 
 - (void)realmDidLoad {
