@@ -1,37 +1,55 @@
 PODS:
   - AppSandboxFileAccess (1.0.14)
   - CSwiftV (0.0.7)
-  - HockeySDK-Mac (4.1.4)
+  - HockeySDK-Mac (5.0.0)
   - PathKit (0.8.0)
-  - Realm (3.0.0-beta.2):
-    - Realm/Headers (= 3.0.0-beta.2)
-  - Realm/Headers (3.0.0-beta.2)
+  - Realm (3.0.0-beta.4):
+    - Realm/Headers (= 3.0.0-beta.4)
+  - Realm/Headers (3.0.0-beta.4)
   - RealmConverter (0.4.1):
     - CSwiftV
     - PathKit
-    - Realm
+    - Realm (~> 3.0.0-beta.4)
     - SSZipArchive
     - TGSpreadsheetWriter
-  - SSZipArchive (2.0.2)
+  - SSZipArchive (2.0.7)
   - TGSpreadsheetWriter (1.0.2):
     - SSZipArchive
 
 DEPENDENCIES:
   - AppSandboxFileAccess
   - HockeySDK-Mac
-  - Realm (~> 3.0.0-beta)
-  - RealmConverter
+  - Realm (from `https://github.com/realm/realm-cocoa`, branch `master-3.0`)
+  - RealmConverter (from `https://github.com/realm/realm-cocoa-converter`, branch `mar/cocoa-3.0.0-beta.4`)
+
+EXTERNAL SOURCES:
+  Realm:
+    :branch: master-3.0
+    :git: https://github.com/realm/realm-cocoa
+    :submodules: true
+  RealmConverter:
+    :branch: mar/cocoa-3.0.0-beta.4
+    :git: https://github.com/realm/realm-cocoa-converter
+
+CHECKOUT OPTIONS:
+  Realm:
+    :commit: c5a84c8a3a0a2a99f688035f42b08d223c5a17b2
+    :git: https://github.com/realm/realm-cocoa
+    :submodules: true
+  RealmConverter:
+    :commit: d4fb640f424b9b20a86b825214b6fa79c220d1bd
+    :git: https://github.com/realm/realm-cocoa-converter
 
 SPEC CHECKSUMS:
   AppSandboxFileAccess: f3e10b0ba10bbaa6dc6996639ff47836050329c5
   CSwiftV: 602a0cb1df5f758d6005eacb6472c9bc752a7e7c
-  HockeySDK-Mac: 963ce83ffcbc0e0297a63d2a4fc4d84c103f9280
+  HockeySDK-Mac: df7b77c3abd970933cd6eb270890931e0bdcbecb
   PathKit: dcab05d701474011aae0e40cf892298a831f63d6
-  Realm: a18b4677adfedda867b527a83892a40f38804ae2
-  RealmConverter: ea2c483fa5a584eb58e409cf6615808dd86a8dcc
-  SSZipArchive: 5fdf578dbbb60000b23439f80fa04e81d00740ee
-  TGSpreadsheetWriter: '09bbb2c18a111a11c94ff9c1af2320e2530c958e'
+  Realm: 61978a10127ec9a4638f0df4d48a08b5e1ded77e
+  RealmConverter: 0d24eb17b4ad7eabe5f4602f331f05003d76b98f
+  SSZipArchive: 8c197761d66bd33e7f8b5b51ee57dff303971150
+  TGSpreadsheetWriter: 09bbb2c18a111a11c94ff9c1af2320e2530c958e
 
-PODFILE CHECKSUM: 4b207e24034fb2306d43c1ae525c3f8895cb4b16
+PODFILE CHECKSUM: 6e793ca3bbadde214a03219ddcbba828702f57c8
 
 COCOAPODS: 1.2.1
