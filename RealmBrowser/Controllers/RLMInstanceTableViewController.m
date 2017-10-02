@@ -545,7 +545,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 
 - (void)deleteRows:(NSIndexSet *)rowIndexes
 {
-    [self deleteRowsInRealmAt:rowIndexes];
+    [self deleteObjectsInRealmAtIndexes:rowIndexes];
 }
 
 - (void)addNewRows:(NSIndexSet *)rowIndexes
@@ -802,11 +802,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     [realm commitWriteTransaction];
 }
 
-- (void)deleteRowsInRealmAt:(NSIndexSet *)rowIndexes
-{
-    [self deleteObjectsInRealmAtIndexes:rowIndexes];
-}
-
 - (void)insertNewRowsInRealmAt:(NSIndexSet *)rowIndexes
 {
     if (rowIndexes.count == 0) {
@@ -816,13 +811,19 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     
     [realm beginWriteTransaction];
-    
-    [rowIndexes enumerateRangesWithOptions:NSEnumerationReverse usingBlock:^(NSRange range, BOOL *stop) {
-        for (NSUInteger i = range.location; i < NSMaxRange(range); i++) {
+
+    RLMArrayNode *arrayNode = (RLMArrayNode *)self.displayedType;
+    if (arrayNode.isObject) {
+        [rowIndexes enumerateIndexesWithOptions:NSEnumerationReverse usingBlock:^(NSUInteger i, BOOL *stop) {
             RLMObject *object = [self.class createObjectInRealm:realm withSchema:self.displayedType.schema];
-            [(RLMArrayNode *)self.displayedType insertInstance:object atIndex:range.location];
-        }
-    }];
+            [arrayNode insertInstance:object atIndex:i];
+        }];
+    }
+    else {
+        [rowIndexes enumerateIndexesWithOptions:NSEnumerationReverse usingBlock:^(NSUInteger i, BOOL *stop) {
+            [arrayNode insertInstance:[self.class defaultValueForPropertyType:arrayNode.referringProperty.type] atIndex:i];
+        }];
+    }
     
     [realm commitWriteTransaction];
 }
@@ -850,6 +851,11 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 
 - (void)deleteObjectsInRealmAtIndexes:(NSIndexSet *)rowIndexes
 {
+    if (!self.displayedType.isObject) {
+        [self removeRowsInRealmAt:rowIndexes];
+        return;
+    }
+
     RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     
     NSMutableArray *objectsToDelete = [NSMutableArray array];

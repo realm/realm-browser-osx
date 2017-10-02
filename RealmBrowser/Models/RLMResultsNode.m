@@ -58,5 +58,9 @@
     return displayedResults[index];
 }
 
+- (BOOL)isObject
+{
+    return YES;
+}
 
 @end

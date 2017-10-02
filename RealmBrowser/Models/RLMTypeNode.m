@@ -82,6 +82,11 @@
     return NO;
 }
 
+- (BOOL)isObject
+{
+    return false;
+}
+
 #pragma mark - Public methods
 
 - (RLMObject *)instanceAtIndex:(NSUInteger)index

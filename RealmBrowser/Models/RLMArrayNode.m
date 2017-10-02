@@ -56,9 +56,9 @@
 @end
 
 @implementation RLMArrayNode {
-    RLMProperty *referringProperty;
-    RLMObject *referringObject;
-    RLMArray *displayedArray;
+    RLMProperty *_referringProperty;
+    RLMObject *_referringObject;
+    RLMArray *_displayedArray;
     bool _isObject;
 }
 
@@ -83,9 +83,9 @@
         elementSchema = [[RLMObjectSchema alloc] initWithClassName:property.name objectClass:RLMObject.class properties:@[prop]];
     }
     if (self = [super initWithSchema:elementSchema inRealm:realm]) {
-        referringProperty = property;
-        referringObject = object;
-        displayedArray = array;
+        _referringProperty = property;
+        _referringObject = object;
+        _displayedArray = array;
         _isObject = array.objectClassName != nil;
     }
 
@@ -94,31 +94,31 @@
 
 -(BOOL)insertInstance:(RLMObject *)object atIndex:(NSUInteger)index
 {
-    if (index > displayedArray.count || object == nil) {
+    if (index > _displayedArray.count || object == nil) {
         return NO;
     }
     
-    [displayedArray insertObject:object atIndex:index];
+    [_displayedArray insertObject:object atIndex:index];
     return YES;
 }
 
 -(BOOL)removeInstanceAtIndex:(NSUInteger)index
 {
-    if (index >= [displayedArray count]) {
+    if (index >= [_displayedArray count]) {
         return NO;
     }
     
-    [displayedArray removeObjectAtIndex:index];
+    [_displayedArray removeObjectAtIndex:index];
     return YES;
 }
 
 -(BOOL)moveInstanceFromIndex:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex
 {
-    if (fromIndex >= [displayedArray count] || toIndex > [displayedArray count]) {
+    if (fromIndex >= [_displayedArray count] || toIndex > [_displayedArray count]) {
         return NO;
     }
 
-    [displayedArray moveObjectAtIndex:fromIndex toIndex:toIndex];
+    [_displayedArray moveObjectAtIndex:fromIndex toIndex:toIndex];
     return YES;
 }
 
@@ -138,7 +138,7 @@
     }
     
     for (int i = 0; i < self.instanceCount; i++) {
-        if (![displayedArray[i] isEqualToObject:[otherArrayNode instanceAtIndex:i]]) {
+        if (![_displayedArray[i] isEqualToObject:[otherArrayNode instanceAtIndex:i]]) {
             return NO;
         }
     }
@@ -148,7 +148,7 @@
 
 - (NSString *)objectClassName
 {
-    return displayedArray.objectClassName;
+    return _displayedArray.objectClassName;
 }
 
 #pragma mark - RLMTypeNode Overrides
@@ -160,24 +160,29 @@
 
 - (NSUInteger)instanceCount
 {
-    return displayedArray.count;
+    return _displayedArray.count;
 }
 
 - (BOOL)isInvalidated
 {
-    return displayedArray.isInvalidated;
+    return _displayedArray.isInvalidated;
+}
+
+- (BOOL)isObject
+{
+    return _isObject;
 }
 
 - (RLMObject *)instanceAtIndex:(NSUInteger)index
 {
-    return _isObject ? displayedArray[index] : [RLMRowProxy proxyForArray:displayedArray row:index];
+    return _isObject ? _displayedArray[index] : [RLMRowProxy proxyForArray:_displayedArray row:index];
 }
 
 - (id)nodeElementForColumnWithIndex:(NSInteger)index
 {
     switch (index) {
         case 0:
-            return [NSString stringWithFormat:@"%@<%@>", referringProperty.name, referringProperty.objectClassName];
+            return [NSString stringWithFormat:@"%@<%@>", _referringProperty.name, _referringProperty.objectClassName];
             
         default:
             return nil;
@@ -188,7 +193,7 @@
 {
     RLMSidebarTableCellView *cellView = [tableView makeViewWithIdentifier:@"MainCell" owner:self];
     cellView.textField.stringValue = [NSString stringWithFormat:@"%@: <%@>",
-                                      referringProperty.name, referringProperty.objectClassName];
+                                      _referringProperty.name, _referringProperty.objectClassName];
 
     cellView.button.title = [NSString stringWithFormat:@"%lu", [self instanceCount]];
     [[cellView.button cell] setHighlightsBy:0];
@@ -206,7 +211,7 @@
 
 - (NSString *)toolTipString
 {
-    return referringObject.description;
+    return _referringObject.description;
 }
 
 @end
