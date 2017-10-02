@@ -23,8 +23,6 @@
 @dynamic name;
 @dynamic instanceCount;
 
-@synthesize propertyColumns = _propertyColumns;
-
 - (instancetype)initWithSchema:(RLMObjectSchema *)schema inRealm:(RLMRealm *)realm
 {
     if (self = [super init]) {

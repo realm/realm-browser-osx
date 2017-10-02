@@ -39,7 +39,8 @@ const NSUInteger kMaxItemsInTestArray = 12;
     return [RLMTestDataGenerator createRealmAtUrl:url withClassesNamed:classNames objectCount:objectCount encryptionKey:nil];
 }
 
-+ (BOOL)createRealmAtUrl:(NSURL *)url withClassesNamed:(NSArray *)classNames objectCount:(NSUInteger)objectCount encryptionKey:(NSData *)encryptionKey
++ (BOOL)createRealmAtUrl:(NSURL *)url withClassesNamed:(NSArray *)classNames
+             objectCount:(NSUInteger)objectCount encryptionKey:(NSData *)encryptionKey
 {
     NSError *error;
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
@@ -121,57 +122,17 @@ const NSUInteger kMaxItemsInTestArray = 12;
     
     // Go through properties and fill with random values
     for (RLMProperty *property in objectSchema.properties) {
-        // FIXME: arrays of primitives
         if (property.array) {
-            [propertyValues addObject:[self randomArrayWithObjectsOfClass:NSClassFromString(property.objectClassName) inRealm:realm]];
+            NSMutableArray *testArray = [NSMutableArray array];
+            for (NSUInteger i = 0, count = arc4random_uniform(kMaxItemsInTestArray + 1); i < count; i++) {
+                [testArray addObject:[self randomValueOfType:property.type objectClassName:property.objectClassName inRealm:realm]];
+            }
+            [propertyValues addObject:testArray];
             continue;
         }
-        id propertyValue;
-        
-        switch (property.type) {
-            case RLMPropertyTypeBool:
-                propertyValue = @([self randomBool]);
-                break;
-                
-            case RLMPropertyTypeInt:
-                propertyValue = @([self randomInteger]);
-                break;
-                
-            case RLMPropertyTypeFloat:
-                propertyValue = @([self randomFloat]);
-                break;
-                
-            case RLMPropertyTypeDouble:
-                propertyValue = @([self randomDouble]);
-                break;
-                
-            case RLMPropertyTypeDate:
-                propertyValue = [self randomDate];
-                break;
-                
-            case RLMPropertyTypeString:
-                propertyValue = [self randomString];
-                break;
-                
-            case RLMPropertyTypeData:
-                propertyValue = [self randomData];
-                break;
-                
-            case RLMPropertyTypeAny:
-                propertyValue = [self randomAny];
-                break;
-                
-            case RLMPropertyTypeObject:
-                propertyValue = [self randomObjectOfClass:NSClassFromString(property.objectClassName) inRealm:realm tryToReuse:YES];
-                break;
-            
-            case RLMPropertyTypeLinkingObjects:
-                break;
-        }
-        
-        [propertyValues addObject:propertyValue];
+        [propertyValues addObject:[self randomValueOfType:property.type objectClassName:property.objectClassName inRealm:realm]];
     }
-    
+
     // Create an object from [propertyValues] and put in [realm]
     RLMObject *newObject = [class createInRealm:realm withValue:propertyValues];
     
@@ -179,6 +140,32 @@ const NSUInteger kMaxItemsInTestArray = 12;
     [existingObjectsOfRequiredClass addObject:newObject];
     
     return newObject;
+}
+
+- (id)randomValueOfType:(RLMPropertyType)type  objectClassName:(NSString *)objectClassName inRealm:(RLMRealm *)realm
+{
+    switch (type) {
+        case RLMPropertyTypeBool:
+            return @([self randomBool]);
+        case RLMPropertyTypeInt:
+            return @([self randomInteger]);
+        case RLMPropertyTypeFloat:
+            return @([self randomFloat]);
+        case RLMPropertyTypeDouble:
+            return @([self randomDouble]);
+        case RLMPropertyTypeDate:
+            return [self randomDate];
+        case RLMPropertyTypeString:
+            return [self randomString];
+        case RLMPropertyTypeData:
+            return [self randomData];
+        case RLMPropertyTypeAny:
+            return [self randomAny];
+        case RLMPropertyTypeObject:
+            return [self randomObjectOfClass:NSClassFromString(objectClassName) inRealm:realm tryToReuse:YES];
+        case RLMPropertyTypeLinkingObjects:
+            return nil;
+    }
 }
 
 -(BOOL)randomBool
@@ -189,7 +176,7 @@ const NSUInteger kMaxItemsInTestArray = 12;
 -(NSInteger)randomInteger
 {
     NSUInteger type = arc4random_uniform(20);
-    
+
     switch (type) {
         case 0:
             return INTMAX_MIN;
@@ -266,21 +253,5 @@ const NSUInteger kMaxItemsInTestArray = 12;
             return [self randomDate];
     }
 }
-
--(NSArray *)randomArrayWithObjectsOfClass:(Class)testClass inRealm:(RLMRealm *)realm
-{
-    NSUInteger itemCount = arc4random_uniform(kMaxItemsInTestArray + 1);
-    
-    NSMutableArray *testArray = [NSMutableArray array];
-    
-    for (NSUInteger i = 0; i < itemCount; i++) {
-        RLMObject *object = [self randomObjectOfClass:testClass inRealm:realm tryToReuse:YES];
-        [testArray addObject:object];
-    }
-
-    return testArray;
-}
-
-
 
 @end

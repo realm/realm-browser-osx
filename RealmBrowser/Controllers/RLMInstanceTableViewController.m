@@ -222,6 +222,10 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 {
     numberFormatter.maximumFractionDigits = 3;
 
+    if (propertyColumn.property.array) {
+        return nil;
+    }
+
     // For certain types we want to add some statistics
     RLMPropertyType type = propertyColumn.property.type;
     NSString *propertyName = propertyColumn.property.name;
@@ -259,7 +263,8 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             float percentTrue  = trueCount * 100.0 / count;
             float percentFalse = falseCount * 100.0 / count;
 
-            return [NSString stringWithFormat:@"True: %lu (%.1f%%)\nFalse: %lu (%.1f%%)", (unsigned long)trueCount, percentTrue, (unsigned long)falseCount, percentFalse];
+            return [NSString stringWithFormat:@"True: %lu (%.1f%%)\nFalse: %lu (%.1f%%)",
+                    (unsigned long)trueCount, percentTrue, (unsigned long)falseCount, percentFalse];
         }
         default:
             return nil;
@@ -315,6 +320,9 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     RLMProperty *property = classProperty.property;
     RLMObject *selectedInstance = [self.displayedType instanceAtIndex:rowIndex];
     id propertyValue = selectedInstance[classProperty.name];
+    if (propertyValue == NSNull.null) {
+        propertyValue = nil;
+    }
     NSString *reuseIdentifier = [NSString stringWithFormat:@"Property.%@.Optional.%d",
                                  [RLMDescriptions typeNameOfProperty:property],
                                  property.optional];
@@ -908,7 +916,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         return;
     }
 
-    if (propertyNode.type == RLMPropertyTypeObject) {
+    if (propertyNode.type == RLMPropertyTypeObject || propertyNode.property.array) {
         [self enableLinkCursor];
     }
 }
@@ -1062,7 +1070,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     
     RLMClassProperty *propertyNode = self.displayedType.propertyColumns[propertyIndex];
     
-    if (propertyNode.type == RLMPropertyTypeObject) {
+    if (propertyNode.type == RLMPropertyTypeObject || propertyNode.property.array) {
         RLMObject *selectedInstance = [self.displayedType instanceAtIndex:row];
         id propertyValue = selectedInstance[propertyNode.name];
         

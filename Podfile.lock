@@ -12,7 +12,7 @@ PODS:
     - Realm (~> 3.0.0-beta.4)
     - SSZipArchive
     - TGSpreadsheetWriter
-  - SSZipArchive (2.0.7)
+  - SSZipArchive (2.0.8)
   - TGSpreadsheetWriter (1.0.2):
     - SSZipArchive
 
@@ -33,7 +33,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Realm:
-    :commit: c5a84c8a3a0a2a99f688035f42b08d223c5a17b2
+    :commit: 59d6f1e81724e7188b8e00b3075071a41e5cc558
     :git: https://github.com/realm/realm-cocoa
     :submodules: true
   RealmConverter:
@@ -47,7 +47,7 @@ SPEC CHECKSUMS:
   PathKit: dcab05d701474011aae0e40cf892298a831f63d6
   Realm: 61978a10127ec9a4638f0df4d48a08b5e1ded77e
   RealmConverter: 0d24eb17b4ad7eabe5f4602f331f05003d76b98f
-  SSZipArchive: 8c197761d66bd33e7f8b5b51ee57dff303971150
+  SSZipArchive: e6ab66e1936fac7e3b5073e9f5eb364d91dfbfc7
   TGSpreadsheetWriter: 09bbb2c18a111a11c94ff9c1af2320e2530c958e
 
 PODFILE CHECKSUM: 6e793ca3bbadde214a03219ddcbba828702f57c8

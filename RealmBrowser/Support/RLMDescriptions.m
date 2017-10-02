@@ -126,8 +126,10 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
     }
 
     if (property.array) {
-        // FIXME: arrays of primitives
-        RLMArray *referredArray = (RLMArray *)propertyValue;
+        RLMArray *referredArray = propertyValue;
+        if (!referredArray.objectClassName) {
+            return @"<Array>";
+        }
         if (format == RLMDescriptionFormatEllipsis) {
             return [NSString stringWithFormat:@"%@[%lu]", referredArray.objectClassName, referredArray.count];
         }
@@ -156,7 +158,7 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
         }
             
         case RLMPropertyTypeBool:
-            return [(NSNumber *)propertyValue boolValue] ? @"TRUE" : @"FALSE";
+            return [propertyValue boolValue] ? @"TRUE" : @"FALSE";
             
         case RLMPropertyTypeDate:
             return [dateFormatter stringFromDate:(NSDate *)propertyValue];
@@ -175,13 +177,9 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
     }
 }
 
-+(NSString *)typeNameOfProperty:(RLMProperty *)property
++(NSString *)typeName:(RLMPropertyType)type property:(RLMProperty *)property
 {
-    if (property.array) {
-        // FIXME: arrays of primitives
-        return [NSString stringWithFormat:@"[%@]", property.objectClassName];
-    }
-    switch (property.type) {
+    switch (type) {
         case RLMPropertyTypeInt:
             return [NSString stringWithFormat:@"Int%@", property.optional ? @" (Optional)":@""];
         case RLMPropertyTypeFloat:
@@ -205,9 +203,17 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
     }
 }
 
++(NSString *)typeNameOfProperty:(RLMProperty *)property
+{
+    if (property.array) {
+        return [NSString stringWithFormat:@"[%@]", property.objectClassName ?: [self typeName:property.type property:property]];
+    }
+    return [self typeName:property.type property:property];
+}
+
 -(NSString *)tooltipForPropertyValue:(id)propertyValue ofType:(RLMProperty *)property
 {
-    if (!propertyValue) {
+    if (!propertyValue || propertyValue == NSNull.null) {
         return nil;
     }
 
