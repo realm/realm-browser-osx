@@ -114,21 +114,21 @@
     AppSandboxFileAccess *fileAccess = [AppSandboxFileAccess fileAccess];
     [fileAccess requestAccessPermissionsForFileURL:url persistPermission:YES withBlock:^(NSURL *securityScopedURL, NSData *bookmarkData) {
         [securityScopedURL startAccessingSecurityScopedResource];
-        
+
         // A 'model' is an array with two strings, a filename plus the contents of that file
         for (NSArray *model in models) {
             NSURL *fileURL = [url URLByAppendingPathComponent:model[0]];
             NSString *fileContents = model[1];
-            
+
             NSError *error;
             BOOL success = [fileContents writeToURL:fileURL atomically:YES encoding:NSUTF8StringEncoding error:&error];
-            
+
             if (!success) {
                 NSLog(@"Error writing file at %@\n%@", url, [error localizedFailureReason]);
                 [[NSApplication sharedApplication] presentError:error];
             }
         }
-        
+
         [securityScopedURL stopAccessingSecurityScopedResource];
     }];
 }
@@ -146,8 +146,8 @@
         for (RLMProperty *property in schema.properties) {
             if (property.array) {
                 [realmImports addObject:@"io.realm.RealmList"];
-                [objectImports addObject:property.objectClassName]; // FIXME: arrays of primitives
-            } else if (property.type == RLMPropertyTypeObject) {
+            }
+            if (property.type == RLMPropertyTypeObject) {
                 [objectImports addObject:property.objectClassName];
             }
             if (property.isPrimary) {
@@ -199,15 +199,33 @@
 
         [models addObject:@[[schema.className stringByAppendingPathExtension:@"java"], model]];
     }
-    
+
     return models;
 }
 
 + (NSString *)javaNameForProperty:(RLMProperty *)property
 {
-    // FIXME: arrays of primitives
     if (property.array) {
-        return [NSString stringWithFormat:@"RealmList<%@>", property.objectClassName];
+        switch (property.type) {
+            case RLMPropertyTypeBool:
+                return @"RealmList<Boolean>";
+            case RLMPropertyTypeInt:
+                return @"RealmList<Long>";
+            case RLMPropertyTypeFloat:
+                return @"RealmList<Float>";
+            case RLMPropertyTypeDouble:
+                return @"RealmList<Double>";
+            case RLMPropertyTypeString:
+                return @"RealmList<String>";
+            case RLMPropertyTypeData:
+                return @"RealmList<byte[]>";
+            case RLMPropertyTypeDate:
+                return @"RealmList<Date>";
+            case RLMPropertyTypeObject:
+                return [NSString stringWithFormat:@"RealmList<%@>", property.objectClassName];
+            default:
+                return @"Unsupported Type";
+        }
     }
     switch (property.type) {
         case RLMPropertyTypeBool:
@@ -231,7 +249,7 @@
         case RLMPropertyTypeLinkingObjects:
             return @"RealmList";
     }
-    
+
     return nil;
 }
 
@@ -251,7 +269,7 @@
         case RLMPropertyTypeLinkingObjects:
             return YES;
     }
-    
+
     return NO;
 }
 
@@ -261,21 +279,21 @@
 {
     // Filename for h-file
     NSString *hFilename = [fileName stringByAppendingPathExtension:@"h"];
-    
+
     // Contents of h-file
     NSMutableString *hContents= [NSMutableString stringWithFormat:@"#import <Foundation/Foundation.h>\n#import <Realm/Realm.h>\n\n"];
     for (RLMObjectSchema *schema in schemas) {
         [hContents appendFormat:@"@interface %@ : RLMObject\n@end\n\n", schema.className];
     }
     [hContents appendString:@"\n"];
-    
+
     for (RLMObjectSchema *schema in schemas) {
         [hContents appendFormat:@"RLM_ARRAY_TYPE(%@)\n", schema.className];
     }
     [hContents appendString:@"\n\n"];
-    
+
     [hContents appendString:@"NS_ASSUME_NONNULL_BEGIN\n\n"];
-    
+
     for (RLMObjectSchema *schema in schemas) {
         [hContents appendFormat:@"@interface %@()\n\n", schema.className];
         for (RLMProperty *property in schema.properties) {
@@ -283,12 +301,12 @@
         }
         [hContents appendString:@"\n@end\n\n"];
     }
-    
+
     [hContents appendString:@"NS_ASSUME_NONNULL_END\n"];
-    
+
     // An array with filename and contents for the h-file model
     NSArray *hModel = @[hFilename, hContents];
-    
+
     // Contents of m-file
     NSMutableString *mContents = [NSMutableString stringWithFormat:@"#import \"%@\"\n\n", hFilename];
     for (RLMObjectSchema *schema in schemas) {
@@ -332,8 +350,28 @@
 + (NSString *)objcNameForProperty:(RLMProperty *)property
 {
     if (property.array) {
-        // FIXME: arrays of primitives
-        return [NSString stringWithFormat:@"RLMArray<%@ *><%@> *", property.objectClassName, property.objectClassName];
+        switch (property.type) {
+            case RLMPropertyTypeBool:
+                return @"RLMArray<NSNumber *><RLMBool> *";
+            case RLMPropertyTypeInt:
+                return @"RLMArray<NSNumber *><RLMInt> *";
+            case RLMPropertyTypeFloat:
+                return @"RLMArray<NSNumber *><RLMFloat> *";
+            case RLMPropertyTypeDouble:
+                return @"RLMArray<NSNumber *><RLMDouble> *";
+            case RLMPropertyTypeString:
+                return @"RLMArray<NSString *><RLMString> *";
+            case RLMPropertyTypeData:
+                return @"RLMArray<NSData *><RLMData> *";
+            case RLMPropertyTypeAny:
+                return @"id ";
+            case RLMPropertyTypeDate:
+                return @"RLMArray<NSDate *><RLMDate> *";
+            case RLMPropertyTypeObject:
+                return [NSString stringWithFormat:@"RLMArray<%@ *><%@> *", property.objectClassName, property.objectClassName];
+            case RLMPropertyTypeLinkingObjects:
+                return @"RLMLinkingObjects *";
+        }
     }
     switch (property.type) {
         case RLMPropertyTypeBool:
@@ -375,7 +413,7 @@
         case RLMPropertyTypeLinkingObjects:
             return YES;
     }
-    
+
     return NO;
 }
 
@@ -494,7 +532,7 @@
         case RLMPropertyTypeLinkingObjects:
             return @"";
     }
-    
+
     return nil;
 }
 
@@ -504,39 +542,39 @@
 {
     NSMutableString *contents = [NSMutableString string];
     NSMutableString *exports = [NSMutableString stringWithString:@"module.exports = {\n"];
-    
+
     for (RLMObjectSchema *schema in schemas) {
         NSString *schemaName = [schema.className stringByAppendingString:@"Schema"];
         [exports appendFormat:@"  %@", schemaName];
         [exports appendFormat:@"%@", (schema != [schemas lastObject]) ? @",\n" : @"\n"];
-        
+
         [contents appendFormat:@"const %@ = {\n", schemaName];
         [contents appendFormat:@"  name: '%@',\n", schema.className];
         NSMutableString *properties = [NSMutableString stringWithString:@"  properties: {\n"];
         NSString *primaryKey = nil;
-        
+
         for (RLMProperty *property in schema.properties) {
             if (property.isPrimary) {
                 primaryKey = property.name;
             }
             [properties appendString:[self javaScriptDefinitionForProperty:property]];
             [properties appendFormat:@"%@", (property != [schema.properties lastObject]) ? @",\n" : @"\n"];
-            
+
         }
-        
+
         [properties appendString:@"  }\n"];
-        
+
         if (primaryKey) {
             [contents appendFormat:@"  primaryKey: '%@',\n", primaryKey];
         }
-        
+
         [contents appendString:properties];
         [contents appendString:@"};\n\n"];
     }
-    
+
     [exports appendString:@"};\n"];
     [contents appendString:exports];
-    
+
     // An array of a single model array with filename and contents
     return @[@[[fileName stringByAppendingPathExtension:@"js"], contents]];
 }
@@ -544,7 +582,7 @@
 + (NSString *)javaScriptDefinitionForProperty:(RLMProperty *)property
 {
     NSMutableDictionary *props = [NSMutableDictionary dictionary];
-    
+
     switch (property.type) {
         case RLMPropertyTypeBool:
             props[@"type"] = @"bool";
@@ -578,19 +616,19 @@
     if (property.array) {
         props[@"type"] = [props[@"type"] stringByAppendingString:@"[]"];
     }
-    
+
     if (property.indexed && !property.isPrimary) {
         props[@"indexed"] = @"true";
     }
-    
+
     if (property.optional) {
         props[@"optional"] = @"true";
     }
-    
+
     if ([props count] == 1) {
         return [NSString stringWithFormat:@"    %@: '%@'", property.name, props[@"type"]];
     }
-    
+
     NSMutableString *definition = [NSMutableString stringWithFormat:@"    %@: {", property.name];
     NSInteger count = props.count, check = 0;
     for (NSString *key in props) {
@@ -600,7 +638,7 @@
         }
         [definition appendFormat:@" %@: %@%@", key, value, (++check == count) ? @" }" : @", "];
     }
-    
+
     return definition;
 }
 
