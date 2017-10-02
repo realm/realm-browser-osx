@@ -290,7 +290,9 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
 
 - (NSString *)tooltipForArray:(RLMArray *)array withDepth:(NSUInteger)depth
 {
-    // FIXME: arrays of primitives
+    if (!array.objectClassName) {
+        return nil;
+    }
     if (depth == kMaxDepthForTooltips) {
         return [NSString stringWithFormat:@"<%@>[%lu]", array.objectClassName, array.count];
     }

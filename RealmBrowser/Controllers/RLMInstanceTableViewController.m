@@ -343,6 +343,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         badgeCellView.badge.title = [NSString stringWithFormat:@"%lu", [(RLMArray *)propertyValue count]];
         [badgeCellView.badge.cell setHighlightsBy:0];
 
+        badgeCellView.toolTip = [realmDescriptions tooltipForPropertyValue:propertyValue ofType:classProperty.property];
         return badgeCellView;
     }
 
