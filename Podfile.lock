@@ -3,9 +3,9 @@ PODS:
   - CSwiftV (0.0.7)
   - HockeySDK-Mac (5.0.0)
   - PathKit (0.8.0)
-  - Realm (3.0.0-beta.4):
-    - Realm/Headers (= 3.0.0-beta.4)
-  - Realm/Headers (3.0.0-beta.4)
+  - Realm (3.0.0-rc.1):
+    - Realm/Headers (= 3.0.0-rc.1)
+  - Realm/Headers (3.0.0-rc.1)
   - RealmConverter (0.4.1):
     - CSwiftV
     - PathKit
@@ -19,23 +19,15 @@ PODS:
 DEPENDENCIES:
   - AppSandboxFileAccess
   - HockeySDK-Mac
-  - Realm (from `https://github.com/realm/realm-cocoa`, branch `master-3.0`)
+  - Realm (~> 3.0.0-rc.1)
   - RealmConverter (from `https://github.com/realm/realm-cocoa-converter`, branch `mar/cocoa-3.0.0-beta.4`)
 
 EXTERNAL SOURCES:
-  Realm:
-    :branch: master-3.0
-    :git: https://github.com/realm/realm-cocoa
-    :submodules: true
   RealmConverter:
     :branch: mar/cocoa-3.0.0-beta.4
     :git: https://github.com/realm/realm-cocoa-converter
 
 CHECKOUT OPTIONS:
-  Realm:
-    :commit: 59d6f1e81724e7188b8e00b3075071a41e5cc558
-    :git: https://github.com/realm/realm-cocoa
-    :submodules: true
   RealmConverter:
     :commit: d4fb640f424b9b20a86b825214b6fa79c220d1bd
     :git: https://github.com/realm/realm-cocoa-converter
@@ -45,11 +37,11 @@ SPEC CHECKSUMS:
   CSwiftV: 602a0cb1df5f758d6005eacb6472c9bc752a7e7c
   HockeySDK-Mac: df7b77c3abd970933cd6eb270890931e0bdcbecb
   PathKit: dcab05d701474011aae0e40cf892298a831f63d6
-  Realm: 61978a10127ec9a4638f0df4d48a08b5e1ded77e
+  Realm: f79164edf2fb3807debe2fd2132ae15ed642d0a6
   RealmConverter: 0d24eb17b4ad7eabe5f4602f331f05003d76b98f
   SSZipArchive: e6ab66e1936fac7e3b5073e9f5eb364d91dfbfc7
-  TGSpreadsheetWriter: 09bbb2c18a111a11c94ff9c1af2320e2530c958e
+  TGSpreadsheetWriter: '09bbb2c18a111a11c94ff9c1af2320e2530c958e'
 
-PODFILE CHECKSUM: 6e793ca3bbadde214a03219ddcbba828702f57c8
+PODFILE CHECKSUM: 17593dfc39f80614f2e7da9a2f977a5804e8aef5
 
 COCOAPODS: 1.2.1
