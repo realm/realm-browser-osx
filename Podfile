@@ -6,7 +6,7 @@ use_frameworks!
 target 'RealmBrowser' do
     pod 'AppSandboxFileAccess'
     pod 'Realm', '~> 3.0.0-rc.1'
-    pod 'RealmConverter', git: 'https://github.com/realm/realm-cocoa-converter', branch: 'mar/cocoa-3.0.0-beta.4'
+    pod 'RealmConverter', '~> 0.5.0'
     pod 'HockeySDK-Mac'
 
     target 'RealmBrowserTests' do
