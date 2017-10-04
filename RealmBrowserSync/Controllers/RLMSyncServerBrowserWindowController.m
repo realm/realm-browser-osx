@@ -58,7 +58,7 @@ static NSString * const RLMAdminRealmRealmFilesDefaultPredicate = @"(path != '/_
 }
 
 - (void)dealloc {
-    [self.notificationToken stop];
+    [self.notificationToken invalidate];
 }
 
 - (void)windowDidLoad {
@@ -83,6 +83,7 @@ static NSString * const RLMAdminRealmRealmFilesDefaultPredicate = @"(path != '/_
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
     configuration.dynamic = YES;
     configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:self.user realmURL:adminRealmURL];
+    configuration.syncConfiguration.enableSSLValidation = NO;
 
     __weak typeof(self) weakSelf = self;
     [RLMRealm asyncOpenWithConfiguration:configuration callbackQueue:dispatch_get_main_queue() callback:^(RLMRealm *realm, NSError *error) {

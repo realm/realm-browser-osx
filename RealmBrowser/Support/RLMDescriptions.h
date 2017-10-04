@@ -22,8 +22,8 @@
 @interface RLMDescriptions : NSObject
 
 -(NSString *)descriptionOfObject:(RLMObject *)object;
--(NSString *)printablePropertyValue:(id)propertyValue ofType:(RLMPropertyType)propertyType;
--(NSString *)tooltipForPropertyValue:(id)propertyValue ofType:(RLMPropertyType)propertyType;
+-(NSString *)printablePropertyValue:(id)propertyValue ofType:(RLMProperty *)property;
+-(NSString *)tooltipForPropertyValue:(id)propertyValue ofType:(RLMProperty *)property;
 
 +(NSString *)typeNameOfProperty:(RLMProperty *)property;
 

@@ -57,6 +57,7 @@
     RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
     configuration.dynamic = YES;
     configuration.syncConfiguration = [[RLMSyncConfiguration alloc] initWithUser:user realmURL:syncURL];
+    configuration.syncConfiguration.enableSSLValidation = NO;
 
     return [self initWithConfiguration:configuration];
 }

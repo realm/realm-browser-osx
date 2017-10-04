@@ -87,6 +87,22 @@ const NSInteger NOT_A_COLUMN = -1;
 
 #pragma mark - Private Methods - NSObject Overrides
 
+enum MenuTags {
+    MENU_CONTEXT_CLICK_LOCK_ICON_TO_EDIT = 99,
+    MENU_CONTEXT_DELETE_OBJECTS = 200,
+    MENU_CONTEXT_COPY_VALUE = 201,
+
+    MENU_CONTEXT_ARRAY_REMOVE_OBJECTS = 210,
+    MENU_CONTEXT_ARRAY_DELETE_OBJECTS = 211,
+    MENU_CONTEXT_ARRAY_ADD_NEW = 212,
+    MENU_CONTEXT_ARRAY_ADD_EXISTING = 213,
+    MENU_CONTEXT_ARRAY_CLEAR = 221,
+    MENU_CONTEXT_ARRAY_OPEN = 230,
+
+    MENU_CONTEXT_LINK_SET = 217,
+    MENU_CONTEXT_REMOVE_BACKLINKS = 220,
+};
+
 -(void)createContextMenuItems
 {
     NSMenu *rightClickMenu = [[NSMenu alloc] initWithTitle:@"Contextual Menu"];
@@ -97,61 +113,61 @@ const NSInteger NOT_A_COLUMN = -1;
     clickLockItem = [[NSMenuItem alloc] initWithTitle:@"Click lock icon to edit"
                                                action:nil
                                         keyEquivalent:@""];
-    clickLockItem.tag = 99;
+    clickLockItem.tag = MENU_CONTEXT_CLICK_LOCK_ICON_TO_EDIT;
     
     // Operations on objects in class tables
     deleteObjectItem = [[NSMenuItem alloc] initWithTitle:@"Delete objects"
                                                   action:@selector(deleteObjectsAction:)
                                            keyEquivalent:@""];
-    deleteObjectItem.tag = 200;
+    deleteObjectItem.tag = MENU_CONTEXT_DELETE_OBJECTS;
     
     copyValueItem = [[NSMenuItem alloc] initWithTitle:@"Copy value"
                                                   action:@selector(copyValueAction:)
                                            keyEquivalent:@""];
-    copyValueItem.tag = 201;
+    copyValueItem.tag = MENU_CONTEXT_COPY_VALUE;
 
     // Operations on objects in arrays
     removeFromArrayItem = [[NSMenuItem alloc] initWithTitle:@"Remove objects from array"
                                                      action:@selector(removeRowsFromArrayAction:)
                                               keyEquivalent:@""];
-    removeFromArrayItem.tag = 210;
+    removeFromArrayItem.tag = MENU_CONTEXT_ARRAY_REMOVE_OBJECTS;
     
     deleteRowItem = [[NSMenuItem alloc] initWithTitle:@"Remove objects from array and delete"
                                                action:@selector(deleteRowsFromArrayAction:)
                                         keyEquivalent:@""];
-    deleteRowItem.tag = 211;
+    deleteRowItem.tag = MENU_CONTEXT_ARRAY_DELETE_OBJECTS;
     
     insertIntoArrayItem = [[NSMenuItem alloc] initWithTitle:@"Add new objects to array"
                                                      action:@selector(addRowsToArrayAction:)
                                               keyEquivalent:@""];
-    insertIntoArrayItem.tag = 212;
+    insertIntoArrayItem.tag = MENU_CONTEXT_ARRAY_ADD_NEW;
 
     insertLinkInArray = [[NSMenuItem alloc] initWithTitle:@"Add existing object to array"
                                                      action:@selector(insertRowsToArrayAction:)
                                               keyEquivalent:@""];
-    insertLinkInArray.tag = 213;
+    insertLinkInArray.tag = MENU_CONTEXT_ARRAY_ADD_EXISTING;
 
     // Operations on links in cells
     setLinkToObjectItem = [[NSMenuItem alloc] initWithTitle:@"Add link to object"
                                                      action:@selector(setObjectLinkAction:)
                                               keyEquivalent:@""];
-    setLinkToObjectItem.tag = 217;
+    setLinkToObjectItem.tag = MENU_CONTEXT_LINK_SET;
     
     removeLinkToObjectItem= [[NSMenuItem alloc] initWithTitle:@"Remove link to object"
                                                        action:@selector(removeObjectLinksAction:)
                                                 keyEquivalent:@""];
-    removeLinkToObjectItem.tag = 220;
+    removeLinkToObjectItem.tag = MENU_CONTEXT_REMOVE_BACKLINKS;
     
     removeLinkToArrayItem = [[NSMenuItem alloc] initWithTitle:@"Make array empty"
                                                        action:@selector(removeArrayLinksAction:)
                                                 keyEquivalent:@""];
-    removeLinkToArrayItem.tag = 221;
+    removeLinkToArrayItem.tag = MENU_CONTEXT_ARRAY_CLEAR;
     
     // Open array in new window
     openArrayInNewWindowItem = [[NSMenuItem alloc] initWithTitle:@"Open array in new window"
                                                           action:@selector(openArrayInNewWindowAction:)
                                                    keyEquivalent:@""];
-    openArrayInNewWindowItem.tag = 230;
+    openArrayInNewWindowItem.tag = MENU_CONTEXT_ARRAY_OPEN;
 }
 
 #pragma mark - NSMenu Delegate
@@ -292,11 +308,11 @@ const NSInteger NOT_A_COLUMN = -1;
     NSString *numberModifier = multipleSelection ? @"s" : @"";
     
     switch (menuItem.tag) {
-        case 99: // Context -> Click lock icon to edit
+        case MENU_CONTEXT_CLICK_LOCK_ICON_TO_EDIT: // Context -> Click lock icon to edit
             return NO;
 
         case 100: // Edit -> Delete object
-        case 200: // Context -> Delete object
+        case MENU_CONTEXT_DELETE_OBJECTS: // Context -> Delete object
             menuItem.title = [NSString stringWithFormat:@"Delete object%@", numberModifier];
             return nonemptySelection && unlocked && !displaysArray;
 
@@ -306,34 +322,34 @@ const NSInteger NOT_A_COLUMN = -1;
             return unlocked && !displaysArray;
             
         case 110: // Edit -> Remove object from array
-        case 210: // Context -> Remove object from array
+        case MENU_CONTEXT_ARRAY_REMOVE_OBJECTS: // Context -> Remove object from array
             menuItem.title = [NSString stringWithFormat:@"Remove object%@ from array", numberModifier];
             return unlocked && nonemptySelection && displaysArray;
 
         case 111: // Edit -> Remove object from array and delete
-        case 211: // Context -> Remove object from array and delete
+        case MENU_CONTEXT_ARRAY_DELETE_OBJECTS: // Context -> Remove object from array and delete
             menuItem.title = [NSString stringWithFormat:@"Remove object%@ from array and delete", numberModifier];
             return unlocked && nonemptySelection && displaysArray;
 
         case 112: // Edit -> Insert object into array
-        case 212: // Context -> Insert object into array
+        case MENU_CONTEXT_ARRAY_ADD_NEW: // Context -> Insert object into array
             menuItem.title = [NSString stringWithFormat:@"Add new object%@ to array", numberModifier];
             return unlocked && displaysArray;
 
         case 113: // Edit -> Add existing object to array
-        case 213: // Context -> Add existing object to array
+        case MENU_CONTEXT_ARRAY_ADD_EXISTING: // Context -> Add existing object to array
             menuItem.title = [NSString stringWithFormat:@"Add existing object%@ to array", numberModifier];
             return unlocked && displaysArray;
             
-        case 220: // Context -> Remove links to object
+        case MENU_CONTEXT_REMOVE_BACKLINKS: // Context -> Remove links to object
             menuItem.title = [NSString stringWithFormat:@"Remove link%@ to object%@", numberModifier, numberModifier];
             return unlocked && nonemptySelection;
 
-        case 221: // Context -> Remove links to array
+        case MENU_CONTEXT_ARRAY_CLEAR: // Context -> Remove links to array
             menuItem.title = [NSString stringWithFormat:@"Make array%@ empty", numberModifier];
             return unlocked && nonemptySelection;
 
-        case 230: // Context -> Open array in new window
+        case MENU_CONTEXT_ARRAY_OPEN: // Context -> Open array in new window
             menuItem.title = @"Open array in new window";
             return YES;
 
