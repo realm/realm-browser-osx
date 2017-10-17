@@ -79,28 +79,72 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
 
 -(NSString *)descriptionOfObject:(RLMObject *)object
 {
-    return [self printablePropertyValue:object ofType:RLMPropertyTypeObject format:RLMDescriptionFormatObject];
+    return [self descriptionOfObject:object format:RLMDescriptionFormatObject];
 }
 
--(NSString *)printablePropertyValue:(id)propertyValue ofType:(RLMPropertyType)propertyType
+-(NSString *)descriptionOfObject:(RLMObject *)object format:(RLMDescriptionFormat)format
 {
-    return [self printablePropertyValue:propertyValue ofType:propertyType format:RLMDescriptionFormatFull];
+    if (object == nil) {
+        return @"";
+    }
+
+    if (format == RLMDescriptionFormatEllipsis) {
+        return [NSString stringWithFormat:@"%@(...)", object.objectSchema.className];
+    }
+
+    NSString *returnString = @"(";
+
+    for (RLMProperty *property in object.objectSchema.properties) {
+        id propertyValue = object[property.name];
+        NSString *propertyDescription = [self printablePropertyValue:propertyValue ofType:property
+                                                              format:RLMDescriptionFormatEllipsis];
+
+        if (returnString.length > kMaxNumberOfObjectCharsForTable - 4) {
+            returnString = [returnString stringByAppendingFormat:@"..."];
+            break;
+        }
+
+        returnString = [returnString stringByAppendingFormat:@"%@, ", propertyDescription];
+    }
+
+    if ([returnString hasSuffix:@", "]) {
+        returnString = [returnString substringToIndex:returnString.length - 2];
+    }
+
+    return [returnString stringByAppendingString:@")"];
 }
 
--(NSString *)printablePropertyValue:(id)propertyValue ofType:(RLMPropertyType)type format:(RLMDescriptionFormat)format
+-(NSString *)printablePropertyValue:(id)propertyValue ofType:(RLMProperty *)property
+{
+    return [self printablePropertyValue:propertyValue ofType:property format:RLMDescriptionFormatFull];
+}
+
+-(NSString *)printablePropertyValue:(id)propertyValue ofType:(RLMProperty *)property format:(RLMDescriptionFormat)format
 {
     if (!propertyValue) {
         return @"";
     }
-    
-    switch (type) {
+
+    if (property.array) {
+        RLMArray *referredArray = propertyValue;
+        if (!referredArray.objectClassName) {
+            return @"<Array>";
+        }
+        if (format == RLMDescriptionFormatEllipsis) {
+            return [NSString stringWithFormat:@"%@[%lu]", referredArray.objectClassName, referredArray.count];
+        }
+
+        return [NSString stringWithFormat:@"%@", referredArray.objectClassName];
+    }
+
+    switch (property.type) {
         case RLMPropertyTypeInt:
-            return [integerFormatter stringFromNumber:(NSNumber *)propertyValue];
+            return [integerFormatter stringFromNumber:propertyValue];
             
             // Intentional fallthrough
         case RLMPropertyTypeFloat:
         case RLMPropertyTypeDouble:
-            return [floatingPointFormatter stringFromNumber:(NSNumber *)propertyValue];
+            return [floatingPointFormatter stringFromNumber:propertyValue];
             
         case RLMPropertyTypeString: {
             NSString *stringValue = propertyValue;
@@ -114,16 +158,7 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
         }
             
         case RLMPropertyTypeBool:
-            return [(NSNumber *)propertyValue boolValue] ? @"TRUE" : @"FALSE";
-            
-        case RLMPropertyTypeArray: {
-            RLMArray *referredArray = (RLMArray *)propertyValue;
-            if (format == RLMDescriptionFormatEllipsis) {
-                return [NSString stringWithFormat:@"%@[%lu]", referredArray.objectClassName, referredArray.count];
-            }
-            
-            return [NSString stringWithFormat:@"%@", referredArray.objectClassName];
-        }
+            return [propertyValue boolValue] ? @"TRUE" : @"FALSE";
             
         case RLMPropertyTypeDate:
             return [dateFormatter stringFromDate:(NSDate *)propertyValue];
@@ -137,44 +172,14 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
         case RLMPropertyTypeLinkingObjects:
             return @"<LinkingObjects>";
             
-        case RLMPropertyTypeObject: {
-            RLMObject *referredObject = (RLMObject *)propertyValue;
-            if (referredObject == nil) {
-                return @"";
-            }
-            
-            if (format == RLMDescriptionFormatEllipsis) {
-                return [NSString stringWithFormat:@"%@(...)", referredObject.objectSchema.className];
-            }
-            
-            NSString *returnString = @"(";
-            
-            for (RLMProperty *property in referredObject.objectSchema.properties) {
-                id propertyValue = referredObject[property.name];
-                NSString *propertyDescription = [self printablePropertyValue:propertyValue
-                                                                      ofType:property.type
-                                                                      format:RLMDescriptionFormatEllipsis];
-                
-                if (returnString.length > kMaxNumberOfObjectCharsForTable - 4) {
-                    returnString = [returnString stringByAppendingFormat:@"..."];
-                    break;
-                }
-                
-                returnString = [returnString stringByAppendingFormat:@"%@, ", propertyDescription];
-            }
-            
-            if ([returnString hasSuffix:@", "]) {
-                returnString = [returnString substringToIndex:returnString.length - 2];
-            }
-            
-            return [returnString stringByAppendingString:@")"];
-        }
+        case RLMPropertyTypeObject:
+            return [self descriptionOfObject:propertyValue format:format];
     }
 }
 
-+(NSString *)typeNameOfProperty:(RLMProperty *)property
++(NSString *)typeName:(RLMPropertyType)type property:(RLMProperty *)property
 {
-    switch (property.type) {
+    switch (type) {
         case RLMPropertyTypeInt:
             return [NSString stringWithFormat:@"Int%@", property.optional ? @" (Optional)":@""];
         case RLMPropertyTypeFloat:
@@ -193,20 +198,30 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
             return @"Any";
         case RLMPropertyTypeLinkingObjects:
             return @"LinkingObjects";
-        case RLMPropertyTypeArray:
-            return [NSString stringWithFormat:@"[%@]", property.objectClassName];
         case RLMPropertyTypeObject:
             return [NSString stringWithFormat:@"<%@>", property.objectClassName];
     }
 }
 
--(NSString *)tooltipForPropertyValue:(id)propertyValue ofType:(RLMPropertyType)propertyType
++(NSString *)typeNameOfProperty:(RLMProperty *)property
 {
-    if (!propertyValue) {
+    if (property.array) {
+        return [NSString stringWithFormat:@"[%@]", property.objectClassName ?: [self typeName:property.type property:property]];
+    }
+    return [self typeName:property.type property:property];
+}
+
+-(NSString *)tooltipForPropertyValue:(id)propertyValue ofType:(RLMProperty *)property
+{
+    if (!propertyValue || propertyValue == NSNull.null) {
         return nil;
     }
+
+    if (property.array) {
+        return [self tooltipForArray:propertyValue];
+    }
     
-    switch (propertyType) {
+    switch (property.type) {
         case RLMPropertyTypeString: {
             NSUInteger chars = MIN(kMaxNumberOfStringCharsForTooltip, [(NSString *)propertyValue length]);
             return [(NSString *)propertyValue substringToIndex:chars];
@@ -217,11 +232,8 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
             return [floatingPointTooltipFormatter stringFromNumber:propertyValue];
             
         case RLMPropertyTypeObject:
-            return [self tooltipForObject:(RLMObject *)propertyValue];
+            return [self tooltipForObject:propertyValue];
             
-        case RLMPropertyTypeArray:
-            return [self tooltipForArray:(RLMArray *)propertyValue];
-        
         case RLMPropertyTypeLinkingObjects:
         case RLMPropertyTypeAny:
         case RLMPropertyTypeBool:
@@ -250,22 +262,19 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
         id obj = object[property.name];
         
         NSString *sub;
-        switch (property.type) {
-            case RLMPropertyTypeArray:
-                sub = [self tooltipForArray:obj withDepth:kMaxDepthForTooltips];
-                break;
-            case RLMPropertyTypeObject: {
-                sub = [self tooltipForObject:obj withDepth:depth + 1];
-                break;
+        if (property.array) {
+            sub = [self tooltipForArray:obj withDepth:kMaxDepthForTooltips];
+        }
+        else if (property.type == RLMPropertyTypeObject) {
+            sub = [self tooltipForObject:obj withDepth:depth + 1];
+        }
+        else {
+            sub = [self printablePropertyValue:obj ofType:property];
+
+            if (property.type == RLMPropertyTypeString && sub.length > kMaxNumberOfInlineStringCharsForTooltip) {
+                sub = [sub substringToIndex:kMaxNumberOfInlineStringCharsForTooltip];
+                sub = [sub stringByAppendingString:@"..."];
             }
-            default:
-                sub = [self printablePropertyValue:obj ofType:property.type];
-                
-                if (property.type == RLMPropertyTypeString && sub.length > kMaxNumberOfInlineStringCharsForTooltip) {
-                    sub = [sub substringToIndex:kMaxNumberOfInlineStringCharsForTooltip];
-                    sub = [sub stringByAppendingString:@"..."];
-                }
-                break;
         }
         
         [string appendFormat:@"%@%@ = %@\n", tabs, property.name, sub];
@@ -281,6 +290,9 @@ typedef NS_ENUM(int32_t, RLMDescriptionFormat) {
 
 - (NSString *)tooltipForArray:(RLMArray *)array withDepth:(NSUInteger)depth
 {
+    if (!array.objectClassName) {
+        return nil;
+    }
     if (depth == kMaxDepthForTooltips) {
         return [NSString stringWithFormat:@"<%@>[%lu]", array.objectClassName, array.count];
     }

@@ -1,37 +1,37 @@
 PODS:
   - AppSandboxFileAccess (1.0.14)
   - CSwiftV (0.0.7)
-  - HockeySDK-Mac (4.1.4)
+  - HockeySDK-Mac (5.0.0)
   - PathKit (0.8.0)
-  - Realm (2.9.0):
-    - Realm/Headers (= 2.9.0)
-  - Realm/Headers (2.9.0)
-  - RealmConverter (0.4.1):
+  - Realm (3.0.0):
+    - Realm/Headers (= 3.0.0)
+  - Realm/Headers (3.0.0)
+  - RealmConverter (0.5.0):
     - CSwiftV
     - PathKit
-    - Realm
+    - Realm (~> 3.0.0-rc.1)
     - SSZipArchive
     - TGSpreadsheetWriter
-  - SSZipArchive (2.0.2)
+  - SSZipArchive (2.1.1)
   - TGSpreadsheetWriter (1.0.2):
     - SSZipArchive
 
 DEPENDENCIES:
   - AppSandboxFileAccess
   - HockeySDK-Mac
-  - Realm
-  - RealmConverter
+  - Realm (~> 3.0.0)
+  - RealmConverter (~> 0.5.0)
 
 SPEC CHECKSUMS:
   AppSandboxFileAccess: f3e10b0ba10bbaa6dc6996639ff47836050329c5
   CSwiftV: 602a0cb1df5f758d6005eacb6472c9bc752a7e7c
-  HockeySDK-Mac: 963ce83ffcbc0e0297a63d2a4fc4d84c103f9280
+  HockeySDK-Mac: df7b77c3abd970933cd6eb270890931e0bdcbecb
   PathKit: dcab05d701474011aae0e40cf892298a831f63d6
-  Realm: f14ab1673502559cb16592ddb8f383c474c13e05
-  RealmConverter: ea2c483fa5a584eb58e409cf6615808dd86a8dcc
-  SSZipArchive: 5fdf578dbbb60000b23439f80fa04e81d00740ee
-  TGSpreadsheetWriter: '09bbb2c18a111a11c94ff9c1af2320e2530c958e'
+  Realm: dec0de73be8c57506e39db72694d513c189493b3
+  RealmConverter: 6ed3e229fc2ff2f7527ae13ea2dc4b61af81fc67
+  SSZipArchive: 14401ade5f8e82aba1ff03e9f88e9de60937ae60
+  TGSpreadsheetWriter: 09bbb2c18a111a11c94ff9c1af2320e2530c958e
 
-PODFILE CHECKSUM: 5cd2a5d1718f788c14393e563ba2ae374f258424
+PODFILE CHECKSUM: 9f70ee7997fbea9181f6bd22c07090d45f2f70b1
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.3.1

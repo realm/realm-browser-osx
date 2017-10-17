@@ -20,6 +20,8 @@
 
 @interface RLMArrayNode : RLMTypeNode
 
+@property (readonly) RLMProperty *referringProperty;
+
 - (instancetype)initWithReferringProperty:(RLMProperty *)property onObject:(RLMObject *)object realm:(RLMRealm *)realm;
 
 - (BOOL)insertInstance:(RLMObject *)object atIndex:(NSUInteger)index;

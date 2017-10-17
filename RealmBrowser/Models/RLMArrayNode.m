@@ -20,25 +20,73 @@
 
 #import "RLMSidebarTableCellView.h"
 
-@implementation RLMArrayNode {
-    RLMProperty *referringProperty;
-    RLMObject *referringObject;
-    RLMArray *displayedArray;
-    NSString *name;
+@interface RLMProperty (Dynamic)
+- (instancetype)initWithName:(NSString *)name
+                        type:(RLMPropertyType)type
+             objectClassName:(nullable NSString *)objectClassName
+      linkOriginPropertyName:(nullable NSString *)linkOriginPropertyName
+                     indexed:(BOOL)indexed
+                    optional:(BOOL)optional;
+@end
+@interface RLMObjectSchema (Dynamic)
+- (instancetype)initWithClassName:(NSString *)objectClassName objectClass:(Class)objectClass properties:(NSArray *)properties;
+@end
+
+// A value which pretends to be an RLMObject representing a row in a non-object array
+@interface RLMRowProxy : NSObject
+@end
+@implementation RLMRowProxy {
+    RLMArray *_array;
+    NSUInteger _index;
 }
+
++ (instancetype)proxyForArray:(RLMArray *)array row:(NSUInteger)index {
+    RLMRowProxy *proxy = [[self alloc] init];
+    proxy->_array = array;
+    proxy->_index = index;
+    return proxy;
+}
+
+- (id)objectForKeyedSubscript:(__unused id)subscript {
+    return _array[_index];
+}
+- (void)setObject:(id)value forKeyedSubscript:(__unused id)subscript {
+    _array[_index] = value;
+}
+@end
+
+@implementation RLMArrayNode {
+    RLMProperty *_referringProperty;
+    RLMObject *_referringObject;
+    RLMArray *_displayedArray;
+    bool _isObject;
+}
+
 
 #pragma mark - Public Methods
 
 - (instancetype)initWithReferringProperty:(RLMProperty *)property onObject:(RLMObject *)object realm:(RLMRealm *)realm
 {
-    NSString *elementTypeName = property.objectClassName;
-    RLMSchema *realmSchema = realm.schema;
-    RLMObjectSchema *elementSchema = [realmSchema schemaForClassName:elementTypeName];
-    
+    RLMArray *array = object[property.name];
+    RLMObjectSchema *elementSchema;
+    if (array.objectClassName) {
+        elementSchema = [realm.schema schemaForClassName:array.objectClassName];
+    }
+    else {
+        // Create a fake object schema representing the values of a primitive array
+        RLMProperty *prop = [[RLMProperty alloc] initWithName:@"Value"
+                                                         type:property.type
+                                              objectClassName:nil
+                                       linkOriginPropertyName:nil
+                                                      indexed:NO
+                                                     optional:property.optional];
+        elementSchema = [[RLMObjectSchema alloc] initWithClassName:property.name objectClass:RLMObject.class properties:@[prop]];
+    }
     if (self = [super initWithSchema:elementSchema inRealm:realm]) {
-        referringProperty = property;
-        referringObject = object;
-        displayedArray = object[property.name];
+        _referringProperty = property;
+        _referringObject = object;
+        _displayedArray = array;
+        _isObject = array.objectClassName != nil;
     }
 
     return self;
@@ -46,40 +94,31 @@
 
 -(BOOL)insertInstance:(RLMObject *)object atIndex:(NSUInteger)index
 {
-    if (index > displayedArray.count || object == nil) {
+    if (index > _displayedArray.count || object == nil) {
         return NO;
     }
     
-    [displayedArray insertObject:object atIndex:index];
+    [_displayedArray insertObject:object atIndex:index];
     return YES;
 }
 
 -(BOOL)removeInstanceAtIndex:(NSUInteger)index
 {
-    if (index >= [displayedArray count]) {
+    if (index >= [_displayedArray count]) {
         return NO;
     }
     
-    [displayedArray removeObjectAtIndex:index];
+    [_displayedArray removeObjectAtIndex:index];
     return YES;
 }
 
 -(BOOL)moveInstanceFromIndex:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex
 {
-    if (fromIndex >= [displayedArray count] || toIndex > [displayedArray count]) {
+    if (fromIndex >= [_displayedArray count] || toIndex > [_displayedArray count]) {
         return NO;
     }
-    
-    RLMObject *objectToMove = [displayedArray objectAtIndex:fromIndex];
-    
-    [displayedArray removeObjectAtIndex:fromIndex];
-    
-    if (toIndex > fromIndex) {
-        toIndex--;
-    }
-    
-    [displayedArray insertObject:objectToMove atIndex:toIndex];
-    
+
+    [_displayedArray moveObjectAtIndex:fromIndex toIndex:toIndex];
     return YES;
 }
 
@@ -99,7 +138,7 @@
     }
     
     for (int i = 0; i < self.instanceCount; i++) {
-        if (![displayedArray[i] isEqualToObject:[otherArrayNode instanceAtIndex:i]]) {
+        if (![_displayedArray[i] isEqualToObject:[otherArrayNode instanceAtIndex:i]]) {
             return NO;
         }
     }
@@ -109,39 +148,41 @@
 
 - (NSString *)objectClassName
 {
-    return [displayedArray.objectClassName copy];
+    return _displayedArray.objectClassName;
 }
 
 #pragma mark - RLMTypeNode Overrides
 
 - (NSString *)name
 {
-    if (name) {
-        return name;
-    }
     return @"Array";
 }
 
 - (NSUInteger)instanceCount
 {
-    return displayedArray.count;
+    return _displayedArray.count;
 }
 
 - (BOOL)isInvalidated
 {
-    return displayedArray.isInvalidated;
+    return _displayedArray.isInvalidated;
+}
+
+- (BOOL)isObject
+{
+    return _isObject;
 }
 
 - (RLMObject *)instanceAtIndex:(NSUInteger)index
 {
-    return displayedArray[index];
+    return _isObject ? _displayedArray[index] : [RLMRowProxy proxyForArray:_displayedArray row:index];
 }
 
 - (id)nodeElementForColumnWithIndex:(NSInteger)index
 {
     switch (index) {
         case 0:
-            return [NSString stringWithFormat:@"%@<%@>", referringProperty.name, referringProperty.objectClassName];
+            return [NSString stringWithFormat:@"%@<%@>", _referringProperty.name, _referringProperty.objectClassName];
             
         default:
             return nil;
@@ -151,13 +192,8 @@
 - (NSView *)cellViewForTableView:(NSTableView *)tableView
 {
     RLMSidebarTableCellView *cellView = [tableView makeViewWithIdentifier:@"MainCell" owner:self];
-    if (name) {
-        cellView.textField.stringValue = [NSString stringWithFormat:@"\"%@\"", name];
-    }
-    else {
-        cellView.textField.stringValue = [NSString stringWithFormat:@"%@: <%@>",
-                                          referringProperty.name, referringProperty.objectClassName];
-    }
+    cellView.textField.stringValue = [NSString stringWithFormat:@"%@: <%@>",
+                                      _referringProperty.name, _referringProperty.objectClassName];
 
     cellView.button.title = [NSString stringWithFormat:@"%lu", [self instanceCount]];
     [[cellView.button cell] setHighlightsBy:0];
@@ -175,7 +211,7 @@
 
 - (NSString *)toolTipString
 {
-    return referringObject.description;
+    return _referringObject.description;
 }
 
 @end

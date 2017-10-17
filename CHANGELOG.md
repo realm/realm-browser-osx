@@ -1,3 +1,7 @@
+3.0.0 Release notes (2017-10-16)
+=============================================================
+* Update to Realm 3.0.0.
+
 2.1.12 Release notes (2017-07-27)
 =============================================================
 * Update to Realm 2.9.0 that fixes an issue connecting to multiple servers with the same user. 

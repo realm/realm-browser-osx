@@ -222,6 +222,10 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 {
     numberFormatter.maximumFractionDigits = 3;
 
+    if (propertyColumn.property.array) {
+        return nil;
+    }
+
     // For certain types we want to add some statistics
     RLMPropertyType type = propertyColumn.property.type;
     NSString *propertyName = propertyColumn.property.name;
@@ -259,7 +263,8 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             float percentTrue  = trueCount * 100.0 / count;
             float percentFalse = falseCount * 100.0 / count;
 
-            return [NSString stringWithFormat:@"True: %lu (%.1f%%)\nFalse: %lu (%.1f%%)", (unsigned long)trueCount, percentTrue, (unsigned long)falseCount, percentFalse];
+            return [NSString stringWithFormat:@"True: %lu (%.1f%%)\nFalse: %lu (%.1f%%)",
+                    (unsigned long)trueCount, percentTrue, (unsigned long)falseCount, percentFalse];
         }
         default:
             return nil;
@@ -312,37 +317,40 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     }
     
     RLMClassProperty *classProperty = self.displayedType.propertyColumns[propertyIndex];
+    RLMProperty *property = classProperty.property;
     RLMObject *selectedInstance = [self.displayedType instanceAtIndex:rowIndex];
     id propertyValue = selectedInstance[classProperty.name];
-    RLMPropertyType type = classProperty.type;
-    BOOL optional = classProperty.property.optional;
-    NSString *reuseIdentifier = [NSString stringWithFormat:@"Property.%@.Optional.%d", [RLMDescriptions typeNameOfProperty:classProperty.property], optional];
-    
-    NSTableCellView *cellView;
-    switch (type) {
-        case RLMPropertyTypeArray: {
-            RLMBadgeTableCellView *badgeCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
-            if (!badgeCellView) {
-                badgeCellView = [RLMBadgeTableCellView viewWithIdentifier:reuseIdentifier];
-                badgeCellView.optional = YES;
-            }
-            NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
-            NSDictionary *attr = @{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)};
-            badgeCellView.textField.attributedStringValue = [[NSAttributedString alloc] initWithString:string attributes:attr];
-            
-            badgeCellView.textField.editable = NO;
+    if (propertyValue == NSNull.null) {
+        propertyValue = nil;
+    }
+    NSString *reuseIdentifier = [NSString stringWithFormat:@"Property.%@.Optional.%d",
+                                 [RLMDescriptions typeNameOfProperty:property],
+                                 property.optional];
 
-            badgeCellView.badge.hidden = NO;
-            badgeCellView.badge.title = [NSString stringWithFormat:@"%lu", [(RLMArray *)propertyValue count]];
-            [badgeCellView.badge.cell setHighlightsBy:0];
-            
-            cellView = badgeCellView;
-            
-            break;
+    if (property.array) {
+        RLMBadgeTableCellView *badgeCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
+        if (!badgeCellView) {
+            badgeCellView = [RLMBadgeTableCellView viewWithIdentifier:reuseIdentifier];
+            badgeCellView.optional = YES;
         }
-            
+        NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:property];
+        NSDictionary *attr = @{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)};
+        badgeCellView.textField.attributedStringValue = [[NSAttributedString alloc] initWithString:string attributes:attr];
+
+        badgeCellView.textField.editable = NO;
+
+        badgeCellView.badge.hidden = NO;
+        badgeCellView.badge.title = [NSString stringWithFormat:@"%lu", [(RLMArray *)propertyValue count]];
+        [badgeCellView.badge.cell setHighlightsBy:0];
+
+        badgeCellView.toolTip = [realmDescriptions tooltipForPropertyValue:propertyValue ofType:classProperty.property];
+        return badgeCellView;
+    }
+
+    NSTableCellView *cellView;
+    switch (classProperty.type) {
         case RLMPropertyTypeBool: {
-            if (optional) {
+            if (property.optional) {
                 RLMOptionalBoolTableCellView *boolCellView = [tableView makeViewWithIdentifier:reuseIdentifier owner:self];
                 if (!boolCellView) {
                     boolCellView = [RLMOptionalBoolTableCellView viewWithIdentifier:reuseIdentifier];
@@ -391,8 +399,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
                 numberCellView.textField.action = @selector(editedTextField:);
             }
 
-            numberCellView.optional = optional;
-            numberCellView.textField.objectValue = propertyValue;            
+            numberCellView.textField.objectValue = propertyValue;
             numberCellView.textField.editable = !self.realmIsLocked && !classProperty.isPrimaryKey;
 
             cellView = numberCellView;
@@ -407,9 +414,8 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
                 linkCellView.textField.target = self;
                 linkCellView.textField.action = @selector(editedTextField:);
             }
-            linkCellView.optional = optional;
             
-            NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
+            NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:property];
             NSDictionary *attr = @{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)};
             linkCellView.textField.attributedStringValue = [[NSAttributedString alloc] initWithString:string attributes:attr];
             
@@ -432,20 +438,22 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
                 basicCellView.textField.action = @selector(editedTextField:);
             }
 
-            basicCellView.optional = optional;
-            basicCellView.textField.stringValue = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
-            basicCellView.textField.editable = !self.realmIsLocked && type == RLMPropertyTypeString && !classProperty.isPrimaryKey;
+            basicCellView.textField.stringValue = [realmDescriptions printablePropertyValue:propertyValue ofType:property];
+            basicCellView.textField.editable = !self.realmIsLocked
+                                            && property.type == RLMPropertyTypeString
+                                            && !classProperty.isPrimaryKey;
 
             cellView = basicCellView;
             
             break;
         }
     }
-    
-    if (type != RLMPropertyTypeArray) {
-        cellView.toolTip = [realmDescriptions tooltipForPropertyValue:propertyValue ofType:type];
+
+    if ([cellView respondsToSelector:@selector(setOptional:)]) {
+        [(id)cellView setOptional:property.optional];
     }
 
+    cellView.toolTip = [realmDescriptions tooltipForPropertyValue:propertyValue ofType:classProperty.property];
     return cellView;
 }
 
@@ -460,20 +468,18 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 - (BOOL)isColumnObjectType:(NSInteger)column;
 {
     NSAssert(column != NOT_A_COLUMN, @"This method can only be used with an actual column index");
-    return [self propertyTypeForColumn:column] == RLMPropertyTypeObject;
+    RLMProperty *prop = [self propertyForColumn:column];
+    return prop.type == RLMPropertyTypeObject && !prop.array;
 }
 
 // Asking the delegate about the contents
 - (BOOL)containsObjectInRows:(NSIndexSet *)rowIndexes column:(NSInteger)column;
 {
-    NSAssert(column != NOT_A_COLUMN, @"This method can only be used with an actual column index");
-    
-    if ([self propertyTypeForColumn:column] != RLMPropertyTypeObject) {
+    if (![self isColumnObjectType:column]) {
         return NO;
     }
 
     NSInteger propertyIndex = [self propertyIndexForColumn:column];
-   
     return [self cellsAreNonEmptyInRows:rowIndexes propertyColumn:propertyIndex];
 }
 
@@ -483,7 +489,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 
     NSInteger propertyIndex = [self propertyIndexForColumn:column];
     
-    if ([self propertyTypeForColumn:column] != RLMPropertyTypeArray) {
+    if (![self propertyForColumn:column].array) {
         return NO;
     }
     
@@ -502,9 +508,8 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     RLMClassProperty *classProperty = self.displayedType.propertyColumns[propertyIndex];
     RLMObject *selectedInstance = [self.displayedType instanceAtIndex:row];
     id propertyValue = selectedInstance[classProperty.name];
-    RLMPropertyType type = classProperty.type;
-    NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:type];
-    
+    NSString *string = [realmDescriptions printablePropertyValue:propertyValue ofType:classProperty.property];
+
     NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
     [pasteboard clearContents];
     [pasteboard writeObjects:@[ string ]];
@@ -540,7 +545,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 
 - (void)deleteRows:(NSIndexSet *)rowIndexes
 {
-    [self deleteRowsInRealmAt:rowIndexes];
+    [self deleteObjectsInRealmAtIndexes:rowIndexes];
 }
 
 - (void)addNewRows:(NSIndexSet *)rowIndexes
@@ -618,7 +623,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 
     __weak typeof(self) weakSelf = self;
     [self presentListPopoverIn:cellRect nodeType:node transaction:^(RLMObject *object) {
-        if ([weakSelf propertyTypeForColumn: columnIndex] == RLMPropertyTypeArray) {
+        if ([weakSelf propertyForColumn: columnIndex].array) {
             [(RLMArray*)selectedInstance[property.name] addObject:object];
         } else {
             selectedInstance[property.name] = object;
@@ -697,9 +702,9 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 {
     NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
     for (RLMProperty *property in schema.properties) {
-        defaultValues[property.name] = [self defaultValueForPropertyType:property.type];
+        defaultValues[property.name] = property.array ? @[] : [self defaultValueForPropertyType:property.type];
     }
-    
+
     return defaultValues;
 }
 
@@ -710,7 +715,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             return @0;
         
         case RLMPropertyTypeFloat:
-            return @(0.0f);
+            return @0.0f;
 
         case RLMPropertyTypeDouble:
             return @0.0;
@@ -720,9 +725,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             
         case RLMPropertyTypeBool:
             return @NO;
-            
-        case RLMPropertyTypeArray:
-            return @[];
             
         case RLMPropertyTypeDate:
             return [NSDate date];
@@ -741,15 +743,13 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     }
 }
 
-- (RLMPropertyType)propertyTypeForColumn:(NSInteger)column
+- (RLMProperty *)propertyForColumn:(NSInteger)column
 {
     NSInteger propertyIndex = [self propertyIndexForColumn:column];
 
     RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     RLMObjectSchema *objectSchema = [realm.schema schemaForClassName:self.displayedType.name];
-    RLMProperty *property = objectSchema.properties[propertyIndex];
-    
-    return property.type;
+    return objectSchema.properties[propertyIndex];
 }
 
 - (BOOL)cellsAreNonEmptyInRows:(NSIndexSet *)rowIndexes propertyColumn:(NSInteger)propertyColumn
@@ -777,11 +777,8 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     RLMClassProperty *classProperty = self.displayedType.propertyColumns[propertyIndex];
     
-    id newValue = [NSNull null];
-    if (classProperty.property.type == RLMPropertyTypeArray) {
-        newValue = @[];
-    }
-    
+    id newValue = classProperty.property.array ? @[] : [NSNull null];
+
     [realm beginWriteTransaction];
     [rowIndexes enumerateIndexesUsingBlock:^(NSUInteger rowIndex, BOOL *stop) {
         RLMObject *selectedInstance = [self.displayedType instanceAtIndex:rowIndex];
@@ -805,11 +802,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     [realm commitWriteTransaction];
 }
 
-- (void)deleteRowsInRealmAt:(NSIndexSet *)rowIndexes
-{
-    [self deleteObjectsInRealmAtIndexes:rowIndexes];
-}
-
 - (void)insertNewRowsInRealmAt:(NSIndexSet *)rowIndexes
 {
     if (rowIndexes.count == 0) {
@@ -819,13 +811,19 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     
     [realm beginWriteTransaction];
-    
-    [rowIndexes enumerateRangesWithOptions:NSEnumerationReverse usingBlock:^(NSRange range, BOOL *stop) {
-        for (NSUInteger i = range.location; i < NSMaxRange(range); i++) {
+
+    RLMArrayNode *arrayNode = (RLMArrayNode *)self.displayedType;
+    if (arrayNode.isObject) {
+        [rowIndexes enumerateIndexesWithOptions:NSEnumerationReverse usingBlock:^(NSUInteger i, BOOL *stop) {
             RLMObject *object = [self.class createObjectInRealm:realm withSchema:self.displayedType.schema];
-            [(RLMArrayNode *)self.displayedType insertInstance:object atIndex:range.location];
-        }
-    }];
+            [arrayNode insertInstance:object atIndex:i];
+        }];
+    }
+    else {
+        [rowIndexes enumerateIndexesWithOptions:NSEnumerationReverse usingBlock:^(NSUInteger i, BOOL *stop) {
+            [arrayNode insertInstance:[self.class defaultValueForPropertyType:arrayNode.referringProperty.type] atIndex:i];
+        }];
+    }
     
     [realm commitWriteTransaction];
 }
@@ -853,6 +851,11 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
 
 - (void)deleteObjectsInRealmAtIndexes:(NSIndexSet *)rowIndexes
 {
+    if (!self.displayedType.isObject) {
+        [self removeRowsInRealmAt:rowIndexes];
+        return;
+    }
+
     RLMRealm *realm = self.parentWindowController.document.presentedRealm.realm;
     
     NSMutableArray *objectsToDelete = [NSMutableArray array];
@@ -920,10 +923,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         return;
     }
 
-    if (propertyNode.type == RLMPropertyTypeObject) {
-        [self enableLinkCursor];
-    }
-    else if (propertyNode.type == RLMPropertyTypeArray) {
+    if (propertyNode.type == RLMPropertyTypeObject || propertyNode.property.array) {
         [self enableLinkCursor];
     }
 }
@@ -982,7 +982,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
         
         case RLMPropertyTypeLinkingObjects:
         case RLMPropertyTypeAny:
-        case RLMPropertyTypeArray:
         case RLMPropertyTypeBool:
         case RLMPropertyTypeData:
         case RLMPropertyTypeObject:
@@ -1078,7 +1077,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
     
     RLMClassProperty *propertyNode = self.displayedType.propertyColumns[propertyIndex];
     
-    if (propertyNode.type == RLMPropertyTypeObject) {
+    if (propertyNode.type == RLMPropertyTypeObject || propertyNode.property.array) {
         RLMObject *selectedInstance = [self.displayedType instanceAtIndex:row];
         id propertyValue = selectedInstance[propertyNode.name];
         
@@ -1098,12 +1097,7 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
                 }
             }
         }
-    }
-    else if (propertyNode.type == RLMPropertyTypeArray) {
-        RLMObject *selectedInstance = [self.displayedType instanceAtIndex:row];
-        NSObject *propertyValue = selectedInstance[propertyNode.name];
-        
-        if ([propertyValue isKindOfClass:[RLMArray class]]) {
+        else if ([propertyValue isKindOfClass:[RLMArray class]]) {
             RLMArrayNavigationState *state = [[RLMArrayNavigationState alloc] initWithSelectedType:self.displayedType
                                                                                          typeIndex:row
                                                                                           property:propertyNode.property
@@ -1177,7 +1171,6 @@ typedef NS_ENUM(int32_t, RLMUpdateType) {
             break;
         }
         case RLMPropertyTypeAny:
-        case RLMPropertyTypeArray:
         case RLMPropertyTypeBool:
         case RLMPropertyTypeData:
         case RLMPropertyTypeObject:

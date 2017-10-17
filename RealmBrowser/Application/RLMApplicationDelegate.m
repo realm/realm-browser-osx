@@ -80,7 +80,6 @@
 
     [self logOutSyncUsers];
 
-    [RLMSyncManager sharedManager].disableSSLValidation = YES;
     [RLMSyncManager sharedManager].errorHandler = ^(NSError *error, RLMSyncSession *session) {
         [NSApp presentError:error];
     };

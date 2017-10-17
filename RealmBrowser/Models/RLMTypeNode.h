@@ -31,6 +31,7 @@
 @property (nonatomic, readonly) NSUInteger instanceCount;
 
 @property (nonatomic, readonly) BOOL isInvalidated;
+@property (nonatomic, readonly) BOOL isObject;
 
 - (instancetype)initWithSchema:(RLMObjectSchema *)schema inRealm:(RLMRealm *)realm;
 
