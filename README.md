@@ -1,3 +1,10 @@
+# NOTE
+Our future Development efforts will go into the new cross platform Realm Studio, now available for Mac, Linux and Windows users!
+Check it out here: https://realm.io/docs/realm-object-server/latest/#realm-studio
+Should you have any feedback or issues, please create issues in the (Realm Platform)[https://github.com/realm/realm-mobile-platform] repo.
+
+
+
 # Realm Browser
 Realm Browser is a small utility for Mac OS X that lets you open .realm files to view and modify their contents.
 
