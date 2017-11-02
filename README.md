@@ -1,8 +1,7 @@
 # NOTE
 Our future Development efforts will go into the new cross platform Realm Studio, now available for Mac, Linux and Windows users!
 Check it out here: https://realm.io/docs/realm-object-server/latest/#realm-studio.
-Should you have any feedback or issues, please create issues in the (Realm Platform)[https://github.com/realm/realm-mobile-platform] repo.
-
+Should you have any feedback or issues, please create issues in the [Realm Object Server][https://github.com/realm/realm-object-server] repo.
 
 
 # Realm Browser
