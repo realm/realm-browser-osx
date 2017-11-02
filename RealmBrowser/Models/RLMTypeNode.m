@@ -84,7 +84,7 @@
 
 - (BOOL)isObject
 {
-    return false;
+    return YES;
 }
 
 #pragma mark - Public methods
