@@ -1,6 +1,7 @@
-x.x.x Release notes (yyyy-MM-dd)
+3.0.1 Release notes (2017-11-03)
 =============================================================
 * Fix crash when deleting rows.
+* Show the size of data properties in their cell.
 
 3.0.0 Release notes (2017-10-16)
 =============================================================
