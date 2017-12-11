@@ -170,6 +170,8 @@
 #pragma mark - Welcome Window
 
 - (IBAction)showWelcomeWindow:(id)sender {
+    static BOOL toutDisplayedDuringAppRun = NO;
+    static NSString *toutSuppressionKey = @"RealmStudio_suppress_tout";
     RLMWelcomeWindowController *welcomeWindowController = [[RLMWelcomeWindowController alloc] init];
 
     [welcomeWindowController.window center];
@@ -178,6 +180,23 @@
     }];
 
     [self addAuxiliaryWindowController:welcomeWindowController];
+    if (!toutDisplayedDuringAppRun && ![[NSUserDefaults standardUserDefaults] boolForKey:toutSuppressionKey]) {
+        toutDisplayedDuringAppRun = YES;
+        NSAlert *upgradeAlert = [[NSAlert alloc] init];
+        [upgradeAlert addButtonWithTitle:@"OK"];
+        [upgradeAlert addButtonWithTitle:@"Learn more..."];
+        [upgradeAlert setShowsSuppressionButton:YES];
+        [upgradeAlert setMessageText:@"Realm Browser is deprecated"];
+        [upgradeAlert setInformativeText:@"Realm Browser has been replaced by Realm Studio. Realm Studio is required to open synchronized Realms for a Realm Object Server version 2.0 or later."];
+        NSInteger result = [upgradeAlert runModal];
+        if (result == NSAlertSecondButtonReturn) {
+            // Open the web site.
+            [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://realm.io/products/realm-studio/"]];
+        }
+        if ([upgradeAlert suppressionButton].state == NSControlStateValueOn) {
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:toutSuppressionKey];
+        }
+    }
 }
 
 #pragma mark - Event handling
@@ -736,6 +755,12 @@
     [[RLMSyncUser allUsers] enumerateKeysAndObjectsUsingBlock:^(NSString *key, RLMSyncUser *user, BOOL *stop) {
         [user logOut];
     }];
+}
+
+#pragma mark - Other
+
+- (IBAction)visitRealmStudioSite:(NSMenuItem *)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://realm.io/products/realm-studio/"]];
 }
 
 @end
