@@ -183,17 +183,17 @@
     if (!toutDisplayedDuringAppRun && ![[NSUserDefaults standardUserDefaults] boolForKey:toutSuppressionKey]) {
         toutDisplayedDuringAppRun = YES;
         NSAlert *upgradeAlert = [[NSAlert alloc] init];
-        [upgradeAlert addButtonWithTitle:@"OK"];
-        [upgradeAlert addButtonWithTitle:@"Learn more..."];
+        [upgradeAlert addButtonWithTitle:@"Get Realm Studio..."];
+        [upgradeAlert addButtonWithTitle:@"Not now"];
         [upgradeAlert setShowsSuppressionButton:YES];
         [upgradeAlert setMessageText:@"Realm Browser is deprecated"];
-        [upgradeAlert setInformativeText:@"Realm Browser has been replaced by Realm Studio. Realm Studio is required to open synchronized Realms for a Realm Object Server version 2.0 or later."];
+        [upgradeAlert setInformativeText:@"Realm Browser has been replaced by Realm Studio. Bug fixes and enhancements will only be available via Realm Studio going forwards."];
         NSInteger result = [upgradeAlert runModal];
-        if (result == NSAlertSecondButtonReturn) {
+        if (result == NSAlertFirstButtonReturn) {
             // Open the web site.
             [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://realm.io/products/realm-studio/"]];
         }
-        if ([upgradeAlert suppressionButton].state == NSControlStateValueOn) {
+        if ([upgradeAlert suppressionButton].state == NSOnState) {
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:toutSuppressionKey];
         }
     }
