@@ -5,7 +5,7 @@ use_frameworks!
 
 target 'RealmBrowser' do
     pod 'AppSandboxFileAccess'
-    pod 'Realm', '~> 3.0.0'
+    pod 'Realm', '~> 3.0.2'
     pod 'RealmConverter', '~> 0.5.0'
     pod 'HockeySDK-Mac'
 
