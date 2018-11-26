@@ -1,3 +1,4 @@
 language: objective-c
-osx_image: xcode6.4
-script: xctool -workspace "RealmBrowser.xcworkspace" -scheme "Realm Browser" test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+osx_image: xcode8.3
+install: bundle install
+script: bundle exec fastlane test

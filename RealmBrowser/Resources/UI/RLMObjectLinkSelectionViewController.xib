@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="RLMObjectLinkSelectionViewController">
+            <connections>
+                <outlet property="tableController" destination="LEK-Pl-8tH" id="7PX-Vb-byA"/>
+                <outlet property="view" destination="flu-HD-CAe" id="Qu3-Lq-ORI"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView appearanceType="aqua" id="flu-HD-CAe" userLabel="MainTableView" propertyAccessControl="none">
+            <rect key="frame" x="0.0" y="0.0" width="475" height="445"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <subviews>
+                <scrollView wantsLayer="YES" focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="10" translatesAutoresizingMaskIntoConstraints="NO" id="Y4e-Rd-QZZ" userLabel="MainScroll">
+                    <rect key="frame" x="0.0" y="0.0" width="475" height="445"/>
+                    <clipView key="contentView" focusRingType="none" id="goJ-S0-94I">
+                        <rect key="frame" x="0.0" y="0.0" width="475" height="445"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" alternatingRowBackgroundColors="YES" columnReordering="NO" multipleSelection="NO" autosaveName="InstanceTable" rowHeight="18" headerView="AgY-7N-8os" id="cgZ-x2-okk" customClass="RLMTableView">
+                                <rect key="frame" x="0.0" y="0.0" width="475" height="422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <size key="intercellSpacing" width="3" height="2"/>
+                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                <tableViewGridLines key="gridStyleMask" vertical="YES"/>
+                                <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="LEK-Pl-8tH" id="dY8-5e-JNy"/>
+                                    <outlet property="delegate" destination="LEK-Pl-8tH" id="qlP-cC-kqd"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </clipView>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="475" id="ZaU-YO-2Uw"/>
+                        <constraint firstAttribute="height" constant="445" id="bT3-ay-76Y"/>
+                    </constraints>
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="0Yg-ge-2GS">
+                        <rect key="frame" x="0.0" y="429" width="475" height="16"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="QdJ-3D-J7b">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <tableHeaderView key="headerView" id="AgY-7N-8os">
+                        <rect key="frame" x="0.0" y="0.0" width="475" height="23"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </tableHeaderView>
+                </scrollView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="Y4e-Rd-QZZ" secondAttribute="bottom" id="SQd-rt-m5f"/>
+                <constraint firstItem="Y4e-Rd-QZZ" firstAttribute="top" secondItem="flu-HD-CAe" secondAttribute="top" id="q28-tk-njs"/>
+                <constraint firstAttribute="trailing" secondItem="Y4e-Rd-QZZ" secondAttribute="trailing" id="qPg-Ao-l5G"/>
+                <constraint firstItem="Y4e-Rd-QZZ" firstAttribute="leading" secondItem="flu-HD-CAe" secondAttribute="leading" id="zKU-p7-XNp"/>
+            </constraints>
+            <point key="canvasLocation" x="701.5" y="360.5"/>
+        </customView>
+        <viewController id="LEK-Pl-8tH" userLabel="Popover View Controller" customClass="RLMInstanceTableViewController">
+            <connections>
+                <outlet property="view" destination="cgZ-x2-okk" id="dUu-yU-76i"/>
+            </connections>
+        </viewController>
+    </objects>
+</document>

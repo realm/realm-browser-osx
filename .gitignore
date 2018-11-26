@@ -16,3 +16,8 @@ profile
 *.moved-aside
 DerivedData
 .idea/
+Pods/
+
+# fastlane
+fastlane/report.xml
+fastlane/test_output
